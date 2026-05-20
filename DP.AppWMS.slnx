@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/AppHost/">
+    <Project Path="DP.AppWMS.AppHost/DP.AppWMS.AppHost.csproj" />
+    <Project Path="DP.AppWMS.ServiceDefaults/DP.AppWMS.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/BackEnd/">
+    <Project Path="DP.AppWMS.ApiService/DP.AppWMS.ApiService.csproj" />
+    <Project Path="WMS.Application/WMS.Application.csproj" />
+    <Project Path="WMS.Domain/WMS.Domain.csproj" />
+    <Project Path="WMS.Infrastructure/WMS.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/FrontEnd/">
+    <Project Path="DP.AppWMS.Web/DP.AppWMS.Web.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="DP.AppWMS.Tests/DP.AppWMS.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Architecture/">
+    <File Path="app-host.bash" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile.txt" />
+    <File Path="ecosystem.config.js" />
+    <File Path="nginx.conf" />
+    <File Path="Readme.txt" />
+    <File Path="wms.env" />
+  </Folder>
+</Solution>
