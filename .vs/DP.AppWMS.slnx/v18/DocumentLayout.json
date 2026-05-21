@@ -3,12 +3,28 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\outboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\outboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\App-WMS-2026\\WMS.Infrastructure\\Migrations\\20260521090801_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:WMS.Infrastructure\\Migrations\\20260521090801_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\inbounditemconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\inbounditemconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\inboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\inboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\inventoryconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\inventoryconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\outboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\outboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\inbound\\inbounditem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,14 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\persistence\\wmsdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\persistence\\wmsdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\inboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\inboundconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\inventoryconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\inventoryconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\inbound\\inboundorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -178,7 +186,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -218,20 +226,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "OutboundItemConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-21T09:01:02.305Z",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\appsettings.json",
+              "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\appsettings.json",
+              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\appsettings.json",
+              "RelativeToolTip": "DP.AppWMS.ApiService\\appsettings.json",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA4AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-21T09:08:18.526Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "20260521090801_init.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Migrations\\20260521090801_init.cs",
+              "RelativeDocumentMoniker": "WMS.Infrastructure\\Migrations\\20260521090801_init.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Migrations\\20260521090801_init.cs",
+              "RelativeToolTip": "WMS.Infrastructure\\Migrations\\20260521090801_init.cs",
+              "ViewState": "AgIAANUDAAAAAAAAAAAAAOUDAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-21T09:08:01.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "OutboundConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\OutboundConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\OutboundConfiguration.cs",
@@ -244,33 +265,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "InboundItemConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InboundItemConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\InboundItemConfiguration.cs",
               "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InboundItemConfiguration.cs",
               "RelativeToolTip": "WMS.Infrastructure\\Configurations\\InboundItemConfiguration.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwA4AAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-21T07:58:49.047Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "OutboundItem.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
-              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
-              "RelativeToolTip": "WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-21T08:46:45.74Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "InboundItem.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Inbound\\InboundItem.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Inbound\\InboundItem.cs",
@@ -283,7 +291,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
+              "Title": "InventoryConfiguration.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
+              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
+              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-21T04:54:39.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "InboundConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InboundConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\InboundConfiguration.cs",
@@ -297,19 +318,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "InventoryConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\InventoryConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Title": "OutboundItemConfiguration.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
+              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
+              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\OutboundItemConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-21T04:54:39.893Z",
+              "WhenOpened": "2026-05-21T09:01:02.305Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
+              "Title": "OutboundItem.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Outbound\\OutboundItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-21T08:46:45.74Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "WmsDbContext.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Persistence\\WmsDbContext.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Persistence\\WmsDbContext.cs",
@@ -322,7 +356,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "InboundOrder.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Inbound\\InboundOrder.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Inbound\\InboundOrder.cs",
@@ -335,7 +369,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "OutboundOrder.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Outbound\\OutboundOrder.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Outbound\\OutboundOrder.cs",
@@ -348,7 +382,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "OutboundService.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Outbound\\Services\\OutboundService.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Outbound\\Services\\OutboundService.cs",
@@ -361,7 +395,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "Customer.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Outbound\\Customer.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Outbound\\Customer.cs",
@@ -374,7 +408,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "UserConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\UserConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\UserConfiguration.cs",
@@ -387,7 +421,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "SkuConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\SkuConfiguration.cs",
@@ -400,7 +434,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "RefreshTokendConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\RefreshTokendConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\RefreshTokendConfiguration.cs",
@@ -413,7 +447,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "BaseEntityConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\BaseEntityConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\BaseEntityConfiguration.cs",
@@ -426,7 +460,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "CategoryConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\CategoryConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\CategoryConfiguration.cs",
@@ -439,7 +473,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 19,
               "Title": "CustomerConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\CustomerConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\CustomerConfiguration.cs",
@@ -452,7 +486,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 20,
               "Title": "OutboxMessageConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\OutboxMessageConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\OutboxMessageConfiguration.cs",
@@ -465,7 +499,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 21,
               "Title": "SupplierConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SupplierConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\SupplierConfiguration.cs",
@@ -478,7 +512,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 22,
               "Title": "Supplier.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Inbound\\Supplier.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Inbound\\Supplier.cs",
@@ -491,7 +525,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 23,
               "Title": "SkuEntity.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Product\\SkuEntity.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Product\\SkuEntity.cs",
@@ -504,7 +538,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 24,
               "Title": "RoleConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\RoleConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\RoleConfiguration.cs",
@@ -517,7 +551,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 25,
               "Title": "AuditLogConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\AuditLogConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\AuditLogConfiguration.cs",
@@ -530,7 +564,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 26,
               "Title": "BaseEntity.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Common\\BaseEntity.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Common\\BaseEntity.cs",
@@ -543,7 +577,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 30,
               "Title": "IAggregateRoot.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Interfaces\\IAggregateRoot.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Interfaces\\IAggregateRoot.cs",
@@ -556,7 +590,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 27,
               "Title": "WMS.Infrastructure.csproj",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\WMS.Infrastructure.csproj",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\WMS.Infrastructure.csproj",
@@ -569,7 +603,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 29,
               "Title": "IBaseEntity.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Interfaces\\IBaseEntity.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Interfaces\\IBaseEntity.cs",
@@ -582,7 +616,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 31,
               "Title": "DP.AppWMS.ApiService.csproj",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj",
               "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj",
@@ -595,7 +629,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 28,
               "Title": "AppHost.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.AppHost\\AppHost.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.AppHost\\AppHost.cs",
@@ -608,7 +642,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 32,
               "Title": "WMS.Application.csproj",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\WMS.Application.csproj",
               "RelativeDocumentMoniker": "WMS.Application\\WMS.Application.csproj",
@@ -621,7 +655,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "DP.AppWMS.ServiceDefaults.csproj",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ServiceDefaults\\DP.AppWMS.ServiceDefaults.csproj",
               "RelativeDocumentMoniker": "DP.AppWMS.ServiceDefaults\\DP.AppWMS.ServiceDefaults.csproj",
@@ -634,7 +668,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 34,
               "Title": "DP.AppWMS.AppHost.csproj",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.AppHost\\DP.AppWMS.AppHost.csproj",
               "RelativeDocumentMoniker": "DP.AppWMS.AppHost\\DP.AppWMS.AppHost.csproj",
@@ -647,7 +681,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "WMS.Domain.csproj",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\WMS.Domain.csproj",
               "RelativeDocumentMoniker": "WMS.Domain\\WMS.Domain.csproj",
@@ -660,7 +694,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 36,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Program.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Program.cs",
@@ -673,7 +707,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 37,
               "Title": "TenantConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\TenantConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\TenantConfiguration.cs",
@@ -686,7 +720,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 38,
               "Title": "ZoneConfiguration.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\ZoneConfiguration.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\ZoneConfiguration.cs",
@@ -699,7 +733,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 39,
               "Title": "UnitOfWork.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Persistence\\UnitOfWork.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Persistence\\UnitOfWork.cs",
@@ -712,7 +746,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 40,
               "Title": "InventoryItem.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\InventoryItem.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\InventoryItem.cs",
@@ -725,7 +759,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 41,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.AppHost\\appsettings.json",
               "RelativeDocumentMoniker": "DP.AppWMS.AppHost\\appsettings.json",
@@ -738,7 +772,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 42,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Program.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Program.cs",
@@ -751,7 +785,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 43,
               "Title": "Extensions.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ServiceDefaults\\Extensions.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.ServiceDefaults\\Extensions.cs",
