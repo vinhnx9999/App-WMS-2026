@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using System.Runtime.Intrinsics.Arm;
 using WMS.Application.Auth.Interfaces;
 using WMS.Application.Auth.Services;
 using WMS.Application.Auth.Services.AuthProvider;
@@ -101,7 +100,7 @@ public static class DependencyInjection
             var sharedLocalizer = sp.GetRequiredService<IStringLocalizer<MultiLanguage>>();
             return sharedLocalizer;
         });
-        
+
         services.AddSingleton<CacheManager>();
         services.AddSingleton<IMemoryCache>(factory =>
         {
@@ -127,8 +126,8 @@ public static class DependencyInjection
     }
 
     public static IServiceCollection AddServices(this IServiceCollection services)
-    {        
-        
+    {
+
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IFacebookAuthService, FacebookAuthService>();
         services.AddScoped<IGoogleAuthService, GoogleAuthService>();

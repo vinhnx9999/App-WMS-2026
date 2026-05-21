@@ -8,7 +8,6 @@ public class User : BaseEntity
     public string PasswordHash { get; set; } = null!;
     public string FullName { get; set; } = null!;
     public Guid RoleId { get; set; }
-    public Guid TenantId { get; set; } 
     public bool IsActive { get; set; } = true;
     public DateTime? LastLoginAt { get; set; }
 
@@ -23,13 +22,13 @@ public class User : BaseEntity
     public string? AvatarUrl { get; set; }
 
     /// <summary>X (Twitter) user ID — numeric string</summary>
-    public string? XId { get; set; } 
+    public string? XId { get; set; }
 
     /// <summary>X @handle</summary>
     public string? XUsername { get; set; }
 
     /// <summary>Microsoft OID subject identifier (oid claim)</summary>
-    public string? MicrosoftId { get; set; } 
+    public string? MicrosoftId { get; set; }
 
     /// <summary>Azure AD tenant ID (tid claim)</summary>
     public string? MicrosoftTenantId { get; set; }
