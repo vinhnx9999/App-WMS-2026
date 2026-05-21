@@ -29,4 +29,25 @@ public abstract class BaseEntity
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? DeletedAt { get; set; }
     public bool IsDeleted => DeletedAt.HasValue;
+
+    // Domain events
+    private readonly List<DomainEvent> _domainEvents = [];
+    public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    /// <summary>
+    /// Add a domain event to the entity's collection of events
+    /// </summary>
+    /// <param name="domainEvent">Event</param>
+    public void AddEvent(DomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
+
+    /// <summary>
+    /// Clear event
+    /// </summary>
+    public void ClearEvents()
+    {
+        _domainEvents.Clear();
+    }
 }

@@ -3,7 +3,7 @@
 namespace WMS.Domain.Entities;
 
 // Entity AuditLog
-public class AuditLog: BaseEntity
+public class AuditLog : BaseEntity
 {
     public string TableName { get; set; } = string.Empty;
     public string Action { get; set; } = string.Empty;

@@ -5,6 +5,7 @@ using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 
 namespace WMS.Infrastructure.Repositories;
+
 public class Repository<T>(WmsDbContext db) : IRepository<T> where T : BaseEntity
 {
     protected readonly WmsDbContext _db = db;

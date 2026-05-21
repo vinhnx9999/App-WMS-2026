@@ -11,7 +11,7 @@ using WMS.Infrastructure.Configurations;
 
 namespace WMS.Infrastructure.Persistence;
 
-public class WmsDbContext(DbContextOptions<WmsDbContext> options) : 
+public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     IdentityDbContext<IdentityUser>(options)
 {
     //, AuditInterceptor auditInterceptor
@@ -39,7 +39,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     protected override void OnModelCreating(ModelBuilder mb)
     {
         base.OnModelCreating(mb);
-        
+
         new TenantConfiguration().Configure(mb.Entity<Tenant>());
         new UserConfiguration().Configure(mb.Entity<User>());
         new RoleConfiguration().Configure(mb.Entity<Role>());
@@ -47,9 +47,10 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
         new InventoryConfiguration().Configure(mb.Entity<InventoryItem>());
         new InboundConfiguration().Configure(mb.Entity<InboundOrder>());
         new OutboundConfiguration().Configure(mb.Entity<OutboundOrder>());
-        new RefreshTokendConfiguration().Configure(mb.Entity<RefreshToken>()); 
+        new RefreshTokendConfiguration().Configure(mb.Entity<RefreshToken>());
         new AuditLogConfiguration().Configure(mb.Entity<AuditLog>());
         new OutboxMessageConfiguration().Configure(mb.Entity<OutboxMessage>());
+        //   new SkuConfiguration().Configure(mb.Entity<Sku>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken ct = default)

@@ -18,10 +18,10 @@ public class LocationEntity : BaseEntity
 }
 
 public class InventoryItem : BaseEntity
-{    
+{
     public string Name { get; set; } = null!;
-    public string? Description { get; set; }    
-    
+    public string? Description { get; set; }
+
     public Guid? SkuId { get; set; }
     public Guid? LocationId { get; set; }
     public int Quantity { get; set; }
