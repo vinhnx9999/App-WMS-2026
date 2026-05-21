@@ -5,9 +5,9 @@ using WMS.Domain.Entities.Security;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class RoleConfiguration : IEntityTypeConfiguration<Role>
+public class RoleConfiguration : BaseEntityConfiguration<Role>
 {
-    public void Configure(EntityTypeBuilder<Role> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Role> builder)
     {
         builder.Property(b => b.Name).IsRequired();
 

@@ -4,9 +4,9 @@ using WMS.Domain.Entities;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class InventoryConfiguration : IEntityTypeConfiguration<InventoryItem>
+public class InventoryConfiguration : BaseEntityConfiguration<InventoryItem>
 {
-    public void Configure(EntityTypeBuilder<InventoryItem> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<InventoryItem> builder)
     {
         builder.HasIndex(x => x.SkuId).IsUnique();
 

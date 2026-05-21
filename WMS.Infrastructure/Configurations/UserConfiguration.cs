@@ -4,14 +4,13 @@ using WMS.Domain.Entities.Security;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : BaseEntityConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<User> builder)
     {
         builder.Property(b => b.Email).IsRequired();
 
         builder.HasIndex(x => x.Email).IsUnique();
-        builder.HasIndex(x => x.TenantId).IsUnique();
 
         builder.HasIndex(x => x.FacebookId).IsUnique();
         builder.HasIndex(x => x.GoogleId).IsUnique();

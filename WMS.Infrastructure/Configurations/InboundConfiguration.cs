@@ -4,10 +4,12 @@ using WMS.Domain.Entities.Inbound;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class InboundConfiguration : IEntityTypeConfiguration<InboundOrder>
+public class InboundConfiguration : BaseEntityConfiguration<InboundOrder>
 {
-    public void Configure(EntityTypeBuilder<InboundOrder> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<InboundOrder> builder)
     {
+
+
         builder.HasIndex(x => x.OrderNumber).IsUnique();
         builder.ToTable("inbound_orders");
     }

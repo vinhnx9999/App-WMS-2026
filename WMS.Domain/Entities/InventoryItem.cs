@@ -11,10 +11,10 @@ public class LocationEntity : BaseEntity
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
     public Zone? Zone { get; set; }
-
     // Navigation
     public ICollection<InventoryItem> InventoryItems { get; set; } = [];
-    public string ZoneCode { get; set; }
+
+    public string? ZoneCode { get; set; }
 }
 
 public class InventoryItem : BaseEntity

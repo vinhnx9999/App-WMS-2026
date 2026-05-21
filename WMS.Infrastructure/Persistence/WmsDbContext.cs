@@ -26,6 +26,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     //public DbSet<Role> Roles => Set<Role>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
     public DbSet<Category> Categories => Set<Category>();
+    public DbSet<SkuEntity> Skus => Set<SkuEntity>();
     public DbSet<Zone> Zones => Set<Zone>();
     public DbSet<Supplier> Suppliers => Set<Supplier>();
     public DbSet<Customer> Customers => Set<Customer>();
@@ -40,17 +41,24 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     {
         base.OnModelCreating(mb);
 
+        mb.Ignore<DomainEvent>();
+
         new TenantConfiguration().Configure(mb.Entity<Tenant>());
         new UserConfiguration().Configure(mb.Entity<User>());
         new RoleConfiguration().Configure(mb.Entity<Role>());
         new ZoneConfiguration().Configure(mb.Entity<Zone>());
+        new CategoryConfiguration().Configure(mb.Entity<Category>());
+        new SkuConfiguration().Configure(mb.Entity<SkuEntity>());
         new InventoryConfiguration().Configure(mb.Entity<InventoryItem>());
+        new SupplierConfiguration().Configure(mb.Entity<Supplier>());
+        new CustomerConfiguration().Configure(mb.Entity<Customer>());
         new InboundConfiguration().Configure(mb.Entity<InboundOrder>());
+        new InboundItemConfiguration().Configure(mb.Entity<InboundItem>());
         new OutboundConfiguration().Configure(mb.Entity<OutboundOrder>());
+        new OutboundItemConfiguration().Configure(mb.Entity<OutboundItem>());
         new RefreshTokendConfiguration().Configure(mb.Entity<RefreshToken>());
         new AuditLogConfiguration().Configure(mb.Entity<AuditLog>());
         new OutboxMessageConfiguration().Configure(mb.Entity<OutboxMessage>());
-        //   new SkuConfiguration().Configure(mb.Entity<Sku>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken ct = default)
