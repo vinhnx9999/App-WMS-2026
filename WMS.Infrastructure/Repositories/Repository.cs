@@ -62,7 +62,7 @@ public class Repository<T>(WmsDbContext db) : IRepository<T> where T : BaseEntit
 
     public Task DeleteAsync(T entity)
     {
-        entity.DeletedAt = DateTime.UtcNow;  // soft delete
+        entity.MarkDeleted();  // soft delete
         _set.Update(entity);
         return Task.CompletedTask;
     }

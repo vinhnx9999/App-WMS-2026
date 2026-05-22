@@ -28,7 +28,21 @@ public abstract class BaseEntity
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? DeletedAt { get; set; }
-    public bool IsDeleted => DeletedAt.HasValue;
+    public bool IsDeleted { get; private set; }
+
+    public void MarkDeleted()
+    {
+        IsDeleted = true;
+        DeletedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Restore()
+    {
+        IsDeleted = false;
+        DeletedAt = null;
+        UpdatedAt = DateTime.UtcNow;
+    }
 
     // Domain events
     private readonly List<DomainEvent> _domainEvents = [];

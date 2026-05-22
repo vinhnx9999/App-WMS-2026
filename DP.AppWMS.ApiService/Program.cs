@@ -14,11 +14,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Register health checks
-builder.Services.AddHealthChecks()
-    .AddCheck<OdooConnectionHealthCheck>("odoo-connection")
-    .AddCheck<SapConnectionHealthCheck>("sap-connection")
-    .AddNpgSql(builder.Configuration.GetConnectionString("Default")!)
-    .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+var healthChecks = builder.Services.AddHealthChecks()
+      .AddNpgSql(builder.Configuration.GetConnectionString("Default")!)
+      .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+
+var erpProvider = builder.Configuration["ErpProvider"];
+if (erpProvider == "Sap")
+{
+    healthChecks.AddCheck<SapConnectionHealthCheck>("sap-connection");
+}
+else if (erpProvider == "Odoo")
+{
+    healthChecks.AddCheck<OdooConnectionHealthCheck>("odoo-connection");
+}
+
 
 // Serilog
 builder.Host.UseSerilog((ctx, lc) => lc

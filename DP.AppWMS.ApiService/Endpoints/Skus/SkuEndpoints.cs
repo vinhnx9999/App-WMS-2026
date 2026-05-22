@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
-using WMS.Application.Skus.Queries.SearchSkus;
+using WMS.Application.Product.Skus.DTOs;
+using WMS.Application.Product.Skus.Queries.SearchSkus;
 
 namespace DP.AppWMS.ApiService.Endpoints.Skus;
 
@@ -18,7 +19,6 @@ public sealed class SkuEndpoints : IEndpoint
     }
 
     private async Task<IResult> SearchSkus(
-           [FromQuery] Guid tenantId,
            [FromQuery] string? search,
            [FromQuery] Guid? categoryId,
            [FromQuery] int page,
@@ -27,7 +27,7 @@ public sealed class SkuEndpoints : IEndpoint
            CancellationToken cancellationToken)
     {
         var result = await sender.Send(new SearchSkusQuery(
-            tenantId,
+            Guid.NewGuid(),
             search,
             categoryId,
             page,

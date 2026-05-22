@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WMS.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using WMS.Infrastructure.Persistence;
 namespace WMS.Infrastructure.Migrations
 {
     [DbContext(typeof(WmsDbContext))]
-    partial class WmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260522063348_update-sync-erp")]
+    partial class updatesyncerp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,11 +243,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("KeyValues")
                         .IsRequired()
                         .HasColumnType("text");
@@ -277,8 +275,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("TenantId");
 
                     b.HasIndex("UserId");
@@ -298,11 +294,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -321,8 +312,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 
@@ -358,11 +347,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<DateTime?>("NextRetryAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -396,8 +380,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("TenantId");
 
                     b.ToTable("erp_sync_logs", (string)null);
@@ -417,11 +399,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<int>("MaxRetries")
                         .HasColumnType("integer");
@@ -456,8 +433,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("TenantId");
 
                     b.ToTable("outbox_messages", (string)null);
@@ -487,11 +462,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<int>("MaxRetries")
                         .HasColumnType("integer");
@@ -527,8 +497,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("TenantId");
 
                     b.ToTable("webhook_events", (string)null);
@@ -552,11 +520,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<Guid>("InventoryItemId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
@@ -579,8 +542,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasIndex("InboundOrderId");
 
                     b.HasIndex("InventoryItemId");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 
@@ -607,11 +568,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<DateOnly?>("ExpectedDate")
                         .HasColumnType("date");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
@@ -644,8 +600,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("OrderNumber")
                         .IsUnique();
 
@@ -676,11 +630,6 @@ namespace WMS.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -698,8 +647,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 
@@ -729,11 +676,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("uuid");
@@ -779,8 +721,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("LocationId");
 
                     b.HasIndex("SkuId")
@@ -809,9 +749,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -852,11 +789,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -879,8 +811,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("DeletedAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("TenantId");
 
                     b.ToTable("customers", (string)null);
@@ -900,11 +830,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<Guid>("InventoryItemId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
@@ -929,8 +854,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasIndex("DeletedAt");
 
                     b.HasIndex("InventoryItemId");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("OutboundOrderId");
 
@@ -963,11 +886,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<DateOnly?>("ExpectedDelivery")
                         .HasColumnType("date");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
@@ -990,8 +908,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("ShipmentNumber")
                         .IsUnique();
@@ -1019,11 +935,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsRevoked")
                         .HasColumnType("boolean");
@@ -1063,8 +974,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("ExpiresAt");
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("Jti");
 
                     b.HasIndex("TenantId");
@@ -1092,11 +1001,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -1114,8 +1018,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 
@@ -1146,11 +1048,6 @@ namespace WMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -1172,8 +1069,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 
@@ -1215,11 +1110,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastLoginAt")
                         .HasColumnType("timestamp with time zone");
@@ -1267,8 +1157,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasIndex("GoogleId")
                         .IsUnique();
 
-                    b.HasIndex("IsDeleted");
-
                     b.HasIndex("LinkedInId")
                         .IsUnique();
 
@@ -1310,11 +1198,6 @@ namespace WMS.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -1338,8 +1221,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 
@@ -1365,11 +1246,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1397,8 +1273,6 @@ namespace WMS.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TenantId");
 

@@ -26,11 +26,8 @@
   <ItemGroup>
     <Folder Include="Auth\Validators\" />
     <Folder Include="Common\Specifications\" />
-    <Folder Include="Product\DTOs\" />
-    <Folder Include="Product\Commands\" />
-    <Folder Include="Product\Handlers\" />
-    <Folder Include="Product\Queries\" />
-    <Folder Include="Skus\Commands\" />
+    <Folder Include="Product\Categories\" />
+    <Folder Include="Product\Skus\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

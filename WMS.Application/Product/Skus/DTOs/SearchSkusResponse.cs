@@ -1,4 +1,4 @@
-namespace WMS.Application.Skus.Queries.SearchSkus;
+namespace WMS.Application.Product.Skus.DTOs;
 
 public sealed record SearchSkusResponse(
     Guid Id,

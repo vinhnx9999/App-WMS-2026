@@ -36,6 +36,8 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     public DbSet<OutboundItem> OutboundItems => Set<OutboundItem>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<WebhookEvent> WebhookEvents => Set<WebhookEvent>();
+    public DbSet<ErpSyncLog> ErpSyncLogs => Set<ErpSyncLog>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -59,6 +61,8 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
         new RefreshTokendConfiguration().Configure(mb.Entity<RefreshToken>());
         new AuditLogConfiguration().Configure(mb.Entity<AuditLog>());
         new OutboxMessageConfiguration().Configure(mb.Entity<OutboxMessage>());
+        new WebhookEventConfiguration().Configure(mb.Entity<WebhookEvent>());
+        new ErpSyncLogConfiguration().Configure(mb.Entity<ErpSyncLog>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken ct = default)

@@ -1,7 +1,8 @@
 using MediatR;
 using WMS.Application.Common.Models;
+using WMS.Application.Product.Skus.DTOs;
 
-namespace WMS.Application.Skus.Queries.SearchSkus;
+namespace WMS.Application.Product.Skus.Queries.SearchSkus;
 
 public sealed record SearchSkusQuery(
     Guid TenantId,

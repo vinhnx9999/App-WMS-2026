@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using WMS.Application.Common.Specifications;
 using WMS.Domain.Entities;
 
-namespace WMS.Application.Skus.Queries.SearchSkus;
+namespace WMS.Application.Product.Skus.Queries.SearchSkus;
 
 public sealed class SearchSkusSpecification : Specification<SkuEntity>
 {

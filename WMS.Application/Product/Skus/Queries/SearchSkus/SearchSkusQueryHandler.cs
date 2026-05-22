@@ -2,10 +2,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Specifications;
+using WMS.Application.Product.Skus.DTOs;
 using WMS.Domain.Entities;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Application.Skus.Queries.SearchSkus;
+namespace WMS.Application.Product.Skus.Queries.SearchSkus;
 
 public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
     : IRequestHandler<SearchSkusQuery, PagedResult<SearchSkusResponse>>
