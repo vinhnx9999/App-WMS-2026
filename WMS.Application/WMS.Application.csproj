@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Auth\Validators\" />
-    <Folder Include="Common\Specifications\" />
     <Folder Include="Product\Categories\" />
     <Folder Include="Product\Skus\Commands\" />
   </ItemGroup>

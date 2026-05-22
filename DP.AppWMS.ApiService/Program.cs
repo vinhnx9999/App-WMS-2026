@@ -1,9 +1,14 @@
 using DP.AppWMS.ApiService.Endpoints;
 using DP.AppWMS.ApiService.Middlewares;
 using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WMS.Application.Common.Behaviors;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using Serilog;
+using System.Text;
 using WMS.Application;
 using WMS.Application.OdooIntegration.HealthCheck;
 using WMS.Application.SAPIntegration.HealthCheck;
@@ -73,6 +78,7 @@ builder.Services.AddSignalR(options =>
 
 // Controllers + FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssembly(typeof(IDependency).Assembly);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -81,6 +87,26 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IDepe
 
 // Layers
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Add authentication and authorization
+builder.Services
+      .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+      .AddJwtBearer(options =>
+      {
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+              ValidateIssuer = true,
+              ValidateAudience = true,
+              ValidateLifetime = true,
+              ValidateIssuerSigningKey = true,
+              ValidIssuer = builder.Configuration["Jwt:Issuer"],
+              ValidAudience = builder.Configuration["Jwt:Audience"],
+              IssuerSigningKey = new SymmetricSecurityKey(
+                  Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
+          };
+      });
+builder.Services.AddAuthorization();
+
 builder.Services.AddOpenApi();
 
 // Swagger
@@ -127,8 +153,9 @@ builder.Services.AddCors(o => o.AddPolicy("wms", p =>
     p.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
 // Pipeline behaviors
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-// thêm ValidationBehavior, PerformanceBehavior, DistributedCachingBehavior
+// thêm PerformanceBehavior, DistributedCachingBehavior
 
 // Register DI minimal API endpoints
 builder.Services.AddEndpoints();

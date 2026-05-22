@@ -1,6 +1,4 @@
 using FluentAssertions;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using WMS.Application.Product.Skus.Queries.SearchSkus;
 using WMS.Domain.Entities;
@@ -9,11 +7,8 @@ using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;
 
-public sealed class SearchSkusQueryHandlerTests
+public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
 {
-    private static readonly Guid TenantA = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-    private static readonly Guid TenantB = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
-    private static readonly DateTime BaseTime = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     #region Testcases
 
@@ -27,7 +22,7 @@ public sealed class SearchSkusQueryHandlerTests
         db.Skus.AddRange(
             CreateSku(TenantA, "A-001", "Tenant A first", updatedAt: BaseTime.AddMinutes(1)),
             CreateSku(TenantA, "A-002", "Tenant A second", updatedAt: BaseTime.AddMinutes(2)),
-            CreateSku(TenantA, "A-003", "Deleted", updatedAt: BaseTime.AddMinutes(3), deletedAt: BaseTime.AddMinutes(4)),
+            CreateSku(TenantA, "A-003", "Deleted", updatedAt: BaseTime.AddMinutes(3), deleteAt: BaseTime.AddMinutes(4)),
             CreateSku(TenantB, "B-001", "Tenant B", updatedAt: BaseTime.AddMinutes(5)));
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -252,22 +247,6 @@ public sealed class SearchSkusQueryHandlerTests
 
     #region Helper Methods
 
-    private static async Task<SqliteConnection> OpenConnectionAsync()
-    {
-        var connection = new SqliteConnection("DataSource=:memory:");
-        await connection.OpenAsync(TestContext.Current.CancellationToken);
-        return connection;
-    }
-
-    private static WmsDbContext CreateDbContext(SqliteConnection connection)
-    {
-        var options = new DbContextOptionsBuilder<WmsDbContext>()
-            .UseSqlite(connection)
-            .Options;
-
-        return new WmsDbContext(options);
-    }
-
     private static SearchSkusQueryHandler CreateHandler(WmsDbContext db)
     {
         var repository = new Mock<IRepository<SkuEntity>>();
@@ -277,44 +256,6 @@ public sealed class SearchSkusQueryHandlerTests
         uow.Setup(x => x.Repository<SkuEntity>()).Returns(repository.Object);
 
         return new SearchSkusQueryHandler(uow.Object);
-    }
-
-    private static Category CreateCategory(Guid tenantId, string name)
-    {
-        return new Category
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Name = name,
-            CreatedAt = BaseTime,
-            UpdatedAt = BaseTime
-        };
-    }
-
-    private static SkuEntity CreateSku(
-        Guid tenantId,
-        string skuCode,
-        string name,
-        Guid? categoryId = null,
-        string? description = "Description",
-        decimal? price = 10,
-        DateTime? createdAt = null,
-        DateTime? updatedAt = null,
-        DateTime? deletedAt = null)
-    {
-        return new SkuEntity
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            CategoryId = categoryId,
-            SkuCode = skuCode,
-            Name = name,
-            Description = description,
-            Price = price,
-            CreatedAt = createdAt ?? BaseTime,
-            UpdatedAt = updatedAt ?? BaseTime,
-            DeletedAt = deletedAt
-        };
     }
 
     #endregion 
