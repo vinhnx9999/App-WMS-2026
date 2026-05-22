@@ -1,6 +1,6 @@
-namespace WMS.Application.Skus.Dtos;
+namespace WMS.Application.Skus.Queries.SearchSkus;
 
-public sealed record SkuDto(
+public sealed record SearchSkusResponse(
     Guid Id,
     Guid TenantId,
     Guid? CategoryId,

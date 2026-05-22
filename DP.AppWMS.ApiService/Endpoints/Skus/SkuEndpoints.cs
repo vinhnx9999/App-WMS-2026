@@ -1,0 +1,38 @@
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using WMS.Application.Common.Models;
+using WMS.Application.Skus.Queries.SearchSkus;
+
+namespace DP.AppWMS.ApiService.Endpoints.Skus;
+
+public sealed class SkuEndpoints : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        var group = app.MapGroup(ApiRoutes.Groups.Skus);
+
+        group.MapGet("/", SearchSkus)
+            .WithName("SearchSkus").WithTags("Products")
+            .Produces<ApiResponse<PagedResult<SearchSkusResponse>>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
+    }
+
+    private async Task<IResult> SearchSkus(
+           [FromQuery] Guid tenantId,
+           [FromQuery] string? search,
+           [FromQuery] Guid? categoryId,
+           [FromQuery] int page,
+           [FromQuery] int limit,
+           ISender sender,
+           CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new SearchSkusQuery(
+            tenantId,
+            search,
+            categoryId,
+            page,
+            limit), cancellationToken);
+
+        return Results.Ok(ApiResponse<PagedResult<SearchSkusResponse>>.Ok(result));
+    }
+}

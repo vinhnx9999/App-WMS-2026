@@ -1,3 +1,4 @@
+using DP.AppWMS.ApiService.Endpoints;
 using DP.AppWMS.ApiService.Middlewares;
 using FluentValidation;
 using Microsoft.OpenApi;
@@ -76,7 +77,7 @@ builder.Services.AddOpenApi();
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
-{    
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "WMS API",
@@ -120,16 +121,16 @@ builder.Services.AddCors(o => o.AddPolicy("wms", p =>
 //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 // thêm ValidationBehavior, PerformanceBehavior, DistributedCachingBehavior
 
-builder.Services.AddControllers();
+// Register DI minimal API endpoints
+builder.Services.AddEndpoints();
 
 var app = builder.Build();
 
-app.MapControllers();
 app.MapOpenApi();
 app.MapScalarApiReference();
 
 if (app.Environment.IsDevelopment())
-{   
+{
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -138,6 +139,7 @@ app.UseHttpsRedirection();
 app.UseCors("wms");
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapEndpoints();
 app.MapControllers();
 app.MapHealthChecks("/health");
 

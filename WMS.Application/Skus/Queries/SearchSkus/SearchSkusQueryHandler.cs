@@ -2,22 +2,20 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Specifications;
-using WMS.Application.Skus.Dtos;
-using WMS.Application.Skus.Specifications;
 using WMS.Domain.Entities;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Application.Skus.Queries.GetSkus;
+namespace WMS.Application.Skus.Queries.SearchSkus;
 
-public sealed class GetSkusQueryHandler(IUnitOfWork uow)
-    : IRequestHandler<GetSkusQuery, PagedResult<SkuDto>>
+public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
+    : IRequestHandler<SearchSkusQuery, PagedResult<SearchSkusResponse>>
 {
-    public async Task<PagedResult<SkuDto>> Handle(GetSkusQuery request, CancellationToken ct)
+    public async Task<PagedResult<SearchSkusResponse>> Handle(SearchSkusQuery request, CancellationToken ct)
     {
-        var page = Math.Max(request.Page, 1);
-        var limit = Math.Clamp(request.Limit, 1, 100);
+        var page = Math.Max(request.Page, PaginationDefaults.Page);
+        var limit = Math.Clamp(request.Limit, PaginationDefaults.MinLimit, PaginationDefaults.MaxLimit);
 
-        var specification = new SkuSearchSpecification(
+        var specification = new SearchSkusSpecification(
             request.TenantId,
             request.Search,
             request.CategoryId,
@@ -25,11 +23,11 @@ public sealed class GetSkusQueryHandler(IUnitOfWork uow)
             limit);
 
         var query = uow.Repository<SkuEntity>().Query().AsNoTracking();
-        var countQuery = SpecificationEvaluator.GetQuery(query, specification, applyPaging: false);
+        var countQuery = SpecificationEvaluator.GetQuery(query, specification, false);
         var totalCount = await countQuery.CountAsync(ct);
 
         var items = await SpecificationEvaluator.GetQuery(query, specification)
-            .Select(x => new SkuDto(
+            .Select(x => new SearchSkusResponse(
                 x.Id,
                 x.TenantId,
                 x.CategoryId,
@@ -42,7 +40,7 @@ public sealed class GetSkusQueryHandler(IUnitOfWork uow)
                 x.UpdatedAt))
             .ToListAsync(ct);
 
-        return new PagedResult<SkuDto>
+        return new PagedResult<SearchSkusResponse>
         {
             Items = items,
             TotalCount = totalCount,

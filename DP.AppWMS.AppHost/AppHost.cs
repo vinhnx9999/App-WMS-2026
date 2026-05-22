@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres").AddDatabase("Default", "wms_db");
+//var postgres = builder.AddPostgres("postgres").AddDatabase("Default", "wms_db");
 
 var cache = builder.AddRedis("cache");
 

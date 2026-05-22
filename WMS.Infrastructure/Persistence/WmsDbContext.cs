@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
+using WMS.Domain.Entities.ErpSync;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.Security;
+using WMS.Infrastructure.Configurations;
 
 namespace WMS.Infrastructure.Persistence;
 
@@ -40,23 +42,23 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
         base.OnModelCreating(mb);
 
         mb.Ignore<DomainEvent>();
-        mb.ApplyConfigurationsFromAssembly(typeof(WmsDbContext).Assembly);
-        //new TenantConfiguration().Configure(mb.Entity<Tenant>());
-        //new UserConfiguration().Configure(mb.Entity<User>());
-        //new RoleConfiguration().Configure(mb.Entity<Role>());
-        //new ZoneConfiguration().Configure(mb.Entity<Zone>());
-        //new CategoryConfiguration().Configure(mb.Entity<Category>());
-        //new SkuConfiguration().Configure(mb.Entity<SkuEntity>());
-        //new InventoryConfiguration().Configure(mb.Entity<InventoryItem>());
-        //new SupplierConfiguration().Configure(mb.Entity<Supplier>());
-        //new CustomerConfiguration().Configure(mb.Entity<Customer>());
-        //new InboundConfiguration().Configure(mb.Entity<InboundOrder>());
-        //new InboundItemConfiguration().Configure(mb.Entity<InboundItem>());
-        //new OutboundConfiguration().Configure(mb.Entity<OutboundOrder>());
-        //new OutboundItemConfiguration().Configure(mb.Entity<OutboundItem>());
-        //new RefreshTokendConfiguration().Configure(mb.Entity<RefreshToken>());
-        //new AuditLogConfiguration().Configure(mb.Entity<AuditLog>());
-        //new OutboxMessageConfiguration().Configure(mb.Entity<OutboxMessage>());
+        // mb.ApplyConfigurationsFromAssembly(typeof(WmsDbContext).Assembly);
+        new TenantConfiguration().Configure(mb.Entity<Tenant>());
+        new UserConfiguration().Configure(mb.Entity<User>());
+        new RoleConfiguration().Configure(mb.Entity<Role>());
+        new ZoneConfiguration().Configure(mb.Entity<Zone>());
+        new CategoryConfiguration().Configure(mb.Entity<Category>());
+        new SkuConfiguration().Configure(mb.Entity<SkuEntity>());
+        new InventoryConfiguration().Configure(mb.Entity<InventoryItem>());
+        new SupplierConfiguration().Configure(mb.Entity<Supplier>());
+        new CustomerConfiguration().Configure(mb.Entity<Customer>());
+        new InboundConfiguration().Configure(mb.Entity<InboundOrder>());
+        new InboundItemConfiguration().Configure(mb.Entity<InboundItem>());
+        new OutboundConfiguration().Configure(mb.Entity<OutboundOrder>());
+        new OutboundItemConfiguration().Configure(mb.Entity<OutboundItem>());
+        new RefreshTokendConfiguration().Configure(mb.Entity<RefreshToken>());
+        new AuditLogConfiguration().Configure(mb.Entity<AuditLog>());
+        new OutboxMessageConfiguration().Configure(mb.Entity<OutboxMessage>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken ct = default)

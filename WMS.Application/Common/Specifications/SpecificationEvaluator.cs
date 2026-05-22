@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace WMS.Application.Common.Specifications;
 
@@ -19,7 +20,7 @@ public static class SpecificationEvaluator
 
         query = specification.Includes.Aggregate(
             query,
-            (current, include) => current.Include(include));
+            (current, include) => current.Include(GetIncludePath(include)));
 
         if (specification.OrderBy is not null)
         {
@@ -36,5 +37,17 @@ public static class SpecificationEvaluator
         }
 
         return query;
+    }
+
+    private static string GetIncludePath<T>(Expression<Func<T, object>> include)
+    {
+        var body = include.Body is UnaryExpression unary ? unary.Operand : include.Body;
+
+        if (body is MemberExpression member)
+        {
+            return member.Member.Name;
+        }
+
+        throw new InvalidOperationException($"Invalid include expression: {include}");
     }
 }
