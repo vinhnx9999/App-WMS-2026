@@ -51,7 +51,7 @@ public class BaseAuthService(IConfiguration config)
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_config["Jwt:Secret"]!));
 
-        if(string.IsNullOrEmpty(jti)) jti = $"{Guid.NewGuid()}";
+        if (string.IsNullOrEmpty(jti)) jti = $"{Guid.NewGuid()}";
 
         var claims = new List<Claim>
         {
@@ -62,6 +62,7 @@ public class BaseAuthService(IConfiguration config)
             new(ClaimTypes.Role, role.Name),
             new(ClaimTypes.Version, SystemDefine.SystemVersion),
             new(ClaimTypes.System, SystemDefine.AppWMS),
+            new("tenant_id", user.TenantId.ToString()),
             new("auth_provider", user.AuthProvider),
         };
 

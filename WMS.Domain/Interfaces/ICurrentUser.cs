@@ -10,4 +10,5 @@ public interface ICurrentUser
     string? Jti { get; }
     string? IpAddress { get; }
     TimeSpan TokenRemainingTime { get; }
+    Guid TenantId { get; }
 }

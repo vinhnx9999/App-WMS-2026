@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.DTOs;
 using WMS.Application.Product.Skus.Queries.SearchSkus;
+using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Skus;
 
@@ -13,7 +14,7 @@ public sealed class SkuEndpoints : IEndpoint
         var group = app.MapGroup(ApiRoutes.Groups.Skus);
 
         group.MapGet("/", SearchSkus)
-            .WithName("SearchSkus").WithTags("Products")
+            .WithName("SearchSkus").WithTags("Products").RequireAuthorization()
             .Produces<ApiResponse<PagedResult<SearchSkusResponse>>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
     }
@@ -24,10 +25,11 @@ public sealed class SkuEndpoints : IEndpoint
            [FromQuery] int page,
            [FromQuery] int limit,
            ISender sender,
+           ICurrentUser currentUser,
            CancellationToken cancellationToken)
     {
         var result = await sender.Send(new SearchSkusQuery(
-            Guid.NewGuid(),
+            currentUser.TenantId,
             search,
             categoryId,
             page,
