@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using System.Runtime.Intrinsics.Arm;
 
 namespace DP.AppWMS.Tests;
 

@@ -1,6 +1,7 @@
 using FluentValidation;
+using WMS.Application.Product.Skus.Commands.UpdateSku;
 
-namespace WMS.Application.Product.Skus.Commands.UpdateSku;
+namespace WMS.Application.Product.Skus.Validators;
 
 public sealed class UpdateSkuCommandValidator : AbstractValidator<UpdateSkuCommand>
 {

@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.UpdateSku;
+using WMS.Application.Product.Skus.Validators;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;

@@ -46,7 +46,7 @@ namespace DP.AppWMS.Tests.Skus
                 Price = price,
                 CreatedAt = createdAt ?? BaseTime,
                 UpdatedAt = updatedAt ?? BaseTime,
-                DeletedAt = deleteAt.GetValueOrDefault(),
+                DeletedAt = deleteAt,
             };
         }
 
