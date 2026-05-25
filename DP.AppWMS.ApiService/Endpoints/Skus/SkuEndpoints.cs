@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.CreateSku;
 using WMS.Application.Product.Skus.Commands.DeleteSku;
+using WMS.Application.Product.Skus.Commands.ImportSkus;
 using WMS.Application.Product.Skus.Commands.UpdateSku;
 using WMS.Application.Product.Skus.DTOs;
 using WMS.Application.Product.Skus.Queries.GetSkuById;
@@ -33,6 +34,12 @@ public sealed class SkuEndpoints : IEndpoint
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status409Conflict);
 
+        group.MapPost("/import", ImportSkus)
+            .WithName("ImportSkus").WithTags("Products").RequireAuthorization()
+            .Accepts<ImportSkusRequest>("application/json")
+            .Produces<ApiResponse<ImportSkusResponse>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<ImportSkusResponse>>(StatusCodes.Status400BadRequest);
+
         group.MapPut("/{id:guid}", UpdateSku)
             .WithName("UpdateSku").WithTags("Products").RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
@@ -45,6 +52,7 @@ public sealed class SkuEndpoints : IEndpoint
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
     }
 
+    #region Handlers
     private async Task<IResult> SearchSkus(
            [FromQuery] string? search,
            [FromQuery] Guid? categoryId,
@@ -95,6 +103,51 @@ public sealed class SkuEndpoints : IEndpoint
             ApiResponse<CreateSkuResponse>.Ok(result));
     }
 
+    private async Task<IResult> ImportSkus(
+        [FromBody] ImportSkusRequest? request,
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken cancellationToken)
+    {
+        if (request is null)
+        {
+            return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Request body is required"));
+        }
+
+        if (request.Rows is null || request.Rows.Count == 0)
+        {
+            return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Rows cannot be empty"));
+        }
+
+        if (!Enum.IsDefined(request.Mode))
+        {
+            return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Import mode is invalid"));
+        }
+
+        var rows = request.Rows
+            .Select(row => new ImportSkuRowInput(
+                row.RowNumber,
+                row.SkuCode,
+                row.SkuName,
+                row.CategoryName,
+                row.GoodsNature,
+                row.SpecificationCode,
+                row.UnitOfMeasureCode,
+                row.ConversionFactor))
+            .ToList();
+
+        var result = await sender.Send(new ImportSkusCommand(
+            currentUser.TenantId,
+            rows,
+            request.Mode,
+            request.AutoCreateMasterData), cancellationToken);
+
+        var response = ApiResponse<ImportSkusResponse>.Ok(result);
+        return result.Errors.Count > 0
+            ? Results.BadRequest(response)
+            : Results.Ok(response);
+    }
+
     private async Task<IResult> UpdateSku(
         Guid id,
         [FromBody] UpdateSkuRequest request,
@@ -123,4 +176,21 @@ public sealed class SkuEndpoints : IEndpoint
 
         return Results.NoContent();
     }
+
+    #endregion
+
+    public sealed record ImportSkusRequest(
+        IReadOnlyList<ImportSkuRowRequest>? Rows,
+        ImportSkuMode Mode,
+        bool AutoCreateMasterData);
+
+    public sealed record ImportSkuRowRequest(
+        int RowNumber,
+        string? SkuCode,
+        string? SkuName,
+        string? CategoryName,
+        string? GoodsNature,
+        string? SpecificationCode,
+        string? UnitOfMeasureCode,
+        decimal? ConversionFactor);
 }

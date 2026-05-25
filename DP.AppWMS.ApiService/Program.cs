@@ -3,13 +3,13 @@ using DP.AppWMS.ApiService.Middlewares;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using WMS.Application.Common.Behaviors;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using Serilog;
 using System.Text;
 using WMS.Application;
+using WMS.Application.Common.Behaviors;
 using WMS.Application.OdooIntegration.HealthCheck;
 using WMS.Application.SAPIntegration.HealthCheck;
 using WMS.Infrastructure.Persistence;
@@ -141,7 +141,7 @@ builder.Services.AddSwaggerGen(c =>
     //                Type = ReferenceType.SecurityScheme,
     //                Id = "Bearer"
     //            }
-    //        },
+    //        },    
     //        Array.Empty<string>()
     //    }
     //});

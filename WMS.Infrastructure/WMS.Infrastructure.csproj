@@ -19,6 +19,7 @@
     <PackageReference Include="SAPDotNetConnector3" Version="0.3.0" />
     <PackageReference Include="sapnco3.x64" Version="3.0.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.13.1" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="10.105.5" />
   </ItemGroup>
 
   <ItemGroup>

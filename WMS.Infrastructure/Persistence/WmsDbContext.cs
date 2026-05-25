@@ -27,6 +27,10 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<SkuEntity> Skus => Set<SkuEntity>();
+    public DbSet<Specification> Specifications => Set<Specification>();
+    public DbSet<SkuSpecification> SkuSpecifications => Set<SkuSpecification>();
+    public DbSet<UnitOfMeasure> UnitOfMeasures => Set<UnitOfMeasure>();
+    public DbSet<SkuUnitOfMeasure> SkuUnitOfMeasures => Set<SkuUnitOfMeasure>();
     public DbSet<Zone> Zones => Set<Zone>();
     public DbSet<Supplier> Suppliers => Set<Supplier>();
     public DbSet<Customer> Customers => Set<Customer>();
@@ -51,6 +55,10 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
         new ZoneConfiguration().Configure(mb.Entity<Zone>());
         new CategoryConfiguration().Configure(mb.Entity<Category>());
         new SkuConfiguration().Configure(mb.Entity<SkuEntity>());
+        new SpecificationConfiguration().Configure(mb.Entity<Specification>());
+        new SkuSpecificationConfiguration().Configure(mb.Entity<SkuSpecification>());
+        new UnitOfMeasureConfiguration().Configure(mb.Entity<UnitOfMeasure>());
+        new SkuUnitOfMeasureConfiguration().Configure(mb.Entity<SkuUnitOfMeasure>());
         new InventoryConfiguration().Configure(mb.Entity<InventoryItem>());
         new SupplierConfiguration().Configure(mb.Entity<Supplier>());
         new CustomerConfiguration().Configure(mb.Entity<Customer>());

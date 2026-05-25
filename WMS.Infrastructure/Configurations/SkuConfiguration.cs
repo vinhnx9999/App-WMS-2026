@@ -15,8 +15,10 @@ public class SkuConfiguration : BaseEntityConfiguration<SkuEntity>
             .HasMaxLength(100);
 
         builder.Property(e => e.Name)
-            .IsRequired()
             .HasMaxLength(250);
+
+        builder.Property(e => e.GoodsNature)
+            .HasMaxLength(100);
 
         builder.Property(e => e.Description)
             .HasMaxLength(1000);
@@ -31,7 +33,21 @@ public class SkuConfiguration : BaseEntityConfiguration<SkuEntity>
         builder.HasIndex(e => new { e.TenantId, e.SkuCode })
             .IsUnique().HasFilter("\"IsDeleted\" = false");
 
-        builder.Ignore(e => e.Category);
+        builder.HasOne(e => e.Category)
+            .WithMany()
+            .HasForeignKey(e => e.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasMany(e => e.SkuSpecifications)
+            .WithOne(e => e.Sku)
+            .HasForeignKey(e => e.SkuId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(e => e.SkuUnitOfMeasures)
+            .WithOne(e => e.Sku)
+            .HasForeignKey(e => e.SkuId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Ignore(e => e.InventoryItems);
     }
 }
