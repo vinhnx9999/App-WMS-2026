@@ -26,9 +26,10 @@ public class SkuConfiguration : BaseEntityConfiguration<SkuEntity>
 
         builder.HasIndex(e => new { e.TenantId, e.CategoryId });
 
-        // can't have 2 skucode with same tenant
+        // can't have 2 skucode with same tenant 
+        // can reuse same skucode if different tenant and if deleted
         builder.HasIndex(e => new { e.TenantId, e.SkuCode })
-            .IsUnique();
+            .IsUnique().HasFilter("\"IsDeleted\" = false");
 
         builder.Ignore(e => e.Category);
         builder.Ignore(e => e.InventoryItems);

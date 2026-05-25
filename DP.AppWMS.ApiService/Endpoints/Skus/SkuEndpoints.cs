@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
+using WMS.Application.Product.Skus.Commands.CreateSku;
 using WMS.Application.Product.Skus.Commands.DeleteSku;
 using WMS.Application.Product.Skus.Commands.UpdateSku;
 using WMS.Application.Product.Skus.DTOs;
@@ -25,6 +26,12 @@ public sealed class SkuEndpoints : IEndpoint
             .WithName("GetSkuById").WithTags("Products").RequireAuthorization()
             .Produces<ApiResponse<GetSkuByIdResponse>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
+
+        group.MapPost("/", CreateSku)
+            .WithName("CreateSku").WithTags("Products").RequireAuthorization()
+            .Produces<ApiResponse<CreateSkuResponse>>(StatusCodes.Status201Created)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse<object>>(StatusCodes.Status409Conflict);
 
         group.MapPut("/{id:guid}", UpdateSku)
             .WithName("UpdateSku").WithTags("Products").RequireAuthorization()
@@ -66,6 +73,26 @@ public sealed class SkuEndpoints : IEndpoint
         var result = await sender.Send(new GetSkuByIdQuery(currentUser.TenantId, id), cancellationToken);
 
         return Results.Ok(ApiResponse<GetSkuByIdResponse>.Ok(result));
+    }
+
+    private async Task<IResult> CreateSku(
+        [FromBody] CreateSkuRequest request,
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new CreateSkuCommand(
+            currentUser.TenantId,
+            request.SkuCode,
+            request.CategoryId,
+            request.Name,
+            request.Description,
+            request.Price), cancellationToken);
+
+        return Results.CreatedAtRoute(
+            "GetSkuById",
+            new { id = result.Id },
+            ApiResponse<CreateSkuResponse>.Ok(result));
     }
 
     private async Task<IResult> UpdateSku(
