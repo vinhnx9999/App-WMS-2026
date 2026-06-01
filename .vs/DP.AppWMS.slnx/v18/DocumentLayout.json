@@ -3,88 +3,16 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\commands\\importskus\\importskurownormalizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\commands\\importskus\\importskurownormalizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\dtos\\createskurequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\dtos\\createskurequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\idependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\idependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\commands\\importskus\\importskuvalidationresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\commands\\importskus\\importskuvalidationresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\commands\\importskus\\importskuscommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\commands\\importskus\\importskuscommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\commands\\importskus\\importskuscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\commands\\importskus\\importskuscommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\dtos\\importskusresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\dtos\\importskusresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\dtos\\importskurowinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\dtos\\importskurowinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\commands\\importskus\\importskurowvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\commands\\importskus\\importskurowvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\validators\\createskucommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\validators\\createskucommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\validators\\importskuscommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\validators\\importskuscommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\validators\\updateskucommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\validators\\updateskucommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\common\\models\\skuimportdefaults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\common\\models\\skuimportdefaults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8902B0B8-5ECD-3239-59BB-058DF3AEA91D}|DP.AppWMS.Tests\\DP.AppWMS.Tests.csproj|d:\\app-wms-2026\\dp.appwms.tests\\skus\\importskuscommandhandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8902B0B8-5ECD-3239-59BB-058DF3AEA91D}|DP.AppWMS.Tests\\DP.AppWMS.Tests.csproj|solutionrelative:dp.appwms.tests\\skus\\importskuscommandhandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8902B0B8-5ECD-3239-59BB-058DF3AEA91D}|DP.AppWMS.Tests\\DP.AppWMS.Tests.csproj|d:\\app-wms-2026\\dp.appwms.tests\\inboundservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8902B0B8-5ECD-3239-59BB-058DF3AEA91D}|DP.AppWMS.Tests\\DP.AppWMS.Tests.csproj|solutionrelative:dp.appwms.tests\\inboundservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\product\\skus\\commands\\importskus\\importskumode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\product\\skus\\commands\\importskus\\importskumode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\skuconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\skuconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\unitofmeasureconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\unitofmeasureconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\specificationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\specificationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\skuunitofmeasureconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\skuunitofmeasureconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\configurations\\skuspecificationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\configurations\\skuspecificationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\common\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\common\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -94,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -134,275 +62,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CreateSkuRequest.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\DTOs\\CreateSkuRequest.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\DTOs\\CreateSkuRequest.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\DTOs\\CreateSkuRequest.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\DTOs\\CreateSkuRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\DependencyInjection.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\DependencyInjection.cs",
+              "RelativeToolTip": "WMS.Application\\DependencyInjection.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACYAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T09:36:02.959Z",
+              "WhenOpened": "2026-06-01T09:47:08.383Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IDependency.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\IDependency.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\IDependency.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\IDependency.cs",
+              "RelativeToolTip": "WMS.Application\\IDependency.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-01T09:47:07.619Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ImportSkuValidationResult.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuValidationResult.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuValidationResult.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuValidationResult.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuValidationResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Title": "ApiResponse.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Common\\Models\\ApiResponse.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\Common\\Models\\ApiResponse.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Common\\Models\\ApiResponse.cs",
+              "RelativeToolTip": "WMS.Application\\Common\\Models\\ApiResponse.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAswAQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:19:24.905Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ImportSkusCommandHandler.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommandHandler.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommandHandler.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommandHandler.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommandHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:26:02.672Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ImportSkuRowNormalizer.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowNormalizer.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowNormalizer.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowNormalizer.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowNormalizer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:19:33.165Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ImportSkusCommand.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommand.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommand.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommand.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkusCommand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:11:48.747Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ImportSkusResponse.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\DTOs\\ImportSkusResponse.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\DTOs\\ImportSkusResponse.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\DTOs\\ImportSkusResponse.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\DTOs\\ImportSkusResponse.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAxwA0AAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:09:53.852Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ImportSkuRowInput.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\DTOs\\ImportSkuRowInput.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\DTOs\\ImportSkuRowInput.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\DTOs\\ImportSkuRowInput.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\DTOs\\ImportSkuRowInput.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:09:51.642Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ImportSkuRowValidator.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowValidator.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowValidator.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowValidator.cs*",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuRowValidator.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:20:21.403Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CreateSkuCommandValidator.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Validators\\CreateSkuCommandValidator.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Validators\\CreateSkuCommandValidator.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Validators\\CreateSkuCommandValidator.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Validators\\CreateSkuCommandValidator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T09:33:08.238Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UpdateSkuCommandValidator.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Validators\\UpdateSkuCommandValidator.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Validators\\UpdateSkuCommandValidator.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Validators\\UpdateSkuCommandValidator.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Validators\\UpdateSkuCommandValidator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T09:33:05.436Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ImportSkusCommandHandlerTests.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Tests\\Skus\\ImportSkusCommandHandlerTests.cs",
-              "RelativeDocumentMoniker": "DP.AppWMS.Tests\\Skus\\ImportSkusCommandHandlerTests.cs",
-              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Tests\\Skus\\ImportSkusCommandHandlerTests.cs*",
-              "RelativeToolTip": "DP.AppWMS.Tests\\Skus\\ImportSkusCommandHandlerTests.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T09:27:32.512Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ImportSkusCommandValidator.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Validators\\ImportSkusCommandValidator.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Validators\\ImportSkusCommandValidator.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Validators\\ImportSkusCommandValidator.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Validators\\ImportSkusCommandValidator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:17:32.975Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "SkuImportDefaults.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Common\\Models\\SkuImportDefaults.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Common\\Models\\SkuImportDefaults.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Common\\Models\\SkuImportDefaults.cs",
-              "RelativeToolTip": "WMS.Application\\Common\\Models\\SkuImportDefaults.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:09:54.679Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "InboundServiceTests.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Tests\\InboundServiceTests.cs",
-              "RelativeDocumentMoniker": "DP.AppWMS.Tests\\InboundServiceTests.cs",
-              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Tests\\InboundServiceTests.cs",
-              "RelativeToolTip": "DP.AppWMS.Tests\\InboundServiceTests.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T09:27:53.714Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "SkuEndpoints.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
-              "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
-              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
-              "RelativeToolTip": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAuwCYAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-22T02:22:04.374Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "ImportSkuMode.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuMode.cs",
-              "RelativeDocumentMoniker": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuMode.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuMode.cs",
-              "RelativeToolTip": "WMS.Application\\Product\\Skus\\Commands\\ImportSkus\\ImportSkuMode.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:09:33.144Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "SkuConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\SkuConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\SkuConfiguration.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBMAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T08:00:46.199Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "UnitOfMeasureConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\UnitOfMeasureConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\UnitOfMeasureConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\UnitOfMeasureConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\UnitOfMeasureConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T07:54:30.992Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "SpecificationConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SpecificationConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\SpecificationConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SpecificationConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\SpecificationConfiguration.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABEAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T07:54:13.526Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "SkuUnitOfMeasureConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuUnitOfMeasureConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\SkuUnitOfMeasureConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuUnitOfMeasureConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\SkuUnitOfMeasureConfiguration.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T07:54:04.925Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "SkuSpecificationConfiguration.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuSpecificationConfiguration.cs",
-              "RelativeDocumentMoniker": "WMS.Infrastructure\\Configurations\\SkuSpecificationConfiguration.cs",
-              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Configurations\\SkuSpecificationConfiguration.cs",
-              "RelativeToolTip": "WMS.Infrastructure\\Configurations\\SkuSpecificationConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-25T07:53:59.246Z",
+              "WhenOpened": "2026-06-01T09:15:34.401Z",
               "EditorCaption": ""
             }
           ]

@@ -14,6 +14,8 @@ namespace DP.AppWMS.ApiService.Endpoints.Skus;
 
 public sealed class SkuEndpoints : IEndpoint
 {
+    #region endpoint definitions
+
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup(ApiRoutes.Groups.Skus);
@@ -51,6 +53,9 @@ public sealed class SkuEndpoints : IEndpoint
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
     }
+
+    #endregion
+
 
     #region Handlers
     private async Task<IResult> SearchSkus(
