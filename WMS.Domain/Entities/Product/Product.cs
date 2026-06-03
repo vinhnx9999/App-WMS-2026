@@ -74,6 +74,29 @@ public class Product : BaseEntity
         MarkRestored(restoredBy);
     }
 
+    /// <summary>
+    /// Creates a new SKU under this product, enforcing catalog rules.
+    /// </summary>
+    public Sku AddSku(
+        Guid tenantId,
+        string skuCode,
+        string? name,
+        string? goodsNature,
+        string? description,
+        decimal? referencePrice)
+    {
+        if (IsDeleted)
+        {
+            throw new DomainException(
+                "PRODUCT_IS_DELETED",
+                "Cannot add SKU to a deleted product.");
+        }
+
+        var sku = Sku.Create(tenantId, Id, skuCode, name, goodsNature, description, referencePrice);
+        _skus.Add(sku);
+        return sku;
+    }
+
     public void AllowSkuUnitOfMeasure(
     Guid skuId,
     Guid unitOfMeasureId,

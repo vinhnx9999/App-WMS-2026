@@ -7,83 +7,86 @@ using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Product.Skus.Commands.CreateSku;
 
+/// <summary>
+/// Handler
+/// </summary>
+/// <param name="uow"></param>
 public sealed class CreateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<CreateSkuCommand, CreateSkuResponse>
 {
     public async Task<CreateSkuResponse> Handle(CreateSkuCommand request, CancellationToken ct)
     {
-        var normalizedSkuCode = request.SkuCode.Trim();
-        var normalizedSkuCodeUpper = normalizedSkuCode.ToUpperInvariant();
-        var skuRepo = uow.Repository<Sku>();
+        var normalizedSkuCode = ResolveSkuCode(request.SkuCode);
+        var normalizedUpper = normalizedSkuCode.ToUpperInvariant();
 
-        var duplicateExists = await skuRepo.Query()
-            .AnyAsync(x => x.TenantId == request.TenantId
-                && !x.IsDeleted
-                && x.SkuCode.ToUpper() == normalizedSkuCodeUpper, ct);
+        var product = await LoadProductAggregate(request.ProductId, request.TenantId, ct);
 
-        if (duplicateExists)
-        {
-            throw new AppException(409, "DUPLICATE_SKU", "SKU code already exists");
-        }
+        await EnsureSkuCodeUnique(request.TenantId, normalizedUpper, ct);
 
-        var category = await ResolveCategoryAsync(request, ct);
+        var sku = product.AddSku(
+            request.TenantId,
+            normalizedSkuCode,
+            request.Name,
+            request.GoodsNature,
+            request.Description,
+            request.Price);
 
-        var sku = new Sku
-        {
-            TenantId = request.TenantId,
-            CategoryId = category.Id,
-            SkuCode = normalizedSkuCode,
-            Name = request.Name ?? string.Empty,
-            Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim(),
-            ReferencePrice = request.Price ?? 0m
-        };
-
-        await skuRepo.AddAsync(sku, ct);
         await uow.SaveChangesAsync(ct);
 
         return new CreateSkuResponse(
             sku.Id,
             sku.TenantId,
-            sku.CategoryId,
-            category.Name,
+            product.Id,
+            product.ProductCode,
+            product.ProductName,
             sku.SkuCode,
             sku.Name,
+            sku.GoodsNature,
             sku.Description,
-            sku.ReferencePrice ?? 0m,
+            sku.ReferencePrice,
             sku.CreatedAt,
             sku.UpdatedAt);
     }
 
-    private async Task<Category> ResolveCategoryAsync(CreateSkuCommand request, CancellationToken ct)
+    private async Task<Domain.Entities.Product.Product> LoadProductAggregate(
+        Guid productId, Guid tenantId, CancellationToken ct)
     {
-        var categoryRepo = uow.Repository<Category>();
+        var product = await uow.Repository<Domain.Entities.Product.Product>().Query()
+            .Include(x => x.Skus)
+            .FirstOrDefaultAsync(x =>
+                x.Id == productId
+                && x.TenantId == tenantId
+                && !x.IsDeleted, ct);
 
-        if (request.CategoryId.HasValue)
+        if (product is null)
         {
-            var category = await categoryRepo.Query()
-                .FirstOrDefaultAsync(x => x.Id == request.CategoryId.Value
-                    && x.TenantId == request.TenantId
-                    && !x.IsDeleted, ct);
-
-            return category ?? throw new AppException(400, "INVALID_CATEGORY", "Category not found");
+            throw new AppException(404, "PRODUCT_NOT_FOUND", "Product not found.");
         }
 
-        var defaultCategory = await categoryRepo.Query()
-            .FirstOrDefaultAsync(x => x.TenantId == request.TenantId
+        return product;
+    }
+
+    private async Task EnsureSkuCodeUnique(
+        Guid tenantId, string skuCodeUpper, CancellationToken ct)
+    {
+        var duplicateExists = await uow.Repository<Sku>().Query()
+            .AnyAsync(x =>
+                x.TenantId == tenantId
                 && !x.IsDeleted
-                && x.Name == SkuDefaults.DefaultCategoryName, ct);
+                && x.SkuCode.ToUpper() == skuCodeUpper, ct);
 
-        if (defaultCategory is not null)
+        if (duplicateExists)
         {
-            return defaultCategory;
+            throw new AppException(409, "DUPLICATE_SKU", "SKU code already exists.");
+        }
+    }
+
+    private static string ResolveSkuCode(string? skuCode)
+    {
+        if (!string.IsNullOrWhiteSpace(skuCode))
+        {
+            return skuCode.Trim();
         }
 
-        var categoryToCreate = new Category
-        {
-            TenantId = request.TenantId,
-            Name = SkuDefaults.DefaultCategoryName,
-            Slug = SkuDefaults.DefaultCategorySlug
-        };
-
-        return await categoryRepo.AddAsync(categoryToCreate, ct);
+        return $"SKU-{Guid.NewGuid():N}".Substring(0, 14).ToUpperInvariant();
     }
 }

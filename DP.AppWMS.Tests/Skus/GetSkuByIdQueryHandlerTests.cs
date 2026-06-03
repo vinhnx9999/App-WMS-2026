@@ -1,7 +1,7 @@
 using FluentAssertions;
-using FluentValidation;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Queries.GetSkuById;
+using WMS.Domain.Entities.Product;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;
@@ -11,35 +11,25 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
     #region GetSkuByIdQueryHandler
 
     [Fact]
-    public async Task GetById_WhenSkuHasCategory_ReturnsCategoryName()
+    public async Task GetById_WhenSkuExists_ReturnsProductInfo()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var category = CreateCategory(TenantA, "Electronics");
-        var sku = CreateSku(TenantA, "SKU-001", "Phone", category.Id);
-        db.Categories.Add(category);
-        db.Skus.Add(sku);
+        var product = Product.Create(TenantA, "PROD-001", "Electronics");
+        db.Set<Product>().Add(product);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 10m);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
-        result.CategoryName.Should().Be("Electronics");
-    }
-
-    [Fact]
-    public async Task GetById_WhenSkuHasNoCategory_ReturnsNullCategoryName()
-    {
-        await using var connection = await OpenConnectionAsync();
-        await using var db = CreateDbContext(connection);
-        await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var sku = CreateSku(TenantA, "SKU-001", "Phone");
-        db.Skus.Add(sku);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-
-        var result = await CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
-
-        result.CategoryName.Should().BeNull();
+        result.ProductId.Should().Be(product.Id);
+        result.ProductCode.Should().Be("PROD-001");
+        result.ProductName.Should().Be("Electronics");
+        result.SkuCode.Should().Be("SKU-001");
+        result.Name.Should().Be("Phone");
+        result.ReferencePrice.Should().Be(10m);
     }
 
     [Fact]
@@ -52,7 +42,7 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
         var act = () => CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, Guid.NewGuid()), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
     }
 
     [Fact]
@@ -61,14 +51,16 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var sku = CreateSku(TenantB, "SKU-001", "Phone");
-        db.Skus.Add(sku);
+        var product = Product.Create(TenantB, "PROD-001", "Other Tenant Product");
+        db.Set<Product>().Add(product);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = product.AddSku(TenantB, "SKU-001", "Phone", null, null, 0m);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var act = () => CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
     }
 
     [Fact]
@@ -77,15 +69,17 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var sku = CreateSku(TenantA, "SKU-001", "Phone");
+        var product = Product.Create(TenantA, "PROD-001", "Test Product");
+        db.Set<Product>().Add(product);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
         sku.MarkDeleted();
-        db.Skus.Add(sku);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var act = () => CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
     }
 
     [Fact]
@@ -94,22 +88,22 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var categoryId = Guid.NewGuid();
-        var sku = CreateSku(TenantA, "SKU-001", "Phone", categoryId, "Desc", 12.5m, BaseTime.AddDays(-1), BaseTime.AddDays(1));
-        db.Skus.Add(sku);
+        var product = Product.Create(TenantA, "PROD-001", "Test Product");
+        db.Set<Product>().Add(product);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = product.AddSku(TenantA, "SKU-001", "Phone", "Electronic", "Desc", 12.5m);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
         result.Id.Should().Be(sku.Id);
         result.TenantId.Should().Be(TenantA);
-        result.CategoryId.Should().Be(categoryId);
+        result.ProductId.Should().Be(product.Id);
         result.SkuCode.Should().Be("SKU-001");
         result.Name.Should().Be("Phone");
+        result.GoodsNature.Should().Be("Electronic");
         result.Description.Should().Be("Desc");
-        result.Price.Should().Be(12.5m);
-        result.CreatedAt.Should().Be(BaseTime.AddDays(-1));
-        result.UpdatedAt.Should().Be(BaseTime.AddDays(1));
+        result.ReferencePrice.Should().Be(12.5m);
     }
 
     [Fact]
@@ -118,31 +112,17 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var sku = CreateSku(TenantA, "SKU-001", "Phone", description: null, price: null);
-        db.Skus.Add(sku);
+        var product = Product.Create(TenantA, "PROD-001", "Test Product");
+        db.Set<Product>().Add(product);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, null);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
+        result.GoodsNature.Should().BeNull();
         result.Description.Should().BeNull();
-        result.Price.Should().BeNull();
-    }
-
-    [Fact]
-    public async Task GetById_WhenCategoryIdSetButNavigationMissing_ReturnsCategoryIdAndNullCategoryName()
-    {
-        await using var connection = await OpenConnectionAsync();
-        await using var db = CreateDbContext(connection);
-        await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var categoryId = Guid.NewGuid();
-        var sku = CreateSku(TenantA, "SKU-001", "Phone", categoryId);
-        db.Skus.Add(sku);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-
-        var result = await CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, sku.Id), TestContext.Current.CancellationToken);
-
-        result.CategoryId.Should().Be(categoryId);
-        result.CategoryName.Should().BeNull();
+        result.ReferencePrice.Should().BeNull();
     }
 
     [Fact]
@@ -151,8 +131,12 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var requested = CreateSku(TenantA, "SKU-001", "Tenant A");
-        db.Skus.AddRange(requested, CreateSku(TenantB, "SKU-001", "Tenant B"));
+        var productA = Product.Create(TenantA, "PROD-001", "Product A");
+        var productB = Product.Create(TenantB, "PROD-002", "Product B");
+        db.Set<Product>().AddRange(productA, productB);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var requested = productA.AddSku(TenantA, "SKU-001", "Tenant A", null, null, 0m);
+        var other = productB.AddSku(TenantB, "SKU-001", "Tenant B", null, null, 0m);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await CreateGetHandler(db).Handle(new GetSkuByIdQuery(TenantA, requested.Id), TestContext.Current.CancellationToken);
@@ -179,10 +163,10 @@ public sealed class GetSkuByIdQueryHandlerTests : BaseSkuHandlerTest
 
     #region Helper Methods
 
-
     private static GetSkuByIdQueryHandler CreateGetHandler(WmsDbContext db)
     {
         return new GetSkuByIdQueryHandler(CreateUnitOfWork(db));
     }
+
     #endregion
 }

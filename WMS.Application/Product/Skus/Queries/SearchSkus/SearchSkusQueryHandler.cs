@@ -20,22 +20,15 @@ public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
         var categories = uow.Repository<Category>().Query().AsNoTracking();
 
         var query =
-             from sku in skus
-             join product in products
-                 on sku.ProductId equals product.Id
-             join category in categories
-                 on product.CategoryId equals category.Id into categoryJoin
-             from category in categoryJoin.DefaultIfEmpty()
-             where sku.TenantId == request.TenantId
-                   && product.TenantId == request.TenantId
-                   && sku.DeletedAt == null
-                   && product.DeletedAt == null
-             select new
-             {
-                 Sku = sku,
-                 Product = product,
-                 Category = category
-             };
+            from sku in skus
+            join product in products on sku.ProductId equals product.Id
+            join category in categories on product.CategoryId equals category.Id into catJoin
+            from category in catJoin.DefaultIfEmpty()
+            where sku.TenantId == request.TenantId
+               && product.TenantId == request.TenantId
+               && sku.DeletedAt == null
+               && product.DeletedAt == null
+            select new { Sku = sku, Product = product, Category = category };
 
         if (request.ProductId.HasValue)
         {
@@ -56,7 +49,7 @@ public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
                 (x.Sku.Name != null && x.Sku.Name.ToLower().Contains(keyword)) ||
                 (x.Sku.Description != null && x.Sku.Description.ToLower().Contains(keyword)) ||
                 (x.Sku.GoodsNature != null && x.Sku.GoodsNature.ToLower().Contains(keyword)) ||
-                 x.Product.ProductCode.ToLower().Contains(keyword) ||
+                x.Product.ProductCode.ToLower().Contains(keyword) ||
                 (x.Product.ProductName != null && x.Product.ProductName.ToLower().Contains(keyword)) ||
                 (x.Product.Description != null && x.Product.Description.ToLower().Contains(keyword)));
         }
@@ -91,6 +84,5 @@ public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
             PageNumber = page,
             PageSize = limit
         };
-
     }
 }

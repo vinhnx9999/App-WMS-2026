@@ -5,7 +5,7 @@ namespace WMS.Application.Product.Skus.Commands.UpdateSku;
 public sealed record UpdateSkuCommand(
     Guid TenantId,
     Guid Id,
-    Guid? CategoryId,
-    string? Name,
-    string? Description,
-    decimal? Price) : IRequest;
+    string? Name = null,
+    string? GoodsNature = null,
+    string? Description = null,
+    decimal? Price = null) : IRequest;

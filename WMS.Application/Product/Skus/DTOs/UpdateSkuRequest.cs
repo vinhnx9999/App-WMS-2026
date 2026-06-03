@@ -1,7 +1,7 @@
 namespace WMS.Application.Product.Skus.DTOs;
 
 public sealed record UpdateSkuRequest(
-    Guid? CategoryId,
-    string? Name,
-    string? Description,
-    decimal? Price);
+    string? Name = null,
+    string? GoodsNature = null,
+    string? Description = null,
+    decimal? Price = null);

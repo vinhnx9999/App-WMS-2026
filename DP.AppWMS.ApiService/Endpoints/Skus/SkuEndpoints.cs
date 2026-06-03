@@ -61,6 +61,7 @@ public sealed class SkuEndpoints : IEndpoint
     private async Task<IResult> SearchSkus(
            [FromQuery] string? search,
            [FromQuery] Guid? categoryId,
+           [FromQuery] Guid? productID,
            [FromQuery] int page,
            [FromQuery] int limit,
            ISender sender,
@@ -71,8 +72,10 @@ public sealed class SkuEndpoints : IEndpoint
             currentUser.TenantId,
             search,
             categoryId,
+            productID,
             page,
-            limit), cancellationToken);
+            limit
+           ), cancellationToken);
 
         return Results.Ok(ApiResponse<PagedResult<SearchSkusResponse>>.Ok(result));
     }
@@ -96,9 +99,10 @@ public sealed class SkuEndpoints : IEndpoint
     {
         var result = await sender.Send(new CreateSkuCommand(
             currentUser.TenantId,
+            request.ProductId,
             request.SkuCode,
-            request.CategoryId,
             request.Name,
+            request.GoodsNature,
             request.Description,
             request.Price), cancellationToken);
 
@@ -163,8 +167,8 @@ public sealed class SkuEndpoints : IEndpoint
         await sender.Send(new UpdateSkuCommand(
             currentUser.TenantId,
             id,
-            request.CategoryId,
             request.Name,
+            request.GoodsNature,
             request.Description,
             request.Price), cancellationToken);
 

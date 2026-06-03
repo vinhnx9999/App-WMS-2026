@@ -10,45 +10,25 @@ public sealed class UpdateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<U
 {
     public async Task Handle(UpdateSkuCommand request, CancellationToken ct)
     {
-        var skuRepo = uow.Repository<Sku>();
-        var sku = await skuRepo.Query()
-            .Where(x => x.Id == request.Id && x.TenantId == request.TenantId && !x.IsDeleted)
-            .FirstOrDefaultAsync(ct);
+        var sku = await uow.Repository<Sku>().Query()
+            .FirstOrDefaultAsync(x =>
+                x.Id == request.Id
+                && x.TenantId == request.TenantId
+                && x.DeletedAt == null, ct);
 
         if (sku is null)
         {
-            throw new AppException(404, "NOT_FOUND", "SKU not found");
+            throw new AppException(404, "NOT_FOUND", "SKU not found.");
         }
 
-        if (request.CategoryId.HasValue)
-        {
-            var categoryExists = await uow.Repository<Category>().Query()
-                .AnyAsync(x => x.Id == request.CategoryId.Value && x.TenantId == request.TenantId && !x.IsDeleted, ct);
+        sku.Update(
+            name: request.Name,
+            goodsNature: request.GoodsNature,
+            description: request.Description,
+            referencePrice: request.Price);
 
-            if (!categoryExists)
-            {
-                throw new AppException(400, "INVALID_CATEGORY", "Category not found");
-            }
-
-            sku.CategoryId = request.CategoryId.Value;
-        }
-
-        if (request.Name is not null)
-        {
-            sku.Name = request.Name.Trim();
-        }
-
-        if (request.Description is not null)
-        {
-            sku.Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim();
-        }
-
-        if (request.Price.HasValue)
-        {
-            sku.ReferencePrice = request.Price.Value;
-        }
-
-        await skuRepo.UpdateAsync(sku);
         await uow.SaveChangesAsync(ct);
+
+        // TODO : break the rule of ddd , this is bad handler, need to refactor
     }
 }

@@ -71,6 +71,28 @@ public class Sku : BaseEntity
         };
     }
 
+    /// <summary>
+    /// Updates scalar fields of this SKU.
+    /// </summary>
+    public void Update(
+        string? name = null,
+        string? goodsNature = null,
+        string? description = null,
+        decimal? referencePrice = null)
+    {
+        if (referencePrice is < 0)
+        {
+            throw new DomainException(
+                "INVALID_REFERENCE_PRICE",
+                "Reference price must be greater than or equal to zero.");
+        }
+
+        Name = name?.Trim();
+        GoodsNature = goodsNature?.Trim();
+        Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
+        ReferencePrice = referencePrice;
+    }
+
     internal void Delete(string? deletedBy)
     {
         MarkDeleted(deletedBy);
