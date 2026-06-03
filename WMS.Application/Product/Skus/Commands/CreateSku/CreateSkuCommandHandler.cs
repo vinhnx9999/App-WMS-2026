@@ -13,7 +13,7 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<C
     {
         var normalizedSkuCode = request.SkuCode.Trim();
         var normalizedSkuCodeUpper = normalizedSkuCode.ToUpperInvariant();
-        var skuRepo = uow.Repository<SkuEntity>();
+        var skuRepo = uow.Repository<Sku>();
 
         var duplicateExists = await skuRepo.Query()
             .AnyAsync(x => x.TenantId == request.TenantId
@@ -27,14 +27,14 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<C
 
         var category = await ResolveCategoryAsync(request, ct);
 
-        var sku = new SkuEntity
+        var sku = new Sku
         {
             TenantId = request.TenantId,
             CategoryId = category.Id,
             SkuCode = normalizedSkuCode,
             Name = request.Name ?? string.Empty,
             Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim(),
-            Price = request.Price ?? 0m
+            ReferencePrice = request.Price ?? 0m
         };
 
         await skuRepo.AddAsync(sku, ct);
@@ -48,7 +48,7 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<C
             sku.SkuCode,
             sku.Name,
             sku.Description,
-            sku.Price ?? 0m,
+            sku.ReferencePrice ?? 0m,
             sku.CreatedAt,
             sku.UpdatedAt);
     }

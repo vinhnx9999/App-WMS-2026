@@ -249,11 +249,11 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
 
     private static SearchSkusQueryHandler CreateHandler(WmsDbContext db)
     {
-        var repository = new Mock<IRepository<SkuEntity>>();
+        var repository = new Mock<IRepository<Sku>>();
         repository.Setup(x => x.Query()).Returns(db.Skus);
 
         var uow = new Mock<IUnitOfWork>();
-        uow.Setup(x => x.Repository<SkuEntity>()).Returns(repository.Object);
+        uow.Setup(x => x.Repository<Sku>()).Returns(repository.Object);
 
         return new SearchSkusQueryHandler(uow.Object);
     }

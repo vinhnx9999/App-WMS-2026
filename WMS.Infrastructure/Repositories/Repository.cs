@@ -55,7 +55,6 @@ public class Repository<T>(WmsDbContext db) : IRepository<T> where T : BaseEntit
 
     public Task UpdateAsync(T entity)
     {
-        entity.UpdatedAt = DateTime.UtcNow;
         _set.Update(entity);
         return Task.CompletedTask;
     }

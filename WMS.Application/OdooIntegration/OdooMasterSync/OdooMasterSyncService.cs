@@ -73,7 +73,7 @@ public class OdooMasterSyncService(
                 }
                 else
                 {
-                    var itemSku = await _uow.Repository<SkuEntity>().FindAsync(
+                    var itemSku = await _uow.Repository<Sku>().FindAsync(
                         s => $"{s.SkuCode}" == sku, ct);
                     var skuId = itemSku?.FirstOrDefault()?.Id ?? Guid.Empty;
                     // Create

@@ -71,7 +71,7 @@ public sealed class ImportSkusCommandHandlerTests
     {
         await using var context = CreateContext();
         await SeedMasterDataAsync(context);
-        context.Skus.Add(new SkuEntity { TenantId = TenantId, SkuCode = "SKU-001", Name = "Existing" });
+        context.Skus.Add(new Sku { TenantId = TenantId, SkuCode = "SKU-001", Name = "Existing" });
         await context.SaveChangesAsync();
         var handler = CreateHandler(context);
 
@@ -268,7 +268,7 @@ public sealed class ImportSkusCommandHandlerTests
     private static async Task<Category> SeedMasterDataAsync(WmsDbContext context)
     {
         var category = await SeedCategoryAsync(context);
-        context.Specifications.Add(new Specification { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
+        context.Specifications.Add(new SkuAttribute { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
         context.UnitOfMeasures.Add(new UnitOfMeasure { TenantId = TenantId, Code = "PCS", Name = "Pieces" });
         await context.SaveChangesAsync();
         return category;
@@ -276,7 +276,7 @@ public sealed class ImportSkusCommandHandlerTests
 
     private static async Task SeedSpecificationAndUomAsync(WmsDbContext context)
     {
-        context.Specifications.Add(new Specification { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
+        context.Specifications.Add(new SkuAttribute { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
         context.UnitOfMeasures.Add(new UnitOfMeasure { TenantId = TenantId, Code = "PCS", Name = "Pieces" });
         await context.SaveChangesAsync();
     }
@@ -291,7 +291,7 @@ public sealed class ImportSkusCommandHandlerTests
     private static async Task SeedCategoryAndSpecificationAsync(WmsDbContext context)
     {
         await SeedCategoryAsync(context);
-        context.Specifications.Add(new Specification { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
+        context.Specifications.Add(new SkuAttribute { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
         await context.SaveChangesAsync();
     }
 

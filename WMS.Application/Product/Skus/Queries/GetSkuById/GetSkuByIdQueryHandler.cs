@@ -13,7 +13,7 @@ public sealed class GetSkuByIdQueryHandler(IUnitOfWork uow)
     public async Task<GetSkuByIdResponse> Handle(GetSkuByIdQuery request, CancellationToken ct)
     {
         var result = await (
-                from sku in uow.Repository<SkuEntity>().Query().AsNoTracking()
+                from sku in uow.Repository<Sku>().Query().AsNoTracking()
                 where sku.Id == request.Id && sku.TenantId == request.TenantId && !sku.IsDeleted
                 join category in uow.Repository<Category>().Query().AsNoTracking()
                     on sku.CategoryId equals category.Id into categories
@@ -26,7 +26,7 @@ public sealed class GetSkuByIdQueryHandler(IUnitOfWork uow)
                     sku.SkuCode,
                     sku.Name,
                     sku.Description,
-                    sku.Price,
+                    sku.ReferencePrice,
                     sku.CreatedAt,
                     sku.UpdatedAt))
             .FirstOrDefaultAsync(ct);

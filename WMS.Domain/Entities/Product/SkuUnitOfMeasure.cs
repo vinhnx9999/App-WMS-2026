@@ -4,9 +4,53 @@ namespace WMS.Domain.Entities;
 
 public class SkuUnitOfMeasure : BaseEntity
 {
-    public Guid SkuId { get; set; }
-    public SkuEntity Sku { get; set; } = null!;
+    private SkuUnitOfMeasure() { }
+
+    /// <summary>
+    /// Sku ID
+    /// </summary>
+    public Guid SkuId { get; private set; }
     public Guid UnitOfMeasureId { get; set; }
-    public UnitOfMeasure UnitOfMeasure { get; set; } = null!;
-    public decimal ConversionFactor { get; set; }
+
+
+    internal SkuUnitOfMeasure(
+        Guid tenantId,
+        Guid skuId,
+        Guid unitOfMeasureId)
+    {
+        if (tenantId == Guid.Empty)
+        {
+            throw new DomainException(
+                "INVALID_TENANT",
+                "Tenant is required.");
+        }
+
+        if (skuId == Guid.Empty)
+        {
+            throw new DomainException(
+                "INVALID_SKU",
+                "SKU is required.");
+        }
+
+        if (unitOfMeasureId == Guid.Empty)
+        {
+            throw new DomainException(
+                "INVALID_UNIT_OF_MEASURE",
+                "Unit of measure is required.");
+        }
+
+        TenantId = tenantId;
+        SkuId = skuId;
+        UnitOfMeasureId = unitOfMeasureId;
+    }
+
+    internal void Delete(string? deletedBy)
+    {
+        MarkDeleted(deletedBy);
+    }
+
+    internal void Restore(string? restoredBy)
+    {
+        MarkRestored(restoredBy);
+    }
 }

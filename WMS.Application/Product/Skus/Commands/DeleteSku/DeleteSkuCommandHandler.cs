@@ -10,7 +10,7 @@ public sealed class DeleteSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<D
 {
     public async Task Handle(DeleteSkuCommand request, CancellationToken ct)
     {
-        var skuRepo = uow.Repository<SkuEntity>();
+        var skuRepo = uow.Repository<Sku>();
         var sku = await skuRepo.Query()
             .Where(x => x.Id == request.Id && x.TenantId == request.TenantId && !x.IsDeleted)
             .FirstOrDefaultAsync(ct);

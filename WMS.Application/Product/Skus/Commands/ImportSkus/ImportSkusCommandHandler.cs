@@ -53,7 +53,7 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
     {
         var skuCodes = NormalizeValues(rows.Select(x => x.SkuCode));
 
-        var existingSkuCodes = await uow.Repository<SkuEntity>().Query()
+        var existingSkuCodes = await uow.Repository<Sku>().Query()
             .Where(x => x.TenantId == tenantId && !x.IsDeleted && skuCodes.Contains(x.SkuCode.ToUpper()))
             .Select(x => x.SkuCode)
             .ToListAsync(ct);
@@ -73,11 +73,11 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             autoCreateMasterData,
             ct);
 
-        var specifications = await ResolveMasterDataAsync<Specification>(
+        var specifications = await ResolveMasterDataAsync<SkuAttribute>(
             tenantId,
             rows.Select(x => x.SpecificationCode),
             x => x.Code,
-            code => new Specification { TenantId = tenantId, Code = code },
+            code => new SkuAttribute { TenantId = tenantId, Code = code },
             autoCreateMasterData,
             ct);
 
@@ -166,7 +166,7 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
 
             foreach (var batch in skus.Chunk(SkuImportDefaults.BatchSize))
             {
-                await uow.Repository<SkuEntity>().AddRangeAsync(batch, ct);
+                await uow.Repository<Sku>().AddRangeAsync(batch, ct);
                 await uow.SaveChangesAsync(ct);
             }
 
@@ -189,9 +189,9 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
         }
     }
 
-    private static SkuEntity CreateSku(Guid tenantId, ImportSkuRowInput row, ImportSkuMasterData masterData)
+    private static Sku CreateSku(Guid tenantId, ImportSkuRowInput row, ImportSkuMasterData masterData)
     {
-        var sku = new SkuEntity
+        var sku = new Sku
         {
             TenantId = tenantId,
             CategoryId = row.CategoryName is not null ? masterData.Categories[row.CategoryName].Id : null,
@@ -199,12 +199,12 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             Name = row.SkuName,
             GoodsNature = row.GoodsNature,
             Description = null,
-            Price = null
+            ReferencePrice = null
         };
 
         if (row.SpecificationCode is not null)
         {
-            sku.SkuSpecifications.Add(new SkuSpecification
+            sku.SkuSpecifications.Add(new SkuAttributeValue
             {
                 TenantId = tenantId,
                 SkuId = sku.Id,
@@ -272,10 +272,10 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
 
     private sealed record ImportSkuMasterData(
         Dictionary<string, Category> Categories,
-        Dictionary<string, Specification> Specifications,
+        Dictionary<string, SkuAttribute> Specifications,
         Dictionary<string, UnitOfMeasure> UnitOfMeasures,
         IReadOnlyCollection<Category> CategoriesToCreate,
-        IReadOnlyCollection<Specification> SpecificationsToCreate,
+        IReadOnlyCollection<SkuAttribute> SpecificationsToCreate,
         IReadOnlyCollection<UnitOfMeasure> UnitOfMeasuresToCreate);
 
     private sealed record ResolvedMasterData<TEntity>(

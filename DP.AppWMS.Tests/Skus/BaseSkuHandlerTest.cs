@@ -24,7 +24,7 @@ namespace DP.AppWMS.Tests.Skus
             };
         }
 
-        protected static SkuEntity CreateSku(
+        protected static Sku CreateSku(
             Guid tenantId,
             string skuCode,
             string name,
@@ -35,7 +35,7 @@ namespace DP.AppWMS.Tests.Skus
             DateTime? updatedAt = null,
             DateTime? deleteAt = null)
         {
-            return new SkuEntity
+            return new Sku
             {
                 Id = Guid.NewGuid(),
                 TenantId = tenantId,
@@ -43,7 +43,7 @@ namespace DP.AppWMS.Tests.Skus
                 SkuCode = skuCode,
                 Name = name,
                 Description = description,
-                Price = price,
+                ReferencePrice = price,
                 CreatedAt = createdAt ?? BaseTime,
                 UpdatedAt = updatedAt ?? BaseTime,
                 DeletedAt = deleteAt,

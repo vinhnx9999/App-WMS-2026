@@ -7,16 +7,17 @@ using WMS.Domain.Entities.ErpSync;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.Security;
+using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Configurations;
 
 namespace WMS.Infrastructure.Persistence;
 
-public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
+public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser currentUser) :
     IdentityDbContext<IdentityUser>(options)
 {
     //, AuditInterceptor auditInterceptor
     //private readonly AuditInterceptor _auditInterceptor = auditInterceptor;
-
+    private readonly ICurrentUser _currentUser = currentUser;
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         //optionsBuilder.AddInterceptors(_auditInterceptor);
@@ -26,9 +27,9 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
     //public DbSet<Role> Roles => Set<Role>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
     public DbSet<Category> Categories => Set<Category>();
-    public DbSet<SkuEntity> Skus => Set<SkuEntity>();
-    public DbSet<Specification> Specifications => Set<Specification>();
-    public DbSet<SkuSpecification> SkuSpecifications => Set<SkuSpecification>();
+    public DbSet<Sku> Skus => Set<Sku>();
+    public DbSet<SkuAttribute> Specifications => Set<SkuAttribute>();
+    public DbSet<SkuAttributeValue> SkuSpecifications => Set<SkuAttributeValue>();
     public DbSet<UnitOfMeasure> UnitOfMeasures => Set<UnitOfMeasure>();
     public DbSet<SkuUnitOfMeasure> SkuUnitOfMeasures => Set<SkuUnitOfMeasure>();
     public DbSet<Zone> Zones => Set<Zone>();
@@ -54,9 +55,9 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
         new RoleConfiguration().Configure(mb.Entity<Role>());
         new ZoneConfiguration().Configure(mb.Entity<Zone>());
         new CategoryConfiguration().Configure(mb.Entity<Category>());
-        new SkuConfiguration().Configure(mb.Entity<SkuEntity>());
-        new SpecificationConfiguration().Configure(mb.Entity<Specification>());
-        new SkuSpecificationConfiguration().Configure(mb.Entity<SkuSpecification>());
+        new SkuConfiguration().Configure(mb.Entity<Sku>());
+        new SpecificationConfiguration().Configure(mb.Entity<SkuAttribute>());
+        new SkuSpecificationConfiguration().Configure(mb.Entity<SkuAttributeValue>());
         new UnitOfMeasureConfiguration().Configure(mb.Entity<UnitOfMeasure>());
         new SkuUnitOfMeasureConfiguration().Configure(mb.Entity<SkuUnitOfMeasure>());
         new InventoryConfiguration().Configure(mb.Entity<InventoryItem>());
@@ -78,7 +79,10 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options) :
         foreach (var entry in ChangeTracker.Entries<BaseEntity>())
         {
             if (entry.State == EntityState.Modified)
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
+            {
+                entry.Property(nameof(BaseEntity.UpdatedAt)).CurrentValue = DateTime.UtcNow;
+                entry.Property(nameof(BaseEntity.UpdatedBy)).CurrentValue = _currentUser.Email;
+            }
         }
         return base.SaveChangesAsync(ct);
     }

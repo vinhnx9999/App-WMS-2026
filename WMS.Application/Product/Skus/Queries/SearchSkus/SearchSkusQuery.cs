@@ -7,6 +7,8 @@ namespace WMS.Application.Product.Skus.Queries.SearchSkus;
 public sealed record SearchSkusQuery(
     Guid TenantId,
     string? Search = null,
+    Guid? ProductId = null,
     Guid? CategoryId = null,
     int Page = PaginationDefaults.Page,
-    int Limit = PaginationDefaults.Limit) : IRequest<PagedResult<SearchSkusResponse>>;
+    int Limit = PaginationDefaults.Limit)
+    : IRequest<PagedResult<SearchSkusResponse>>;

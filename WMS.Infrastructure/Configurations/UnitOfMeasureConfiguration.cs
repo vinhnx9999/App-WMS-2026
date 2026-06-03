@@ -10,19 +10,6 @@ public class UnitOfMeasureConfiguration : BaseEntityConfiguration<UnitOfMeasure>
     {
         builder.ToTable("unit_of_measures");
 
-        builder.Property(e => e.Code)
-            .IsRequired()
-            .HasMaxLength(100);
 
-        builder.Property(e => e.Name)
-            .HasMaxLength(250);
-
-        builder.HasIndex(e => new { e.TenantId, e.Code })
-            .IsUnique().HasFilter("\"IsDeleted\" = false");
-
-        builder.HasMany(e => e.SkuUnitOfMeasures)
-            .WithOne(e => e.UnitOfMeasure)
-            .HasForeignKey(e => e.UnitOfMeasureId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

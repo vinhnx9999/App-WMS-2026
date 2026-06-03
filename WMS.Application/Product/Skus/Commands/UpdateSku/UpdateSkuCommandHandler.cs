@@ -10,7 +10,7 @@ public sealed class UpdateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<U
 {
     public async Task Handle(UpdateSkuCommand request, CancellationToken ct)
     {
-        var skuRepo = uow.Repository<SkuEntity>();
+        var skuRepo = uow.Repository<Sku>();
         var sku = await skuRepo.Query()
             .Where(x => x.Id == request.Id && x.TenantId == request.TenantId && !x.IsDeleted)
             .FirstOrDefaultAsync(ct);
@@ -45,7 +45,7 @@ public sealed class UpdateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<U
 
         if (request.Price.HasValue)
         {
-            sku.Price = request.Price.Value;
+            sku.ReferencePrice = request.Price.Value;
         }
 
         await skuRepo.UpdateAsync(sku);

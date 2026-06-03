@@ -27,7 +27,7 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         var updated = await db.Skus.SingleAsync(x => x.Id == sku.Id, TestContext.Current.CancellationToken);
         updated.Name.Should().Be("Phone");
         updated.Description.Should().Be("Desc");
-        updated.Price.Should().Be(10);
+        updated.ReferencePrice.Should().Be(10);
         updated.UpdatedAt.Should().BeAfter(BaseTime);
     }
 
@@ -163,7 +163,7 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         var updated = await db.Skus.SingleAsync(x => x.Id == sku.Id, TestContext.Current.CancellationToken);
         updated.Name.Should().Be("Tablet");
         updated.Description.Should().Be("New desc");
-        updated.Price.Should().Be(25.5m);
+        updated.ReferencePrice.Should().Be(25.5m);
     }
 
     [Fact]

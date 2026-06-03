@@ -3,11 +3,15 @@ namespace WMS.Application.Product.Skus.DTOs;
 public sealed record SearchSkusResponse(
     Guid Id,
     Guid TenantId,
+    Guid ProductId,
+    string ProductCode,
+    string? ProductName,
     Guid? CategoryId,
     string? CategoryName,
     string SkuCode,
-    string Name,
+    string? Name,
+    string? GoodsNature,
     string? Description,
-    decimal? Price,
+    decimal? ReferencePrice,
     DateTime CreatedAt,
-    DateTime UpdatedAt);
+    DateTime? UpdatedAt);
