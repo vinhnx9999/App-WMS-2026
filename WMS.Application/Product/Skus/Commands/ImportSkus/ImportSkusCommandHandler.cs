@@ -16,17 +16,14 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
         var errors = validationResult.Errors.ToList();
         var totalRows = request.Rows.Count;
 
-        ImportSkuMasterData masterData;
-        if (!validationResult.HasErrors)
-        {
-            masterData = await ValidateAgainstDatabaseAsync(request.TenantId, validationResult.Rows, request.AutoCreateMasterData, errors, ct);
-        }
-        else
-        {
-            masterData = new ImportSkuMasterData([], [], [], [], [], []);
-        }
+        var candidateRows = RowsWithoutErrors(validationResult.Rows, errors);
+        var masterData = candidateRows.Count == 0
+            ? new ImportSkuMasterData([], [], [], [], [], [])
+            : await ValidateAgainstDatabaseAsync(request.TenantId, candidateRows, request.AutoCreateMasterData, errors, ct);
 
-        if (errors.Count > 0)
+        var rowsToInsert = RowsWithoutErrors(candidateRows, errors);
+
+        if (request.Mode == ImportSkuMode.ValidateOnly || rowsToInsert.Count == 0)
         {
             return new ImportSkusResponse(
                 totalRows,
@@ -35,13 +32,21 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
                 errors);
         }
 
-        if (request.Mode == ImportSkuMode.ValidateOnly)
-        {
-            return new ImportSkusResponse(totalRows, 0, 0, []);
-        }
+        var (insertedRows, _) = await InsertAsync(request.TenantId, rowsToInsert, masterData, errors, ct);
 
-        var insertedRows = await InsertAsync(request.TenantId, validationResult.Rows, masterData, ct);
-        return new ImportSkusResponse(totalRows, insertedRows, 0, []);
+        return new ImportSkusResponse(
+            totalRows,
+            insertedRows,
+            errors.Select(x => x.RowNumber).Distinct().Count(),
+            errors);
+    }
+
+    private static IReadOnlyList<ImportSkuRowInput> RowsWithoutErrors(
+        IReadOnlyList<ImportSkuRowInput> rows,
+        IReadOnlyList<ImportSkuRowErrorResponse> errors)
+    {
+        var failedRowNumbers = errors.Select(x => x.RowNumber).ToHashSet();
+        return rows.Where(x => !failedRowNumbers.Contains(x.RowNumber)).ToList();
     }
 
     private async Task<ImportSkuMasterData> ValidateAgainstDatabaseAsync(
@@ -69,7 +74,7 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             tenantId,
             rows.Select(x => x.CategoryName),
             x => x.Name,
-            name => new Category { TenantId = tenantId, Name = name },
+            name => Category.Create(tenantId, name),
             autoCreateMasterData,
             ct);
 
@@ -77,7 +82,7 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             tenantId,
             rows.Select(x => x.SpecificationCode),
             x => x.Code,
-            code => new SkuAttribute { TenantId = tenantId, Code = code },
+            code => SkuAttribute.Create(tenantId, code, code),
             autoCreateMasterData,
             ct);
 
@@ -85,7 +90,7 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             tenantId,
             rows.Select(x => x.UnitOfMeasureCode),
             x => x.Code,
-            code => new UnitOfMeasure { TenantId = tenantId, Code = code },
+            code => UnitOfMeasure.Create(tenantId, code, code, null),
             autoCreateMasterData,
             ct);
 
@@ -147,37 +152,108 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
         return new ResolvedMasterData<TEntity>(entitiesByValue, entitiesToCreate);
     }
 
-    private async Task<int> InsertAsync(
+    private async Task<(int insertedRows, int failedRows)> InsertAsync(
         Guid tenantId,
         IReadOnlyList<ImportSkuRowInput> rows,
         ImportSkuMasterData masterData,
+        List<ImportSkuRowErrorResponse> errors,
         CancellationToken ct)
     {
-        await uow.BeginTransactionAsync(ct);
-
-        try
+        // First, save any new master data in a single initial transaction
+        if (masterData.CategoriesToCreate.Count > 0 || masterData.SpecificationsToCreate.Count > 0 || masterData.UnitOfMeasuresToCreate.Count > 0)
         {
-            await AddNewMasterDataAsync(masterData.CategoriesToCreate, ct);
-            await AddNewMasterDataAsync(masterData.SpecificationsToCreate, ct);
-            await AddNewMasterDataAsync(masterData.UnitOfMeasuresToCreate, ct);
-            await uow.SaveChangesAsync(ct);
-
-            var skus = rows.Select(row => CreateSku(tenantId, row, masterData)).ToList();
-
-            foreach (var batch in skus.Chunk(SkuImportDefaults.BatchSize))
+            await uow.BeginTransactionAsync(ct);
+            try
             {
-                await uow.Repository<Sku>().AddRangeAsync(batch, ct);
+                await AddNewMasterDataAsync(masterData.CategoriesToCreate, ct);
+                await AddNewMasterDataAsync(masterData.SpecificationsToCreate, ct);
+                await AddNewMasterDataAsync(masterData.UnitOfMeasuresToCreate, ct);
                 await uow.SaveChangesAsync(ct);
+                await uow.CommitAsync(ct);
             }
+            catch
+            {
+                await uow.RollbackAsync(ct);
+                throw;
+            }
+        }
 
-            await uow.CommitAsync(ct);
-            return skus.Count;
-        }
-        catch
+        int insertedRows = 0;
+        int failedRows = 0;
+
+        var groupedRows = rows.GroupBy(x => x.ProductCode!.Trim().ToUpperInvariant()).ToList();
+
+        foreach (var group in groupedRows)
         {
-            await uow.RollbackAsync(ct);
-            throw;
+            await uow.BeginTransactionAsync(ct);
+            try
+            {
+                var productCode = group.Key;
+
+                var product = await uow.Repository<Domain.Entities.Product.Product>().Query()
+                    .Include(x => x.Skus)
+                    .FirstOrDefaultAsync(x => x.TenantId == tenantId && !x.IsDeleted && x.ProductCode.ToUpper() == productCode, ct);
+
+                if (product is null)
+                {
+                    // Find category id if available from the first row in the group
+                    var firstCategoryName = group.FirstOrDefault(x => x.CategoryName is not null)?.CategoryName;
+                    Guid? categoryId = firstCategoryName is null ? null : masterData.Categories[firstCategoryName].Id;
+
+                    product = Domain.Entities.Product.Product.Create(tenantId, group.First().ProductCode!, $"{group.First().ProductCode} Product", categoryId: categoryId);
+                    await uow.Repository<Domain.Entities.Product.Product>().AddAsync(product, ct);
+                }
+
+                foreach (var batch in group.Chunk(SkuImportDefaults.BatchSize))
+                {
+                    foreach (var row in batch)
+                    {
+                        var sku = product.AddSku(
+                            tenantId: tenantId,
+                            skuCode: row.SkuCode!,
+                            name: row.SkuName,
+                            goodsNature: row.GoodsNature,
+                            description: null,
+                            referencePrice: null);
+
+                        if (row.SpecificationCode is not null)
+                        {
+                            var specId = masterData.Specifications[row.SpecificationCode].Id;
+                            sku.AddAttribute(specId, row.SpecificationCode);
+                        }
+
+                        if (row.UnitOfMeasureCode is not null)
+                        {
+                            var uomId = masterData.UnitOfMeasures[row.UnitOfMeasureCode].Id;
+                            product.AllowSkuUnitOfMeasure(sku.Id, uomId, updatedBy: null);
+                        }
+                    }
+
+                    await uow.SaveChangesAsync(ct);
+                }
+
+                await uow.CommitAsync(ct);
+                insertedRows += group.Count();
+            }
+            catch (OperationCanceledException)
+            {
+                await uow.RollbackAsync(ct);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                await uow.RollbackAsync(ct);
+                failedRows += group.Count();
+
+                // Add errors for all rows in the failed group
+                foreach (var row in group)
+                {
+                    errors.Add(Error(row, "ProductGroup", "PRODUCT_GROUP_FAILED", $"Failed to import product group: {ex.Message}"));
+                }
+            }
         }
+
+        return (insertedRows, failedRows);
     }
 
     private async Task AddNewMasterDataAsync<TEntity>(IReadOnlyCollection<TEntity> entities, CancellationToken ct)
@@ -187,47 +263,6 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
         {
             await uow.Repository<TEntity>().AddRangeAsync(entities, ct);
         }
-    }
-
-    private static Sku CreateSku(Guid tenantId, ImportSkuRowInput row, ImportSkuMasterData masterData)
-    {
-        var sku = new Sku
-        {
-            TenantId = tenantId,
-            CategoryId = row.CategoryName is not null ? masterData.Categories[row.CategoryName].Id : null,
-            SkuCode = row.SkuCode!,
-            Name = row.SkuName,
-            GoodsNature = row.GoodsNature,
-            Description = null,
-            ReferencePrice = null
-        };
-
-        if (row.SpecificationCode is not null)
-        {
-            sku.SkuSpecifications.Add(new SkuAttributeValue
-            {
-                TenantId = tenantId,
-                SkuId = sku.Id,
-                Sku = sku,
-                SpecificationId = masterData.Specifications[row.SpecificationCode].Id,
-                Specification = masterData.Specifications[row.SpecificationCode]
-            });
-        }
-
-        if (row.UnitOfMeasureCode is not null)
-        {
-            sku.SkuUnitOfMeasures.Add(new SkuUnitOfMeasure
-            {
-                TenantId = tenantId,
-                SkuId = sku.Id,
-                Sku = sku,
-                UnitOfMeasureId = masterData.UnitOfMeasures[row.UnitOfMeasureCode].Id,
-                UnitOfMeasure = masterData.UnitOfMeasures[row.UnitOfMeasureCode],
-                ConversionFactor = row.ConversionFactor!.Value
-            });
-        }
-
-        return sku;
     }
 
     private static void AddMissingMasterDataErrors<TEntity>(

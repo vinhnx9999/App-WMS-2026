@@ -6,6 +6,7 @@ using WMS.Domain.Entities;
 using WMS.Domain.Entities.ErpSync;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Entities.Security;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Configurations;
@@ -43,6 +44,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<WebhookEvent> WebhookEvents => Set<WebhookEvent>();
     public DbSet<ErpSyncLog> ErpSyncLogs => Set<ErpSyncLog>();
+    public DbSet<Product> Products => Set<Product>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -72,6 +74,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
         new OutboxMessageConfiguration().Configure(mb.Entity<OutboxMessage>());
         new WebhookEventConfiguration().Configure(mb.Entity<WebhookEvent>());
         new ErpSyncLogConfiguration().Configure(mb.Entity<ErpSyncLog>());
+        new ProductConfiguration().Configure(mb.Entity<Product>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken ct = default)

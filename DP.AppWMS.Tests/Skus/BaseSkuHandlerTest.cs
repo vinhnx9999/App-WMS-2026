@@ -1,8 +1,11 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using WMS.Domain.Entities;
+using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
+using ProductAggregate = WMS.Domain.Entities.Product.Product;
 
 namespace DP.AppWMS.Tests.Skus
 {
@@ -12,42 +15,38 @@ namespace DP.AppWMS.Tests.Skus
         protected static readonly Guid TenantB = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
         protected static readonly DateTime BaseTime = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        protected static Category CreateCategory(Guid tenantId, string name)
-        {
-            return new Category
-            {
-                Id = Guid.NewGuid(),
-                TenantId = tenantId,
-                Name = name,
-                CreatedAt = BaseTime,
-                UpdatedAt = BaseTime,
-            };
-        }
-
-        protected static Sku CreateSku(
+        /// <summary>
+        /// Creates a Product + Sku through the aggregate and saves both to the database.
+        /// Returns the Sku entity for assertions.
+        /// </summary>
+        protected static async Task<Sku> AddTestSku(
+            WmsDbContext db,
             Guid tenantId,
             string skuCode,
             string name,
+            string? description = null,
+            decimal? referencePrice = null,
             Guid? categoryId = null,
-            string? description = "Description",
-            decimal? price = 10,
-            DateTime? createdAt = null,
-            DateTime? updatedAt = null,
-            DateTime? deleteAt = null)
+            CancellationToken ct = default)
         {
-            return new Sku
-            {
-                Id = Guid.NewGuid(),
-                TenantId = tenantId,
-                CategoryId = categoryId,
-                SkuCode = skuCode,
-                Name = name,
-                Description = description,
-                ReferencePrice = price,
-                CreatedAt = createdAt ?? BaseTime,
-                UpdatedAt = updatedAt ?? BaseTime,
-                DeletedAt = deleteAt,
-            };
+            var product = ProductAggregate.Create(
+                tenantId,
+                $"PROD-{skuCode}",
+                $"{name} Product",
+                categoryId: categoryId);
+            db.Set<ProductAggregate>().Add(product);
+            await db.SaveChangesAsync(ct);
+
+            var sku = product.AddSku(
+                tenantId,
+                skuCode,
+                name,
+                null,
+                description,
+                referencePrice ?? 0m);
+            await db.SaveChangesAsync(ct);
+
+            return sku;
         }
 
         protected static async Task<SqliteConnection> OpenConnectionAsync()
@@ -63,7 +62,7 @@ namespace DP.AppWMS.Tests.Skus
                 .UseSqlite(connection)
                 .Options;
 
-            return new WmsDbContext(options);
+            return new WmsDbContext(options, Mock.Of<ICurrentUser>());
         }
 
         protected static UnitOfWork CreateUnitOfWork(WmsDbContext db)

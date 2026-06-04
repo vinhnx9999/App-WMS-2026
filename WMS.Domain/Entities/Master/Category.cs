@@ -7,4 +7,13 @@ public class Category : BaseEntity
     public string Name { get; set; } = null!;
     public string? Slug { get; set; }
     public ICollection<InventoryItem> Items { get; set; } = [];
+
+    public static Category Create(Guid tenantId, string name)
+    {
+        return new Category
+        {
+            TenantId = tenantId,
+            Name = name.Trim()
+        };
+    }
 }

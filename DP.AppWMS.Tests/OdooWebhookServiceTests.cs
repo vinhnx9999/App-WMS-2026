@@ -2,6 +2,7 @@ using FluentAssertions;
 using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.OdooIntegration.OdooWebhook;
+using WMS.Domain.Common;
 using WMS.Domain.Entities.ErpSync;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Enums;
@@ -55,12 +56,11 @@ public class OdooWebhookServiceTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(
             [
-                new()
+                WithId(new InboundOrder
                 {
-                    Id = Guid.NewGuid(),
                     OrderNumber = "WH/IN/00042",
                     Status = InboundStatus.Pending,
-                }
+                }, Guid.NewGuid())
             ]);
 
         // Act
@@ -106,7 +106,7 @@ public class OdooWebhookServiceTests
         var svc = new OdooWebhookService(
             _uowMock.Object,
             Mock.Of<Microsoft.Extensions.Logging.ILogger<OdooWebhookService>>());
-                
+
         CancellationToken ct = CancellationToken.None;
         var result = await svc.HandleAsync(payload, _ipAddress, ct);
 
@@ -140,5 +140,15 @@ public class OdooWebhookServiceTests
         var act = () => svc.HandleAsync(payload, _ipAddress, ct);
         await act.Should().ThrowAsync<AppException>()
             .Where(e => e.Code == "INVALID_PAYLOAD");
+    }
+
+    private static TEntity WithId<TEntity>(TEntity entity, Guid id)
+        where TEntity : BaseEntity
+    {
+        typeof(BaseEntity)
+            .GetProperty(nameof(BaseEntity.Id))!
+            .SetValue(entity, id);
+
+        return entity;
     }
 }

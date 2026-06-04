@@ -2,10 +2,13 @@ using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.ImportSkus;
 using WMS.Application.Product.Skus.DTOs;
 using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
+using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;
@@ -35,10 +38,10 @@ public sealed class ImportSkusCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_InsertWithValidRows_ShouldCreateSkus()
+    public async Task Handle_InsertWithValidRows_ShouldCreateProductAndSkusThroughAggregate()
     {
         await using var context = CreateContext();
-        var category = await SeedMasterDataAsync(context);
+        await SeedMasterDataAsync(context);
         var handler = CreateHandler(context);
 
         var result = await handler.Handle(new ImportSkusCommand(
@@ -52,18 +55,24 @@ public sealed class ImportSkusCommandHandlerTests
         result.FailedRows.Should().Be(0);
         result.Errors.Should().BeEmpty();
 
-        var sku = await context.Skus
-            .Include(x => x.SkuSpecifications)
-            .Include(x => x.SkuUnitOfMeasures)
+        var product = await context.Set<Product>()
+            .Include(x => x.Skus)
+            .ThenInclude(x => x.Attributes)
+            .Include(x => x.Skus)
+            .ThenInclude(x => x.AllowedUnits)
             .SingleAsync();
 
+        product.ProductCode.Should().Be("PROD-001");
+        product.Skus.Should().ContainSingle();
+
+        var sku = product.Skus.Single();
         sku.TenantId.Should().Be(TenantId);
+        sku.ProductId.Should().Be(product.Id);
         sku.SkuCode.Should().Be("SKU-001");
         sku.Name.Should().Be("SKU One");
         sku.GoodsNature.Should().Be("Normal");
-        sku.CategoryId.Should().Be(category.Id);
-        sku.SkuSpecifications.Should().ContainSingle();
-        sku.SkuUnitOfMeasures.Should().ContainSingle(x => x.ConversionFactor == 1);
+        sku.Attributes.Should().ContainSingle();
+        sku.AllowedUnits.Should().ContainSingle();
     }
 
     [Fact]
@@ -71,7 +80,10 @@ public sealed class ImportSkusCommandHandlerTests
     {
         await using var context = CreateContext();
         await SeedMasterDataAsync(context);
-        context.Skus.Add(new Sku { TenantId = TenantId, SkuCode = "SKU-001", Name = "Existing" });
+        var product = Product.Create(TenantId, "PROD-EXISTING", "Existing Product");
+        context.Set<Product>().Add(product);
+        await context.SaveChangesAsync();
+        product.AddSku(TenantId, "SKU-001", "Existing", null, null, null);
         await context.SaveChangesAsync();
         var handler = CreateHandler(context);
 
@@ -85,6 +97,24 @@ public sealed class ImportSkusCommandHandlerTests
         result.FailedRows.Should().Be(1);
         result.Errors.Should().ContainSingle(x => x.Code == "SKU_CODE_EXISTS" && x.Field == nameof(ImportSkuRowInput.SkuCode));
         context.Skus.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task Handle_WhenProductCodeMissing_ShouldReturnRowValidationError()
+    {
+        await using var context = CreateContext();
+        var handler = CreateHandler(context);
+
+        var result = await handler.Handle(new ImportSkusCommand(
+            TenantId,
+            [ValidRow(productCode: " ")],
+            ImportSkuMode.Insert,
+            true), CancellationToken.None);
+
+        result.InsertedRows.Should().Be(0);
+        result.FailedRows.Should().Be(1);
+        result.Errors.Should().ContainSingle(x => x.Code == "PRODUCT_CODE_REQUIRED" && x.Field == nameof(ImportSkuRowInput.ProductCode));
+        context.Skus.Should().BeEmpty();
     }
 
     [Fact]
@@ -107,45 +137,7 @@ public sealed class ImportSkusCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenSpecificationMissingAndAutoCreateDisabled_ShouldReturnRowError()
-    {
-        await using var context = CreateContext();
-        await SeedCategoryAndUomAsync(context);
-        var handler = CreateHandler(context);
-
-        var result = await handler.Handle(new ImportSkusCommand(
-            TenantId,
-            [ValidRow()],
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
-
-        result.InsertedRows.Should().Be(0);
-        result.FailedRows.Should().Be(1);
-        result.Errors.Should().ContainSingle(x => x.Code == "SPECIFICATION_NOT_FOUND" && x.Field == nameof(ImportSkuRowInput.SpecificationCode));
-        context.Skus.Should().BeEmpty();
-    }
-
-    [Fact]
-    public async Task Handle_WhenUnitOfMeasureMissingAndAutoCreateDisabled_ShouldReturnRowError()
-    {
-        await using var context = CreateContext();
-        await SeedCategoryAndSpecificationAsync(context);
-        var handler = CreateHandler(context);
-
-        var result = await handler.Handle(new ImportSkusCommand(
-            TenantId,
-            [ValidRow()],
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
-
-        result.InsertedRows.Should().Be(0);
-        result.FailedRows.Should().Be(1);
-        result.Errors.Should().ContainSingle(x => x.Code == "UNIT_OF_MEASURE_NOT_FOUND" && x.Field == nameof(ImportSkuRowInput.UnitOfMeasureCode));
-        context.Skus.Should().BeEmpty();
-    }
-
-    [Fact]
-    public async Task Handle_WhenAutoCreateMasterDataEnabled_ShouldCreateMasterDataAndSkus()
+    public async Task Handle_WhenAutoCreateMasterDataEnabled_ShouldCreateMasterDataProductAndSkus()
     {
         await using var context = CreateContext();
         var handler = CreateHandler(context);
@@ -162,6 +154,7 @@ public sealed class ImportSkusCommandHandlerTests
         context.Categories.Should().ContainSingle(x => x.Name == "Electronics");
         context.Specifications.Should().ContainSingle(x => x.Code == "SPEC-A");
         context.UnitOfMeasures.Should().ContainSingle(x => x.Code == "PCS");
+        context.Set<Product>().Should().ContainSingle(x => x.ProductCode == "PROD-001");
         context.Skus.Should().ContainSingle(x => x.SkuCode == "SKU-001");
     }
 
@@ -202,27 +195,49 @@ public sealed class ImportSkusCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenInsertFails_ShouldRollbackTransaction()
+    public async Task Handle_WhenDifferentProductGroupsAndOneRowInvalid_ShouldImportValidGroupOnly()
     {
         await using var context = CreateContext();
         await SeedMasterDataAsync(context);
         var handler = CreateHandler(context);
 
+        var result = await handler.Handle(new ImportSkusCommand(
+            TenantId,
+            [
+                ValidRow(1, productCode: "PROD-A", skuCode: "SKU-A"),
+                ValidRow(2, productCode: "PROD-B", skuCode: " ")
+            ],
+            ImportSkuMode.Insert,
+            false), CancellationToken.None);
+
+        result.InsertedRows.Should().Be(1);
+        result.FailedRows.Should().Be(1);
+        result.Errors.Should().ContainSingle(x => x.RowNumber == 2 && x.Code == "SKU_CODE_REQUIRED");
+        context.Set<Product>().Should().ContainSingle(x => x.ProductCode == "PROD-A");
+        context.Skus.Should().ContainSingle(x => x.SkuCode == "SKU-A");
+    }
+
+    [Fact]
+    public async Task Handle_WhenMoreThanOneBatchInSameProductGroup_ShouldImportAllRows()
+    {
+        await using var context = CreateContext();
+        await SeedMasterDataAsync(context);
+        var handler = CreateHandler(context);
         var rows = Enumerable.Range(1, SkuImportDefaults.BatchSize + 1)
-            .Select(i => ValidRow(i, $"SKU-{i:D3}"))
+            .Select(i => ValidRow(i, productCode: "PROD-BATCH", skuCode: $"SKU-{i:D3}"))
             .ToList();
 
-        await context.Database.ExecuteSqlRawAsync("CREATE UNIQUE INDEX IX_Test_Skus_SkuCode ON Skus (SkuCode);");
-
-        var act = () => handler.Handle(new ImportSkusCommand(
+        var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
             rows,
             ImportSkuMode.Insert,
             false), CancellationToken.None);
 
-        await act.Should().ThrowAsync<DbUpdateException>();
-        context.ChangeTracker.Clear();
-        context.Skus.Should().BeEmpty();
+        result.InsertedRows.Should().Be(SkuImportDefaults.BatchSize + 1);
+        result.FailedRows.Should().Be(0);
+        result.Errors.Should().BeEmpty();
+        context.Set<Product>().Should().ContainSingle(x => x.ProductCode == "PROD-BATCH");
+        context.Skus.Should().HaveCount(SkuImportDefaults.BatchSize + 1);
     }
 
     private static WmsDbContext CreateContext()
@@ -234,7 +249,7 @@ public sealed class ImportSkusCommandHandlerTests
             .UseSqlite(connection)
             .Options;
 
-        var context = new WmsDbContext(options);
+        var context = new WmsDbContext(options, Mock.Of<ICurrentUser>());
         context.Database.EnsureCreated();
         return context;
     }
@@ -246,6 +261,7 @@ public sealed class ImportSkusCommandHandlerTests
 
     private static ImportSkuRowInput ValidRow(
         int rowNumber = 1,
+        string? productCode = "PROD-001",
         string? skuCode = "SKU-001",
         string? skuName = "SKU One",
         string? categoryName = "Electronics",
@@ -256,6 +272,7 @@ public sealed class ImportSkusCommandHandlerTests
     {
         return new ImportSkuRowInput(
             rowNumber,
+            productCode,
             skuCode,
             skuName,
             categoryName,
@@ -268,36 +285,22 @@ public sealed class ImportSkusCommandHandlerTests
     private static async Task<Category> SeedMasterDataAsync(WmsDbContext context)
     {
         var category = await SeedCategoryAsync(context);
-        context.Specifications.Add(new SkuAttribute { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
-        context.UnitOfMeasures.Add(new UnitOfMeasure { TenantId = TenantId, Code = "PCS", Name = "Pieces" });
+        context.Specifications.Add(SkuAttribute.Create(TenantId, "SPEC-A", "Spec A"));
+        context.UnitOfMeasures.Add(UnitOfMeasure.Create(TenantId, "PCS", "Pieces", null));
         await context.SaveChangesAsync();
         return category;
     }
 
     private static async Task SeedSpecificationAndUomAsync(WmsDbContext context)
     {
-        context.Specifications.Add(new SkuAttribute { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
-        context.UnitOfMeasures.Add(new UnitOfMeasure { TenantId = TenantId, Code = "PCS", Name = "Pieces" });
-        await context.SaveChangesAsync();
-    }
-
-    private static async Task SeedCategoryAndUomAsync(WmsDbContext context)
-    {
-        await SeedCategoryAsync(context);
-        context.UnitOfMeasures.Add(new UnitOfMeasure { TenantId = TenantId, Code = "PCS", Name = "Pieces" });
-        await context.SaveChangesAsync();
-    }
-
-    private static async Task SeedCategoryAndSpecificationAsync(WmsDbContext context)
-    {
-        await SeedCategoryAsync(context);
-        context.Specifications.Add(new SkuAttribute { TenantId = TenantId, Code = "SPEC-A", Name = "Spec A" });
+        context.Specifications.Add(SkuAttribute.Create(TenantId, "SPEC-A", "Spec A"));
+        context.UnitOfMeasures.Add(UnitOfMeasure.Create(TenantId, "PCS", "Pieces", null));
         await context.SaveChangesAsync();
     }
 
     private static async Task<Category> SeedCategoryAsync(WmsDbContext context)
     {
-        var category = new Category { TenantId = TenantId, Name = "Electronics" };
+        var category = Category.Create(TenantId, "Electronics");
         context.Categories.Add(category);
         await context.SaveChangesAsync();
         return category;

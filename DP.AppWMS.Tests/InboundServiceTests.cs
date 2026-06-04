@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using WMS.Application.Inbound.DTOs;
 using WMS.Application.Inbound.Services;
+using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Enums;
@@ -38,9 +39,8 @@ public class InboundServiceTests
         var itemId = Guid.NewGuid();
 
         var orderRepo = new Mock<IRepository<InboundOrder>>();
-        var order = new InboundOrder
+        var order = WithId(new InboundOrder
         {
-            Id = orderId,
             OrderNumber = "PO-TEST-001",
             Status = InboundStatus.Pending,
             Items =
@@ -52,7 +52,7 @@ public class InboundServiceTests
                     ReceivedQuantity = 0,
                 }
             ]
-        };
+        }, orderId);
 
         orderRepo
             .Setup(x => x.Query())
@@ -62,13 +62,12 @@ public class InboundServiceTests
         var invRepo = new Mock<IRepository<InventoryItem>>();
         invRepo
             .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new InventoryItem
+            .ReturnsAsync(WithId(new InventoryItem
             {
-                Id = itemId,
                 SkuCode = "TEST-001",
                 Quantity = 50,
                 MinQuantity = 10,
-            });
+            }, itemId));
 
         var auditRepo = new Mock<IRepository<AuditLog>>();
 
@@ -136,5 +135,15 @@ public class InboundServiceTests
         _txMock.Verify(
             x => x.CommitAsync(It.IsAny<CancellationToken>()),
             Times.Never);
+    }
+
+    private static TEntity WithId<TEntity>(TEntity entity, Guid id)
+        where TEntity : BaseEntity
+    {
+        typeof(BaseEntity)
+            .GetProperty(nameof(BaseEntity.Id))!
+            .SetValue(entity, id);
+
+        return entity;
     }
 }

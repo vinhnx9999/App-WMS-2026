@@ -46,7 +46,7 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
                 x.CategoryName ?? "", x.CategoryId ?? Guid.Empty,
                 x.ZoneName ?? "", x.ZoneId ?? Guid.Empty,
                 x.LocationName ?? "", x.Quantity, x.MinQuantity,
-                x.UnitPrice, x.Status, x.UpdatedAt))
+                x.UnitPrice, x.Status, x.UpdatedAt ?? x.CreatedAt))
             .ToListAsync(ct);
 
         return new PagedResult<InventoryDto>()
@@ -68,10 +68,10 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
 
         return new InventoryDto(
             item.Id, item.Sku?.SkuCode ?? "", item.Name, item.Description,
-            item.Sku?.Category?.Name, item.Sku?.CategoryId,
+            item.CategoryName, item.CategoryId,
             item.Location?.Zone?.Name ?? "", item.Location?.ZoneId,
             item.Location?.Name ?? "", item.Quantity, item.MinQuantity,
-            item.UnitPrice, item.Status, item.UpdatedAt);
+            item.UnitPrice, item.Status, item.UpdatedAt ?? item.CreatedAt);
     }
 
     public async Task<InventoryDto> CreateAsync(

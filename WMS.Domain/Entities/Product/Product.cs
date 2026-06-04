@@ -117,4 +117,43 @@ public class Product : BaseEntity
 
     }
 
+    /// <summary>
+    /// Updates scalar fields of an active SKU under this product.
+    /// </summary>
+    public void UpdateSku(
+        Guid skuId,
+        string? name = null,
+        string? goodsNature = null,
+        string? description = null,
+        decimal? referencePrice = null)
+    {
+        var sku = _skus.FirstOrDefault(x => x.Id == skuId && !x.IsDeleted);
+
+        if (sku is null)
+        {
+            throw new DomainException(
+                "SKU_NOT_FOUND",
+                $"Active SKU with ID {skuId} was not found for this product.");
+        }
+
+        sku.Update(name, goodsNature, description, referencePrice);
+    }
+
+    /// <summary>
+    /// Soft-deletes an active SKU under this product.
+    /// </summary>
+    public void DeleteSku(Guid skuId, string? deletedBy = null)
+    {
+        var sku = _skus.FirstOrDefault(x => x.Id == skuId && !x.IsDeleted);
+
+        if (sku is null)
+        {
+            throw new DomainException(
+                "SKU_NOT_FOUND",
+                $"Active SKU with ID {skuId} was not found for this product.");
+        }
+
+        sku.Delete(deletedBy);
+    }
+
 }

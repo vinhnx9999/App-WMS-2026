@@ -136,6 +136,7 @@ public sealed class SkuEndpoints : IEndpoint
         var rows = request.Rows
             .Select(row => new ImportSkuRowInput(
                 row.RowNumber,
+                row.ProductCode,
                 row.SkuCode,
                 row.SkuName,
                 row.CategoryName,
@@ -195,6 +196,7 @@ public sealed class SkuEndpoints : IEndpoint
 
     public sealed record ImportSkuRowRequest(
         int RowNumber,
+        string? ProductCode,
         string? SkuCode,
         string? SkuName,
         string? CategoryName,

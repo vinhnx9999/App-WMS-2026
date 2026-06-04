@@ -1,8 +1,6 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.CreateSku;
-using WMS.Application.Product.Skus.DTOs;
 using WMS.Application.Product.Skus.Validators;
 using WMS.Domain.Entities.Product;
 using WMS.Infrastructure.Persistence;

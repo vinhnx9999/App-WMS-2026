@@ -2,6 +2,7 @@ using FluentAssertions;
 using Moq;
 using WMS.Application.Product.Skus.Queries.SearchSkus;
 using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 
@@ -19,12 +20,12 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
-        db.Skus.AddRange(
-            CreateSku(TenantA, "A-001", "Tenant A first", updatedAt: BaseTime.AddMinutes(1)),
-            CreateSku(TenantA, "A-002", "Tenant A second", updatedAt: BaseTime.AddMinutes(2)),
-            CreateSku(TenantA, "A-003", "Deleted", updatedAt: BaseTime.AddMinutes(3), deleteAt: BaseTime.AddMinutes(4)),
-            CreateSku(TenantB, "B-001", "Tenant B", updatedAt: BaseTime.AddMinutes(5)));
+        var active1 = await AddTestSku(db, TenantA, "A-001", "Tenant A first");
+        var active2 = await AddTestSku(db, TenantA, "A-002", "Tenant A second");
+        var deleted = await AddTestSku(db, TenantA, "A-003", "Deleted");
+        deleted.MarkDeleted();
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await AddTestSku(db, TenantB, "B-001", "Tenant B");
 
         var handler = CreateHandler(db);
 
@@ -43,10 +44,8 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
-        db.Skus.AddRange(
-            CreateSku(TenantA, "IPHONE-15", "Apple phone"),
-            CreateSku(TenantA, "SAMSUNG-S24", "Android phone"));
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await AddTestSku(db, TenantA, "IPHONE-15", "Apple phone");
+        await AddTestSku(db, TenantA, "SAMSUNG-S24", "Android phone");
 
         var handler = CreateHandler(db);
 
@@ -64,10 +63,8 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
-        db.Skus.AddRange(
-            CreateSku(TenantA, "SKU-001", "Samsung Galaxy"),
-            CreateSku(TenantA, "SKU-002", "Apple iPhone"));
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await AddTestSku(db, TenantA, "SKU-001", "Samsung Galaxy");
+        await AddTestSku(db, TenantA, "SKU-002", "Apple iPhone");
 
         var handler = CreateHandler(db);
 
@@ -85,11 +82,9 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
-        db.Skus.AddRange(
-            CreateSku(TenantA, "SKU-001", "Scanner", description: "Wireless barcode scanner"),
-            CreateSku(TenantA, "SKU-002", "No description", description: null),
-            CreateSku(TenantA, "SKU-003", "Printer", description: "Thermal printer"));
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await AddTestSku(db, TenantA, "SKU-001", "Scanner", description: "Wireless barcode scanner");
+        await AddTestSku(db, TenantA, "SKU-002", "No description", description: null);
+        await AddTestSku(db, TenantA, "SKU-003", "Printer", description: "Thermal printer");
 
         var handler = CreateHandler(db);
 
@@ -107,10 +102,8 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
-        db.Skus.AddRange(
-            CreateSku(TenantA, "ABC-001", "Tenant A item"),
-            CreateSku(TenantB, "ABC-001", "Tenant B item"));
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await AddTestSku(db, TenantA, "ABC-001", "Tenant A item");
+        await AddTestSku(db, TenantB, "ABC-001", "Tenant B item");
 
         var handler = CreateHandler(db);
 
@@ -128,15 +121,15 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var categoryA = CreateCategory(TenantA, "Electronics");
-        var categoryB = CreateCategory(TenantA, "Tools");
 
+        var categoryA = Category.Create(TenantA, "Electronics");
+        var categoryB = Category.Create(TenantA, "Tools");
         db.Categories.AddRange(categoryA, categoryB);
-        db.Skus.AddRange(
-            CreateSku(TenantA, "ELEC-001", "Phone", categoryA.Id),
-            CreateSku(TenantA, "ELEC-002", "Tablet", categoryA.Id),
-            CreateSku(TenantA, "TOOL-001", "Hammer", categoryB.Id));
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        await AddTestSku(db, TenantA, "ELEC-001", "Phone", categoryId: categoryA.Id);
+        await AddTestSku(db, TenantA, "ELEC-002", "Tablet", categoryId: categoryA.Id);
+        await AddTestSku(db, TenantA, "TOOL-001", "Hammer", categoryId: categoryB.Id);
 
         var handler = CreateHandler(db);
 
@@ -153,15 +146,15 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var categoryA = CreateCategory(TenantA, "Phones");
-        var categoryB = CreateCategory(TenantA, "Accessories");
 
+        var categoryA = Category.Create(TenantA, "Phones");
+        var categoryB = Category.Create(TenantA, "Accessories");
         db.Categories.AddRange(categoryA, categoryB);
-        db.Skus.AddRange(
-            CreateSku(TenantA, "PHONE-001", "Office phone", categoryA.Id),
-            CreateSku(TenantA, "PHONE-002", "Office phone", categoryB.Id),
-            CreateSku(TenantA, "LAPTOP-001", "Laptop", categoryA.Id));
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        await AddTestSku(db, TenantA, "PHONE-001", "Office phone", categoryId: categoryA.Id);
+        await AddTestSku(db, TenantA, "PHONE-002", "Office phone", categoryId: categoryB.Id);
+        await AddTestSku(db, TenantA, "LAPTOP-001", "Laptop", categoryId: categoryA.Id);
 
         var handler = CreateHandler(db);
 
@@ -179,12 +172,11 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var skus = Enumerable.Range(1, 25)
-            .Select(i => CreateSku(TenantA, $"SKU-{i:000}", $"Sku {i}", updatedAt: BaseTime.AddMinutes(i)))
-            .ToArray();
 
-        db.Skus.AddRange(skus);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        for (int i = 1; i <= 25; i++)
+        {
+            await AddTestSku(db, TenantA, $"SKU-{i:000}", $"Sku {i}");
+        }
 
         var handler = CreateHandler(db);
 
@@ -207,11 +199,9 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
-        db.Skus.AddRange(
-            CreateSku(TenantA, "SKU-001", "First", updatedAt: BaseTime.AddMinutes(1)),
-            CreateSku(TenantA, "SKU-002", "Second", updatedAt: BaseTime.AddMinutes(2)),
-            CreateSku(TenantA, "SKU-003", "Third", updatedAt: BaseTime.AddMinutes(3)));
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        await AddTestSku(db, TenantA, "SKU-001", "First");
+        await AddTestSku(db, TenantA, "SKU-002", "Second");
+        await AddTestSku(db, TenantA, "SKU-003", "Third");
 
         var handler = CreateHandler(db);
 
@@ -227,12 +217,11 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var skus = Enumerable.Range(1, 101)
-            .Select(i => CreateSku(TenantA, $"SKU-{i:000}", $"Sku {i}", updatedAt: BaseTime.AddMinutes(i)))
-            .ToArray();
 
-        db.Skus.AddRange(skus);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        for (int i = 1; i <= 101; i++)
+        {
+            await AddTestSku(db, TenantA, $"SKU-{i:000}", $"Sku {i}");
+        }
 
         var handler = CreateHandler(db);
 
@@ -249,14 +238,22 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
 
     private static SearchSkusQueryHandler CreateHandler(WmsDbContext db)
     {
-        var repository = new Mock<IRepository<Sku>>();
-        repository.Setup(x => x.Query()).Returns(db.Skus);
+        var skuRepo = new Mock<IRepository<Sku>>();
+        skuRepo.Setup(x => x.Query()).Returns(db.Skus);
+
+        var productRepo = new Mock<IRepository<Product>>();
+        productRepo.Setup(x => x.Query()).Returns(db.Products);
+
+        var categoryRepo = new Mock<IRepository<Category>>();
+        categoryRepo.Setup(x => x.Query()).Returns(db.Categories);
 
         var uow = new Mock<IUnitOfWork>();
-        uow.Setup(x => x.Repository<Sku>()).Returns(repository.Object);
+        uow.Setup(x => x.Repository<Sku>()).Returns(skuRepo.Object);
+        uow.Setup(x => x.Repository<Product>()).Returns(productRepo.Object);
+        uow.Setup(x => x.Repository<Category>()).Returns(categoryRepo.Object);
 
         return new SearchSkusQueryHandler(uow.Object);
     }
 
-    #endregion 
+    #endregion
 }

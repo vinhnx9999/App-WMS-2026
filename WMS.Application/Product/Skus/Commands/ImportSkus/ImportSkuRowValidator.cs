@@ -13,6 +13,11 @@ public static class ImportSkuRowValidator
 
         foreach (var row in normalizedRows)
         {
+            if (string.IsNullOrWhiteSpace(row.ProductCode))
+            {
+                errors.Add(Error(row, nameof(row.ProductCode), "PRODUCT_CODE_REQUIRED", "Product code is required"));
+            }
+
             if (string.IsNullOrWhiteSpace(row.SkuCode))
             {
                 errors.Add(Error(row, nameof(row.SkuCode), "SKU_CODE_REQUIRED", "SKU code is required"));

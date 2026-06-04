@@ -8,6 +8,7 @@ public static class ImportSkuRowNormalizer
     {
         return row with
         {
+            ProductCode = NormalizeRequired(row.ProductCode),
             SkuCode = NormalizeRequired(row.SkuCode),
             SkuName = NormalizeOptional(row.SkuName),
             CategoryName = NormalizeOptional(row.CategoryName),

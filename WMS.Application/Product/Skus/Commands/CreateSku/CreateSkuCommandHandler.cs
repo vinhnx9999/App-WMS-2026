@@ -65,6 +65,16 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<C
         return product;
     }
 
+    /// <summary>
+    /// Cross-aggregate uniqueness check.
+    /// SKU code must be unique across ALL products in a tenant,
+    /// not just within the current Product's _skus collection.
+    /// The Product aggregate root cannot enforce this invariant
+    /// because it only has visibility into its own child SKUs.
+    /// The database enforces this via a unique filtered index:
+    /// CREATE UNIQUE INDEX ON skus(TenantId, SkuCode)
+    ///     WHERE IsDeleted = false
+    /// </summary>
     private async Task EnsureSkuCodeUnique(
         Guid tenantId, string skuCodeUpper, CancellationToken ct)
     {

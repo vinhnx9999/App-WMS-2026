@@ -145,6 +145,37 @@ public class Sku : BaseEntity
         allowedUnit.Delete(deletedBy);
     }
 
+    /// <summary>
+    /// Adds an attribute value to this SKU. Idempotent per attributeId.
+    /// </summary>
+    public void AddAttribute(Guid attributeId, string value)
+    {
+        if (attributeId == Guid.Empty)
+        {
+            throw new DomainException(
+                "INVALID_ATTRIBUTE",
+                "Attribute is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new DomainException(
+                "INVALID_ATTRIBUTE_VALUE",
+                "Attribute value is required.");
+        }
+
+        if (_attributes.Any(x => !x.IsDeleted && x.AttributeId == attributeId))
+        {
+            return;
+        }
+
+        _attributes.Add(new SkuAttributeValue(
+            tenantId: TenantId,
+            skuId: Id,
+            attributeId: attributeId,
+            value: value));
+    }
+
     #endregion Domain method
 
 }
