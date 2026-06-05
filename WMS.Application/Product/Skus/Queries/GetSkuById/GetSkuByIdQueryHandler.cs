@@ -19,7 +19,7 @@ public sealed class GetSkuByIdQueryHandler(IUnitOfWork uow)
                       && sku.DeletedAt == null
                 join product in uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking()
                     on sku.ProductId equals product.Id
-                where product.DeletedAt == null
+                where !product.IsDeleted
                 select new GetSkuByIdResponse(
                     sku.Id,
                     sku.TenantId,

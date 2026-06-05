@@ -1,8 +1,10 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
+using WMS.Application.Common.Service;
 using WMS.Application.Product.Skus.DTOs;
 using WMS.Domain.Entities;
+using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Product.Skus.Commands.CreateSku;
@@ -11,92 +13,89 @@ namespace WMS.Application.Product.Skus.Commands.CreateSku;
 /// Handler
 /// </summary>
 /// <param name="uow"></param>
-public sealed class CreateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<CreateSkuCommand, CreateSkuResponse>
+/// <param name="sequenceCodeGenerator"></param>
+public sealed class CreateSkuCommandHandler(IUnitOfWork uow, ISequenceCodeGenerator sequenceCodeGenerator) : IRequestHandler<CreateSkuCommand, CreateSkuResponse>
 {
+    private readonly IUnitOfWork _uow = uow;
+    private readonly ISequenceCodeGenerator _sequenceCodeGenerator = sequenceCodeGenerator;
+
     public async Task<CreateSkuResponse> Handle(CreateSkuCommand request, CancellationToken ct)
     {
-        var normalizedSkuCode = ResolveSkuCode(request.SkuCode);
-        var normalizedUpper = normalizedSkuCode.ToUpperInvariant();
+        var product = await LoadProductReference(
+             request.ProductId,
+             request.TenantId,
+             ct);
 
-        var product = await LoadProductAggregate(request.ProductId, request.TenantId, ct);
+        var skuCode = await ResolveSkuCode(
+          request.TenantId,
+          request.SkuCode,
+          ct);
 
-        await EnsureSkuCodeUnique(request.TenantId, normalizedUpper, ct);
+        var sku = Sku.Create(
+          tenantId: request.TenantId,
+          productId: product.Id,
+          skuCode: skuCode,
+          name: request.Name,
+          goodsNature: request.GoodsNature,
+          description: request.Description,
+          referencePrice: request.Price);
 
-        var sku = product.AddSku(
-            request.TenantId,
-            normalizedSkuCode,
-            request.Name,
-            request.GoodsNature,
-            request.Description,
-            request.Price);
+
+        await uow.Repository<Sku>().AddAsync(sku, ct);
 
         await uow.SaveChangesAsync(ct);
 
         return new CreateSkuResponse(
-            sku.Id,
-            sku.TenantId,
-            product.Id,
-            product.ProductCode,
-            product.ProductName,
-            sku.SkuCode,
-            sku.Name,
-            sku.GoodsNature,
-            sku.Description,
-            sku.ReferencePrice,
-            sku.CreatedAt,
-            sku.UpdatedAt);
+          sku.Id,
+          sku.TenantId,
+          product.Id,
+          product.ProductCode,
+          product.ProductName,
+          sku.SkuCode,
+          sku.Name,
+          sku.GoodsNature,
+          sku.Description,
+          sku.ReferencePrice,
+          sku.CreatedAt,
+          sku.UpdatedAt);
     }
 
-    private async Task<Domain.Entities.Product.Product> LoadProductAggregate(
-        Guid productId, Guid tenantId, CancellationToken ct)
+    private async Task<Domain.Entities.Product.Product> LoadProductReference(
+       Guid productId,
+       Guid tenantId,
+       CancellationToken ct)
     {
         var product = await uow.Repository<Domain.Entities.Product.Product>().Query()
-            .Include(x => x.Skus)
             .FirstOrDefaultAsync(x =>
                 x.Id == productId
                 && x.TenantId == tenantId
-                && !x.IsDeleted, ct);
+                && !x.IsDeleted,
+                ct);
 
         if (product is null)
         {
-            throw new AppException(404, "PRODUCT_NOT_FOUND", "Product not found.");
+            throw new AppException(
+                404,
+                "PRODUCT_NOT_FOUND",
+                "Product not found.");
         }
 
         return product;
     }
 
-    /// <summary>
-    /// Cross-aggregate uniqueness check.
-    /// SKU code must be unique across ALL products in a tenant,
-    /// not just within the current Product's _skus collection.
-    /// The Product aggregate root cannot enforce this invariant
-    /// because it only has visibility into its own child SKUs.
-    /// The database enforces this via a unique filtered index:
-    /// CREATE UNIQUE INDEX ON skus(TenantId, SkuCode)
-    ///     WHERE IsDeleted = false
-    /// </summary>
-    private async Task EnsureSkuCodeUnique(
-        Guid tenantId, string skuCodeUpper, CancellationToken ct)
-    {
-        var duplicateExists = await uow.Repository<Sku>().Query()
-            .AnyAsync(x =>
-                x.TenantId == tenantId
-                && !x.IsDeleted
-                && x.SkuCode.ToUpper() == skuCodeUpper, ct);
-
-        if (duplicateExists)
-        {
-            throw new AppException(409, "DUPLICATE_SKU", "SKU code already exists.");
-        }
-    }
-
-    private static string ResolveSkuCode(string? skuCode)
+    private async Task<string> ResolveSkuCode(
+       Guid tenantId,
+       string? skuCode,
+       CancellationToken ct)
     {
         if (!string.IsNullOrWhiteSpace(skuCode))
         {
-            return skuCode.Trim();
+            return skuCode.Trim().ToUpperInvariant();
         }
 
-        return $"SKU-{Guid.NewGuid():N}".Substring(0, 14).ToUpperInvariant();
+        return await sequenceCodeGenerator.NextAsync(
+            tenantId,
+            CodeSequenceTypes.Sku,
+            ct);
     }
 }

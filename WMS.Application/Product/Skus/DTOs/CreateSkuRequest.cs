@@ -1,7 +1,7 @@
 namespace WMS.Application.Product.Skus.DTOs;
 
 public sealed record CreateSkuRequest(
-    Guid ProductId,
+    Guid? ProductId,
     string SkuCode,
     string? Name = null,
     string? GoodsNature = null,

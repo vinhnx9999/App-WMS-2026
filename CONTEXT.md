@@ -9,7 +9,7 @@ A tenant is the business ownership boundary for product catalog data. Product, S
 _Avoid_: Global catalog
 
 **Product**:
-A product is the internal aggregate root that groups one or more SKUs under the same business identity. A product must have a product code, may have a name, and owns shared catalog information while variant-specific information belongs to its SKUs.
+A product is an aggregate root that represents shared catalog identity and information. A product may have one or more SKUs, but it does not own the SKU lifecycle.
 _Avoid_: Item, goods
 
 **Product Code**:
@@ -21,7 +21,7 @@ A category is a reusable business grouping assigned to a product.
 _Avoid_: SKU category
 
 **SKU**:
-A SKU is the user-facing stockable warehouse unit that operations can receive, store, count, pick, and ship. A SKU must belong to a product, must have a SKU code, may have a display name, may be assigned allowed units of measure, and may carry a reference price.
+A SKU is an aggregate root and the user-facing stockable warehouse unit that operations can receive, store, count, pick, and ship. A SKU must reference one product, must have a SKU code, may have a display name, may be assigned allowed units of measure, and may carry a reference price.
 _Avoid_: Product code, item code
 
 **Unit of Measure**:

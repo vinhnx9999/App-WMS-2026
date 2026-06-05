@@ -1,4 +1,5 @@
 ﻿using WMS.Domain.Common;
+using WMS.Domain.Extensions;
 
 namespace WMS.Domain.Entities;
 
@@ -7,11 +8,27 @@ public class Sku : BaseEntity
     private readonly List<SkuAttributeValue> _attributes = new();
     private readonly List<SkuUnitOfMeasure> _allowedUnits = new();
     private Sku() { }
-
+    private Sku(
+      Guid tenantId,
+      Guid productId,
+      string skuCode,
+      string? name,
+      string? goodsNature,
+      string? description,
+      decimal? referencePrice)
+    {
+        TenantId = tenantId;
+        ProductId = productId;
+        SkuCode = skuCode;
+        Name = name;
+        GoodsNature = goodsNature;
+        Description = description;
+        ReferencePrice = referencePrice;
+    }
     /// <summary>
     /// Product ID
     /// </summary>
-    public Guid ProductId { get; private set; }
+    public Guid? ProductId { get; private set; }
 
     /// <summary>
     /// Sku Code
@@ -50,26 +67,39 @@ public class Sku : BaseEntity
 
     #region Domain method
 
-    internal static Sku Create(Guid tenantId, Guid productId, string skuCode, string? name, string? goodsNature, string? description, decimal? referencePrice)
+    public static Sku Create(
+     Guid tenantId,
+     Guid productId,
+     string skuCode,
+     string? name,
+     string? goodsNature,
+     string? description,
+     decimal? referencePrice)
     {
-        if (referencePrice < 0)
-        {
-            throw new DomainException(
-                "INVALID_REFERENCE_PRICE",
-                "Reference price must be greater than or equal to zero.");
-        }
+        if (tenantId == Guid.Empty)
+            throw new DomainException("TenantId is required.");
 
-        return new Sku
-        {
-            TenantId = tenantId,
-            ProductId = productId,
-            SkuCode = skuCode,
-            Name = name?.Trim(),
-            GoodsNature = goodsNature?.Trim(),
-            Description = description?.Trim(),
-            ReferencePrice = referencePrice
-        };
+        if (productId == Guid.Empty)
+            throw new DomainException("ProductId is required.");
+
+        if (string.IsNullOrWhiteSpace(skuCode))
+            throw new DomainException("SKU code is required.");
+
+        if (referencePrice < 0)
+            throw new DomainException("Reference price cannot be negative.");
+
+        return new Sku(
+            tenantId,
+            productId,
+            Utilities.NormalizeSkuCode(skuCode),
+            Utilities.NormalizeNullable(name),
+            Utilities.NormalizeNullable(goodsNature),
+            Utilities.NormalizeNullable(description),
+            referencePrice);
     }
+
+
+
 
     /// <summary>
     /// Updates scalar fields of this SKU.
@@ -98,7 +128,7 @@ public class Sku : BaseEntity
         MarkDeleted(deletedBy);
     }
 
-    internal void Restore(string? updatedBy)
+    protected void Restore(string? updatedBy)
     {
         MarkRestored(updatedBy);
     }
@@ -110,7 +140,7 @@ public class Sku : BaseEntity
     /// <param name="conversionFactor"></param>
     /// <param name="updatedBy"></param>
     /// <exception cref="DomainException"></exception>
-    internal void AllowUnitOfMeasure(Guid unitOfMeasureId, string? updatedBy)
+    protected void AllowUnitOfMeasure(Guid unitOfMeasureId, string? updatedBy)
     {
         if (unitOfMeasureId == Guid.Empty)
         {
@@ -132,7 +162,7 @@ public class Sku : BaseEntity
             unitOfMeasureId: unitOfMeasureId));
     }
 
-    internal void RemoveUnitOfMeasure(Guid unitOfMeasureId, string? deletedBy)
+    protected void RemoveUnitOfMeasure(Guid unitOfMeasureId, string? deletedBy)
     {
         var allowedUnit = _allowedUnits.FirstOrDefault(x => !x.IsDeleted &&
                                          x.UnitOfMeasureId == unitOfMeasureId);

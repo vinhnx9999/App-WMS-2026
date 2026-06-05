@@ -44,6 +44,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
     public DbSet<WebhookEvent> WebhookEvents => Set<WebhookEvent>();
     public DbSet<ErpSyncLog> ErpSyncLogs => Set<ErpSyncLog>();
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<CodeSequence> CodeSequences => Set<CodeSequence>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
