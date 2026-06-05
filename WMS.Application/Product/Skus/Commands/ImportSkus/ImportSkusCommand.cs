@@ -5,6 +5,4 @@ namespace WMS.Application.Product.Skus.Commands.ImportSkus;
 
 public sealed record ImportSkusCommand(
     Guid TenantId,
-    IReadOnlyList<ImportSkuRowInput> Rows,
-    ImportSkuMode Mode,
-    bool AutoCreateMasterData) : IRequest<ImportSkusResponse>;
+    IReadOnlyList<ImportSkuRowInput> Rows) : IRequest<ImportSkusResponse>;

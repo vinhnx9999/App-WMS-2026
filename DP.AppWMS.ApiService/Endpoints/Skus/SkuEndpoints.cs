@@ -128,11 +128,6 @@ public sealed class SkuEndpoints : IEndpoint
             return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Rows cannot be empty"));
         }
 
-        if (!Enum.IsDefined(request.Mode))
-        {
-            return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Import mode is invalid"));
-        }
-
         var rows = request.Rows
             .Select(row => new ImportSkuRowInput(
                 row.RowNumber,
@@ -148,9 +143,7 @@ public sealed class SkuEndpoints : IEndpoint
 
         var result = await sender.Send(new ImportSkusCommand(
             currentUser.TenantId,
-            rows,
-            request.Mode,
-            request.AutoCreateMasterData), cancellationToken);
+            rows), cancellationToken);
 
         var response = ApiResponse<ImportSkusResponse>.Ok(result);
         return result.Errors.Count > 0
@@ -190,9 +183,7 @@ public sealed class SkuEndpoints : IEndpoint
     #endregion
 
     public sealed record ImportSkusRequest(
-        IReadOnlyList<ImportSkuRowRequest>? Rows,
-        ImportSkuMode Mode,
-        bool AutoCreateMasterData);
+        IReadOnlyList<ImportSkuRowRequest>? Rows);
 
     public sealed record ImportSkuRowRequest(
         int RowNumber,

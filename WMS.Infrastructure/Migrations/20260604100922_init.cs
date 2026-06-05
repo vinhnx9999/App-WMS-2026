@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -60,8 +59,12 @@ namespace WMS.Infrastructure.Migrations
                     Slug = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -79,12 +82,46 @@ namespace WMS.Infrastructure.Migrations
                     Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "erp_sync_logs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Provider = table.Column<string>(type: "text", nullable: false),
+                    Direction = table.Column<string>(type: "text", nullable: false),
+                    EntityType = table.Column<string>(type: "text", nullable: false),
+                    WmsEntityId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ErpDocNumber = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    RequestPayload = table.Column<string>(type: "text", nullable: true),
+                    ResponsePayload = table.Column<string>(type: "text", nullable: true),
+                    ErrorMessage = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false),
+                    NextRetryAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_erp_sync_logs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,12 +135,15 @@ namespace WMS.Infrastructure.Migrations
                     ExpectedDelivery = table.Column<DateOnly>(type: "date", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     TotalValue = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
                     Notes = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -125,12 +165,39 @@ namespace WMS.Infrastructure.Migrations
                     NextRetryAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_outbox_messages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "products",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductCode = table.Column<string>(type: "text", nullable: false),
+                    ProductName = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,8 +210,12 @@ namespace WMS.Infrastructure.Migrations
                     Permissions = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -152,23 +223,24 @@ namespace WMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "skus",
+                name: "specifications",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
-                    SkuCode = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_skus", x => x.Id);
+                    table.PrimaryKey("PK_specifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,8 +254,12 @@ namespace WMS.Infrastructure.Migrations
                     Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -203,12 +279,68 @@ namespace WMS.Infrastructure.Migrations
                     TaxNumber = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tenants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "unit_of_measures",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_unit_of_measures", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "webhook_events",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Source = table.Column<string>(type: "text", nullable: false),
+                    EventType = table.Column<string>(type: "text", nullable: false),
+                    Payload = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false),
+                    MaxRetries = table.Column<int>(type: "integer", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    NextRetryAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IdempotencyKey = table.Column<string>(type: "text", nullable: true),
+                    IpAddress = table.Column<string>(type: "text", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_webhook_events", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,8 +356,12 @@ namespace WMS.Infrastructure.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -339,6 +475,36 @@ namespace WMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "skus",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SkuCode = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    GoodsNature = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    ReferencePrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_skus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_skus_products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "products",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -360,8 +526,12 @@ namespace WMS.Infrastructure.Migrations
                     LinkedInId = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -391,8 +561,12 @@ namespace WMS.Infrastructure.Migrations
                     ZoneCode = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "text", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -401,6 +575,65 @@ namespace WMS.Infrastructure.Migrations
                         name: "FK_LocationEntity_zones_ZoneId",
                         column: x => x.ZoneId,
                         principalTable: "zones",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sku_specifications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SkuId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AttributeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false),
+                    SkuAttributeId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sku_specifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_sku_specifications_skus_SkuId",
+                        column: x => x.SkuId,
+                        principalTable: "skus",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_sku_specifications_specifications_SkuAttributeId",
+                        column: x => x.SkuAttributeId,
+                        principalTable: "specifications",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sku_unit_of_measures",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SkuId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UnitOfMeasureId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sku_unit_of_measures", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_sku_unit_of_measures_skus_SkuId",
+                        column: x => x.SkuId,
+                        principalTable: "skus",
                         principalColumn: "Id");
                 });
 
@@ -420,8 +653,12 @@ namespace WMS.Infrastructure.Migrations
                     IpAddress = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -446,12 +683,15 @@ namespace WMS.Infrastructure.Migrations
                     Status = table.Column<int>(type: "integer", nullable: false),
                     TotalValue = table.Column<decimal>(type: "numeric", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatorId = table.Column<Guid>(type: "uuid", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -486,8 +726,12 @@ namespace WMS.Infrastructure.Migrations
                     UserAgent = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -522,8 +766,12 @@ namespace WMS.Infrastructure.Migrations
                     LocationName = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -557,8 +805,12 @@ namespace WMS.Infrastructure.Migrations
                     Note = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -589,8 +841,12 @@ namespace WMS.Infrastructure.Migrations
                     Note = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -652,6 +908,11 @@ namespace WMS.Infrastructure.Migrations
                 column: "DeletedAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_audit_logs_IsDeleted",
+                table: "audit_logs",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_audit_logs_TenantId",
                 table: "audit_logs",
                 column: "TenantId");
@@ -665,6 +926,11 @@ namespace WMS.Infrastructure.Migrations
                 name: "IX_categories_DeletedAt",
                 table: "categories",
                 column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_categories_IsDeleted",
+                table: "categories",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_categories_TenantId",
@@ -683,8 +949,28 @@ namespace WMS.Infrastructure.Migrations
                 column: "DeletedAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_customers_IsDeleted",
+                table: "customers",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_customers_TenantId",
                 table: "customers",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_erp_sync_logs_DeletedAt",
+                table: "erp_sync_logs",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_erp_sync_logs_IsDeleted",
+                table: "erp_sync_logs",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_erp_sync_logs_TenantId",
+                table: "erp_sync_logs",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
@@ -703,6 +989,11 @@ namespace WMS.Infrastructure.Migrations
                 column: "InventoryItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_inbound_items_IsDeleted",
+                table: "inbound_items",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_inbound_items_TenantId",
                 table: "inbound_items",
                 column: "TenantId");
@@ -716,6 +1007,11 @@ namespace WMS.Infrastructure.Migrations
                 name: "IX_inbound_orders_DeletedAt",
                 table: "inbound_orders",
                 column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_inbound_orders_IsDeleted",
+                table: "inbound_orders",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_inbound_orders_OrderNumber",
@@ -737,6 +1033,11 @@ namespace WMS.Infrastructure.Migrations
                 name: "IX_inventory_items_DeletedAt",
                 table: "inventory_items",
                 column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_inventory_items_IsDeleted",
+                table: "inventory_items",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_inventory_items_LocationId",
@@ -780,6 +1081,11 @@ namespace WMS.Infrastructure.Migrations
                 column: "InventoryItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_outbound_items_IsDeleted",
+                table: "outbound_items",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_outbound_items_OutboundOrderId",
                 table: "outbound_items",
                 column: "OutboundOrderId");
@@ -793,6 +1099,11 @@ namespace WMS.Infrastructure.Migrations
                 name: "IX_outbound_orders_DeletedAt",
                 table: "outbound_orders",
                 column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_outbound_orders_IsDeleted",
+                table: "outbound_orders",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_outbound_orders_ShipmentNumber",
@@ -811,9 +1122,35 @@ namespace WMS.Infrastructure.Migrations
                 column: "DeletedAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_outbox_messages_IsDeleted",
+                table: "outbox_messages",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_outbox_messages_TenantId",
                 table: "outbox_messages",
                 column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_products_DeletedAt",
+                table: "products",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_products_IsDeleted",
+                table: "products",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_products_TenantId",
+                table: "products",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_products_TenantId_ProductCode",
+                table: "products",
+                columns: new[] { "TenantId", "ProductCode" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_refresh_tokens_DeletedAt",
@@ -824,6 +1161,11 @@ namespace WMS.Infrastructure.Migrations
                 name: "IX_refresh_tokens_ExpiresAt",
                 table: "refresh_tokens",
                 column: "ExpiresAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_refresh_tokens_IsDeleted",
+                table: "refresh_tokens",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_refresh_tokens_Jti",
@@ -852,8 +1194,58 @@ namespace WMS.Infrastructure.Migrations
                 column: "DeletedAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_roles_IsDeleted",
+                table: "roles",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_roles_TenantId",
                 table: "roles",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_specifications_DeletedAt",
+                table: "sku_specifications",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_specifications_IsDeleted",
+                table: "sku_specifications",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_specifications_SkuAttributeId",
+                table: "sku_specifications",
+                column: "SkuAttributeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_specifications_SkuId",
+                table: "sku_specifications",
+                column: "SkuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_specifications_TenantId",
+                table: "sku_specifications",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_unit_of_measures_DeletedAt",
+                table: "sku_unit_of_measures",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_unit_of_measures_IsDeleted",
+                table: "sku_unit_of_measures",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_unit_of_measures_SkuId",
+                table: "sku_unit_of_measures",
+                column: "SkuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_sku_unit_of_measures_TenantId",
+                table: "sku_unit_of_measures",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
@@ -862,14 +1254,24 @@ namespace WMS.Infrastructure.Migrations
                 column: "DeletedAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_skus_IsDeleted",
+                table: "skus",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_skus_ProductId",
+                table: "skus",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_skus_TenantId",
                 table: "skus",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_skus_TenantId_CategoryId",
+                name: "IX_skus_TenantId_ProductId",
                 table: "skus",
-                columns: new[] { "TenantId", "CategoryId" });
+                columns: new[] { "TenantId", "ProductId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_skus_TenantId_SkuCode",
@@ -878,9 +1280,29 @@ namespace WMS.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_specifications_DeletedAt",
+                table: "specifications",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_specifications_IsDeleted",
+                table: "specifications",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_specifications_TenantId",
+                table: "specifications",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_suppliers_DeletedAt",
                 table: "suppliers",
                 column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_suppliers_IsDeleted",
+                table: "suppliers",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_suppliers_TenantId",
@@ -893,8 +1315,28 @@ namespace WMS.Infrastructure.Migrations
                 column: "DeletedAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tenants_IsDeleted",
+                table: "tenants",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tenants_TenantId",
                 table: "tenants",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_unit_of_measures_DeletedAt",
+                table: "unit_of_measures",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_unit_of_measures_IsDeleted",
+                table: "unit_of_measures",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_unit_of_measures_TenantId",
+                table: "unit_of_measures",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
@@ -932,6 +1374,11 @@ namespace WMS.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_users_IsDeleted",
+                table: "users",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_users_LinkedInId",
                 table: "users",
                 column: "LinkedInId",
@@ -966,9 +1413,29 @@ namespace WMS.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_webhook_events_DeletedAt",
+                table: "webhook_events",
+                column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_webhook_events_IsDeleted",
+                table: "webhook_events",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_webhook_events_TenantId",
+                table: "webhook_events",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_zones_DeletedAt",
                 table: "zones",
                 column: "DeletedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_zones_IsDeleted",
+                table: "zones",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_zones_TenantId",
@@ -1010,6 +1477,9 @@ namespace WMS.Infrastructure.Migrations
                 name: "customers");
 
             migrationBuilder.DropTable(
+                name: "erp_sync_logs");
+
+            migrationBuilder.DropTable(
                 name: "inbound_items");
 
             migrationBuilder.DropTable(
@@ -1020,6 +1490,18 @@ namespace WMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "refresh_tokens");
+
+            migrationBuilder.DropTable(
+                name: "sku_specifications");
+
+            migrationBuilder.DropTable(
+                name: "sku_unit_of_measures");
+
+            migrationBuilder.DropTable(
+                name: "unit_of_measures");
+
+            migrationBuilder.DropTable(
+                name: "webhook_events");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -1035,6 +1517,9 @@ namespace WMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "outbound_orders");
+
+            migrationBuilder.DropTable(
+                name: "specifications");
 
             migrationBuilder.DropTable(
                 name: "suppliers");
@@ -1056,6 +1541,9 @@ namespace WMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "zones");
+
+            migrationBuilder.DropTable(
+                name: "products");
         }
     }
 }

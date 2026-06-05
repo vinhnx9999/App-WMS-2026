@@ -16,9 +16,13 @@ public abstract class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguratio
     protected virtual void ConfigureBase(EntityTypeBuilder<TEntity> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.CreatedAt);
-        builder.Property(e => e.UpdatedAt);
         builder.Property(e => e.TenantId).IsRequired();
+        builder.Property(e => e.CreatedAt);
+        builder.Property(e => e.CreatedBy).HasMaxLength(100);
+        builder.Property(e => e.UpdatedAt);
+        builder.Property(e => e.UpdatedBy).HasMaxLength(100);
+        builder.Property(e => e.DeletedAt);
+        builder.Property(e => e.DeletedBy).HasMaxLength(100);
         builder.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
 
         builder.HasIndex(e => e.TenantId);

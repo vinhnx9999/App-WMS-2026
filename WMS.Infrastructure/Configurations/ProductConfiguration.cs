@@ -14,9 +14,9 @@ public class ProductConfiguration : BaseEntityConfiguration<Product>
             .IsUnique();
 
         builder.HasMany(x => x.Skus)
-            .WithOne()
-            .HasForeignKey(x => x.ProductId)
-            .OnDelete(DeleteBehavior.Restrict);
+                 .WithOne()
+                 .HasForeignKey(x => x.ProductId)
+                 .OnDelete(DeleteBehavior.NoAction);
 
         builder.Navigation(x => x.Skus)
             .UsePropertyAccessMode(PropertyAccessMode.Field);

@@ -54,7 +54,7 @@ public class Product : BaseEntity
     }
 
 
-    internal void Delete(string? deletedBy = null)
+    public void Delete(string? deletedBy = null)
     {
         if (_skus.Any(x => !x.IsDeleted))
         {
@@ -65,7 +65,7 @@ public class Product : BaseEntity
         MarkDeleted(deletedBy);
     }
 
-    internal void Restore(string? restoredBy = null)
+    public void Restore(string? restoredBy = null)
     {
         if (!IsDeleted)
             throw new DomainException(

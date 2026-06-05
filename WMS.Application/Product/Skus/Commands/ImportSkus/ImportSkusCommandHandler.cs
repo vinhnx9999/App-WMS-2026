@@ -19,11 +19,11 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
         var candidateRows = RowsWithoutErrors(validationResult.Rows, errors);
         var masterData = candidateRows.Count == 0
             ? new ImportSkuMasterData([], [], [], [], [], [])
-            : await ValidateAgainstDatabaseAsync(request.TenantId, candidateRows, request.AutoCreateMasterData, errors, ct);
+            : await ValidateAgainstDatabaseAsync(request.TenantId, candidateRows, errors, ct);
 
         var rowsToInsert = RowsWithoutErrors(candidateRows, errors);
 
-        if (request.Mode == ImportSkuMode.ValidateOnly || rowsToInsert.Count == 0)
+        if (rowsToInsert.Count == 0)
         {
             return new ImportSkusResponse(
                 totalRows,
@@ -52,7 +52,6 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
     private async Task<ImportSkuMasterData> ValidateAgainstDatabaseAsync(
         Guid tenantId,
         IReadOnlyList<ImportSkuRowInput> rows,
-        bool autoCreateMasterData,
         List<ImportSkuRowErrorResponse> errors,
         CancellationToken ct)
     {
@@ -75,7 +74,6 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             rows.Select(x => x.CategoryName),
             x => x.Name,
             name => Category.Create(tenantId, name),
-            autoCreateMasterData,
             ct);
 
         var specifications = await ResolveMasterDataAsync<SkuAttribute>(
@@ -83,7 +81,6 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             rows.Select(x => x.SpecificationCode),
             x => x.Code,
             code => SkuAttribute.Create(tenantId, code, code),
-            autoCreateMasterData,
             ct);
 
         var unitOfMeasures = await ResolveMasterDataAsync<UnitOfMeasure>(
@@ -91,15 +88,7 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
             rows.Select(x => x.UnitOfMeasureCode),
             x => x.Code,
             code => UnitOfMeasure.Create(tenantId, code, code, null),
-            autoCreateMasterData,
             ct);
-
-        if (!autoCreateMasterData)
-        {
-            AddMissingMasterDataErrors(rows, categories.Entities, x => x.CategoryName, nameof(ImportSkuRowInput.CategoryName), "CATEGORY_NOT_FOUND", "Category not found", errors);
-            AddMissingMasterDataErrors(rows, specifications.Entities, x => x.SpecificationCode, nameof(ImportSkuRowInput.SpecificationCode), "SPECIFICATION_NOT_FOUND", "Specification not found", errors);
-            AddMissingMasterDataErrors(rows, unitOfMeasures.Entities, x => x.UnitOfMeasureCode, nameof(ImportSkuRowInput.UnitOfMeasureCode), "UNIT_OF_MEASURE_NOT_FOUND", "Unit of measure not found", errors);
-        }
 
         return new ImportSkuMasterData(
             categories.Entities,
@@ -115,7 +104,6 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
         IEnumerable<string?> values,
         System.Linq.Expressions.Expression<Func<TEntity, string>> field,
         Func<string, TEntity> createEntity,
-        bool autoCreateMasterData,
         CancellationToken ct)
         where TEntity : BaseEntity
     {
@@ -136,11 +124,6 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
 
         var entitiesByValue = existingEntities.ToDictionary(field.Compile(), StringComparer.OrdinalIgnoreCase);
         var entitiesToCreate = new List<TEntity>();
-
-        if (!autoCreateMasterData)
-        {
-            return new ResolvedMasterData<TEntity>(entitiesByValue, entitiesToCreate);
-        }
 
         foreach (var value in normalizedValues.Where(x => !entitiesByValue.ContainsKey(x)))
         {
@@ -228,10 +211,9 @@ public sealed class ImportSkusCommandHandler(IUnitOfWork uow) : IRequestHandler<
                             product.AllowSkuUnitOfMeasure(sku.Id, uomId, updatedBy: null);
                         }
                     }
-
-                    await uow.SaveChangesAsync(ct);
                 }
 
+                await uow.SaveChangesAsync(ct);
                 await uow.CommitAsync(ct);
                 insertedRows += group.Count();
             }

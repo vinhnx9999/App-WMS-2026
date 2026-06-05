@@ -18,27 +18,24 @@ public sealed class ImportSkusCommandHandlerTests
     private static readonly Guid TenantId = Guid.NewGuid();
 
     [Fact]
-    public async Task Handle_ValidateOnlyWithValidRows_ShouldNotInsertSkus()
+    public async Task Handle_WithOnlyInvalidRows_ShouldReturnErrorsWithoutInsertingSkus()
     {
         await using var context = CreateContext();
-        await SeedMasterDataAsync(context);
         var handler = CreateHandler(context);
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow()],
-            ImportSkuMode.ValidateOnly,
-            false), CancellationToken.None);
+            [ValidRow(productCode: " ")]), CancellationToken.None);
 
         result.TotalRows.Should().Be(1);
         result.InsertedRows.Should().Be(0);
-        result.FailedRows.Should().Be(0);
-        result.Errors.Should().BeEmpty();
+        result.FailedRows.Should().Be(1);
+        result.Errors.Should().ContainSingle(x => x.Code == "PRODUCT_CODE_REQUIRED" && x.Field == nameof(ImportSkuRowInput.ProductCode));
         context.Skus.Should().BeEmpty();
     }
 
     [Fact]
-    public async Task Handle_InsertWithValidRows_ShouldCreateProductAndSkusThroughAggregate()
+    public async Task Handle_WithValidRows_ShouldCreateProductAndSkusThroughAggregate()
     {
         await using var context = CreateContext();
         await SeedMasterDataAsync(context);
@@ -46,9 +43,7 @@ public sealed class ImportSkusCommandHandlerTests
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow()],
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
+            [ValidRow()]), CancellationToken.None);
 
         result.TotalRows.Should().Be(1);
         result.InsertedRows.Should().Be(1);
@@ -81,17 +76,14 @@ public sealed class ImportSkusCommandHandlerTests
         await using var context = CreateContext();
         await SeedMasterDataAsync(context);
         var product = Product.Create(TenantId, "PROD-EXISTING", "Existing Product");
-        context.Set<Product>().Add(product);
-        await context.SaveChangesAsync();
         product.AddSku(TenantId, "SKU-001", "Existing", null, null, null);
+        context.Set<Product>().Add(product);
         await context.SaveChangesAsync();
         var handler = CreateHandler(context);
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow()],
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
+            [ValidRow()]), CancellationToken.None);
 
         result.InsertedRows.Should().Be(0);
         result.FailedRows.Should().Be(1);
@@ -107,9 +99,7 @@ public sealed class ImportSkusCommandHandlerTests
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow(productCode: " ")],
-            ImportSkuMode.Insert,
-            true), CancellationToken.None);
+            [ValidRow(productCode: " ")]), CancellationToken.None);
 
         result.InsertedRows.Should().Be(0);
         result.FailedRows.Should().Be(1);
@@ -118,35 +108,14 @@ public sealed class ImportSkusCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenCategoryMissingAndAutoCreateDisabled_ShouldReturnRowError()
-    {
-        await using var context = CreateContext();
-        await SeedSpecificationAndUomAsync(context);
-        var handler = CreateHandler(context);
-
-        var result = await handler.Handle(new ImportSkusCommand(
-            TenantId,
-            [ValidRow()],
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
-
-        result.InsertedRows.Should().Be(0);
-        result.FailedRows.Should().Be(1);
-        result.Errors.Should().ContainSingle(x => x.Code == "CATEGORY_NOT_FOUND" && x.Field == nameof(ImportSkuRowInput.CategoryName));
-        context.Skus.Should().BeEmpty();
-    }
-
-    [Fact]
-    public async Task Handle_WhenAutoCreateMasterDataEnabled_ShouldCreateMasterDataProductAndSkus()
+    public async Task Handle_WhenMasterDataMissing_ShouldCreateMasterDataProductAndSkus()
     {
         await using var context = CreateContext();
         var handler = CreateHandler(context);
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow()],
-            ImportSkuMode.Insert,
-            true), CancellationToken.None);
+            [ValidRow()]), CancellationToken.None);
 
         result.InsertedRows.Should().Be(1);
         result.FailedRows.Should().Be(0);
@@ -166,9 +135,7 @@ public sealed class ImportSkusCommandHandlerTests
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow(skuCode: " ")],
-            ImportSkuMode.Insert,
-            true), CancellationToken.None);
+            [ValidRow(skuCode: " ")]), CancellationToken.None);
 
         result.InsertedRows.Should().Be(0);
         result.FailedRows.Should().Be(1);
@@ -184,9 +151,7 @@ public sealed class ImportSkusCommandHandlerTests
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            [ValidRow(conversionFactor: 0)],
-            ImportSkuMode.Insert,
-            true), CancellationToken.None);
+            [ValidRow(conversionFactor: 0)]), CancellationToken.None);
 
         result.InsertedRows.Should().Be(0);
         result.FailedRows.Should().Be(1);
@@ -206,9 +171,7 @@ public sealed class ImportSkusCommandHandlerTests
             [
                 ValidRow(1, productCode: "PROD-A", skuCode: "SKU-A"),
                 ValidRow(2, productCode: "PROD-B", skuCode: " ")
-            ],
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
+            ]), CancellationToken.None);
 
         result.InsertedRows.Should().Be(1);
         result.FailedRows.Should().Be(1);
@@ -224,18 +187,16 @@ public sealed class ImportSkusCommandHandlerTests
         await SeedMasterDataAsync(context);
         var handler = CreateHandler(context);
         var rows = Enumerable.Range(1, SkuImportDefaults.BatchSize + 1)
-            .Select(i => ValidRow(i, productCode: "PROD-BATCH", skuCode: $"SKU-{i:D3}"))
+            .Select(i => ValidRow(i, productCode: "PROD-BATCH", skuCode: $"SKU-{i:D3}", specificationCode: null, unitOfMeasureCode: null, conversionFactor: null))
             .ToList();
 
         var result = await handler.Handle(new ImportSkusCommand(
             TenantId,
-            rows,
-            ImportSkuMode.Insert,
-            false), CancellationToken.None);
+            rows), CancellationToken.None);
 
+        result.Errors.Should().BeEmpty(string.Join(Environment.NewLine, result.Errors.Select(x => $"{x.RowNumber}:{x.Code}:{x.Message}")));
         result.InsertedRows.Should().Be(SkuImportDefaults.BatchSize + 1);
         result.FailedRows.Should().Be(0);
-        result.Errors.Should().BeEmpty();
         context.Set<Product>().Should().ContainSingle(x => x.ProductCode == "PROD-BATCH");
         context.Skus.Should().HaveCount(SkuImportDefaults.BatchSize + 1);
     }

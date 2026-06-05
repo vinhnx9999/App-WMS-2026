@@ -13,10 +13,6 @@ public sealed class ImportSkusCommandValidator : AbstractValidator<ImportSkusCom
             .NotEmpty()
             .WithMessage("Rows cannot be empty");
 
-        RuleFor(x => x.Mode)
-            .IsInEnum()
-            .WithMessage("Import mode is invalid");
-
         RuleForEach(x => x.Rows)
             .ChildRules(row =>
             {
