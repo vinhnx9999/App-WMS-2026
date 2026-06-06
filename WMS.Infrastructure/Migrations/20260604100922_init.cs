@@ -497,11 +497,6 @@ namespace WMS.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_skus", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_skus_products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "products",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1259,11 +1254,6 @@ namespace WMS.Infrastructure.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_skus_ProductId",
-                table: "skus",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_skus_TenantId",
                 table: "skus",
                 column: "TenantId");
@@ -1277,7 +1267,8 @@ namespace WMS.Infrastructure.Migrations
                 name: "IX_skus_TenantId_SkuCode",
                 table: "skus",
                 columns: new[] { "TenantId", "SkuCode" },
-                unique: true);
+                unique: true,
+                filter: "\"IsDeleted\" = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_specifications_DeletedAt",

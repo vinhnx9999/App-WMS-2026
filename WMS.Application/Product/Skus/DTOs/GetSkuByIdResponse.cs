@@ -3,8 +3,8 @@ namespace WMS.Application.Product.Skus.DTOs;
 public sealed record GetSkuByIdResponse(
     Guid Id,
     Guid TenantId,
-    Guid ProductId,
-    string ProductCode,
+    Guid? ProductId,
+    string? ProductCode,
     string? ProductName,
     string SkuCode,
     string? Name,

@@ -42,8 +42,8 @@ namespace WMS.Domain.Entities
 
         public string Next()
         {
-            if (!IsDeleted)
-                throw new DomainException("Code sequence is inactive.");
+            if (IsDeleted)
+                throw new DomainException("CONFIGURATION_ERROR", "Code sequence is inactive.");
 
             CurrentNumber++;
 

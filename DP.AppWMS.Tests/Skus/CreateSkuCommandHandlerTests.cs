@@ -1,7 +1,10 @@
 using FluentAssertions;
+using Moq;
 using WMS.Application.Common.Models;
+using WMS.Application.Common.Service;
 using WMS.Application.Product.Skus.Commands.CreateSku;
 using WMS.Application.Product.Skus.Validators;
+using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 using WMS.Infrastructure.Persistence;
 
@@ -60,7 +63,7 @@ public sealed class CreateSkuCommandHandlerTests : BaseSkuHandlerTest
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
         var product = Product.Create(TenantA, "PROD-001", "Test Product");
         db.Set<Product>().Add(product);
-        var existingSku = product.AddSku(TenantA, "ABC", "Existing SKU", null, null, 0m);
+        var existingSku = Sku.Create(TenantA, product.Id, "ABC", "Existing SKU", null, null, 0m);
         db.Skus.Add(existingSku);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -81,7 +84,7 @@ public sealed class CreateSkuCommandHandlerTests : BaseSkuHandlerTest
         var productA = Product.Create(TenantA, "PROD-001", "Product A");
         var productB = Product.Create(TenantB, "PROD-002", "Product B");
         db.Set<Product>().AddRange(productA, productB);
-        var otherSku = productB.AddSku(TenantB, "ABC", "Other tenant SKU", null, null, 0m);
+        var otherSku = Sku.Create(TenantB, productB.Id, "ABC", "Other tenant SKU", null, null, 0m);
         db.Skus.Add(otherSku);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -89,7 +92,7 @@ public sealed class CreateSkuCommandHandlerTests : BaseSkuHandlerTest
             new CreateSkuCommand(TenantA, productA.Id, "abc", "Test SKU"),
             TestContext.Current.CancellationToken);
 
-        result.SkuCode.Should().Be("abc");
+        result.SkuCode.Should().Be("ABC");
         result.TenantId.Should().Be(TenantA);
     }
 
@@ -102,15 +105,16 @@ public sealed class CreateSkuCommandHandlerTests : BaseSkuHandlerTest
         var product = Product.Create(TenantA, "PROD-001", "Test Product");
         db.Set<Product>().Add(product);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var deletedSku = product.AddSku(TenantA, "ABC", "Deleted SKU", null, null, 0m);
+        var deletedSku = Sku.Create(TenantA, product.Id, "ABC", "Deleted SKU", null, null, 0m);
         deletedSku.MarkDeleted();
+        db.Skus.Add(deletedSku);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var result = await CreateCreateHandler(db).Handle(
             new CreateSkuCommand(TenantA, product.Id, "abc", "Test SKU"),
             TestContext.Current.CancellationToken);
 
-        result.SkuCode.Should().Be("abc");
+        result.SkuCode.Should().Be("ABC");
         db.Skus.Count(x => x.TenantId == TenantA && !x.IsDeleted).Should().Be(1);
     }
 
@@ -162,13 +166,12 @@ public sealed class CreateSkuCommandHandlerTests : BaseSkuHandlerTest
     }
 
     [Fact]
-    public void Validator_WhenSkuCodeWhitespace_ShouldFail()
+    public void Validator_WhenSkuCodeWhitespace_ShouldPass()
     {
         var result = new CreateSkuCommandValidator().Validate(
             new CreateSkuCommand(TenantA, Guid.NewGuid(), "   "));
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(x => x.PropertyName == "SkuCode");
+        result.IsValid.Should().BeTrue();
     }
 
     [Fact]
@@ -183,6 +186,11 @@ public sealed class CreateSkuCommandHandlerTests : BaseSkuHandlerTest
 
     private static CreateSkuCommandHandler CreateCreateHandler(WmsDbContext db)
     {
-        return new CreateSkuCommandHandler(CreateUnitOfWork(db));
+        var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
+        sequenceCodeGenerator
+            .Setup(x => x.NextAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync("SKU-GENERATED");
+
+        return new CreateSkuCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.CreateSku;
 using WMS.Application.Product.Skus.Commands.DeleteSku;
-using WMS.Application.Product.Skus.Commands.ImportSkus;
 using WMS.Application.Product.Skus.Commands.UpdateSku;
 using WMS.Application.Product.Skus.DTOs;
 using WMS.Application.Product.Skus.Queries.GetSkuById;
@@ -61,7 +60,7 @@ public sealed class SkuEndpoints : IEndpoint
     private async Task<IResult> SearchSkus(
            [FromQuery] string? search,
            [FromQuery] Guid? categoryId,
-           [FromQuery] Guid? productID,
+           [FromQuery] Guid? productId,
            [FromQuery] int page,
            [FromQuery] int limit,
            ISender sender,
@@ -72,7 +71,7 @@ public sealed class SkuEndpoints : IEndpoint
             currentUser.TenantId,
             search,
             categoryId,
-            productID,
+            productId,
             page,
             limit
            ), cancellationToken);
@@ -97,9 +96,14 @@ public sealed class SkuEndpoints : IEndpoint
         ICurrentUser currentUser,
         CancellationToken cancellationToken)
     {
+        if (request.ProductId is null || request.ProductId == Guid.Empty)
+        {
+            return Results.BadRequest(ApiResponse<CreateSkuResponse>.Fail("ProductId is required."));
+        }
+
         var result = await sender.Send(new CreateSkuCommand(
             currentUser.TenantId,
-            request.ProductId,
+            request.ProductId.Value,
             request.SkuCode,
             request.Name,
             request.GoodsNature,
@@ -112,43 +116,13 @@ public sealed class SkuEndpoints : IEndpoint
             ApiResponse<CreateSkuResponse>.Ok(result));
     }
 
-    private async Task<IResult> ImportSkus(
+    private Task<IResult> ImportSkus(
         [FromBody] ImportSkusRequest? request,
         ISender sender,
         ICurrentUser currentUser,
         CancellationToken cancellationToken)
     {
-        if (request is null)
-        {
-            return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Request body is required"));
-        }
-
-        if (request.Rows is null || request.Rows.Count == 0)
-        {
-            return Results.BadRequest(ApiResponse<ImportSkusResponse>.Fail("Rows cannot be empty"));
-        }
-
-        var rows = request.Rows
-            .Select(row => new ImportSkuRowInput(
-                row.RowNumber,
-                row.ProductCode,
-                row.SkuCode,
-                row.SkuName,
-                row.CategoryName,
-                row.GoodsNature,
-                row.SpecificationCode,
-                row.UnitOfMeasureCode,
-                row.ConversionFactor))
-            .ToList();
-
-        var result = await sender.Send(new ImportSkusCommand(
-            currentUser.TenantId,
-            rows), cancellationToken);
-
-        var response = ApiResponse<ImportSkusResponse>.Ok(result);
-        return result.Errors.Count > 0
-            ? Results.BadRequest(response)
-            : Results.Ok(response);
+        return Task.FromResult<IResult>(Results.NotFound(ApiResponse<ImportSkusResponse>.Fail("SKU import is not available.")));
     }
 
     private async Task<IResult> UpdateSku(

@@ -10,6 +10,7 @@ using WMS.Application.Auth.Services;
 using WMS.Application.Auth.Services.AuthProvider;
 using WMS.Application.Auth.Services.TokenRevocation;
 using WMS.Application.BackgroundJobs;
+using WMS.Application.Common.Service;
 using WMS.Application.Inbound.Services;
 using WMS.Application.Inventory.Services;
 using WMS.Application.OdooIntegration.OdooInboundSync;
@@ -74,8 +75,10 @@ public static class DependencyInjection
 
         // Repositories & UoW
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<ICodeSequenceRepository, CodeSequenceRepository>();
         //services.AddScoped<ITransaction, EfTransaction>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ISequenceCodeGenerator, SequenceCodeGenerator>();
 
         services.AddScoped<IDashboardNotifier, DashboardNotifier>();
 

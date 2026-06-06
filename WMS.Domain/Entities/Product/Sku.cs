@@ -91,7 +91,7 @@ public class Sku : BaseEntity
         return new Sku(
             tenantId,
             productId,
-            Utilities.NormalizeSkuCode(skuCode),
+            Utilities.NormalizeCode(skuCode),
             Utilities.NormalizeNullable(name),
             Utilities.NormalizeNullable(goodsNature),
             Utilities.NormalizeNullable(description),
@@ -123,7 +123,7 @@ public class Sku : BaseEntity
         ReferencePrice = referencePrice;
     }
 
-    internal void Delete(string? deletedBy)
+    public void Delete(string? deletedBy = null)
     {
         MarkDeleted(deletedBy);
     }

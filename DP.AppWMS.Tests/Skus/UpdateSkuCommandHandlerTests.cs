@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.UpdateSku;
 using WMS.Application.Product.Skus.Validators;
-using WMS.Domain.Entities.Product;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;
@@ -19,20 +18,16 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", "Electronic", "Desc", 10m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", "Desc", 10m, ct: TestContext.Current.CancellationToken);
 
         await CreateUpdateHandler(db).Handle(
             new UpdateSkuCommand(TenantA, sku.Id),
             TestContext.Current.CancellationToken);
 
         var updated = await db.Skus.SingleAsync(x => x.Id == sku.Id, TestContext.Current.CancellationToken);
-        updated.Name.Should().Be("Phone");
-        updated.Description.Should().Be("Desc");
-        updated.ReferencePrice.Should().Be(10m);
+        updated.Name.Should().BeNull();
+        updated.Description.Should().BeNull();
+        updated.ReferencePrice.Should().BeNull();
     }
 
     [Fact]
@@ -56,11 +51,7 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantB, "PROD-001", "Other Tenant Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantB, "SKU-001", "Phone", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantB, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
 
         var act = () => CreateUpdateHandler(db).Handle(
             new UpdateSkuCommand(TenantA, sku.Id, Name: "Phone"),
@@ -76,10 +67,7 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
         sku.MarkDeleted();
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -97,17 +85,15 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
+        var productId = sku.ProductId;
 
         await CreateUpdateHandler(db).Handle(
             new UpdateSkuCommand(TenantA, sku.Id, "  Tablet  ", "  Electronic  ", "  New desc  ", 25.5m),
             TestContext.Current.CancellationToken);
 
         var updated = await db.Skus.SingleAsync(x => x.Id == sku.Id, TestContext.Current.CancellationToken);
+        updated.ProductId.Should().Be(productId);
         updated.Name.Should().Be("Tablet");
         updated.GoodsNature.Should().Be("Electronic");
         updated.Description.Should().Be("New desc");
@@ -120,11 +106,7 @@ public sealed class UpdateSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, "Desc", 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", "Desc", ct: TestContext.Current.CancellationToken);
 
         await CreateUpdateHandler(db).Handle(
             new UpdateSkuCommand(TenantA, sku.Id, Description: "   "),

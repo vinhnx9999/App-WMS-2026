@@ -10,33 +10,24 @@ public sealed class UpdateSkuCommandHandler(IUnitOfWork uow) : IRequestHandler<U
 {
     public async Task Handle(UpdateSkuCommand request, CancellationToken ct)
     {
-        var product = await LoadProductAggregate(request.Id, request.TenantId, ct);
+        var sku = await uow.Repository<Sku>().Query()
+            .FirstOrDefaultAsync(x =>
+                x.Id == request.Id
+                && x.TenantId == request.TenantId
+                && !x.IsDeleted,
+                ct);
 
-        product.UpdateSku(
-            request.Id,
+        if (sku is null)
+        {
+            throw new AppException(404, "NOT_FOUND", "SKU not found.");
+        }
+
+        sku.Update(
             request.Name,
             request.GoodsNature,
             request.Description,
             request.Price);
 
         await uow.SaveChangesAsync(ct);
-    }
-
-    private async Task<Domain.Entities.Product.Product> LoadProductAggregate(
-        Guid skuId, Guid tenantId, CancellationToken ct)
-    {
-        var product = await uow.Repository<Domain.Entities.Product.Product>().Query()
-            .Include(x => x.Skus)
-            .FirstOrDefaultAsync(x =>
-                x.TenantId == tenantId
-                && !x.IsDeleted
-                && x.Skus.Any(s => s.Id == skuId && !s.IsDeleted), ct);
-
-        if (product is null)
-        {
-            throw new AppException(404, "NOT_FOUND", "SKU not found.");
-        }
-
-        return product;
     }
 }

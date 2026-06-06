@@ -12,20 +12,25 @@ public sealed class GetSkuByIdQueryHandler(IUnitOfWork uow)
 {
     public async Task<GetSkuByIdResponse> Handle(GetSkuByIdQuery request, CancellationToken ct)
     {
+        var skus = uow.Repository<Sku>().Query().AsNoTracking()
+            .Where(x =>
+                x.Id == request.Id
+                && x.TenantId == request.TenantId
+                && !x.IsDeleted);
+
+        var products = uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking()
+            .Where(x => x.TenantId == request.TenantId && !x.IsDeleted);
+
         var result = await (
-                from sku in uow.Repository<Sku>().Query().AsNoTracking()
-                where sku.Id == request.Id
-                      && sku.TenantId == request.TenantId
-                      && sku.DeletedAt == null
-                join product in uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking()
-                    on sku.ProductId equals product.Id
-                where !product.IsDeleted
+                from sku in skus
+                join product in products on sku.ProductId equals product.Id into productJoin
+                from product in productJoin.DefaultIfEmpty()
                 select new GetSkuByIdResponse(
                     sku.Id,
                     sku.TenantId,
-                    product.Id,
-                    product.ProductCode,
-                    product.ProductName,
+                    product != null ? product.Id : null,
+                    product != null ? product.ProductCode : null,
+                    product != null ? product.ProductName : null,
                     sku.SkuCode,
                     sku.Name,
                     sku.GoodsNature,

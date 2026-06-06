@@ -1611,14 +1611,13 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("TenantId");
 
                     b.HasIndex("TenantId", "ProductId");
 
                     b.HasIndex("TenantId", "SkuCode")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"IsDeleted\" = 0");
 
                     b.ToTable("skus", (string)null);
                 });
@@ -2087,15 +2086,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Navigation("Tenant");
                 });
 
-            modelBuilder.Entity("WMS.Domain.Entities.Sku", b =>
-                {
-                    b.HasOne("WMS.Domain.Entities.Product.Product", null)
-                        .WithMany("Skus")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WMS.Domain.Entities.SkuAttributeValue", b =>
                 {
                     b.HasOne("WMS.Domain.Entities.SkuAttribute", null)
@@ -2138,11 +2128,6 @@ namespace WMS.Infrastructure.Migrations
             modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundOrder", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("WMS.Domain.Entities.Product.Product", b =>
-                {
-                    b.Navigation("Skus");
                 });
 
             modelBuilder.Entity("WMS.Domain.Entities.Security.Role", b =>

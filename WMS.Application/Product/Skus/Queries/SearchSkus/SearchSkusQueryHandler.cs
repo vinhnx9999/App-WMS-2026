@@ -15,29 +15,30 @@ public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
         var page = Math.Max(request.Page, PaginationDefaults.Page);
         var limit = Math.Clamp(request.Limit, PaginationDefaults.MinLimit, PaginationDefaults.MaxLimit);
 
-        var skus = uow.Repository<Sku>().Query().AsNoTracking();
-        var products = uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking();
+        var skus = uow.Repository<Sku>().Query().AsNoTracking()
+            .Where(x => x.TenantId == request.TenantId && !x.IsDeleted);
+
+        var products = uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking()
+            .Where(x => x.TenantId == request.TenantId && !x.IsDeleted);
+
         var categories = uow.Repository<Category>().Query().AsNoTracking();
 
         var query =
             from sku in skus
-            join product in products on sku.ProductId equals product.Id
+            join product in products on sku.ProductId equals product.Id into productJoin
+            from product in productJoin.DefaultIfEmpty()
             join category in categories on product.CategoryId equals category.Id into catJoin
             from category in catJoin.DefaultIfEmpty()
-            where sku.TenantId == request.TenantId
-               && product.TenantId == request.TenantId
-               && sku.DeletedAt == null
-               && product.DeletedAt == null
             select new { Sku = sku, Product = product, Category = category };
 
         if (request.ProductId.HasValue)
         {
-            query = query.Where(x => x.Product.Id == request.ProductId.Value);
+            query = query.Where(x => x.Sku.ProductId == request.ProductId.Value);
         }
 
         if (request.CategoryId.HasValue)
         {
-            query = query.Where(x => x.Product.CategoryId == request.CategoryId.Value);
+            query = query.Where(x => x.Product != null && x.Product.CategoryId == request.CategoryId.Value);
         }
 
         if (!string.IsNullOrWhiteSpace(request.Search))
@@ -49,9 +50,9 @@ public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
                 (x.Sku.Name != null && x.Sku.Name.ToLower().Contains(keyword)) ||
                 (x.Sku.Description != null && x.Sku.Description.ToLower().Contains(keyword)) ||
                 (x.Sku.GoodsNature != null && x.Sku.GoodsNature.ToLower().Contains(keyword)) ||
-                x.Product.ProductCode.ToLower().Contains(keyword) ||
-                (x.Product.ProductName != null && x.Product.ProductName.ToLower().Contains(keyword)) ||
-                (x.Product.Description != null && x.Product.Description.ToLower().Contains(keyword)));
+                (x.Product != null && x.Product.ProductCode.ToLower().Contains(keyword)) ||
+                (x.Product != null && x.Product.ProductName != null && x.Product.ProductName.ToLower().Contains(keyword)) ||
+                (x.Product != null && x.Product.Description != null && x.Product.Description.ToLower().Contains(keyword)));
         }
 
         var totalCount = await query.CountAsync(ct);
@@ -63,10 +64,10 @@ public sealed class SearchSkusQueryHandler(IUnitOfWork uow)
             .Select(x => new SearchSkusResponse(
                 x.Sku.Id,
                 x.Sku.TenantId,
-                x.Product.Id,
-                x.Product.ProductCode,
-                x.Product.ProductName,
-                x.Product.CategoryId,
+                x.Product != null ? x.Product.Id : null,
+                x.Product != null ? x.Product.ProductCode : null,
+                x.Product != null ? x.Product.ProductName : null,
+                x.Product != null ? x.Product.CategoryId : null,
                 x.Category != null ? x.Category.Name : null,
                 x.Sku.SkuCode,
                 x.Sku.Name,

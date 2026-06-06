@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using WMS.Application.Product.Skus.Queries.SearchSkus;
 using WMS.Domain.Entities;
@@ -164,6 +165,70 @@ public sealed class SearchSkusQueryHandlerTests : BaseSkuHandlerTest
         result.Items.Should().ContainSingle();
         result.Items[0].SkuCode.Should().Be("PHONE-001");
         result.Items[0].CategoryId.Should().Be(categoryA.Id);
+    }
+
+    [Fact]
+    public async Task Handle_WhenProductIsDeleted_ReturnsSkuWithNullProductAndCategoryFields()
+    {
+        await using var connection = await OpenConnectionAsync();
+        await using var db = CreateDbContext(connection);
+        await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
+        var product = await db.Products.SingleAsync(x => x.Id == sku.ProductId, TestContext.Current.CancellationToken);
+        product.Delete();
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var result = await CreateHandler(db).Handle(new SearchSkusQuery(TenantA), TestContext.Current.CancellationToken);
+
+        result.Items.Should().ContainSingle();
+        result.Items[0].Id.Should().Be(sku.Id);
+        result.Items[0].ProductId.Should().BeNull();
+        result.Items[0].ProductCode.Should().BeNull();
+        result.Items[0].ProductName.Should().BeNull();
+        result.Items[0].CategoryId.Should().BeNull();
+        result.Items[0].CategoryName.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task Handle_WhenProductRowIsMissing_ReturnsSkuWithNullProductAndCategoryFields()
+    {
+        await using var connection = await OpenConnectionAsync();
+        await using var db = CreateDbContext(connection);
+        await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
+        var product = await db.Products.SingleAsync(x => x.Id == sku.ProductId, TestContext.Current.CancellationToken);
+        db.Products.Remove(product);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var result = await CreateHandler(db).Handle(new SearchSkusQuery(TenantA), TestContext.Current.CancellationToken);
+
+        result.Items.Should().ContainSingle();
+        result.Items[0].Id.Should().Be(sku.Id);
+        result.Items[0].ProductId.Should().BeNull();
+        result.Items[0].ProductCode.Should().BeNull();
+        result.Items[0].ProductName.Should().BeNull();
+        result.Items[0].CategoryId.Should().BeNull();
+        result.Items[0].CategoryName.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task Handle_WhenCategoryFilterProvided_ExcludesSkuWithoutMatchingActiveProduct()
+    {
+        await using var connection = await OpenConnectionAsync();
+        await using var db = CreateDbContext(connection);
+        await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
+        var category = Category.Create(TenantA, "Electronics");
+        db.Categories.Add(category);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", categoryId: category.Id, ct: TestContext.Current.CancellationToken);
+        var product = await db.Products.SingleAsync(x => x.Id == sku.ProductId, TestContext.Current.CancellationToken);
+        product.Delete();
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var result = await CreateHandler(db).Handle(new SearchSkusQuery(TenantA, CategoryId: category.Id), TestContext.Current.CancellationToken);
+
+        result.TotalCount.Should().Be(0);
+        result.Items.Should().BeEmpty();
     }
 
     [Fact]

@@ -22,42 +22,41 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow, ISequenceCodeGenera
     public async Task<CreateSkuResponse> Handle(CreateSkuCommand request, CancellationToken ct)
     {
         var product = await LoadProductReference(
-             request.ProductId,
-             request.TenantId,
-             ct);
+            request.ProductId,
+            request.TenantId,
+            ct);
 
         var skuCode = await ResolveSkuCode(
-          request.TenantId,
-          request.SkuCode,
-          ct);
+            request.TenantId,
+            request.SkuCode,
+            ct);
 
         var sku = Sku.Create(
-          tenantId: request.TenantId,
-          productId: product.Id,
-          skuCode: skuCode,
-          name: request.Name,
-          goodsNature: request.GoodsNature,
-          description: request.Description,
-          referencePrice: request.Price);
+            tenantId: request.TenantId,
+            productId: product.Id,
+            skuCode: skuCode,
+            name: request.Name,
+            goodsNature: request.GoodsNature,
+            description: request.Description,
+            referencePrice: request.Price);
 
+        await _uow.Repository<Sku>().AddAsync(sku, ct);
 
-        await uow.Repository<Sku>().AddAsync(sku, ct);
-
-        await uow.SaveChangesAsync(ct);
+        await _uow.SaveChangesAsync(ct);
 
         return new CreateSkuResponse(
-          sku.Id,
-          sku.TenantId,
-          product.Id,
-          product.ProductCode,
-          product.ProductName,
-          sku.SkuCode,
-          sku.Name,
-          sku.GoodsNature,
-          sku.Description,
-          sku.ReferencePrice,
-          sku.CreatedAt,
-          sku.UpdatedAt);
+            sku.Id,
+            sku.TenantId,
+            product.Id,
+            product.ProductCode,
+            product.ProductName,
+            sku.SkuCode,
+            sku.Name,
+            sku.GoodsNature,
+            sku.Description,
+            sku.ReferencePrice,
+            sku.CreatedAt,
+            sku.UpdatedAt);
     }
 
     private async Task<Domain.Entities.Product.Product> LoadProductReference(
@@ -65,7 +64,7 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow, ISequenceCodeGenera
        Guid tenantId,
        CancellationToken ct)
     {
-        var product = await uow.Repository<Domain.Entities.Product.Product>().Query()
+        var product = await _uow.Repository<Domain.Entities.Product.Product>().Query()
             .FirstOrDefaultAsync(x =>
                 x.Id == productId
                 && x.TenantId == tenantId
@@ -88,14 +87,54 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow, ISequenceCodeGenera
        string? skuCode,
        CancellationToken ct)
     {
-        if (!string.IsNullOrWhiteSpace(skuCode))
+        if (string.IsNullOrWhiteSpace(skuCode))
         {
-            return skuCode.Trim().ToUpperInvariant();
+            return await _sequenceCodeGenerator.NextAsync(
+                tenantId,
+                CodeSequenceTypes.Sku,
+                ct);
         }
 
-        return await sequenceCodeGenerator.NextAsync(
+        var normalizedSkuCode = NormalizeSkuCode(skuCode);
+
+        await EnsureManualSkuCodeIsUnique(
             tenantId,
-            CodeSequenceTypes.Sku,
+            normalizedSkuCode,
             ct);
+
+        return normalizedSkuCode;
+    }
+    private async Task EnsureManualSkuCodeIsUnique(
+      Guid tenantId,
+      string skuCode,
+      CancellationToken ct)
+    {
+        var exists = await _uow.Repository<Sku>().Query()
+            .AnyAsync(x =>
+                x.TenantId == tenantId
+                && x.SkuCode == skuCode
+                && !x.IsDeleted,
+                ct);
+
+        if (exists)
+        {
+            throw new AppException(
+                409,
+                "DUPLICATE_SKU",
+                "SKU code already exists for this tenant.");
+        }
+    }
+
+    private static string NormalizeSkuCode(string skuCode)
+    {
+        if (string.IsNullOrWhiteSpace(skuCode))
+        {
+            throw new AppException(
+                400,
+                "SKU_CODE_REQUIRED",
+                "SKU code is required.");
+        }
+
+        return skuCode.Trim().ToUpperInvariant();
     }
 }

@@ -16,7 +16,7 @@ namespace DP.AppWMS.Tests.Skus
         protected static readonly DateTime BaseTime = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
-        /// Creates a Product + Sku through the aggregate and saves both to the database.
+        /// Creates separate Product and Sku aggregate rows and saves both to the database.
         /// Returns the Sku entity for assertions.
         /// </summary>
         protected static async Task<Sku> AddTestSku(
@@ -37,13 +37,15 @@ namespace DP.AppWMS.Tests.Skus
             db.Set<ProductAggregate>().Add(product);
             await db.SaveChangesAsync(ct);
 
-            var sku = product.AddSku(
+            var sku = Sku.Create(
                 tenantId,
+                product.Id,
                 skuCode,
                 name,
                 null,
                 description,
                 referencePrice ?? 0m);
+            db.Set<Sku>().Add(sku);
             await db.SaveChangesAsync(ct);
 
             return sku;

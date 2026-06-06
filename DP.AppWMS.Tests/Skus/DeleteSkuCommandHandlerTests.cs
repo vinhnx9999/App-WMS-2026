@@ -2,26 +2,19 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Skus.Commands.DeleteSku;
-using WMS.Domain.Entities.Product;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;
 
 public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
 {
-    #region DeleteSkuCommandHandler
-
     [Fact]
     public async Task Delete_WhenSkuExists_MarksDeletedAndSaves()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
 
         await CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
@@ -40,7 +33,7 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         var act = () => CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, Guid.NewGuid()), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
     }
 
     [Fact]
@@ -49,16 +42,12 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantB, "PROD-001", "Other Tenant Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantB, "SKU-001", "Phone", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantB, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
 
         var act = () => CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
     }
 
     [Fact]
@@ -67,17 +56,14 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
         sku.MarkDeleted();
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var act = () => CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
     }
 
     [Fact]
@@ -86,19 +72,16 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var productA = Product.Create(TenantA, "PROD-001", "Product A");
-        var productB = Product.Create(TenantB, "PROD-002", "Product B");
-        db.Set<Product>().AddRange(productA, productB);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var requested = productA.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
+        var requested = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
         requested.MarkDeleted();
-        var other = productB.AddSku(TenantB, "SKU-001", "Other tenant", null, null, 0m);
+        var other = await AddTestSku(db, TenantB, "SKU-001", "Other tenant", ct: TestContext.Current.CancellationToken);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var act = () => CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, requested.Id), TestContext.Current.CancellationToken);
 
         await act.Should().ThrowAsync<AppException>()
-            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found");
+            .Where(x => x.StatusCode == 404 && x.Code == "NOT_FOUND" && x.Message == "SKU not found.");
+        other.IsDeleted.Should().BeFalse();
     }
 
     [Fact]
@@ -107,12 +90,8 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var target = product.AddSku(TenantA, "SKU-001", "Target", null, null, 0m);
-        var other = product.AddSku(TenantA, "SKU-002", "Other", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var target = await AddTestSku(db, TenantA, "SKU-001", "Target", ct: TestContext.Current.CancellationToken);
+        var other = await AddTestSku(db, TenantA, "SKU-002", "Other", ct: TestContext.Current.CancellationToken);
 
         await CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, target.Id), TestContext.Current.CancellationToken);
 
@@ -127,11 +106,7 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
 
         await CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, sku.Id), TestContext.Current.CancellationToken);
 
@@ -145,11 +120,7 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var product = Product.Create(TenantA, "PROD-001", "Test Product");
-        db.Set<Product>().Add(product);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var sku = product.AddSku(TenantA, "SKU-001", "Phone", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var sku = await AddTestSku(db, TenantA, "SKU-001", "Phone", ct: TestContext.Current.CancellationToken);
         var beforeDelete = DateTime.UtcNow;
 
         await CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, sku.Id), TestContext.Current.CancellationToken);
@@ -164,13 +135,8 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
-        var productA = Product.Create(TenantA, "PROD-001", "Product A");
-        var productB = Product.Create(TenantB, "PROD-002", "Product B");
-        db.Set<Product>().AddRange(productA, productB);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
-        var target = productA.AddSku(TenantA, "SKU-001", "Target", null, null, 0m);
-        var otherTenant = productB.AddSku(TenantB, "SKU-001", "Other tenant", null, null, 0m);
-        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+        var target = await AddTestSku(db, TenantA, "SKU-001", "Target", ct: TestContext.Current.CancellationToken);
+        var otherTenant = await AddTestSku(db, TenantB, "SKU-001", "Other tenant", ct: TestContext.Current.CancellationToken);
 
         await CreateDeleteHandler(db).Handle(new DeleteSkuCommand(TenantA, target.Id), TestContext.Current.CancellationToken);
 
@@ -192,14 +158,8 @@ public sealed class DeleteSkuCommandHandlerTests : BaseSkuHandlerTest
         await act.Should().ThrowAsync<OperationCanceledException>();
     }
 
-    #endregion
-
-    #region Helper Methods
-
     private static DeleteSkuCommandHandler CreateDeleteHandler(WmsDbContext db)
     {
         return new DeleteSkuCommandHandler(CreateUnitOfWork(db));
     }
-
-    #endregion
 }

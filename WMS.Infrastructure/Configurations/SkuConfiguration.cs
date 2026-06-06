@@ -11,6 +11,7 @@ public class SkuConfiguration : BaseEntityConfiguration<Sku>
         builder.ToTable("skus");
 
         builder.HasIndex(x => new { x.TenantId, x.SkuCode })
+            .HasFilter("\"IsDeleted\" = 0")
             .IsUnique();
 
         builder.HasIndex(x => new { x.TenantId, x.ProductId });

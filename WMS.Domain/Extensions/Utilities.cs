@@ -2,9 +2,9 @@
 {
     public static class Utilities
     {
-        public static string NormalizeSkuCode(string skuCode)
+        public static string NormalizeCode(string code)
         {
-            return skuCode.Trim().ToUpperInvariant();
+            return code.Trim().ToUpperInvariant();
         }
 
         public static string? NormalizeNullable(string? value)
