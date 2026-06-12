@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Interfaces;
-using ProductAggregate = WMS.Domain.Entities.Product.Product;
 
-namespace WMS.Application.Product.Products.Commands.DeleteProduct;
+
+namespace WMS.Application.Products.Commands.DeleteProduct;
 
 public sealed class DeleteProductCommandHandler(IUnitOfWork uow) : IRequestHandler<DeleteProductCommand>
 {
     public async Task Handle(DeleteProductCommand request, CancellationToken ct)
     {
-        var product = await uow.Repository<ProductAggregate>().Query()
+        var product = await uow.Repository<Product>().Query()
             .FirstOrDefaultAsync(x =>
                 x.Id == request.Id
                 && x.TenantId == request.TenantId

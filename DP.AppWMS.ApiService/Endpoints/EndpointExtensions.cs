@@ -1,4 +1,5 @@
-﻿using DP.AppWMS.ApiService.Endpoints.Skus;
+using DP.AppWMS.ApiService.Endpoints.Skus;
+using DP.AppWMS.ApiService.Endpoints.Products;
 
 namespace DP.AppWMS.ApiService.Endpoints
 {
@@ -7,6 +8,7 @@ namespace DP.AppWMS.ApiService.Endpoints
         public static IServiceCollection AddEndpoints(this IServiceCollection services)
         {
             services.AddSingleton<IEndpoint, SkuEndpoints>();
+            services.AddSingleton<IEndpoint, ProductEndpoints>();
 
             return services;
         }

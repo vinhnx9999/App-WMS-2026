@@ -1,4 +1,4 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 
 namespace WMS.Domain.Entities.Product;
 
@@ -46,6 +46,16 @@ public class Product : BaseEntity
         };
     }
 
+
+    public void Update(
+        string productName,
+        string? description = null,
+        Guid? categoryId = null)
+    {
+        ProductName = productName?.Trim();
+        Description = description?.Trim();
+        CategoryId = categoryId;
+    }
 
     public void Delete(string? deletedBy = null)
     {
