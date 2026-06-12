@@ -1,6 +1,6 @@
 using FluentAssertions;
 using WMS.Application.Common.Models;
-using WMS.Application.Product.Products.Queries.GetProductById;
+using WMS.Application.Products.Queries.GetProductById;
 using WMS.Domain.Entities.Product;
 
 namespace DP.AppWMS.Tests.Products;

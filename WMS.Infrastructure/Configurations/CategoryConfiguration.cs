@@ -17,10 +17,10 @@ public class CategoryConfiguration : BaseEntityConfiguration<Category>
         builder.Property(e => e.Slug)
             .HasMaxLength(250);
 
-        /// Can't have 2 slug with same tenant
         builder.HasIndex(e => new { e.TenantId, e.Slug })
             .IsUnique();
 
-        builder.Ignore(e => e.Items);
+        builder.Property(e => e.Description)
+            .HasMaxLength(500);
     }
 }

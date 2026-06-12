@@ -10,11 +10,13 @@ public static class ApiRoutes
     {
         public const string Skus = "skus";
         public const string Products = "products";
+        public const string Categories = "categories";
     }
 
     public static class Groups
     {
         public const string Skus = $"{Base}/{Resources.Skus}";
         public const string Products = $"{Base}/{Resources.Products}";
+        public const string Categories = $"{Base}/{Resources.Categories}";
     }
 }
