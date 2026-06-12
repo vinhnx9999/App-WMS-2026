@@ -59,6 +59,10 @@ public class InboundServiceTests
             .Returns(new List<InboundOrder> { order }
                 .AsQueryable());
 
+        orderRepo
+            .Setup(x => x.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(order);
+
         var invRepo = new Mock<IRepository<InventoryItem>>();
         invRepo
             .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
@@ -120,12 +124,48 @@ public class InboundServiceTests
                 It.IsAny<CancellationToken>()))
             .ThrowsAsync(new DbUpdateException("DB error"));
 
-        // ... setup repos ...
-        var svc = new InboundService(_uowMock.Object, _userMock.Object, null);
         var orderId = Guid.NewGuid();
+        var itemId = Guid.NewGuid();
+
+        var orderRepo = new Mock<IRepository<InboundOrder>>();
+        var order = WithId(new InboundOrder
+        {
+            OrderNumber = "PO-TEST-001",
+            Status = InboundStatus.Pending,
+            Items =
+            [
+                new()
+                {
+                    InventoryItemId = itemId,
+                    Quantity = 100,
+                    ReceivedQuantity = 0,
+                }
+            ]
+        }, orderId);
+
+        orderRepo
+            .Setup(x => x.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(order);
+
+        var invRepo = new Mock<IRepository<InventoryItem>>();
+        invRepo
+            .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(WithId(new InventoryItem
+            {
+                SkuCode = "TEST-001",
+                Quantity = 50,
+                MinQuantity = 10,
+            }, itemId));
+
+        _uowMock.Setup(x => x.Repository<InboundOrder>())
+            .Returns(orderRepo.Object);
+        _uowMock.Setup(x => x.Repository<InventoryItem>())
+            .Returns(invRepo.Object);
+
+        var svc = new InboundService(_uowMock.Object, _userMock.Object, null);
         var request = new ReceiveInboundRequest(
             [
-                new(Guid.NewGuid(), 10, "Test")
+                new(itemId, 10, "Test")
             ]);
         // Act & Assert
         var act = () => svc.ReceiveAsync(orderId, request, CancellationToken.None);

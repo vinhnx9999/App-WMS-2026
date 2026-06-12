@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using WMS.Application.Product.Skus.Queries.SearchSkus;
+using WMS.Application.Skus.Queries.SearchSkus;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Interfaces;

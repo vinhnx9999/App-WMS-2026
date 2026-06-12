@@ -1,4 +1,4 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 using WMS.Domain.Extensions;
 
 namespace WMS.Domain.Entities.Product;
@@ -97,7 +97,7 @@ public class SkuImportRow : BaseEntity
                 "Row number must be greater than zero.");
         }
 
-        if (referencePrice is < 0)
+        if (isValid && referencePrice is < 0)
         {
             throw new DomainException(
                 "INVALID_REFERENCE_PRICE",

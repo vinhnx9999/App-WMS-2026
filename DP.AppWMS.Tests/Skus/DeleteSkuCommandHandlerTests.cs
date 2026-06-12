@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
-using WMS.Application.Product.Skus.Commands.DeleteSku;
+using WMS.Application.Skus.Commands.DeleteSku;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;

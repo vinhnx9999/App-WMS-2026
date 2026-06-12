@@ -1,12 +1,13 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
-using WMS.Application.Product.Skus.Commands.CreateSku;
-using WMS.Application.Product.Skus.Commands.DeleteSku;
-using WMS.Application.Product.Skus.Commands.UpdateSku;
-using WMS.Application.Product.Skus.DTOs;
-using WMS.Application.Product.Skus.Queries.GetSkuById;
-using WMS.Application.Product.Skus.Queries.SearchSkus;
+using WMS.Application.Skus.Commands.CreateSku;
+using WMS.Application.Skus.Commands.DeleteSku;
+using WMS.Application.Skus.Commands.ImportSku;
+using WMS.Application.Skus.Commands.UpdateSku;
+using WMS.Application.Skus.DTOs;
+using WMS.Application.Skus.Queries.GetSkuById;
+using WMS.Application.Skus.Queries.SearchSkus;
 using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Skus;
@@ -35,11 +36,16 @@ public sealed class SkuEndpoints : IEndpoint
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status409Conflict);
 
-        group.MapPost("/import", ImportSkus)
-            .WithName("ImportSkus").WithTags("Products").RequireAuthorization()
-            .Accepts<ImportSkusRequest>("application/json")
-            .Produces<ApiResponse<ImportSkusResponse>>(StatusCodes.Status200OK)
-            .Produces<ApiResponse<ImportSkusResponse>>(StatusCodes.Status400BadRequest);
+        group.MapPost("/import/session", CreateImportSession)
+            .WithName("CreateImportSession").WithTags("Products").RequireAuthorization()
+            .Produces<ApiResponse<CreateSkuImportSessionResponse>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
+
+        group.MapPost("/import/session/{id:guid}/confirm", ConfirmImportSession)
+            .WithName("ConfirmImportSession").WithTags("Products").RequireAuthorization()
+            .Produces<ApiResponse<ConfirmSkuImportSessionResponse>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse<object>>(StatusCodes.Status409Conflict);
 
         group.MapPut("/{id:guid}", UpdateSku)
             .WithName("UpdateSku").WithTags("Products").RequireAuthorization()
@@ -116,13 +122,33 @@ public sealed class SkuEndpoints : IEndpoint
             ApiResponse<CreateSkuResponse>.Ok(result));
     }
 
-    private Task<IResult> ImportSkus(
-        [FromBody] ImportSkusRequest? request,
+    private async Task<IResult> CreateImportSession(
+        [FromBody] CreateSkuImportSessionRequest request,
         ISender sender,
         ICurrentUser currentUser,
         CancellationToken cancellationToken)
     {
-        return Task.FromResult<IResult>(Results.NotFound(ApiResponse<ImportSkusResponse>.Fail("SKU import is not available.")));
+        var result = await sender.Send(new CreateSkuImportSessionCommand(
+            currentUser.TenantId,
+            request.SourceFileName,
+            request.Rows ?? []
+        ), cancellationToken);
+
+        return Results.Ok(ApiResponse<CreateSkuImportSessionResponse>.Ok(result));
+    }
+
+    private async Task<IResult> ConfirmImportSession(
+        Guid id,
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new ConfirmSkuImportSessionCommand(
+            currentUser.TenantId,
+            id
+        ), cancellationToken);
+
+        return Results.Ok(ApiResponse<ConfirmSkuImportSessionResponse>.Ok(result));
     }
 
     private async Task<IResult> UpdateSku(
@@ -156,17 +182,7 @@ public sealed class SkuEndpoints : IEndpoint
 
     #endregion
 
-    public sealed record ImportSkusRequest(
-        IReadOnlyList<ImportSkuRowRequest>? Rows);
-
-    public sealed record ImportSkuRowRequest(
-        int RowNumber,
-        string? ProductCode,
-        string? SkuCode,
-        string? SkuName,
-        string? CategoryName,
-        string? GoodsNature,
-        string? SpecificationCode,
-        string? UnitOfMeasureCode,
-        decimal? ConversionFactor);
+    public sealed record CreateSkuImportSessionRequest(
+        string? SourceFileName,
+        IReadOnlyList<ImportSkuRowRequest> Rows);
 }

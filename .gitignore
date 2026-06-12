@@ -1,6 +1,11 @@
 # Claude Code
 CLAUDE.md
 .claude/
+
+# Agent/Antigravity Code
+AGENTS.md
+.agents/
+
 docs/
 
 # Build results

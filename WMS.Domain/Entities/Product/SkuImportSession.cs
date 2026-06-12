@@ -1,4 +1,4 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 using WMS.Domain.Enums;
 using WMS.Domain.Extensions;
 
@@ -31,11 +31,11 @@ public class SkuImportSession : BaseEntity
 
     public int InvalidRows { get; private set; }
 
-    public DateTimeOffset? ConfirmedAt { get; private set; }
+    public DateTime? ConfirmedAt { get; private set; }
 
-    public DateTimeOffset? CancelledAt { get; private set; }
+    public DateTime? CancelledAt { get; private set; }
 
-    public DateTimeOffset? FailedAt { get; private set; }
+    public DateTime? FailedAt { get; private set; }
 
     public string? FailureReason { get; private set; }
 
@@ -95,7 +95,7 @@ public class SkuImportSession : BaseEntity
         RecalculateCounters();
     }
 
-    public void MarkConfirmed(DateTimeOffset confirmedAt)
+    public void MarkConfirmed(DateTime confirmedAt)
     {
         if (Status == SkuImportSessionStatuses.Confirmed)
         {
@@ -118,18 +118,13 @@ public class SkuImportSession : BaseEntity
                 "Failed import session cannot be confirmed.");
         }
 
-        if (InvalidRows > 0)
-        {
-            throw new DomainException(
-                "IMPORT_SESSION_HAS_INVALID_ROWS",
-                "Import session has invalid rows.");
-        }
+
 
         Status = SkuImportSessionStatuses.Confirmed;
         ConfirmedAt = confirmedAt;
     }
 
-    public void MarkCancelled(DateTimeOffset cancelledAt)
+    public void MarkCancelled(DateTime cancelledAt)
     {
         if (Status == SkuImportSessionStatuses.Confirmed)
         {
@@ -148,7 +143,7 @@ public class SkuImportSession : BaseEntity
     }
 
     public void MarkFailed(
-        DateTimeOffset failedAt,
+        DateTime failedAt,
         string? failureReason)
     {
         if (Status == SkuImportSessionStatuses.Confirmed)

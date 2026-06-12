@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Common;
@@ -45,6 +45,8 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
     public DbSet<ErpSyncLog> ErpSyncLogs => Set<ErpSyncLog>();
     public DbSet<Product> Products => Set<Product>();
     public DbSet<CodeSequence> CodeSequences => Set<CodeSequence>();
+    public DbSet<SkuImportSession> SkuImportSessions => Set<SkuImportSession>();
+    public DbSet<SkuImportRow> SkuImportRows => Set<SkuImportRow>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {

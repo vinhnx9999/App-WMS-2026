@@ -23,6 +23,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
     <PackageReference Include="AspNetCore.Scalar" Version="1.2.0" />
     <PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="6.0.0" />
+    <PackageReference Include="MessagePack" Version="2.5.301" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="10.0.8" />
