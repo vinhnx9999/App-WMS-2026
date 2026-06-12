@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Enums;
 using WMS.Domain.Extensions;

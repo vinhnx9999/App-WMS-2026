@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Skus.DTOs;
-using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 

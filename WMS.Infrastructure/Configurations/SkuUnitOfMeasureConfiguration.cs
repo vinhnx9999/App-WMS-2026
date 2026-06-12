@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
 
 namespace WMS.Infrastructure.Configurations;
 

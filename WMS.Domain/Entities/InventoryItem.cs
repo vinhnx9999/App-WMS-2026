@@ -32,7 +32,7 @@ public class InventoryItem : BaseEntity
 
     // Navigation    
     public LocationEntity? Location { get; set; }
-    public Sku? Sku { get; set; }
+    public Product.Sku? Sku { get; set; }
     public ICollection<InboundItem> InboundItems { get; set; } = [];
     public ICollection<OutboundItem> OutboundItems { get; set; } = [];
     public string? SkuCode { get; set; }

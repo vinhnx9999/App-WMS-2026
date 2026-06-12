@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 using ProductAggregate = WMS.Domain.Entities.Product.Product;

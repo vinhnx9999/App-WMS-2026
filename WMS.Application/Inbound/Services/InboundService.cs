@@ -1,4 +1,4 @@
-﻿using WMS.Application.Common.Models;
+using WMS.Application.Common.Models;
 using WMS.Application.Inbound.DTOs;
 using WMS.Application.SignalR;
 using WMS.Application.SignalR.DTOs;
@@ -95,6 +95,8 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
         Guid orderId, ReceiveInboundRequest req,
         CancellationToken ct)
     {
+        await using var tx = await _uow.BeginTransactionAsync(ct);
+
         var repo = _uow.Repository<InboundOrder>();
         var order = await repo.GetByIdAsync(orderId, ct)
             ?? throw new AppException(404, "NOT_FOUND",
@@ -124,6 +126,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
         order.ReceivedDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
         await _uow.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
     }
 
     private async Task UpdateInventoryStock(

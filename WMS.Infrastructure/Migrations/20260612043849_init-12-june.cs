@@ -1319,7 +1319,7 @@ namespace WMS.Infrastructure.Migrations
                 table: "skus",
                 columns: new[] { "TenantId", "SkuCode" },
                 unique: true,
-                filter: "\"IsDeleted\" = 0");
+                filter: "\"IsDeleted\" = false");
 
             migrationBuilder.CreateIndex(
                 name: "IX_specifications_DeletedAt",

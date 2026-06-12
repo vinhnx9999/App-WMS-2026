@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
 
 namespace WMS.Infrastructure.Configurations;
 
@@ -11,7 +11,7 @@ public class SkuConfiguration : BaseEntityConfiguration<Sku>
         builder.ToTable("skus");
 
         builder.HasIndex(x => new { x.TenantId, x.SkuCode })
-            .HasFilter("\"IsDeleted\" = 0")
+            .HasFilter("\"IsDeleted\" = false")
             .IsUnique();
 
         builder.HasIndex(x => new { x.TenantId, x.ProductId });

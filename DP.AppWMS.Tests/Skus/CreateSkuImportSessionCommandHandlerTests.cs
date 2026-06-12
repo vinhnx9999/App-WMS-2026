@@ -1,7 +1,6 @@
 using FluentAssertions;
 using WMS.Application.Common.Models;
 using WMS.Application.Skus.Commands.ImportSku;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 
 namespace DP.AppWMS.Tests.Skus;

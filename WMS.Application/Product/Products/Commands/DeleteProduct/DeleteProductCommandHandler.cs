@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
-using WMS.Domain.Entities;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Interfaces;
 using ProductAggregate = WMS.Domain.Entities.Product.Product;
 

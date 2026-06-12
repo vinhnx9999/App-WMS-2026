@@ -4,7 +4,6 @@ using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Skus.Commands.CreateSku;
 using WMS.Application.Skus.Validators;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 using WMS.Infrastructure.Persistence;
 

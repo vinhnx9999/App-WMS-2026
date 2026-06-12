@@ -1,7 +1,7 @@
 ﻿using WMS.Domain.Common;
 using WMS.Domain.Extensions;
 
-namespace WMS.Domain.Entities;
+namespace WMS.Domain.Entities.Product;
 
 public class Sku : BaseEntity
 {

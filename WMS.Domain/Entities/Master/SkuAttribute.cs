@@ -1,4 +1,5 @@
 using WMS.Domain.Common;
+using WMS.Domain.Entities.Product;
 
 namespace WMS.Domain.Entities;
 

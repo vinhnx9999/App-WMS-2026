@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;

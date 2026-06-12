@@ -4,7 +4,6 @@ using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Skus.Commands.ImportSku;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Enums;
 

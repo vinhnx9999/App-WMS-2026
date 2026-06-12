@@ -21,40 +21,40 @@ public sealed class SkuEndpoints : IEndpoint
         var group = app.MapGroup(ApiRoutes.Groups.Skus);
 
         group.MapGet("/", SearchSkus)
-            .WithName("SearchSkus").WithTags("Products").RequireAuthorization()
+            .WithName("SearchSkus").WithTags("Skus").RequireAuthorization()
             .Produces<ApiResponse<PagedResult<SearchSkusResponse>>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
 
         group.MapGet("/{id:guid}", GetSkuById)
-            .WithName("GetSkuById").WithTags("Products").RequireAuthorization()
+            .WithName("GetSkuById").WithTags("Skus").RequireAuthorization()
             .Produces<ApiResponse<GetSkuByIdResponse>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
 
         group.MapPost("/", CreateSku)
-            .WithName("CreateSku").WithTags("Products").RequireAuthorization()
+            .WithName("CreateSku").WithTags("Skus").RequireAuthorization()
             .Produces<ApiResponse<CreateSkuResponse>>(StatusCodes.Status201Created)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status409Conflict);
 
         group.MapPost("/import/session", CreateImportSession)
-            .WithName("CreateImportSession").WithTags("Products").RequireAuthorization()
+            .WithName("CreateImportSession").WithTags("Skus").RequireAuthorization()
             .Produces<ApiResponse<CreateSkuImportSessionResponse>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
 
         group.MapPost("/import/session/{id:guid}/confirm", ConfirmImportSession)
-            .WithName("ConfirmImportSession").WithTags("Products").RequireAuthorization()
+            .WithName("ConfirmImportSession").WithTags("Skus").RequireAuthorization()
             .Produces<ApiResponse<ConfirmSkuImportSessionResponse>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status409Conflict);
 
         group.MapPut("/{id:guid}", UpdateSku)
-            .WithName("UpdateSku").WithTags("Products").RequireAuthorization()
+            .WithName("UpdateSku").WithTags("Skus").RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
 
         group.MapDelete("/{id:guid}", DeleteSku)
-            .WithName("DeleteSku").WithTags("Products").RequireAuthorization()
+            .WithName("DeleteSku").WithTags("Skus").RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
     }

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Product.Products.Commands.DeleteProduct;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
