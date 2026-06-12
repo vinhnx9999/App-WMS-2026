@@ -165,7 +165,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
 
         var session = SkuImportSession.Create(TenantA, "test.xlsx");
         session.AddRow(1, "PROD-001", product.Id, "SKU-001", "SKU Name 1", "Nature 1", "Desc 1", 100m, true, null, null);
-        session.MarkConfirmed(DateTimeOffset.UtcNow);
+        session.MarkConfirmed(DateTime.UtcNow);
         db.Set<SkuImportSession>().Add(session);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
