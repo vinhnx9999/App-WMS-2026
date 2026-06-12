@@ -4,9 +4,9 @@ using WMS.Domain.Entities.ErpSync;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+public class OutboxMessageConfiguration : BaseEntityConfiguration<OutboxMessage>
 {
-    public void Configure(EntityTypeBuilder<OutboxMessage> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<OutboxMessage> builder)
     {
         builder.ToTable("outbox_messages");
     }

@@ -4,9 +4,9 @@ using WMS.Domain.Entities;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class ZoneConfiguration : IEntityTypeConfiguration<Zone>
+public class ZoneConfiguration : BaseEntityConfiguration<Zone>
 {
-    public void Configure(EntityTypeBuilder<Zone> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Zone> builder)
     {
         builder.Property(b => b.Name).IsRequired();
         builder.HasIndex(x => x.ZoneCode).IsUnique();

@@ -4,10 +4,14 @@ using WMS.Domain.Entities.Outbound;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class OutboundConfiguration : IEntityTypeConfiguration<OutboundOrder>
+public class OutboundConfiguration : BaseEntityConfiguration<OutboundOrder>
 {
-    public void Configure(EntityTypeBuilder<OutboundOrder> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<OutboundOrder> builder)
     {
+
+        // not mapping the navigation property to avoid circular references
+        builder.Ignore(x => x.Customer);
+
         builder.HasIndex(x => x.ShipmentNumber).IsUnique();
         builder.ToTable("outbound_orders");
     }

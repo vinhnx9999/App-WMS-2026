@@ -4,9 +4,9 @@ using WMS.Domain.Entities.Security;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class TenantConfiguration : IEntityTypeConfiguration<Tenant>
+public class TenantConfiguration : BaseEntityConfiguration<Tenant>
 {
-    public void Configure(EntityTypeBuilder<Tenant> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Tenant> builder)
     {
         builder.Property(b => b.DisplayName).IsRequired();
 

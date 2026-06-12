@@ -5,6 +5,7 @@ using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 
 namespace WMS.Infrastructure.Repositories;
+
 public class Repository<T>(WmsDbContext db) : IRepository<T> where T : BaseEntity
 {
     protected readonly WmsDbContext _db = db;
@@ -54,14 +55,13 @@ public class Repository<T>(WmsDbContext db) : IRepository<T> where T : BaseEntit
 
     public Task UpdateAsync(T entity)
     {
-        entity.UpdatedAt = DateTime.UtcNow;
         _set.Update(entity);
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(T entity)
     {
-        entity.DeletedAt = DateTime.UtcNow;  // soft delete
+        entity.MarkDeleted();  // soft delete
         _set.Update(entity);
         return Task.CompletedTask;
     }

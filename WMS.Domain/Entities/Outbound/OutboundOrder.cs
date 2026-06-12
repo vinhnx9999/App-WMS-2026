@@ -15,5 +15,5 @@ public class OutboundOrder : BaseEntity
 
     public Customer Customer { get; set; } = null!;
     public ICollection<OutboundItem> Items { get; set; } = [];
-    public string Notes { get; set; }
+    public string? Notes { get; set; }
 }

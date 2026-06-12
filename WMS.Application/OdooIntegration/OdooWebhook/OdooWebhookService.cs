@@ -149,7 +149,7 @@ public class OdooWebhookService(
                 {
                     order.Status = InboundStatus.Completed;
                     order.ReceivedDate = DateOnly.FromDateTime(DateTime.UtcNow);
-                    await _uow.SaveChangesAsync(ct);
+                    // await _uow.SaveChangesAsync(ct);
                 }
             }
             else
@@ -175,7 +175,7 @@ public class OdooWebhookService(
                     && order.Status != OutboundStatus.Delivered)
                 {
                     order.Status = OutboundStatus.Shipped;
-                    await _uow.SaveChangesAsync(ct);
+                    //  await _uow.SaveChangesAsync(ct);
                 }
             }
             else

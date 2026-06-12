@@ -52,4 +52,14 @@ public class CurrentUser(IHttpContextAccessor http) : ICurrentUser
             return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
         }
     }
+    public Guid TenantId
+    {
+        get
+        {
+            var claim = _http.HttpContext?.User.FindFirst("tenant_id");
+            return Guid.TryParse(claim?.Value, out var tenantId)
+                ? tenantId
+                : Guid.Empty;
+        }
+    }
 }

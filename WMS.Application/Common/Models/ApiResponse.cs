@@ -9,7 +9,7 @@ public class ApiResponse<T>
     public List<string>? Errors { get; set; }
     public string? TraceId { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-    public static ApiResponse<T> Fail(string msg, List<string>? errors = null) => 
+    public static ApiResponse<T> Fail(string msg, List<string>? errors = null) =>
         new() { Success = false, Message = msg, Errors = errors };
 
     public static ApiResponse<T> Ok(T? data, string? msg = null) =>

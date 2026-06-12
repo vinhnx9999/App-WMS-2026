@@ -4,9 +4,9 @@ using WMS.Domain.Entities;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
+public class AuditLogConfiguration : BaseEntityConfiguration<AuditLog>
 {
-    public void Configure(EntityTypeBuilder<AuditLog> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<AuditLog> builder)
     {
         builder.Property(b => b.Action).IsRequired();
         builder.Property(b => b.TableName).IsRequired();

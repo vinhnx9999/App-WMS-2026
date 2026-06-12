@@ -1,9 +1,13 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var cache = builder.AddRedis("cache");
+//var postgres = builder.AddPostgres("postgres").AddDatabase("Default", "wms_db");
+
+var cache = builder.AddRedis("Redis");
 
 var apiService = builder.AddProject<Projects.DP_AppWMS_ApiService>("apiservice")
-    .WithHttpHealthCheck("/health");
+     .WithReference(cache)
+     .WaitFor(cache)
+     .WithHttpHealthCheck("/health");
 
 builder.AddProject<Projects.DP_AppWMS_Web>("webfrontend")
     .WithExternalHttpEndpoints()

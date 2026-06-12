@@ -11,17 +11,17 @@ public class LocationEntity : BaseEntity
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
     public Zone? Zone { get; set; }
-
     // Navigation
     public ICollection<InventoryItem> InventoryItems { get; set; } = [];
-    public string ZoneCode { get; set; }
+
+    public string? ZoneCode { get; set; }
 }
 
 public class InventoryItem : BaseEntity
-{    
+{
     public string Name { get; set; } = null!;
-    public string? Description { get; set; }    
-    
+    public string? Description { get; set; }
+
     public Guid? SkuId { get; set; }
     public Guid? LocationId { get; set; }
     public int Quantity { get; set; }
@@ -32,7 +32,7 @@ public class InventoryItem : BaseEntity
 
     // Navigation    
     public LocationEntity? Location { get; set; }
-    public SkuEntity? Sku { get; set; }
+    public Product.Sku? Sku { get; set; }
     public ICollection<InboundItem> InboundItems { get; set; } = [];
     public ICollection<OutboundItem> OutboundItems { get; set; } = [];
     public string? SkuCode { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;
@@ -73,7 +74,7 @@ public class OdooMasterSyncService(
                 }
                 else
                 {
-                    var itemSku = await _uow.Repository<SkuEntity>().FindAsync(
+                    var itemSku = await _uow.Repository<Sku>().FindAsync(
                         s => $"{s.SkuCode}" == sku, ct);
                     var skuId = itemSku?.FirstOrDefault()?.Id ?? Guid.Empty;
                     // Create

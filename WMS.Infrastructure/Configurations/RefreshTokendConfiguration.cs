@@ -4,9 +4,9 @@ using WMS.Domain.Entities.Security;
 
 namespace WMS.Infrastructure.Configurations;
 
-public class RefreshTokendConfiguration : IEntityTypeConfiguration<RefreshToken>
+public class RefreshTokendConfiguration : BaseEntityConfiguration<RefreshToken>
 {
-    public void Configure(EntityTypeBuilder<RefreshToken> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<RefreshToken> builder)
     {
         builder.Property(b => b.Token).IsRequired();
         builder.HasIndex(x => x.Token).IsUnique();
