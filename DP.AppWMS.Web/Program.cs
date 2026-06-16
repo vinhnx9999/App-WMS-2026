@@ -1,4 +1,7 @@
 using DP.AppWMS.Web.Components;
+using DP.AppWMS.Web.Extensions;
+using DP.AppWMS.Web.Services.State;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +13,25 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var app = builder.Build();
+// Resource files for localization should be placed in the "Resources" folder.
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+// Add application services.
+builder.Services.AddScoped<LayoutService>();
+
+// Add MudBlazor services.
+builder.Services.AddMudServices();
+
+var app = builder.Build();
+var supportedCultures = new[] { "vi", "en" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+// Support localization.
+app.UseRequestLocalization(localizationOptions);
+
 
 app.UseHttpsRedirection();
 
@@ -29,6 +43,8 @@ app.MapStaticAssets();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapCultureEndpoints();
 
 app.MapDefaultEndpoints();
 

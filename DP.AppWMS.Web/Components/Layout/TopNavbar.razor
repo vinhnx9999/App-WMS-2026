@@ -1,0 +1,50 @@
+@using DP.AppWMS.Web.Services.State
+@inject NavigationManager Navigation
+@inject LayoutService LayoutService
+
+<MudAppBar Elevation="1" Color="Color.Inherit" Class="border-b border-gray-200 dark:border-gray-800">
+    <!-- Logo / Brand -->
+    <span class="font-bold text-lg mr-6 text-current">DP Back-Office</span>
+
+    <div class="hidden md:flex gap-4">
+        <NavLink class="text-current opacity-70 hover:opacity-100 [&.active]:opacity-100 [&.active]:font-bold px-3 py-2 transition-all duration-200"
+                 href="" Match="NavLinkMatch.All">
+            Dashboard
+        </NavLink>
+        <NavLink class="text-current opacity-70 hover:opacity-100 [&.active]:opacity-100 [&.active]:font-bold px-3 py-2 transition-all duration-200"
+                 href="tenants">
+            Tenant Management
+        </NavLink>
+        <NavLink class="text-current opacity-70 hover:opacity-100 [&.active]:opacity-100 [&.active]:font-bold px-3 py-2 transition-all duration-200"
+                 href="licenses">
+            Licenses
+        </NavLink>
+        <NavLink class="text-current opacity-70 hover:opacity-100 [&.active]:opacity-100 [&.active]:font-bold px-3 py-2 transition-all duration-200"
+                 href="billing">
+            Billing
+        </NavLink>
+    </div>
+
+    <MudSpacer />
+
+    <div class="flex items-center gap-2">
+        <LanguageSelector />
+
+        <MudIconButton Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                       Color="Color.Inherit"
+                       OnClick="LayoutService.ToggleDarkMode" />
+
+        <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" OnClick="OnNotificationClick" />
+
+        <MudMenu Icon="@Icons.Material.Filled.AccountCircle" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Color="Color.Inherit">
+            <MudMenuItem Href="change-password">Change Password</MudMenuItem>
+            <MudMenuItem Href="logout" Class="text-red-500">Logout</MudMenuItem>
+        </MudMenu>
+    </div>
+</MudAppBar>
+
+@code {
+    [Parameter] public bool IsDarkMode { get; set; }
+    [Parameter] public EventCallback OnToggleNotifications { get; set; }
+    private async Task OnNotificationClick() => await OnToggleNotifications.InvokeAsync();
+}

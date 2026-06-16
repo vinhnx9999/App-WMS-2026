@@ -1,0 +1,19 @@
+@inject NavigationManager Navigation
+
+<MudSelect T="string" Value="@CurrentCulture" ValueChanged="OnLanguageChanged" Dense="true" Margin="Margin.Dense" Variant="Variant.Outlined" Style="width: 140px; margin-top: -8px;">
+    <MudSelectItem Value="@("vi")">Tiếng Việt</MudSelectItem>
+    <MudSelectItem Value="@("en")">English</MudSelectItem>
+</MudSelect>
+
+@code {
+    private string CurrentCulture => System.Globalization.CultureInfo.CurrentCulture.Name;
+
+    private void OnLanguageChanged(string selectedCulture)
+    {
+        if (!string.IsNullOrEmpty(selectedCulture))
+        {
+            var uri = new Uri(Navigation.Uri).PathAndQuery;
+            Navigation.NavigateTo($"/Culture/Set?culture={selectedCulture}&redirectUri={Uri.EscapeDataString(uri)}", forceLoad: true);
+        }
+    }
+}
