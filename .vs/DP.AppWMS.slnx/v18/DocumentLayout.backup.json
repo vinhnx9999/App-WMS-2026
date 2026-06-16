@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\layout\\topnavbar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\layout\\topnavbar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\layout\\languageselector.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -150,7 +150,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 13,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -203,13 +203,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "TopNavbar.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
               "RelativeToolTip": "DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABwAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACsAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-15T12:33:36.743Z",
               "EditorCaption": ""
@@ -229,33 +229,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Layout\\MainLayout.razor",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\MainLayout.razor",
               "RelativeToolTip": "DP.AppWMS.Web\\Components\\Layout\\MainLayout.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABCAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAABMAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-15T09:09:28.268Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "App.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\App.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\App.razor",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\App.razor",
               "RelativeToolTip": "DP.AppWMS.Web\\Components\\App.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABIAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-15T09:09:03.666Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "_Imports.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\_Imports.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\_Imports.razor",
