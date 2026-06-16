@@ -1,0 +1,24 @@
+{
+  "common": {
+    "button": {
+      "search": "Tìm kiếm",
+      "cancel": "Hủy",
+      "delete": "Xóa",
+      "save": "Lưu"
+    }
+  },
+  "navigation": {
+    "dashboard": "Bảng điều khiển",
+    "masterData": "Dữ liệu gốc",
+    "skus": "Danh mục SKU",
+    "suppliers": "Nhà cung ứng",
+    "customers": "Khách hàng",
+    "rules": "Quy tắc & Chiến lược",
+    "audit": "Nhật ký hệ thống",
+    "warehouse": "Kho hàng",
+    "profile": "Thông tin cá nhân",
+    "settings": "Cấu hình tài khoản",
+    "logout": "Đăng xuất",
+    "admin": "Quản trị viên"
+  }
+}

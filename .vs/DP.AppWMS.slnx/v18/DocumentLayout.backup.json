@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\index.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\index.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\vite.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\vite.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\tsconfig.app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\tsconfig.app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|d:\\app-wms-2026\\dp.appwms.web\\components\\layout\\topnavbar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{20E7CB25-4ECF-2C8E-BB46-F074A6C70C2A}|DP.AppWMS.Web\\DP.AppWMS.Web.csproj|solutionrelative:dp.appwms.web\\components\\layout\\topnavbar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -63,24 +91,12 @@
       "RelativeMoniker": "D:0:0:{0112144B-765C-3C5F-EEAD-6E6C1C2AB668}|DP.AppWMS.AppHost\\DP.AppWMS.AppHost.csproj|solutionrelative:dp.appwms.apphost\\dp.appwms.apphost.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\main.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\main.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\eslint.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -91,16 +107,8 @@
       "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\tsconfig.node.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\tsconfig.app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\tsconfig.app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\common\\data\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\common\\data\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\vite.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\vite.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\inventory\\validators\\updateinventoryvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -150,7 +158,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -190,46 +198,111 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LayoutService.cs",
-              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
-              "RelativeDocumentMoniker": "DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
-              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
-              "RelativeToolTip": "DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-16T03:56:03.773Z",
+              "DocumentIndex": 0,
+              "Title": "App.css",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.css",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\src\\App.css",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.css",
+              "RelativeToolTip": "dp.appwms.spa\\src\\App.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-06-16T05:02:11.595Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "index.css",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\index.css",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\src\\index.css",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\index.css",
+              "RelativeToolTip": "dp.appwms.spa\\src\\index.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-06-16T04:52:29.453Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "TopNavbar.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
               "RelativeToolTip": "DP.AppWMS.Web\\Components\\Layout\\TopNavbar.razor",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAACsAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACsAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-15T12:33:36.743Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "package.json",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\package.json",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\package.json",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\package.json",
+              "RelativeToolTip": "dp.appwms.spa\\package.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-16T03:04:33.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "tsconfig.json",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.json",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\tsconfig.json",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.json",
+              "RelativeToolTip": "dp.appwms.spa\\tsconfig.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-16T02:55:05.94Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "LanguageSelector.razor",
-              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
-              "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
-              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
-              "RelativeToolTip": "DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-15T09:49:11.882Z",
+              "Title": "tsconfig.app.json",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.app.json",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\tsconfig.app.json",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.app.json",
+              "RelativeToolTip": "dp.appwms.spa\\tsconfig.app.json",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB4AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-16T03:02:06.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "vite.config.ts",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\vite.config.ts",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\vite.config.ts",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\vite.config.ts",
+              "RelativeToolTip": "dp.appwms.spa\\vite.config.ts",
+              "ViewState": "AgIAABMAAAAAAAAAAAAowBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-06-16T02:54:58.325Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "App.tsx",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.tsx",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\src\\App.tsx",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.tsx",
+              "RelativeToolTip": "dp.appwms.spa\\src\\App.tsx",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAAAG8AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-06-16T02:35:47.917Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Layout\\MainLayout.razor",
@@ -242,7 +315,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "App.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\App.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\App.razor",
@@ -255,7 +328,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "_Imports.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\_Imports.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\_Imports.razor",
@@ -268,7 +341,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
+              "Title": "LanguageSelector.razor",
+              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
+              "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
+              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
+              "RelativeToolTip": "DP.AppWMS.Web\\Components\\Layout\\LanguageSelector.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-15T09:49:11.882Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "LayoutService.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
+              "RelativeDocumentMoniker": "DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
+              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
+              "RelativeToolTip": "DP.AppWMS.Web\\Services\\State\\LayoutService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-16T03:56:03.773Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "LocalizationExtensions.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Extensions\\LocalizationExtensions.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Extensions\\LocalizationExtensions.cs",
@@ -281,7 +380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 14,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Program.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Program.cs",
@@ -294,33 +393,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 23,
               "Title": "package-lock.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\package-lock.json",
               "RelativeDocumentMoniker": "dp.appwms.spa\\package-lock.json",
               "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\package-lock.json",
               "RelativeToolTip": "dp.appwms.spa\\package-lock.json",
-              "ViewState": "AgIAAIoAAAAAAAAAAAAAACkAAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAAIwAAAAAAAAAAAAAACsAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-06-16T03:04:17.078Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "package.json",
-              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\package.json",
-              "RelativeDocumentMoniker": "dp.appwms.spa\\package.json",
-              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\package.json",
-              "RelativeToolTip": "dp.appwms.spa\\package.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-16T03:04:33.011Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 19,
               "Title": "package.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\package.json",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\package.json",
@@ -333,7 +419,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 18,
               "Title": "package-lock.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\package-lock.json",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\package-lock.json",
@@ -346,7 +432,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 16,
               "Title": "logo.png - PNG [514x193, 24 bit, PNG]",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\wwwroot\\logo.png",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\wwwroot\\logo.png",
@@ -358,7 +444,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 24,
               "Title": "eslint.config.js",
               "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\eslint.config.js",
               "RelativeDocumentMoniker": "dp.appwms.spa\\eslint.config.js",
@@ -371,7 +457,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 21,
               "Title": "DP.AppWMS.AppHost",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.AppHost\\DP.AppWMS.AppHost.csproj",
               "RelativeDocumentMoniker": "DP.AppWMS.AppHost\\DP.AppWMS.AppHost.csproj",
@@ -384,7 +470,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 20,
               "Title": "AppHost.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.AppHost\\AppHost.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.AppHost\\AppHost.cs",
@@ -397,7 +483,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 25,
               "Title": "tsconfig.node.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.node.json",
               "RelativeDocumentMoniker": "dp.appwms.spa\\tsconfig.node.json",
@@ -410,20 +496,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "tsconfig.json",
-              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.json",
-              "RelativeDocumentMoniker": "dp.appwms.spa\\tsconfig.json",
-              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.json",
-              "RelativeToolTip": "dp.appwms.spa\\tsconfig.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-16T02:55:05.94Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 22,
               "Title": "main.tsx",
               "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\main.tsx",
               "RelativeDocumentMoniker": "dp.appwms.spa\\src\\main.tsx",
@@ -436,33 +509,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "App.tsx",
-              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.tsx",
-              "RelativeDocumentMoniker": "dp.appwms.spa\\src\\App.tsx",
-              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.tsx",
-              "RelativeToolTip": "dp.appwms.spa\\src\\App.tsx",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAAAHkAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-06-16T02:35:47.917Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "tsconfig.app.json",
-              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.app.json",
-              "RelativeDocumentMoniker": "dp.appwms.spa\\tsconfig.app.json",
-              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\tsconfig.app.json",
-              "RelativeToolTip": "dp.appwms.spa\\tsconfig.app.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-16T03:02:06.013Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 26,
               "Title": "SeedData.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Common\\Data\\SeedData.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Common\\Data\\SeedData.cs",
@@ -475,20 +522,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "vite.config.ts",
-              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\vite.config.ts",
-              "RelativeDocumentMoniker": "dp.appwms.spa\\vite.config.ts",
-              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\vite.config.ts",
-              "RelativeToolTip": "dp.appwms.spa\\vite.config.ts",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-06-16T02:54:58.325Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 27,
               "Title": "UpdateInventoryValidator.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Inventory\\Validators\\UpdateInventoryValidator.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Inventory\\Validators\\UpdateInventoryValidator.cs",
@@ -501,7 +535,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 28,
               "Title": ".deepsource.toml",
               "DocumentMoniker": "D:\\App-WMS-2026\\.deepsource.toml",
               "RelativeDocumentMoniker": ".deepsource.toml",
@@ -514,7 +548,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 29,
               "Title": "app-host.bash",
               "DocumentMoniker": "D:\\App-WMS-2026\\app-host.bash",
               "RelativeDocumentMoniker": "app-host.bash",
@@ -527,7 +561,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 30,
               "Title": ".gitignore",
               "DocumentMoniker": "D:\\App-WMS-2026\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -540,7 +574,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 15,
               "Title": "app.css",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\wwwroot\\app.css",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\wwwroot\\app.css",
@@ -553,7 +587,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 31,
               "Title": "favicon.png - PNG [32x32, 32 bit, PNG]",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\wwwroot\\favicon.png",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\wwwroot\\favicon.png",
@@ -565,7 +599,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 17,
               "Title": "tailwind.src.css",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\wwwroot\\tailwind.src.css",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\wwwroot\\tailwind.src.css",
@@ -578,7 +612,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 34,
               "Title": "SharedResource.vi.resx",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Resources\\SharedResource.vi.resx",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Resources\\SharedResource.vi.resx",
@@ -590,7 +624,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "SharedResource.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Resources\\SharedResource.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Resources\\SharedResource.cs",
@@ -603,7 +637,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 32,
               "Title": "Routes.razor",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\Components\\Routes.razor",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\Components\\Routes.razor",
@@ -616,7 +650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\appsettings.json",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\appsettings.json",
@@ -629,7 +663,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 36,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.Web\\appsettings.Development.json",
               "RelativeDocumentMoniker": "DP.AppWMS.Web\\appsettings.Development.json",

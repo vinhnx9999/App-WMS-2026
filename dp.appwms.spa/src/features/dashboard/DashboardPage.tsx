@@ -1,22 +1,9 @@
-import { RefreshCw, Layers, TrendingUp, MapPin, Play, CheckCircle2, ShieldAlert } from "lucide-react";
+import { Layers, TrendingUp, MapPin, Play, CheckCircle2, ShieldAlert } from "lucide-react";
 
 export default function DashboardPage() {
 
     return (
-        <div className="h-full w-full overflow-y-auto p-6 space-y-6">
-
-            {/* Tiêu đề trang Dashboard */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold tracking-tight">WMS Dashboard Overview</h1>
-                    <p className="text-sm text-slate-500">Giám sát hoạt động và tài nguyên kho hàng theo thời gian thực</p>
-                </div>
-                <button className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm hover:bg-slate-50 dark:hover:bg-slate-800 font-medium cursor-pointer">
-                    <RefreshCw className="size-4 animate-spin-slow" />
-                    Làm mới
-                </button>
-            </div>
-            {/* 1. Hàng KPI Cards */}
+        <div className="h-full w-full overflow-y-auto scrollbar-none p-6 space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* KPI 1: Storage Utilization */}
                 <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
@@ -84,13 +71,9 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </div>
-            {/* 2. Phần dữ liệu chính (2 cột) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                {/* Cột trái: Chiếm 2 phần (Charts & Statistics) */}
                 <div className="lg:col-span-2 space-y-6">
 
-                    {/* Biểu đồ Nhập/Xuất kho */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Inbound volume */}
                         <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
@@ -130,7 +113,6 @@ export default function DashboardPage() {
                             </div>
                         </div>
                     </div>
-                    {/* Phân bổ các Zone & Dock Rates */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                         {/* Dock Utilization Rates */}
@@ -177,7 +159,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
                 </div>
-                {/* Cột phải: Cảnh báo Rule Conflict & Alerts */}
+
                 <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col h-full min-h-[400px]">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
@@ -188,7 +170,6 @@ export default function DashboardPage() {
                             4 Cần Xử Lý
                         </span>
                     </div>
-                    {/* List danh sách Alerts */}
                     <div className="space-y-3 flex-1 overflow-y-auto pr-1">
                         {[
                             {
@@ -250,7 +231,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </div>
-            {/* 3. Phần Warehouse Layout Map ở chân trang */}
+
             <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
@@ -276,7 +257,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
                 </div>
-                {/* Trực quan Layout Grid */}
+
                 <div className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-6 flex flex-col items-center justify-center">
                     <div className="w-full max-w-4xl grid grid-cols-12 gap-1.5">
                         {Array.from({ length: 48 }).map((_, i) => {

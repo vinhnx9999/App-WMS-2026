@@ -1,0 +1,24 @@
+{
+  "common": {
+    "button": {
+      "search": "Search",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "masterData": "Master Data",
+    "skus": "SKU Catalog",
+    "suppliers": "Suppliers",
+    "customers": "Customers",
+    "rules": "Strategy & Rules",
+    "audit": "Audit Logs",
+    "warehouse": "Warehouse",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "admin": "Administrator"
+  }
+}
