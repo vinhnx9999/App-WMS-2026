@@ -5,7 +5,9 @@
       "cancel": "Hủy",
       "delete": "Xóa",
       "save": "Lưu"
-    }
+    },
+    "loading": "Đang tải dữ liệu",
+    "noData": "Không có dữ liệu"
   },
   "navigation": {
     "dashboard": "Bảng điều khiển",

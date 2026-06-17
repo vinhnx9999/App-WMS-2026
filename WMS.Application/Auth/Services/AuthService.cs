@@ -20,7 +20,7 @@ public class AuthService(
     ICurrentUser currentUser,
     ITokenRevocationStore revocationStore,
     IConfiguration config,
-    ILogger<AuthService> log) : 
+    ILogger<AuthService> log) :
     BaseAuthService(config), IAuthService
 {
     private readonly IUnitOfWork _uow = uow;
@@ -303,7 +303,7 @@ public class AuthService(
 
         return toReturn;
     }
-        
+
 
     protected async Task RevokeAllUserTokensAsync(
         Guid userId, CancellationToken ct)

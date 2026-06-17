@@ -5,7 +5,9 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "save": "Save"
-    }
+    },
+    "loading": "Loading data",
+    "noData": "No data"
   },
   "navigation": {
     "dashboard": "Dashboard",

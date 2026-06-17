@@ -1,15 +1,16 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import DashboardPage from "../features/dashboard/DashboardPage";
-import Skus from "../features/master-data/skus/Skus";
+import Skus from "../features/master-data/skus/SkusListPage";
 import Suppliers from "../features/master-data/suppliers/Suppliers";
 import Customers from "../features/master-data/customers/Customer";
 import Products from "../features/master-data/products/Products";
+import LoginPage from "@/features/authentication/LoginPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout />, // Layout chung chứa Topbar và Outlet
+        element: <MainLayout />,
         children: [
             {
                 index: true,
@@ -63,5 +64,10 @@ export const router = createBrowserRouter([
                 ),
             },
         ],
+
     },
+    {
+        path: "/auth",
+        element: <LoginPage />
+    }
 ]);

@@ -1,4 +1,4 @@
-﻿using WMS.Infrastructure.Persistence;
+using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.ApiService.Data;
 
@@ -6,21 +6,21 @@ public static class SeedData
 {
     public static async Task InitializeAsync(WmsDbContext db)
     {
-        //if (db.Roles.Any()) return;
-
+        //if (db.Set<Role>().Any()) return;
+        //
         //var adminRole = new Role
         //{
         //    Name = "admin",
         //    Description = "Quản trị",
-        //    Permissions = new { ["full"] = true }
+        //    Permissions = new Dictionary<string, bool> { ["full"] = true }
         //};
         //var managerRole = new Role { Name = "manager", Description = "Quản lý kho" };
         //var keeperRole = new Role { Name = "keeper", Description = "Thủ kho" };
         //var plannerRole = new Role { Name = "planner", Description = "Kế hoạch" };
         //var viewerRole = new Role { Name = "viewer", Description = "Chỉ xem" };
-        //db.Roles.AddRange(adminRole, managerRole, keeperRole, plannerRole, viewerRole);
-
-        //db.Users.Add(new User
+        //db.Set<Role>().AddRange(adminRole, managerRole, keeperRole, plannerRole, viewerRole);
+        //
+        //db.Set<User>().Add(new User
         //{
         //    Email = "admin@wms.vn",
         //    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),

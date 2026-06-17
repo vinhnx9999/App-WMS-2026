@@ -3,6 +3,7 @@ using DP.AppWMS.ApiService.Middlewares;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
@@ -10,6 +11,7 @@ using Serilog;
 using System.Text;
 using WMS.Application;
 using WMS.Application.Common.Behaviors;
+using WMS.Application.Common.Data;
 using WMS.Application.OdooIntegration.HealthCheck;
 using WMS.Application.SAPIntegration.HealthCheck;
 using WMS.Infrastructure.Persistence;
@@ -149,8 +151,25 @@ builder.Services.AddSwaggerGen(c =>
 
 // CORS
 var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? [];
+
 builder.Services.AddCors(o => o.AddPolicy("wms", p =>
-    p.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
+{
+    // only in development mode, allow all origins for testing purposes
+    if (builder.Environment.IsDevelopment())
+    {
+        p.SetIsOriginAllowed(origin => true)
+         .AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowCredentials();
+    }
+    else
+    {
+        p.WithOrigins(origins)
+         .AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowCredentials();
+    }
+}));
 
 // Pipeline behaviors
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -186,8 +205,8 @@ app.UseMiddleware<TokenRevocationMiddleware>();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<WmsDbContext>();
-    //await db.Database.MigrateAsync();
-    //await SeedData.InitializeAsync(db);
+    await db.Database.MigrateAsync();
+    await SeedData.InitializeAsync(db);
 }
 
 app.Run();

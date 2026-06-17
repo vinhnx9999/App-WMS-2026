@@ -20,7 +20,7 @@ builder.AddProject<Projects.DP_AppWMS_Web>("webfrontend")
 builder.AddViteApp("react-spa", "../dp.appwms.spa")
     .WithReference(apiService)
     .WaitFor(apiService)
-    .WithEnvironment("VITE_API_URL", apiService.GetEndpoint("http"))
+    .WithEnvironment("VITE_API_URL", apiService.GetEndpoint("https"))
     .WithExternalHttpEndpoints();
 
 builder.Build().Run();

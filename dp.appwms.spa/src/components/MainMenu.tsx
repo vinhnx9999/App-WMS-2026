@@ -32,7 +32,7 @@ export default function MainMenu() {
   const preventHover = (e: React.PointerEvent) => {
     e.preventDefault();
   };
-
+  
   // State to track current theme
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {

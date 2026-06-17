@@ -48,6 +48,11 @@ body,
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --wms-grid-bg: #ffffff;
+  --wms-grid-header-bg: #f8fafc;
+  --wms-grid-border: #e2e8f0;
+  --wms-grid-hover-bg: #f1f5f9;
+  --wms-grid-text: #0f172a;
 }
 
 .dark {
@@ -82,6 +87,11 @@ body,
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --wms-grid-bg: #0f172a;
+  --wms-grid-header-bg: #020617;
+  --wms-grid-border: #1e293b;
+  --wms-grid-hover-bg: rgba(30, 41, 59, 0.4);
+  --wms-grid-text: #f8fafc;
 }
 
 @theme inline {

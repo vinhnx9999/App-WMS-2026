@@ -1,4 +1,6 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/authStore";
 import {
   Bell, User, Settings, ChevronDown, LogOut, Globe
 } from "lucide-react";
@@ -21,11 +23,34 @@ import MainMenu from "../components/MainMenu";
 
 export default function MainLayout() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, isLoading, logout } = useAuthStore();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/auth", { replace: true });
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
   const toggleLanguage = () => {
     const nextLang = i18n.language === "vi" ? "en" : "vi";
     i18n.changeLanguage(nextLang);
   };
+
+  const getInitials = (name?: string) => {
+    if (!name) return "US";
+    const parts = name.split(" ");
+    return parts.map(p => p[0]).join("").substring(0, 2).toUpperCase();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-500 gap-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <span>Đang kiểm tra phiên đăng nhập...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
@@ -66,12 +91,14 @@ export default function MainLayout() {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-800 pl-4 cursor-pointer focus:outline-none">
                 <Avatar className="size-8">
-                  <AvatarImage src="https://github.com/shadcn.png" alt="Admin User" />
-                  <AvatarFallback className="bg-primary text-white text-xs">AD</AvatarFallback>
+                  <AvatarImage src="" alt={user?.fullName || "User"} />
+                  <AvatarFallback className="bg-primary text-white text-xs">
+                    {getInitials(user?.fullName)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="hidden lg:block text-left">
-                  <div className="text-xs font-semibold leading-none">Admin User</div>
-                  <span className="text-[10px] text-slate-400">{t("translation:navigation.admin")}</span>
+                  <div className="text-xs font-semibold leading-none">{user?.fullName || "Guest"}</div>
+                  <span className="text-[10px] text-slate-400">{user?.role || t("translation:navigation.admin")}</span>
                 </div>
                 <ChevronDown className="size-3 text-slate-400" />
               </button>
@@ -90,7 +117,10 @@ export default function MainLayout() {
 
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20">
+              <DropdownMenuItem
+                onSelect={logout}
+                className="cursor-pointer text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20"
+              >
                 <LogOut className="size-4 mr-2" />
                 <span>{t("translation:navigation.logout")}</span>
               </DropdownMenuItem>
