@@ -56,7 +56,7 @@ export default function Skus() {
             pinned: "left",
             width: 140,
             cellRenderer: (params: any) => (
-                <span className="font-bold text-primary dark:text-blue-400">
+                <span className="font-bold text-primary">
                     {params.value || ""}
                 </span>
             )
@@ -153,9 +153,9 @@ export default function Skus() {
 
     return (
         <div className="h-full w-full flex flex-col overflow-hidden">
-            <div className="flex items-center gap-3 shrink-0 bg-white dark:bg-slate-900 p-3 ">
+            <div className="flex items-center gap-3 shrink-0 bg-card text-card-foreground p-3 ">
                 <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                     <input
                         type="text"
                         placeholder={t("skus.searchPlaceholder", "Tìm theo mã SKU, tên hàng hóa")}
@@ -164,7 +164,7 @@ export default function Skus() {
                             setSearchValue(e.target.value);
                             debouncedSetSearch(e.target.value);
                         }}
-                        className="w-full pl-9 pr-4 py-1.5 text-sm rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                        className="w-full pl-9 pr-4 py-1.5 text-sm rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                     />
                 </div>
             </div>

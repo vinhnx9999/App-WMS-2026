@@ -11,6 +11,7 @@ import {
   Users,
   Sun,
   Moon,
+  Box
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 
-export default function MainMenu() {
+export default function TopMenu() {
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -32,7 +33,7 @@ export default function MainMenu() {
   const preventHover = (e: React.PointerEvent) => {
     e.preventDefault();
   };
-  
+
   // State to track current theme
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
@@ -102,6 +103,20 @@ export default function MainMenu() {
             className="p-1.5 bg-popover text-popover-foreground border border-border rounded-lg shadow-md min-w-[200px]"
           >
             <ul className="flex flex-col gap-1 w-full">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link
+                    to="/master-data/products"
+                    className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/master-data/skus"
+                      ? "font-semibold text-primary bg-accent/50"
+                      : "font-medium"
+                      }`}
+                  >
+                    <Box className="size-4 text-slate-400" />
+                    {t("translation:navigation.products")}
+                  </Link>
+                </NavigationMenuLink>
+              </li>
               <li>
                 <NavigationMenuLink asChild>
                   <Link

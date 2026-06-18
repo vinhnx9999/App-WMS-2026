@@ -12,6 +12,7 @@
   "navigation": {
     "dashboard": "Bảng điều khiển",
     "masterData": "Dữ liệu gốc",
+    "products": "Danh mục sản phẩm",
     "skus": "Danh mục SKU",
     "suppliers": "Nhà cung ứng",
     "customers": "Khách hàng",
@@ -22,5 +23,16 @@
     "settings": "Cấu hình tài khoản",
     "logout": "Đăng xuất",
     "admin": "Quản trị viên"
+  },
+  "products": {
+    "addProduct": "Thêm sản phẩm",
+    "createTitle": "Tạo sản phẩm mới",
+    "createSuccess": "Tạo sản phẩm thành công",
+    "errors": {
+      "duplicateProduct": "Mã sản phẩm đã tồn tại trong hệ thống.",
+      "categoryNotFound": "Nhóm hàng đã chọn không tồn tại hoặc đã bị xóa.",
+      "validationFailed": "Dữ liệu đầu vào không hợp lệ. Vui lòng kiểm tra lại.",
+      "generic": "Đã xảy ra lỗi khi tạo sản phẩm. Vui lòng thử lại sau."
+    }
   }
 }

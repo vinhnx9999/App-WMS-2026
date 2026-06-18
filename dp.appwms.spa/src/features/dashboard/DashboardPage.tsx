@@ -6,8 +6,8 @@ export default function DashboardPage() {
         <div className="h-full w-full overflow-y-auto scrollbar-none p-6 space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* KPI 1: Storage Utilization */}
-                <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-                    <div className="flex items-center justify-between text-slate-400">
+                <div className="p-5 bg-card text-card-foreground rounded-xl border border-border shadow-xs">
+                    <div className="flex items-center justify-between text-muted-foreground">
                         <span className="text-xs font-semibold uppercase tracking-wider">Storage Utilization</span>
                         <Layers className="size-5 text-blue-500" />
                     </div>
@@ -17,28 +17,28 @@ export default function DashboardPage() {
                             <TrendingUp className="size-3 mr-0.5" /> +2.1%
                         </span>
                     </div>
-                    <div className="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="mt-4 w-full bg-muted h-2 rounded-full overflow-hidden">
                         <div className="bg-blue-500 h-full rounded-full" style={{ width: "74.8%" }}></div>
                     </div>
                 </div>
                 {/* KPI 2: Active Pallet */}
-                <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-                    <div className="flex items-center justify-between text-slate-400">
+                <div className="p-5 bg-card text-card-foreground rounded-xl border border-border shadow-xs">
+                    <div className="flex items-center justify-between text-muted-foreground">
                         <span className="text-xs font-semibold uppercase tracking-wider">Active Pallet</span>
                         <MapPin className="size-5 text-indigo-500" />
                     </div>
                     <div className="mt-3 flex items-baseline gap-2">
                         <span className="text-3xl font-bold">14 / 16</span>
-                        <span className="text-xs text-slate-400">Available</span>
+                        <span className="text-xs text-muted-foreground">Available</span>
                     </div>
                     <div className="mt-4 flex items-center gap-1.5 text-xs text-emerald-500 font-medium">
-                        <span className="size-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <span className="size-2 bg-emerald-500 rounded-full"></span>
                         Trực quan vị trí bình thường
                     </div>
                 </div>
                 {/* KPI 3: Pending Putaway Rules */}
-                <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-                    <div className="flex items-center justify-between text-slate-400">
+                <div className="p-5 bg-card text-card-foreground rounded-xl border border-border shadow-xs">
+                    <div className="flex items-center justify-between text-muted-foreground">
                         <span className="text-xs font-semibold uppercase tracking-wider">Pending Putaway Rules</span>
                         <Play className="size-5 text-amber-500" />
                     </div>
@@ -46,13 +46,13 @@ export default function DashboardPage() {
                         <span className="text-3xl font-bold">5</span>
                         <span className="text-xs text-amber-500 font-medium">Queued</span>
                     </div>
-                    <div className="mt-4 w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="mt-4 w-full bg-muted h-2 rounded-full overflow-hidden">
                         <div className="bg-amber-500 h-full rounded-full" style={{ width: "35%" }}></div>
                     </div>
                 </div>
                 {/* KPI 4: Rule Execution Success */}
-                <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-                    <div className="flex items-center justify-between text-slate-400">
+                <div className="p-5 bg-card text-card-foreground rounded-xl border border-border shadow-xs">
+                    <div className="flex items-center justify-between text-muted-foreground">
                         <span className="text-xs font-semibold uppercase tracking-wider">Rule Execution Success</span>
                         <CheckCircle2 className="size-5 text-emerald-500" />
                     </div>
@@ -64,7 +64,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="mt-4 flex items-end gap-1 h-3">
                         {[30, 45, 60, 50, 75, 90, 100].map((h, i) => (
-                            <div key={i} className="flex-1 bg-blue-100 dark:bg-slate-800 rounded-sm h-full relative overflow-hidden">
+                            <div key={i} className="flex-1 bg-muted rounded-sm h-full relative overflow-hidden">
                                 <div className="bg-blue-500 absolute bottom-0 left-0 right-0 rounded-sm" style={{ height: `${h}%` }}></div>
                             </div>
                         ))}
@@ -76,22 +76,22 @@ export default function DashboardPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Inbound volume */}
-                        <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase">Inbound Volume (SKU/h)</h3>
+                        <div className="p-5 bg-card text-card-foreground rounded-xl border border-border">
+                            <h3 className="text-sm font-semibold text-muted-foreground uppercase">Inbound Volume (SKU/h)</h3>
                             <div className="h-40 mt-4 flex items-end gap-2">
                                 {[40, 60, 50, 80, 55, 95].map((val, idx) => (
                                     <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
                                         <div className="w-full bg-blue-500/20 hover:bg-blue-500/35 rounded-t-md transition-all relative group" style={{ height: `${val}%` }}>
-                                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{val} SKU</span>
+                                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-popover text-popover-foreground text-[10px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-border shadow-md">{val} SKU</span>
                                         </div>
-                                        <span className="text-[10px] text-slate-400">{8 + idx * 2}am</span>
+                                        <span className="text-[10px] text-muted-foreground">{8 + idx * 2}am</span>
                                     </div>
                                 ))}
                             </div>
                         </div>
                         {/* Outbound volume */}
-                        <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase">Outbound Volume (Orders)</h3>
+                        <div className="p-5 bg-card text-card-foreground rounded-xl border border-border">
+                            <h3 className="text-sm font-semibold text-muted-foreground uppercase">Outbound Volume (Orders)</h3>
                             <div className="h-40 mt-4 relative">
                                 {/* SVG Line Chart */}
                                 <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
@@ -104,7 +104,7 @@ export default function DashboardPage() {
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <div className="absolute bottom-0 left-0 right-0 flex justify-between px-1 text-[10px] text-slate-400 mt-2">
+                                <div className="absolute bottom-0 left-0 right-0 flex justify-between px-1 text-[10px] text-muted-foreground mt-2">
                                     <span>8am</span>
                                     <span>12pm</span>
                                     <span>4pm</span>
@@ -116,8 +116,8 @@ export default function DashboardPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                         {/* Dock Utilization Rates */}
-                        <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase mb-4">Dock Utilization Rates</h3>
+                        <div className="p-5 bg-card text-card-foreground rounded-xl border border-border">
+                            <h3 className="text-sm font-semibold text-muted-foreground uppercase mb-4">Dock Utilization Rates</h3>
                             <div className="space-y-4">
                                 {[
                                     { name: "Dock A (Receiving)", value: 85, color: "bg-blue-500" },
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                                             <span>{dock.name}</span>
                                             <span>{dock.value}%</span>
                                         </div>
-                                        <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                                        <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                                             <div className={`${dock.color} h-full rounded-full`} style={{ width: `${dock.value}%` }}></div>
                                         </div>
                                     </div>
@@ -137,8 +137,8 @@ export default function DashboardPage() {
                             </div>
                         </div>
                         {/* Storage Zone Capacity Distribution */}
-                        <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase mb-4">Storage Zone Capacity</h3>
+                        <div className="p-5 bg-card text-card-foreground rounded-xl border border-border">
+                            <h3 className="text-sm font-semibold text-muted-foreground uppercase mb-4">Storage Zone Capacity</h3>
                             <div className="space-y-4">
                                 {[
                                     { zone: "Zone A (Shuttle Rack)", value: 82, color: "bg-indigo-500" },
@@ -150,7 +150,7 @@ export default function DashboardPage() {
                                             <span>{zone.zone}</span>
                                             <span>{zone.value}%</span>
                                         </div>
-                                        <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                                        <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                                             <div className={`${zone.color} h-full rounded-full`} style={{ width: `${zone.value}%` }}></div>
                                         </div>
                                     </div>
@@ -160,13 +160,13 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col h-full min-h-[400px]">
+                <div className="p-5 bg-card text-card-foreground rounded-xl border border-border flex flex-col h-full min-h-[400px]">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                             <ShieldAlert className="size-5 text-red-500" />
-                            <h3 className="font-semibold text-slate-800 dark:text-slate-100">Rule Conflicts & Alerts</h3>
+                            <h3 className="font-semibold text-foreground">Rule Conflicts & Alerts</h3>
                         </div>
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-700 rounded-full dark:bg-red-950 dark:text-red-300">
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-700 rounded-full dark:bg-red-950/40 dark:text-red-300">
                             4 Cần Xử Lý
                         </span>
                     </div>
@@ -203,26 +203,26 @@ export default function DashboardPage() {
                         ].map((alert, idx) => (
                             <div
                                 key={idx}
-                                className={`p-3.5 rounded-lg border text-xs transition-all hover:bg-slate-50 dark:hover:bg-slate-800/50 ${alert.type === "CRITICAL"
-                                    ? "bg-red-50/50 border-red-100 dark:bg-red-950/20 dark:border-red-900/30"
+                                className={`p-3.5 rounded-lg border text-xs transition-all hover:bg-accent hover:text-accent-foreground ${alert.type === "CRITICAL"
+                                    ? "bg-red-500/5 border-red-500/20 dark:bg-red-950/20 dark:border-red-900/30"
                                     : alert.type === "WARNING"
-                                        ? "bg-amber-50/50 border-amber-100 dark:bg-amber-950/20 dark:border-amber-900/30"
-                                        : "bg-slate-50/50 border-slate-100 dark:bg-slate-800/20 dark:border-slate-800/30 opacity-70"
+                                        ? "bg-amber-500/5 border-amber-500/20 dark:bg-amber-950/20 dark:border-amber-900/30"
+                                        : "bg-muted/30 border-border opacity-70"
                                     }`}
                             >
                                 <div className="flex items-center justify-between mb-1">
-                                    <span className="text-[10px] text-slate-400 font-mono">{alert.time}</span>
+                                    <span className="text-[10px] text-muted-foreground font-mono">{alert.time}</span>
                                     <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-sm ${alert.type === "CRITICAL"
                                         ? "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
                                         : alert.type === "WARNING"
                                             ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
-                                            : "bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300"
+                                            : "bg-muted text-muted-foreground"
                                         }`}>{alert.type}</span>
                                 </div>
-                                <h4 className="font-semibold text-slate-800 dark:text-slate-100 mb-1">{alert.title}</h4>
-                                <p className="text-slate-500 dark:text-slate-400 leading-relaxed">{alert.desc}</p>
+                                <h4 className="font-semibold text-foreground mb-1">{alert.title}</h4>
+                                <p className="text-muted-foreground leading-relaxed">{alert.desc}</p>
                                 {alert.action && (
-                                    <button className="mt-2.5 px-2.5 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer">
+                                    <button className="mt-2.5 px-2.5 py-1 bg-background border border-border rounded text-[10px] font-semibold hover:bg-accent hover:text-accent-foreground text-foreground cursor-pointer">
                                         {alert.action}
                                     </button>
                                 )}
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                 </div>
             </div>
 
-            <div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div className="p-5 bg-card text-card-foreground rounded-xl border border-border">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                         <Layers className="size-5 text-emerald-500" />
@@ -258,12 +258,12 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-6 flex flex-col items-center justify-center">
+                <div className="w-full bg-muted/20 border border-border rounded-lg p-6 flex flex-col items-center justify-center">
                     <div className="w-full max-w-4xl grid grid-cols-12 gap-1.5">
                         {Array.from({ length: 48 }).map((_, i) => {
                             let color = "bg-emerald-500/20 border-emerald-500/40 hover:bg-emerald-500/30";
                             if (i === 12 || i === 15 || i === 33) {
-                                color = "bg-red-500/20 border-red-500/40 hover:bg-red-500/30 animate-pulse";
+                                color = "bg-red-500/20 border-red-500/40 hover:bg-red-500/30";
                             } else if (i === 8 || i === 19 || i === 41 || i === 42) {
                                 color = "bg-amber-500/20 border-amber-500/40 hover:bg-amber-500/30";
                             } else if (i % 3 === 0 || i % 7 === 0) {
@@ -272,7 +272,7 @@ export default function DashboardPage() {
                             return (
                                 <div
                                     key={i}
-                                    className={`aspect-square rounded border transition-all cursor-pointer flex items-center justify-center text-[10px] font-mono text-slate-400 hover:scale-105 ${color}`}
+                                    className={`aspect-square rounded border transition-all cursor-pointer flex items-center justify-center text-[10px] font-mono text-muted-foreground hover:scale-105 ${color}`}
                                     title={`Location Slot ${i + 1}`}
                                 >
                                     {i + 1}

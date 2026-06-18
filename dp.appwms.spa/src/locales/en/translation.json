@@ -12,6 +12,7 @@
   "navigation": {
     "dashboard": "Dashboard",
     "masterData": "Master Data",
+    "products": "Product",
     "skus": "SKU Catalog",
     "suppliers": "Suppliers",
     "customers": "Customers",
@@ -22,5 +23,16 @@
     "settings": "Settings",
     "logout": "Logout",
     "admin": "Administrator"
+  },
+  "products": {
+    "addProduct": "Add Product",
+    "createTitle": "Create New Product",
+    "createSuccess": "Product created successfully",
+    "errors": {
+      "duplicateProduct": "Product code already exists in the system.",
+      "categoryNotFound": "The selected category does not exist or has been deleted.",
+      "validationFailed": "Invalid input data. Please check again.",
+      "generic": "An error occurred while creating the product. Please try again later."
+    }
   }
 }
