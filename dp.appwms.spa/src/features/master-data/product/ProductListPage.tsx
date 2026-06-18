@@ -3,7 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
 import { themeQuartz, colorSchemeDark } from "ag-grid-community";
 import { useTranslation } from "react-i18next";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Trash } from "lucide-react";
 import { debounce } from "lodash";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const createProductSchema = z.object({
     productCode: z.string().optional().nullable(),
@@ -37,6 +38,9 @@ export default function ProductListPage() {
     const [isDark, setIsDark] = useState(document.documentElement.classList.contains("dark"));
     const [isLoading, setIsLoading] = useState(false);
 
+    // Categories list for select cell editor
+    const [allCategories, setAllCategories] = useState<any[]>([]);
+
     // Create Modal State
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -48,6 +52,11 @@ export default function ProductListPage() {
         categoryName: ""
     });
     const [formErrors, setFormErrors] = useState<any>({});
+
+    // Delete Modal State
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [productToDelete, setProductToDelete] = useState<ProductDto | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Category search state
     const [categorySearch, setCategorySearch] = useState("");
@@ -75,14 +84,28 @@ export default function ProductListPage() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    useEffect(() => {
+        const loadCategories = async () => {
+            try {
+                const response = await categoryService.searchCategories({ page: 1, limit: 100 });
+                if (response.success && response.data) {
+                    setAllCategories(response.data.items);
+                }
+            } catch (err) {
+                console.error("Error loading categories for cell editor:", err);
+            }
+        };
+        loadCategories();
+    }, []);
+
     const gridTheme = useMemo(() => {
         const baseTheme = isDark ? themeQuartz.withPart(colorSchemeDark) : themeQuartz;
         return baseTheme.withParams({
-            backgroundColor: "var(--wms-grid-bg)",
-            headerBackgroundColor: "var(--wms-grid-header-bg)",
-            borderColor: "var(--wms-grid-border)",
-            rowHoverColor: "var(--wms-grid-hover-bg)",
-            textColor: "var(--wms-grid-text)",
+            backgroundColor: "var(--background)",
+            headerBackgroundColor: "var(--muted)",
+            borderColor: "var(--border)",
+            rowHoverColor: "var(--accent)",
+            textColor: "var(--foreground)",
         });
     }, [isDark]);
 
@@ -134,7 +157,7 @@ export default function ProductListPage() {
     const columnDefs = useMemo<ColDef<ProductDto>[]>(() => [
         {
             field: "productCode",
-            headerName: t("products.productCode", "Mã sản phẩm"),
+            headerName: t("translation:products.productCode"),
             pinned: "left",
             width: 150,
             cellRenderer: (params: any) => (
@@ -145,20 +168,27 @@ export default function ProductListPage() {
         },
         {
             field: "productName",
-            headerName: t("products.productName", "Tên sản phẩm"),
+            headerName: t("translation:products.productName"),
             width: 250,
+            editable: true,
             valueFormatter: (params) => params.value || ""
         },
         {
             field: "categoryName",
-            headerName: t("products.categoryName", "Nhóm hàng"),
+            headerName: t("translation:products.categoryName"),
             width: 180,
+            editable: true,
+            cellEditor: "agSelectCellEditor",
+            cellEditorParams: {
+                values: allCategories.map(c => c.name)
+            },
             valueFormatter: (params) => params.value || ""
         },
         {
             field: "createdAt",
-            headerName: t("products.createdAt", "Ngày tạo"),
+            headerName: t("translation:products.createdAt"),
             width: 140,
+            editable: false,
             valueFormatter: (params) => {
                 if (!params.value) return "";
                 return new Date(params.value).toLocaleDateString("vi-VN");
@@ -166,12 +196,46 @@ export default function ProductListPage() {
         },
         {
             field: "description",
-            headerName: t("products.description", "Mô tả"),
+            headerName: t("translation:products.description"),
             flex: 1,
+            editable: true,
             minWidth: 200,
             valueFormatter: (params) => params.value || ""
+        },
+        {
+            headerName: t("translation:products.actions"),
+            pinned: "right",
+            width: 80,
+            sortable: false,
+            filter: false,
+            resizable: true,
+            editable: false,
+            cellRenderer: (params: any) => {
+                if (!params.data) return null;
+                return (
+                    <div className="flex items-center justify-center h-full">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="destructive"
+                                    size="icon-xs"
+                                    onClick={() => {
+                                        setProductToDelete(params.data);
+                                        setIsDeleteOpen(true);
+                                    }}
+                                >
+                                    <Trash className="size-3.5" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>{t("translation:products.deleteTooltip")}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                );
+            }
         }
-    ], [t]);
+    ], [t, allCategories]);
 
     // Page size config
     const pageSize = 10;
@@ -207,9 +271,103 @@ export default function ProductListPage() {
         };
     }, [debouncedSearch]);
 
+    const onCellValueChanged = async (event: any) => {
+        const { data, colDef, newValue, oldValue } = event;
+        if (newValue === oldValue) return;
+
+        // Perform validation
+        if (colDef.field === "productName" && (!newValue || newValue.trim() === "")) {
+            toast.error(t("translation:products.errors.validationFailed"));
+            gridRef.current?.api.refreshInfiniteCache();
+            return;
+        }
+
+        const updatePayload = {
+            productName: data.productName || "",
+            description: data.description || null,
+            categoryId: data.categoryId || null
+        };
+
+        if (colDef.field === "categoryName") {
+            const selectedCat = allCategories.find(c => c.name === newValue);
+            if (selectedCat) {
+                updatePayload.categoryId = selectedCat.id;
+            } else if (!newValue) {
+                if (data.categoryId) {
+                    toast.error(t("translation:products.errors.categoryRequired"));
+                    gridRef.current?.api.refreshInfiniteCache();
+                    return;
+                }
+                updatePayload.categoryId = null;
+            } else {
+                toast.error(t("translation:products.errors.categoryNotFound"));
+                gridRef.current?.api.refreshInfiniteCache();
+                return;
+            }
+        }
+
+        try {
+            const response = await productService.updateProduct(data.id, updatePayload);
+            if (response.success) {
+                toast.success(t("translation:products.updateSuccess"));
+            } else {
+                toast.error(t("translation:products.errors.generic"));
+            }
+        } catch (error: any) {
+            console.error("Error updating product:", error);
+            const status = error.response?.status;
+            let errorKey = t("translation:products.errors.generic");
+            if (status === 409) {
+                errorKey = t("translation:products.errors.duplicateProduct");
+            } else if (status === 404) {
+                errorKey = t("translation:products.errors.categoryNotFound");
+            } else if (status === 400) {
+                const errorCode = error.response?.data?.code;
+                if (errorCode === "CATEGORY_REQUIRED") {
+                    errorKey = t("translation:products.errors.categoryRequired");
+                } else {
+                    errorKey = t("translation:products.errors.validationFailed");
+                }
+            }
+            toast.error(errorKey);
+        } finally {
+            gridRef.current?.api.refreshInfiniteCache();
+        }
+    };
+
+    const confirmDeleteProduct = async () => {
+        if (!productToDelete) return;
+        try {
+            setIsDeleting(true);
+            const response = await productService.deleteProduct(productToDelete.id);
+            if (response.success) {
+                toast.success(t("translation:products.deleteSuccess"));
+                setIsDeleteOpen(false);
+                setProductToDelete(null);
+                gridRef.current?.api.refreshInfiniteCache();
+            } else {
+                toast.error(t("translation:products.errors.deleteFailed"));
+            }
+        } catch (error: any) {
+            console.error("Error deleting product:", error);
+            const status = error.response?.status;
+            let errorKey = t("translation:products.errors.deleteFailed");
+            if (status === 409) {
+                errorKey = t("translation:products.errors.productHasSkus");
+            } else if (status === 404) {
+                errorKey = t("translation:products.errors.generic");
+            }
+            toast.error(errorKey);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     const handleSubmit = async (e: SubmitEvent) => {
         e.preventDefault();
         setFormErrors({});
+
+        debugger;
 
         // Validate
         const validation = createProductSchema.safeParse({
@@ -311,6 +469,9 @@ export default function ProductListPage() {
                         loading={isLoading}
                         overlayLoadingTemplate={`<span class="ag-overlay-loading-center">${t("translation:common.loading")}</span>`}
                         overlayNoRowsTemplate={`<span class="ag-overlay-no-rows-center">${t("translation:common.noData")}</span>`}
+                        stopEditingWhenCellsLoseFocus={true}
+                        singleClickEdit={true}
+                        onCellValueChanged={onCellValueChanged}
                         defaultColDef={{
                             resizable: true,
                             sortable: false,
@@ -472,6 +633,44 @@ export default function ProductListPage() {
                             </Button>
                         </DialogFooter>
                     </form>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+                <DialogContent className="sm:max-w-[400px] bg-card border border-border text-card-foreground">
+                    <DialogHeader>
+                        <DialogTitle>{t("translation:products.deleteTitle")}</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4 text-sm text-muted-foreground flex flex-col gap-2">
+                        <p>{t("translation:products.confirmDelete")}</p>
+                        {productToDelete && (
+                            <div className="p-2 rounded bg-muted/50 border border-border mt-1 font-semibold text-foreground text-xs">
+                                {productToDelete.productName} ({productToDelete.productCode})
+                            </div>
+                        )}
+                    </div>
+                    <DialogFooter>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                setIsDeleteOpen(false);
+                                setProductToDelete(null);
+                            }}
+                            disabled={isDeleting}
+                            className="border-border text-muted-foreground hover:text-foreground"
+                        >
+                            {t("common.button.cancel")}
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            onClick={confirmDeleteProduct}
+                            disabled={isDeleting}
+                        >
+                            {isDeleting ? t("common.loading") : t("common.button.delete")}
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </div>

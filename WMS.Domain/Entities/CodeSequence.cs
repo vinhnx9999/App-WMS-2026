@@ -1,4 +1,5 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
+using WMS.Domain.Extensions;
 
 namespace WMS.Domain.Entities
 {
@@ -29,15 +30,18 @@ namespace WMS.Domain.Entities
 
         private CodeSequence() { }
         public CodeSequence(
+            Guid tenantId,
             string codeType,
             string prefix,
             int currentNumber = 0,
             int paddingLength = 6)
         {
-            CodeType = codeType;
-            Prefix = NormalizePrefix(prefix);
+            TenantId = tenantId;
+            CodeType = Utilities.NormalizeCode(codeType);
+            Prefix = Utilities.NormalizeCode(prefix);
             CurrentNumber = currentNumber;
             PaddingLength = paddingLength;
+            RowVersion = Guid.NewGuid().ToByteArray();
         }
 
         public string Next()
@@ -46,6 +50,7 @@ namespace WMS.Domain.Entities
                 throw new DomainException("CONFIGURATION_ERROR", "Code sequence is inactive.");
 
             CurrentNumber++;
+            RowVersion = Guid.NewGuid().ToByteArray();
 
             var numberPart = CurrentNumber
                 .ToString()
@@ -57,16 +62,9 @@ namespace WMS.Domain.Entities
 
         public void ChangePrefix(string prefix)
         {
-            Prefix = NormalizePrefix(prefix);
+            Prefix = Utilities.NormalizeCode(prefix);
+            RowVersion = Guid.NewGuid().ToByteArray();
         }
 
-
-        private static string NormalizePrefix(string prefix)
-        {
-            if (string.IsNullOrWhiteSpace(prefix))
-                throw new DomainException("Prefix is required.");
-
-            return prefix.Trim().ToUpperInvariant();
-        }
     }
 }

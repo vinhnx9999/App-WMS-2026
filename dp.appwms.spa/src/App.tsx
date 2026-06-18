@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
 
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 function App() {
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
@@ -13,10 +14,10 @@ function App() {
   }, [initializeAuth]);
 
   return (
-    <>
+    <TooltipProvider>
       <RouterProvider router={router} />
       <Toaster />
-    </>
+    </TooltipProvider>
   );
 }
 

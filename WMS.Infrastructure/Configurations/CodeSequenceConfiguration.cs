@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WMS.Domain.Entities;
 
@@ -10,7 +10,7 @@ namespace WMS.Infrastructure.Configurations
         {
             builder.ToTable("code_sequences");
 
-            builder.Property(x => x.RowVersion).IsRowVersion();
+            builder.Property(x => x.RowVersion).IsConcurrencyToken();
 
             builder.HasIndex(x => new { x.TenantId, x.CodeType }).IsUnique();
 
