@@ -1,13 +1,13 @@
-import { useState, useMemo, useEffect, useRef, type SubmitEvent } from "react";
+import { useState, useEffect, useRef, useMemo, type SubmitEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
-import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
-import { themeQuartz, colorSchemeDark } from "ag-grid-community";
 import { useTranslation } from "react-i18next";
-import { Search, Plus, Trash } from "lucide-react";
 import { debounce } from "lodash";
 import { z } from "zod";
 import { toast } from "sonner";
 import type { SkuDto } from "./models/sku-dto.model";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { SkuImportTab } from "./components/SkuImportTab";
+import { SkuListTab } from "./components/SkuListTab";
 
 import { skuService } from "./services/sku.service";
 import { productService } from "../product/services/product.service";
@@ -22,7 +22,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const createSkuSchema = z.object({
     productId: z.string().min(1, "Sản phẩm liên kết là bắt buộc"),
@@ -38,11 +37,7 @@ const createSkuSchema = z.object({
 
 export default function Skus() {
     const { t } = useTranslation();
-    const [searchValue, setSearchValue] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
     const gridRef = useRef<AgGridReact>(null);
-    const [isDark, setIsDark] = useState(document.documentElement.classList.contains("dark"));
-    const [isLoading, setIsLoading] = useState(false);
 
     // Create Modal State
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -71,14 +66,6 @@ export default function Skus() {
     const [skuToDelete, setSkuToDelete] = useState<SkuDto | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-        return () => observer.disconnect();
-    }, []);
-
     // Click outside to close product search list
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -89,29 +76,6 @@ export default function Skus() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-
-    const gridTheme = useMemo(() => {
-        const baseTheme = isDark ? themeQuartz.withPart(colorSchemeDark) : themeQuartz;
-        return baseTheme.withParams({
-            backgroundColor: "var(--background)",
-            headerBackgroundColor: "var(--muted)",
-            borderColor: "var(--border)",
-            rowHoverColor: "var(--accent)",
-            textColor: "var(--foreground)",
-        });
-    }, [isDark]);
-
-    // Lodash debounce search
-    const debouncedSetSearch = useMemo(
-        () => debounce((val: string) => setDebouncedSearch(val), 500),
-        []
-    );
-
-    useEffect(() => {
-        return () => {
-            debouncedSetSearch.cancel();
-        };
-    }, [debouncedSetSearch]);
 
     // Debounce search products
     const fetchProducts = useMemo(
@@ -144,187 +108,6 @@ export default function Skus() {
     const handleProductFocus = () => {
         setIsProductListOpen(true);
         fetchProducts(productSearch);
-    };
-
-    const columnDefs = useMemo<ColDef<SkuDto>[]>(() => [
-        {
-            field: "skuCode",
-            headerName: t("translation:skus.skuCode"),
-            pinned: "left",
-            width: 140,
-            cellRenderer: (params: any) => (
-                <span className="font-bold text-primary">
-                    {params.value || ""}
-                </span>
-            )
-        },
-        {
-            field: "name",
-            headerName: t("translation:skus.name", "Tên SKU"),
-            width: 200,
-            editable: true,
-            valueFormatter: (params) => params.value || ""
-        },
-        {
-            field: "productName",
-            headerName: t("translation:skus.linkedProduct"),
-            width: 200,
-            valueGetter: (params) => {
-                const code = params.data?.productCode;
-                const name = params.data?.productName;
-                return code && name ? `${name} (${code})` : name || code || "";
-            }
-        },
-        {
-            field: "categoryName",
-            headerName: t("translation:skus.categoryName"),
-            width: 150,
-            valueFormatter: (params) => params.value || ""
-        },
-        {
-            field: "goodsNature",
-            headerName: t("translation:skus.goodsNature"),
-            width: 130,
-            editable: true,
-            valueFormatter: (params) => params.value || ""
-        },
-        {
-            field: "referencePrice",
-            headerName: t("translation:skus.referencePrice"),
-            width: 140,
-            type: "numericColumn",
-            editable: true,
-            valueParser: (params) => {
-                const parsed = parseFloat(params.newValue);
-                return isNaN(parsed) ? null : parsed;
-            },
-            valueFormatter: (params) => {
-                if (params.value == null) return "";
-                return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(params.value);
-            }
-        },
-        {
-            field: "createdAt",
-            headerName: t("translation:skus.createdAt"),
-            width: 130,
-            valueFormatter: (params) => {
-                if (!params.value) return "";
-                return new Date(params.value).toLocaleDateString("vi-VN");
-            }
-        },
-        {
-            field: "description",
-            headerName: t("translation:skus.description"),
-            flex: 1,
-            minWidth: 200,
-            editable: true,
-            valueFormatter: (params) => params.value || ""
-        },
-        {
-            headerName: t("translation:products.actions", "Thao tác"),
-            pinned: "right",
-            width: 80,
-            sortable: false,
-            filter: false,
-            resizable: false,
-            editable: false,
-            cellRenderer: (params: any) => {
-                if (!params.data) return null;
-                return (
-                    <div className="flex items-center justify-center h-full">
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="destructive"
-                                    size="icon-xs"
-                                    onClick={() => {
-                                        setSkuToDelete(params.data);
-                                        setIsDeleteOpen(true);
-                                    }}
-                                >
-                                    <Trash className="size-3.5" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{t("translation:skus.deleteTooltip", "Xóa SKU")}</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </div>
-                );
-            }
-        }
-    ], [t]);
-
-    // Page size config
-    const pageSize = 10;
-
-    const datasource = useMemo<IDatasource>(() => {
-        return {
-            getRows: async (params: IGetRowsParams) => {
-                try {
-                    setIsLoading(true);
-
-                    const page = Math.floor(params.startRow / pageSize) + 1;
-
-                    const response = await skuService.searchSkus({
-                        search: debouncedSearch || undefined,
-                        page,
-                        limit: pageSize
-                    });
-
-                    setIsLoading(false);
-
-                    if (response.success && response.data) {
-                        const { items, totalCount } = response.data;
-                        params.successCallback(items, totalCount);
-                    } else {
-                        params.failCallback();
-                    }
-                } catch (error) {
-                    console.error("Lỗi khi tải danh sách SKU trong Datasource:", error);
-                    setIsLoading(false);
-                    params.failCallback();
-                }
-            }
-        };
-    }, [debouncedSearch]);
-
-    const onCellValueChanged = async (event: any) => {
-        const { data, colDef, newValue, oldValue } = event;
-        if (newValue === oldValue) return;
-
-        // Validation for negative price
-        if (colDef.field === "referencePrice" && newValue !== null && newValue < 0) {
-            toast.error(t("translation:skus.errors.invalidPrice"));
-            gridRef.current?.api.refreshInfiniteCache();
-            return;
-        }
-
-        const updatePayload = {
-            name: data.name || null,
-            goodsNature: data.goodsNature || null,
-            description: data.description || null,
-            price: data.referencePrice !== null ? Number(data.referencePrice) : null
-        };
-
-        try {
-            const response = await skuService.updateSku(data.id, updatePayload);
-            if (response.success) {
-                toast.success(t("translation:skus.updateSuccess"));
-            } else {
-                toast.error(t("translation:skus.errors.generic"));
-            }
-        } catch (error: any) {
-            console.error("Error updating SKU:", error);
-            const status = error.response?.status;
-            let errorKey = t("translation:skus.errors.updateFailed");
-            if (status === 400) {
-                errorKey = t("translation:skus.errors.validationFailed");
-            }
-            toast.error(errorKey);
-        } finally {
-            gridRef.current?.api.refreshInfiniteCache();
-        }
     };
 
     const confirmDeleteSku = async () => {
@@ -423,62 +206,36 @@ export default function Skus() {
         }
     };
 
+    const handleImportSuccess = () => {
+        gridRef.current?.api.refreshInfiniteCache();
+    };
 
     return (
-        <div className="h-full w-full flex flex-col overflow-hidden">
-            <div className="flex items-center justify-between gap-3 shrink-0 bg-card text-card-foreground p-3 ">
-                <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                    <input
-                        type="text"
-                        placeholder={t("skus.searchPlaceholder", "Tìm theo mã SKU, tên hàng hóa")}
-                        value={searchValue}
-                        onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            debouncedSetSearch(e.target.value);
-                        }}
-                        className="w-full pl-9 pr-4 py-1.5 text-sm rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                    />
+        <div className="h-full w-full flex flex-col overflow-hidden bg-background">
+            <Tabs defaultValue="list" className="h-full w-full flex flex-col">
+                <div className="px-6 pt-2 shrink-0 border-b border-border bg-card flex items-center justify-between">
+                    <TabsList variant="line" className="h-10">
+                        <TabsTrigger value="list" className="cursor-pointer font-semibold px-4">
+                            {t("translation:navigation.skus")}
+                        </TabsTrigger>
+                        <TabsTrigger value="import" className="cursor-pointer font-semibold px-4">
+                            {t("translation:skus.import.tabTitle")}
+                        </TabsTrigger>
+                    </TabsList>
                 </div>
-                <div>
-                    <Button onClick={() => setIsCreateOpen(true)} className="flex items-center gap-1.5 text-sm">
-                        <Plus className="size-4" />
-                        {t("translation:skus.addSku", "Thêm SKU")}
-                    </Button>
-                </div>
-            </div>
-
-            <div className="flex-1 w-full overflow-hidden relative">
-                <div className="w-full h-full">
-                    <AgGridReact
+                <TabsContent value="list" className="flex-1 w-full flex flex-col overflow-hidden m-0 border-none outline-none">
+                    <SkuListTab
                         ref={gridRef}
-                        columnDefs={columnDefs}
-                        datasource={datasource}
-                        rowModelType="infinite"
-                        cacheBlockSize={pageSize}
-                        maxConcurrentDatasourceRequests={1}
-                        infiniteInitialRowCount={pageSize}
-                        pagination={true}
-                        paginationPageSize={pageSize}
-                        paginationPageSizeSelector={false}
-                        theme={gridTheme}
-                        loading={isLoading}
-                        overlayLoadingTemplate={`<span class="ag-overlay-loading-center">${t("translation:common.loading")}</span>`}
-                        overlayNoRowsTemplate={`<span class="ag-overlay-no-rows-center">${t("translation:common.noData")}</span>`}
-                        stopEditingWhenCellsLoseFocus={true}
-                        singleClickEdit={true}
-                        onCellValueChanged={onCellValueChanged}
-                        defaultColDef={{
-                            resizable: true,
-                            sortable: false,
-                            filter: false,
-                            minWidth: 120
+                        onDeleteSku={(sku) => {
+                            setSkuToDelete(sku);
+                            setIsDeleteOpen(true);
                         }}
+                        onAddSkuClick={() => setIsCreateOpen(true)}
                     />
-                </div>
-            </div>
-
-            {/* Create SKU Dialog */}
+                </TabsContent>                <TabsContent value="import" className="flex-1 w-full flex flex-col overflow-hidden m-0 border-none outline-none">
+                    <SkuImportTab onImportSuccess={handleImportSuccess} />
+                </TabsContent>
+            </Tabs>
             <Dialog open={isCreateOpen} onOpenChange={(open) => {
                 setIsCreateOpen(open);
                 if (!open) {
@@ -511,6 +268,8 @@ export default function Skus() {
                             <div className="relative">
                                 <Input
                                     id="product"
+                                    name="productId"
+                                    autoComplete="off"
                                     value={productSearch}
                                     onChange={(e) => {
                                         setProductSearch(e.target.value);
@@ -521,7 +280,7 @@ export default function Skus() {
                                         fetchProducts(e.target.value);
                                     }}
                                     onFocus={handleProductFocus}
-                                    placeholder={t("skus.productIdPlaceholder", "Tìm kiếm sản phẩm...")}
+                                    placeholder={t("skus.productIdPlaceholder", "Tìm kiếm sản phẩm…")}
                                     className="w-full bg-background border-border pr-8"
                                 />
                                 {productSearch && (
@@ -533,6 +292,7 @@ export default function Skus() {
                                             setProducts([]);
                                             setIsProductListOpen(false);
                                         }}
+                                        aria-label={t("common.button.clear", "Xóa")}
                                         className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs font-semibold"
                                     >
                                         ✕
@@ -548,7 +308,7 @@ export default function Skus() {
                                     <ScrollArea className="h-40">
                                         <div className="p-1">
                                             {isProductLoading ? (
-                                                <div className="p-2 text-xs text-muted-foreground text-center">{t("common.loading", "Đang tải...")}</div>
+                                                <div className="p-2 text-xs text-muted-foreground text-center">{t("common.loading", "Đang tải…")}</div>
                                             ) : products.length === 0 ? (
                                                 <div className="p-2 text-xs text-muted-foreground text-center">{t("common.noData", "Không có dữ liệu")}</div>
                                             ) : (
@@ -585,6 +345,9 @@ export default function Skus() {
                             </label>
                             <Input
                                 id="skuCode"
+                                name="skuCode"
+                                autoComplete="off"
+                                spellCheck={false}
                                 value={formValues.skuCode}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, skuCode: e.target.value }))}
                                 placeholder={t("skus.skuCodePlaceholder")}
@@ -602,6 +365,8 @@ export default function Skus() {
                             </label>
                             <Input
                                 id="name"
+                                name="name"
+                                autoComplete="off"
                                 value={formValues.name}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, name: e.target.value }))}
                                 placeholder={t("skus.skuNamePlaceholder")}
@@ -616,6 +381,8 @@ export default function Skus() {
                             </label>
                             <Input
                                 id="goodsNature"
+                                name="goodsNature"
+                                autoComplete="off"
                                 value={formValues.goodsNature}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, goodsNature: e.target.value }))}
                                 placeholder={t("skus.goodsNaturePlaceholder")}
@@ -630,7 +397,10 @@ export default function Skus() {
                             </label>
                             <Input
                                 id="price"
+                                name="price"
                                 type="number"
+                                inputMode="decimal"
+                                autoComplete="off"
                                 step="any"
                                 value={formValues.price}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, price: e.target.value }))}
@@ -649,6 +419,8 @@ export default function Skus() {
                             </label>
                             <Input
                                 id="description"
+                                name="description"
+                                autoComplete="off"
                                 value={formValues.description}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, description: e.target.value }))}
                                 placeholder={t("skus.descriptionPlaceholder")}
@@ -671,7 +443,7 @@ export default function Skus() {
                                 disabled={isSaving}
                                 className="bg-primary text-primary-foreground hover:bg-primary/95"
                             >
-                                {isSaving ? t("common.loading") : t("common.button.save")}
+                                {isSaving ? t("common.loading", "Đang tải…") : t("common.button.save")}
                             </Button>
                         </DialogFooter>
                     </form>

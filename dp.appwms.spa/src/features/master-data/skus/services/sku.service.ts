@@ -87,5 +87,75 @@ export const skuService = {
             console.error("Error deleting SKU:", error);
             throw error;
         }
+    },
+
+    /**
+     * Create SKU Import Session
+     */
+    createImportSession: async (sourceFileName: string, rows: any[]): Promise<ApiResponse<any>> => {
+        try {
+            const response = await apiClient.post<ApiResponse<any>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/session`, {
+                sourceFileName,
+                rows
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error creating SKU import session:", error);
+            throw error;
+        }
+    },
+
+    /**
+     * Confirm SKU Import Session
+     */
+    confirmImportSession: async (id: string): Promise<ApiResponse<any>> => {
+        try {
+            const response = await apiClient.post<ApiResponse<any>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/session/${id}/confirm`);
+            return response.data;
+        } catch (error) {
+            console.error("Error confirming SKU import session:", error);
+            throw error;
+        }
+    },
+
+    /**
+     * Cancel SKU Import Session
+     */
+    cancelImportSession: async (id: string): Promise<ApiResponse<any>> => {
+        try {
+            const response = await apiClient.post<ApiResponse<any>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/session/${id}/cancel`);
+            return response.data;
+        } catch (error) {
+            console.error("Error cancelling SKU import session:", error);
+            throw error;
+        }
+    },
+
+    /**
+     * Search SKU Import Sessions
+     */
+    searchImportSessions: async (params: { status?: string, page: number, limit: number }): Promise<ApiResponse<PagedResult<any>>> => {
+        try {
+            const response = await apiClient.get<ApiResponse<PagedResult<any>>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/sessions`, {
+                params
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error searching SKU import sessions:", error);
+            throw error;
+        }
+    },
+
+    /**
+     * Get SKU Import Session details
+     */
+    getImportSession: async (id: string): Promise<ApiResponse<any>> => {
+        try {
+            const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/sessions/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error getting SKU import session:", error);
+            throw error;
+        }
     }
 };

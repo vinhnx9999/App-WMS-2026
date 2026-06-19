@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect, useRef, type SubmitEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
-import { themeQuartz, colorSchemeDark } from "ag-grid-community";
 import { useTranslation } from "react-i18next";
 import { Search, Plus, Trash } from "lucide-react";
 import { debounce } from "lodash";
@@ -10,6 +9,7 @@ import { toast } from "sonner";
 import type { ProductDto } from "./models/product-dto.model";
 import { productService } from "./services/product.service";
 import { categoryService } from "../category/services/category.service";
+import { useAgGridTheme } from "@/hooks/use-ag-grid-theme";
 
 import {
     Dialog,
@@ -35,7 +35,7 @@ export default function ProductListPage() {
     const [searchValue, setSearchValue] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const gridRef = useRef<AgGridReact>(null);
-    const [isDark, setIsDark] = useState(document.documentElement.classList.contains("dark"));
+    const gridTheme = useAgGridTheme();
     const [isLoading, setIsLoading] = useState(false);
 
     // Categories list for select cell editor
@@ -65,14 +65,6 @@ export default function ProductListPage() {
     const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
     const categoryContainerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-        return () => observer.disconnect();
-    }, []);
-
     // Click outside to close category search list
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -97,17 +89,6 @@ export default function ProductListPage() {
         };
         loadCategories();
     }, []);
-
-    const gridTheme = useMemo(() => {
-        const baseTheme = isDark ? themeQuartz.withPart(colorSchemeDark) : themeQuartz;
-        return baseTheme.withParams({
-            backgroundColor: "var(--background)",
-            headerBackgroundColor: "var(--muted)",
-            borderColor: "var(--border)",
-            rowHoverColor: "var(--accent)",
-            textColor: "var(--foreground)",
-        });
-    }, [isDark]);
 
     // Lodash debounce search
     const debouncedSetSearch = useMemo(

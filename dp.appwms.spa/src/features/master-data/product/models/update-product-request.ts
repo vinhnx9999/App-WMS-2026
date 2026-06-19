@@ -8,4 +8,4 @@ export interface UpdateProductRequest {
     productName: string;
     description: string | null;
     categoryId: string | null;
-}
+}``

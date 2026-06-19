@@ -3,16 +3,68 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\products\\commands\\createproduct\\createproductcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\products\\commands\\createproduct\\createproductcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\skus\\commands\\importsku\\createskuimportsessioncommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\skus\\commands\\importsku\\createskuimportsessioncommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\repositories\\eftransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\repositories\\eftransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\repositories\\codesequencerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\repositories\\codesequencerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\locationentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\locationentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\warehouse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\warehouse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\inventoryitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\inventoryitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\zone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\zone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\auditlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\auditlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\security\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\security\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\security\\tenant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\security\\tenant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\security\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\security\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\security\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\entities\\security\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\erps\\odoo\\dataconfig\\odoomappingconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\erps\\odoo\\dataconfig\\odoomappingconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\skus\\commands\\createsku\\createskucommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\skus\\commands\\createsku\\createskucommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\enums\\codesequencetypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|solutionrelative:wms.domain\\enums\\codesequencetypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\products\\commands\\createproduct\\createproductcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\products\\commands\\createproduct\\createproductcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CF85D287-9E26-1FB1-E308-94DFDB3A538B}|WMS.Domain\\WMS.Domain.csproj|d:\\app-wms-2026\\wms.domain\\entities\\codesequence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,7 +78,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,20 +118,180 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CreateSkuImportSessionCommandHandler.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
+              "RelativeToolTip": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAADgv0AAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T03:53:47.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "EfTransaction.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Repositories\\EfTransaction.cs",
+              "RelativeDocumentMoniker": "WMS.Infrastructure\\Repositories\\EfTransaction.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Repositories\\EfTransaction.cs",
+              "RelativeToolTip": "WMS.Infrastructure\\Repositories\\EfTransaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T02:09:14.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Warehouse.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Warehouse.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Warehouse.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Warehouse.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Warehouse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:45:41.807Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LocationEntity.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\LocationEntity.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\LocationEntity.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\LocationEntity.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\LocationEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:45:13.646Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Zone.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Zone.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Zone.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Zone.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Zone.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:45:21.898Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "InventoryItem.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\InventoryItem.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\InventoryItem.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\InventoryItem.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\InventoryItem.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBEAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:54.122Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AuditLog.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\AuditLog.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\AuditLog.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\AuditLog.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\AuditLog.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwAgAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:51.455Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\User.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\User.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\User.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Security\\User.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAQwAYAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:46.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Tenant.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\Tenant.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\Tenant.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\Tenant.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Security\\Tenant.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAQwAYAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:35.128Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Role.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\Role.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\Role.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\Role.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Security\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:32.906Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "RefreshToken.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\RefreshToken.cs",
+              "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\RefreshToken.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\RefreshToken.cs",
+              "RelativeToolTip": "WMS.Domain\\Entities\\Security\\RefreshToken.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:30.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "OdooMappingConfig.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\ERPs\\Odoo\\DataConfig\\OdooMappingConfig.cs",
+              "RelativeDocumentMoniker": "WMS.Infrastructure\\ERPs\\Odoo\\DataConfig\\OdooMappingConfig.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\ERPs\\Odoo\\DataConfig\\OdooMappingConfig.cs",
+              "RelativeToolTip": "WMS.Infrastructure\\ERPs\\Odoo\\DataConfig\\OdooMappingConfig.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAYwAQAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:34:11.266Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CreateSkuCommandHandler.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
+              "RelativeToolTip": "WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAowF8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-18T09:26:53.492Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "CodeSequenceRepository.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
               "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
               "RelativeToolTip": "WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABkAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-18T07:56:05.66Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 14,
               "Title": "CodeSequenceTypes.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Enums\\CodeSequenceTypes.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Enums\\CodeSequenceTypes.cs",
@@ -87,12 +299,11 @@
               "RelativeToolTip": "WMS.Domain\\Enums\\CodeSequenceTypes.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T07:54:14.325Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T07:54:14.325Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 16,
               "Title": "CodeSequence.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\CodeSequence.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\CodeSequence.cs",
@@ -100,21 +311,19 @@
               "RelativeToolTip": "WMS.Domain\\Entities\\CodeSequence.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T07:53:48.994Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T07:53:48.994Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 15,
               "Title": "CreateProductCommandHandler.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Products\\Commands\\CreateProduct\\CreateProductCommandHandler.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Products\\Commands\\CreateProduct\\CreateProductCommandHandler.cs",
               "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Products\\Commands\\CreateProduct\\CreateProductCommandHandler.cs",
               "RelativeToolTip": "WMS.Application\\Products\\Commands\\CreateProduct\\CreateProductCommandHandler.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAWwB4AAABKAAAAAAAAAA==",
+              "ViewState": "AgIAABoAAAAAAAAAAAAewCkAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T07:51:19.912Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T07:51:19.912Z"
             }
           ]
         },
