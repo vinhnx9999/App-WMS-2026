@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\features\\master-data\\product\\productlistpage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
@@ -110,7 +110,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -150,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
@@ -163,26 +163,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "SkuEndpoints.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
               "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
               "RelativeToolTip": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
-              "ViewState": "AgIAAKMAAAAAAAAAAAAAwKoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAANYAAAAAAAAAAAAgwO4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-20T06:31:12.847Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Properties\\launchSettings.json",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Properties\\launchSettings.json",
               "RelativeToolTip": "DP.AppWMS.ApiService\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-06-20T06:20:19.561Z",
               "EditorCaption": ""
