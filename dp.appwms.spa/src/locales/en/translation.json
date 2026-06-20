@@ -111,6 +111,8 @@
       "description": "Description",
       "validationStatus": "Status",
       "errorMessage": "Error Message",
+      "rowValid": "Valid",
+      "rowInvalid": "Invalid",
       "successCount": "Successfully created {{count}} SKUs.",
       "importSuccess": "Data imported successfully!",
       "importCancelled": "Session cancelled successfully!",

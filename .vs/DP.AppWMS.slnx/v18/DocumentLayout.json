@@ -3,8 +3,40 @@
   "WorkspaceRootPath": "D:\\App-WMS-2026\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\endpoints\\skus\\skuendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|d:\\app-wms-2026\\dp.appwms.apiservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E66302C-6C12-5F21-D28E-8FBA7BA2EC9B}|DP.AppWMS.ApiService\\DP.AppWMS.ApiService.csproj|solutionrelative:dp.appwms.apiservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\features\\master-data\\product\\productlistpage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\features\\master-data\\product\\productlistpage.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|d:\\app-wms-2026\\dp.appwms.spa\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{09657B17-103C-EFD0-A920-C7C15D767941}|DP.AppWMS.SPA\\dp.appwms.spa.esproj|solutionrelative:dp.appwms.spa\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\skus\\commands\\importsku\\createskuimportsessioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\skus\\commands\\importsku\\createskuimportsessioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\skus\\commands\\importsku\\createskuimportsessioncommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\skus\\commands\\importsku\\createskuimportsessioncommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|d:\\app-wms-2026\\wms.application\\skus\\commands\\importsku\\cancelskuimportsessioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64DDC6AC-916E-9288-A6CD-E80490068D6A}|WMS.Application\\WMS.Application.csproj|solutionrelative:wms.application\\skus\\commands\\importsku\\cancelskuimportsessioncommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\migrations\\20260612043849_init-12-june.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|solutionrelative:wms.infrastructure\\migrations\\20260612043849_init-12-june.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FD5A3E34-DA03-F4C0-7478-5986960A8F34}|WMS.Infrastructure\\WMS.Infrastructure.csproj|d:\\app-wms-2026\\wms.infrastructure\\repositories\\eftransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -78,7 +110,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 163,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -118,20 +150,120 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAFIBAAAAAAAAAAAAAF4BAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T06:34:13.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "SkuEndpoints.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
+              "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
+              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
+              "RelativeToolTip": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
+              "ViewState": "AgIAANYAAAAAAAAAAAAgwO4AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-20T06:31:12.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Properties\\launchSettings.json",
+              "RelativeToolTip": "DP.AppWMS.ApiService\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-20T06:20:19.561Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.tsx",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.tsx",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\src\\App.tsx",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\App.tsx",
+              "RelativeToolTip": "dp.appwms.spa\\src\\App.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-06-19T08:39:01.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProductListPage.tsx",
+              "DocumentMoniker": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\features\\master-data\\product\\ProductListPage.tsx",
+              "RelativeDocumentMoniker": "dp.appwms.spa\\src\\features\\master-data\\product\\ProductListPage.tsx",
+              "ToolTip": "D:\\App-WMS-2026\\dp.appwms.spa\\src\\features\\master-data\\product\\ProductListPage.tsx",
+              "RelativeToolTip": "dp.appwms.spa\\src\\features\\master-data\\product\\ProductListPage.tsx",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAjwGYAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-06-19T08:38:13.351Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CancelSkuImportSessionCommand.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CancelSkuImportSessionCommand.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\Skus\\Commands\\ImportSku\\CancelSkuImportSessionCommand.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CancelSkuImportSessionCommand.cs",
+              "RelativeToolTip": "WMS.Application\\Skus\\Commands\\ImportSku\\CancelSkuImportSessionCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T08:37:11.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CreateSkuImportSessionCommand.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommand.cs",
+              "RelativeDocumentMoniker": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommand.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommand.cs",
+              "RelativeToolTip": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommand.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwBYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T08:37:10.433Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20260612043849_init-12-june.Designer.cs",
+              "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Migrations\\20260612043849_init-12-june.Designer.cs",
+              "RelativeDocumentMoniker": "WMS.Infrastructure\\Migrations\\20260612043849_init-12-june.Designer.cs",
+              "ToolTip": "D:\\App-WMS-2026\\WMS.Infrastructure\\Migrations\\20260612043849_init-12-june.Designer.cs",
+              "RelativeToolTip": "WMS.Infrastructure\\Migrations\\20260612043849_init-12-june.Designer.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-19T08:01:09.391Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "CreateSkuImportSessionCommandHandler.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
               "ToolTip": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
               "RelativeToolTip": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAADgv0AAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAawJcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-19T03:53:47.857Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 9,
               "Title": "EfTransaction.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Repositories\\EfTransaction.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Repositories\\EfTransaction.cs",
@@ -139,12 +271,11 @@
               "RelativeToolTip": "WMS.Infrastructure\\Repositories\\EfTransaction.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-19T02:09:14.171Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-19T02:09:14.171Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 12,
               "Title": "Warehouse.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Warehouse.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Warehouse.cs",
@@ -156,7 +287,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 11,
               "Title": "LocationEntity.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\LocationEntity.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\LocationEntity.cs",
@@ -164,12 +295,11 @@
               "RelativeToolTip": "WMS.Domain\\Entities\\LocationEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T09:45:13.646Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T09:45:13.646Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 14,
               "Title": "Zone.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Zone.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Zone.cs",
@@ -181,7 +311,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 13,
               "Title": "InventoryItem.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\InventoryItem.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\InventoryItem.cs",
@@ -193,7 +323,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 15,
               "Title": "AuditLog.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\AuditLog.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\AuditLog.cs",
@@ -205,7 +335,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 16,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\User.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\User.cs",
@@ -217,7 +347,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 17,
               "Title": "Tenant.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\Tenant.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\Tenant.cs",
@@ -229,7 +359,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 18,
               "Title": "Role.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\Role.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\Role.cs",
@@ -241,7 +371,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 19,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\Security\\RefreshToken.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\Security\\RefreshToken.cs",
@@ -253,7 +383,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 20,
               "Title": "OdooMappingConfig.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\ERPs\\Odoo\\DataConfig\\OdooMappingConfig.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\ERPs\\Odoo\\DataConfig\\OdooMappingConfig.cs",
@@ -265,7 +395,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 21,
               "Title": "CreateSkuCommandHandler.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
@@ -278,7 +408,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "CodeSequenceRepository.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
               "RelativeDocumentMoniker": "WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
@@ -286,12 +416,11 @@
               "RelativeToolTip": "WMS.Infrastructure\\Repositories\\CodeSequenceRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T07:56:05.66Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T07:56:05.66Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 22,
               "Title": "CodeSequenceTypes.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Enums\\CodeSequenceTypes.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Enums\\CodeSequenceTypes.cs",
@@ -303,7 +432,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 24,
               "Title": "CodeSequence.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Domain\\Entities\\CodeSequence.cs",
               "RelativeDocumentMoniker": "WMS.Domain\\Entities\\CodeSequence.cs",
@@ -315,7 +444,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 23,
               "Title": "CreateProductCommandHandler.cs",
               "DocumentMoniker": "D:\\App-WMS-2026\\WMS.Application\\Products\\Commands\\CreateProduct\\CreateProductCommandHandler.cs",
               "RelativeDocumentMoniker": "WMS.Application\\Products\\Commands\\CreateProduct\\CreateProductCommandHandler.cs",

@@ -181,6 +181,44 @@ public class SkuImportSession : BaseEntity
         row.AttachCreatedSku(skuId);
     }
 
+    public void UpdateRow(
+        Guid importRowId,
+        string? productCode,
+        string? skuCode,
+        string? name,
+        string? goodsNature,
+        string? description,
+        decimal? referencePrice)
+    {
+        if (Status != SkuImportSessionStatuses.Validated)
+        {
+            throw new DomainException(
+                "INVALID_IMPORT_SESSION_STATUS",
+                "Rows can only be updated in a validated import session.");
+        }
+
+        var row = _rows.FirstOrDefault(x => x.Id == importRowId && !x.IsDeleted);
+        if (row is null)
+        {
+            throw new DomainException(
+                "IMPORT_ROW_NOT_FOUND",
+                "Import row not found.");
+        }
+
+        row.UpdateValues(
+            productCode,
+            skuCode,
+            name,
+            goodsNature,
+            description,
+            referencePrice);
+    }
+
+    public void RecalculateSessionCounters()
+    {
+        RecalculateCounters();
+    }
+
     private void RecalculateCounters()
     {
         TotalRows = _rows.Count(x => !x.IsDeleted);

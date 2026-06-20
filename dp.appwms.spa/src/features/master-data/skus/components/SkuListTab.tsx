@@ -51,7 +51,7 @@ export const SkuListTab = forwardRef<AgGridReact, SkuListTabProps>(({ onDeleteSk
     },
     {
       field: "name",
-      headerName: t("translation:skus.name", "Tên SKU"),
+      headerName: t("translation:skus.name"),
       width: 200,
       editable: true,
       valueFormatter: (params) => params.value || ""
@@ -113,7 +113,7 @@ export const SkuListTab = forwardRef<AgGridReact, SkuListTabProps>(({ onDeleteSk
       valueFormatter: (params) => params.value || ""
     },
     {
-      headerName: t("translation:products.actions", "Thao tác"),
+      headerName: t("translation:products.actions"),
       pinned: "right",
       width: 80,
       sortable: false,
@@ -130,13 +130,13 @@ export const SkuListTab = forwardRef<AgGridReact, SkuListTabProps>(({ onDeleteSk
                   variant="destructive"
                   size="icon-xs"
                   onClick={() => onDeleteSku(params.data)}
-                  aria-label={t("translation:skus.deleteTooltip", "Xóa SKU")}
+                  aria-label={t("translation:skus.deleteTooltip")}
                 >
                   <Trash className="size-3.5" aria-hidden="true" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{t("translation:skus.deleteTooltip", "Xóa SKU")}</p>
+                <p>{t("translation:skus.deleteTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </div>

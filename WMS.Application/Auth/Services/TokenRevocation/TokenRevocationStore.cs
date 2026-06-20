@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using WMS.Application.Auth.Interfaces;
 
@@ -15,25 +15,41 @@ public class TokenRevocationStore(
 
     public async Task RevokeAsync(string jti, TimeSpan ttl)
     {
-        if (_redis is null)
+        if (_redis is null || !_redis.IsConnected)
         {
-            _log.LogWarning("Redis not available — token revocation skipped");
+            _log.LogWarning("Redis not available — token revocation skipped for jti={Jti}", jti);
             return;
         }
 
-        var db = _redis.GetDatabase();
-        var key = $"{KeyPrefix}{jti}";
-        await db.StringSetAsync(key, "1", ttl);
+        try
+        {
+            var db = _redis.GetDatabase();
+            var key = $"{KeyPrefix}{jti}";
+            await db.StringSetAsync(key, "1", ttl);
 
-        _log.LogInformation("Token revoked: jti={Jti} ttl={Ttl}", jti, ttl);
+            _log.LogInformation("Token revoked: jti={Jti} ttl={Ttl}", jti, ttl);
+        }
+        catch (RedisConnectionException ex)
+        {
+            _log.LogWarning(ex, "Redis connection failed — token revocation skipped for jti={Jti}", jti);
+        }
     }
 
     public async Task<bool> IsRevokedAsync(string jti)
     {
-        if (_redis is null) return false;
+        if (_redis is null || !_redis.IsConnected) return false;
 
-        var db = _redis.GetDatabase();
-        var key = $"{KeyPrefix}{jti}";
-        return await db.KeyExistsAsync(key);
+        try
+        {
+            var db = _redis.GetDatabase();
+            var key = $"{KeyPrefix}{jti}";
+            return await db.KeyExistsAsync(key);
+        }
+        catch (RedisConnectionException ex)
+        {
+            _log.LogWarning(ex,
+                "Redis connection failed — treating token as not revoked for jti={Jti}", jti);
+            return false;
+        }
     }
 }

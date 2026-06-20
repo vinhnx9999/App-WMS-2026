@@ -280,7 +280,7 @@ export default function Skus() {
                                         fetchProducts(e.target.value);
                                     }}
                                     onFocus={handleProductFocus}
-                                    placeholder={t("skus.productIdPlaceholder", "Tìm kiếm sản phẩm…")}
+                                    placeholder={t("skus.productIdPlaceholder")}
                                     className="w-full bg-background border-border pr-8"
                                 />
                                 {productSearch && (
@@ -292,7 +292,7 @@ export default function Skus() {
                                             setProducts([]);
                                             setIsProductListOpen(false);
                                         }}
-                                        aria-label={t("common.button.clear", "Xóa")}
+                                        aria-label={t("common.button.clear")}
                                         className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs font-semibold"
                                     >
                                         ✕
@@ -443,7 +443,7 @@ export default function Skus() {
                                 disabled={isSaving}
                                 className="bg-primary text-primary-foreground hover:bg-primary/95"
                             >
-                                {isSaving ? t("common.loading", "Đang tải…") : t("common.button.save")}
+                                {isSaving ? t("common.loading") : t("common.button.save")}
                             </Button>
                         </DialogFooter>
                     </form>

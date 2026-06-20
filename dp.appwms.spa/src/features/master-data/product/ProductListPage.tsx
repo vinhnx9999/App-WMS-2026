@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef, type SubmitEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
 import { useTranslation } from "react-i18next";
-import { Search, Plus, Trash } from "lucide-react";
+import { Search, Plus, Trash, X } from "lucide-react";
 import { debounce } from "lodash";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -486,13 +486,13 @@ export default function ProductListPage() {
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-2">
                         <div className="flex flex-col gap-1.5">
                             <label htmlFor="productCode" className="text-sm font-medium text-foreground">
-                                {t("products.productCode", "Mã sản phẩm")}
+                                {t("products.productCode")}
                             </label>
                             <Input
                                 id="productCode"
                                 value={formValues.productCode}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, productCode: e.target.value }))}
-                                placeholder={t("products.productCodePlaceholder", "Để trống để tự động sinh mã")}
+                                placeholder={t("products.productCodePlaceholder")}
                                 className="w-full bg-background border-border"
                             />
                             {formErrors.productCode && (
@@ -502,7 +502,7 @@ export default function ProductListPage() {
 
                         <div className="flex flex-col gap-1.5">
                             <label htmlFor="productName" className="text-sm font-medium text-foreground">
-                                {t("products.productName", "Tên sản phẩm")} <span className="text-red-500">*</span>
+                                {t("products.productName")} <span className="text-red-500">*</span>
                             </label>
                             <Input
                                 id="productName"
@@ -518,7 +518,7 @@ export default function ProductListPage() {
 
                         <div className="flex flex-col gap-1.5 relative" ref={categoryContainerRef}>
                             <label htmlFor="category" className="text-sm font-medium text-foreground">
-                                {t("products.categoryName", "Nhóm hàng")}
+                                {t("products.categoryName")}
                             </label>
                             <div className="relative">
                                 <Input
@@ -534,7 +534,7 @@ export default function ProductListPage() {
                                         fetchCategories(e.target.value);
                                     }}
                                     onFocus={handleCategoryFocus}
-                                    placeholder={t("products.categoryPlaceholder", "Tìm kiếm nhóm hàng...")}
+                                    placeholder={t("products.categoryPlaceholder")}
                                     className="w-full bg-background border-border pr-8"
                                 />
                                 {categorySearch && (
@@ -548,7 +548,7 @@ export default function ProductListPage() {
                                         }}
                                         className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs font-semibold"
                                     >
-                                        ✕
+                                        <X className="size-4" />
                                     </button>
                                 )}
                             </div>
@@ -557,9 +557,9 @@ export default function ProductListPage() {
                                     <ScrollArea className="h-40">
                                         <div className="p-1">
                                             {isCategoryLoading ? (
-                                                <div className="p-2 text-xs text-muted-foreground text-center">{t("common.loading", "Đang tải...")}</div>
+                                                <div className="p-2 text-xs text-muted-foreground text-center">{t("common.loading")}</div>
                                             ) : categories.length === 0 ? (
-                                                <div className="p-2 text-xs text-muted-foreground text-center">{t("common.noData", "Không có dữ liệu")}</div>
+                                                <div className="p-2 text-xs text-muted-foreground text-center">{t("common.noData")}</div>
                                             ) : (
                                                 categories.map((cat) => (
                                                     <button
@@ -584,13 +584,13 @@ export default function ProductListPage() {
 
                         <div className="flex flex-col gap-1.5">
                             <label htmlFor="description" className="text-sm font-medium text-foreground">
-                                {t("products.description", "Mô tả")}
+                                {t("products.description")}
                             </label>
                             <Input
                                 id="description"
                                 value={formValues.description}
                                 onChange={(e) => setFormValues(prev => ({ ...prev, description: e.target.value }))}
-                                placeholder={t("products.descriptionPlaceholder", "Nhập mô tả sản phẩm")}
+                                placeholder={t("products.descriptionPlaceholder")}
                                 className="w-full bg-background border-border"
                             />
                         </div>
@@ -603,14 +603,14 @@ export default function ProductListPage() {
                                 disabled={isSaving}
                                 className="border-border text-muted-foreground hover:text-foreground"
                             >
-                                {t("common.button.cancel", "Hủy")}
+                                {t("common.button.cancel")}
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={isSaving}
                                 className="bg-primary text-primary-foreground hover:bg-primary/95"
                             >
-                                {isSaving ? t("common.loading", "Đang tải...") : t("common.button.save", "Lưu")}
+                                {isSaving ? t("common.loading") : t("common.button.save")}
                             </Button>
                         </DialogFooter>
                     </form>

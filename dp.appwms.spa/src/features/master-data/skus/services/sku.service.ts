@@ -6,6 +6,9 @@ import type { ApiResponse, PagedResult } from "@/types/response";
 import type { SearchSkusParams } from "../models/search-sku-param.model";
 import apiClient from "@/api/apiClient";
 import { ENDPOINTS } from "@/api/endpoints";
+import type { UpdateSkuImportRowRequest } from "../models/update-sku-import-request";
+
+
 
 export const skuService = {
 
@@ -155,6 +158,26 @@ export const skuService = {
             return response.data;
         } catch (error) {
             console.error("Error getting SKU import session:", error);
+            throw error;
+        }
+    },
+
+    /**
+     * Update SKU Import Session Row
+     */
+    updateImportRow: async (
+        id: string,
+        rowId: string,
+        data: UpdateSkuImportRowRequest
+    ): Promise<ApiResponse<any>> => {
+        try {
+            const response = await apiClient.put<ApiResponse<any>>(
+                `${ENDPOINTS.SKU.IMPORT_SESSION}/import/session/${id}/rows/${rowId}`,
+                data
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Error updating SKU import session row:", error);
             throw error;
         }
     }

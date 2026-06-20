@@ -7,9 +7,9 @@ using WMS.Application.Skus.Commands.ImportSku;
 using WMS.Application.Skus.Commands.UpdateSku;
 using WMS.Application.Skus.DTOs;
 using WMS.Application.Skus.Queries.GetSkuById;
-using WMS.Application.Skus.Queries.SearchSkus;
-using WMS.Application.Skus.Queries.SearchSkuImportSessions;
 using WMS.Application.Skus.Queries.GetSkuImportSession;
+using WMS.Application.Skus.Queries.SearchSkuImportSessions;
+using WMS.Application.Skus.Queries.SearchSkus;
 using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Skus;
@@ -62,6 +62,12 @@ public sealed class SkuEndpoints : IEndpoint
         group.MapPost("/import/session/{id:guid}/cancel", CancelImportSession)
             .WithName("CancelImportSession").WithTags("Skus").RequireAuthorization()
             .Produces<ApiResponse<CancelSkuImportSessionResponse>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
+
+        group.MapPut("/import/session/{id:guid}/rows/{rowId:guid}", UpdateImportRow)
+            .WithName("UpdateImportRow").WithTags("Skus").RequireAuthorization()
+            .Produces<ApiResponse<UpdateSkuImportRowResponse>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
 
@@ -244,9 +250,40 @@ public sealed class SkuEndpoints : IEndpoint
         return Results.NoContent();
     }
 
+    private async Task<IResult> UpdateImportRow(
+        Guid id,
+        Guid rowId,
+        [FromBody] UpdateSkuImportRowRequest request,
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new UpdateSkuImportRowCommand(
+            currentUser.TenantId,
+            id,
+            rowId,
+            request.ProductCode,
+            request.SkuCode,
+            request.Name,
+            request.GoodsNature,
+            request.Description,
+            request.ReferencePrice
+        ), cancellationToken);
+
+        return Results.Ok(ApiResponse<UpdateSkuImportRowResponse>.Ok(result));
+    }
+
     #endregion
 
     public sealed record CreateSkuImportSessionRequest(
         string? SourceFileName,
         IReadOnlyList<ImportSkuRowRequest> Rows);
+
+    public sealed record UpdateSkuImportRowRequest(
+        string? ProductCode,
+        string? SkuCode,
+        string? Name,
+        string? GoodsNature,
+        string? Description,
+        decimal? ReferencePrice);
 }

@@ -111,6 +111,8 @@
       "description": "Mô tả",
       "validationStatus": "Trạng thái",
       "errorMessage": "Chi tiết lỗi",
+      "rowValid": "Hợp lệ",
+      "rowInvalid": "Bị lỗi",
       "successCount": "Đã tạo thành công {{count}} SKU.",
       "importSuccess": "Nhập dữ liệu thành công!",
       "importCancelled": "Hủy phiên thành công!",

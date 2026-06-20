@@ -6,11 +6,13 @@ import Suppliers from "../features/master-data/suppliers/Suppliers";
 import Customers from "../features/master-data/customers/Customer";
 import Products from "../features/master-data/product/ProductListPage";
 import LoginPage from "@/features/authentication/LoginPage";
+import ErrorPage from "@/components/ErrorPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
