@@ -6,28 +6,30 @@ import {
   AlertCircle,
   Loader2,
   X,
-  Check
+  Check,
+  ArrowLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AgGridReact } from "ag-grid-react";
-import type { ColDef } from "ag-grid-community";
+import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
 import { useAgGridTheme } from "@/hooks/use-ag-grid-theme";
 import { skuService } from "../services/sku.service";
 import { toast } from "sonner";
+import { DEFAULT_PAGE_SIZE } from "@/constants";
 
 const getStatusColor = (status: string) => {
   switch (status) {
     case "CONFIRMED":
-      return "bg-emerald-500/15 text-emerald-700 border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400";
+      return "bg-success/15 text-success border-success/30";
     case "VALIDATED":
-      return "bg-amber-500/15 text-amber-700 border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400";
+      return "bg-warning/15 text-warning border-warning/30";
     case "CANCELLED":
-      return "bg-slate-500/15 text-slate-700 border-slate-500/30 dark:bg-slate-500/10 dark:text-slate-400";
+      return "bg-muted text-muted-foreground border-border";
     case "FAILED":
-      return "bg-rose-500/15 text-rose-700 border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-400";
+      return "bg-destructive/15 text-destructive border-destructive/30";
     default:
-      return "bg-slate-500/15 text-slate-700 border-slate-500/30";
+      return "bg-muted text-muted-foreground border-border";
   }
 };
 
@@ -53,34 +55,65 @@ export function SkuImportDetail({
   cancelling,
   handleConfirmSession,
   handleCancelSession,
+  onBack,
   onSessionUpdated
 }: SkuImportDetailProps) {
   const { t } = useTranslation();
   const gridTheme = useAgGridTheme();
-  const isRollingBackRef = useRef(false);
+  const gridRef = useRef<AgGridReact>(null);
+
+  const isProcessingRef = useRef(false);
 
   const isEditable = selectedSession.status === "VALIDATED";
 
+  const datasource = useMemo<IDatasource>(() => {
+    return {
+      getRows: async (params: IGetRowsParams) => {
+        try {
+          const pageNum = Math.floor(params.startRow / DEFAULT_PAGE_SIZE) + 1;
+          const res = await skuService.getImportSession(
+            selectedSession.importSessionId || selectedSession.id,
+            pageNum,
+            DEFAULT_PAGE_SIZE
+          );
+          if (res.success && res.data) {
+            params.successCallback(res.data.rows.items, res.data.rows.totalCount);
+          } else {
+            params.failCallback();
+          }
+        } catch (error) {
+          console.error("Failed to load rows in datasource:", error);
+          params.failCallback();
+        }
+      }
+    };
+  }, [selectedSession.importSessionId, selectedSession.id]);
+
   const onCellValueChanged = async (event: any) => {
-    if (isRollingBackRef.current) return;
+    // Block any event triggered by our own data updates (rollback, setData, or React re-render)
+    if (isProcessingRef.current) return;
 
     const { data, colDef, newValue, oldValue } = event;
     if (newValue === oldValue) return;
 
+    // Client-side validation: negative price
     if (colDef.field === "referencePrice" && newValue !== null && newValue < 0) {
       toast.error(t("translation:skus.errors.invalidPrice") || "Price cannot be negative");
-      isRollingBackRef.current = true;
+      isProcessingRef.current = true;
       try {
         event.node.setDataValue(colDef.field, oldValue);
       } finally {
-        isRollingBackRef.current = false;
+        // Delay reset to survive any async events from AG Grid change detection
+        setTimeout(() => { isProcessingRef.current = false; }, 100);
       }
       return;
     }
 
+    isProcessingRef.current = true;
+
     try {
       const response = await skuService.updateImportRow(
-        selectedSession.id,
+        selectedSession.importSessionId || selectedSession.id,
         data.importRowId,
         {
           productCode: (data.productCode && data.productCode.trim()) || null,
@@ -94,12 +127,18 @@ export function SkuImportDetail({
 
       if (response.success && response.data) {
         toast.success(t("translation:skus.import.rowUpdatedSuccess") || "Row updated successfully");
-        const updatedRow = response.data.rows.find((r: any) => r.importRowId === data.importRowId);
-        if (updatedRow) {
-          event.node.setData(updatedRow);
-        }
+
+        // Refresh the grid rows cache to pull latest validation and data state
+        gridRef.current?.api?.refreshInfiniteCache();
+
         if (onSessionUpdated) {
-          onSessionUpdated(response.data);
+          onSessionUpdated({
+            ...selectedSession,
+            status: response.data.status,
+            totalRows: response.data.totalRows,
+            validRows: response.data.validRows,
+            invalidRows: response.data.invalidRows
+          });
         }
       } else {
         throw new Error(response.message || "Failed to update row");
@@ -107,13 +146,10 @@ export function SkuImportDetail({
     } catch (error: any) {
       console.error("Failed to update row:", error);
       toast.error(error.message || t("translation:skus.errors.generic"));
-      // Rollback
-      isRollingBackRef.current = true;
-      try {
-        event.node.setDataValue(colDef.field, oldValue);
-      } finally {
-        isRollingBackRef.current = false;
-      }
+      // Rollback the cell to old value
+      event.node.setDataValue(colDef.field, oldValue);
+    } finally {
+      setTimeout(() => { isProcessingRef.current = false; }, 100);
     }
   };
 
@@ -133,13 +169,13 @@ export function SkuImportDetail({
         cellRenderer: (params: any) => {
           if (params.data?.isValid) {
             return (
-              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1 h-full font-semibold">
+              <span className="text-success flex items-center gap-1 h-full font-semibold">
                 <CheckCircle className="size-3" /> {t("translation:skus.import.rowValid")}
               </span>
             );
           } else {
             return (
-              <span className="text-rose-600 dark:text-rose-400 flex items-center gap-1 h-full font-semibold">
+              <span className="text-destructive flex items-center gap-1 h-full font-semibold">
                 <AlertCircle className="size-3" /> {t("translation:skus.import.rowInvalid")}
               </span>
             );
@@ -200,9 +236,9 @@ export function SkuImportDetail({
         headerName: t("translation:skus.import.errorMessage"),
         flex: 1,
         minWidth: 250,
-        cellClass: "text-rose-600 dark:text-rose-400 font-medium whitespace-normal break-words",
+        cellClass: "text-destructive font-medium whitespace-normal break-words",
         valueGetter: (params: any) => {
-          if (!params.data?.errorCode) return "-";
+          if (!params.data?.errorCode) return "";
           return t(`translation:skus.import.errors.${params.data.errorCode}`, {
             defaultValue: params.data.errorMessage || params.data.errorCode
           });
@@ -213,7 +249,7 @@ export function SkuImportDetail({
 
   const getRowClass = (params: any) => {
     if (params.data && !params.data.isValid) {
-      return "bg-rose-500/5 hover:bg-rose-500/10 border-l-2 border-l-rose-500";
+      return "bg-destructive/5 hover:bg-destructive/10 border-l-2 border-l-destructive";
     }
     return "border-l-2 border-l-transparent";
   };
@@ -222,6 +258,15 @@ export function SkuImportDetail({
     <Card className="flex-1 w-full bg-card border border-border flex flex-col justify-between overflow-hidden">
       <CardHeader className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-border shrink-0 gap-4">
         <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onBack}
+            className="size-8 cursor-pointer shrink-0"
+            title={t("translation:common.back")}
+          >
+            <ArrowLeft className="size-4" />
+          </Button>
           <div>
             <CardTitle className="text-lg font-bold flex items-center gap-2 max-w-[400px] truncate" title={selectedSession.sourceFileName}>
               {selectedSession.sourceFileName || "Import Session"}
@@ -254,7 +299,7 @@ export function SkuImportDetail({
               variant="outline"
               onClick={handleCancelSession}
               disabled={cancelling || confirming}
-              className="border-rose-500/30 text-rose-600 hover:bg-rose-500/10 cursor-pointer text-xs"
+              className="border-destructive/30 text-destructive hover:bg-destructive/10 cursor-pointer text-xs"
             >
               {cancelling ? (
                 <Loader2 className="size-3 animate-spin mr-1.5" />
@@ -266,7 +311,7 @@ export function SkuImportDetail({
             <Button
               onClick={handleConfirmSession}
               disabled={selectedSession.validRows === 0 || confirming || cancelling}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer text-xs"
+              className="bg-success hover:bg-success/90 text-success-foreground cursor-pointer text-xs"
             >
               {confirming ? (
                 <Loader2 className="size-3 animate-spin mr-1.5" />
@@ -281,7 +326,13 @@ export function SkuImportDetail({
       <CardContent className="flex-1 w-full p-0 min-h-[400px] relative overflow-hidden">
         <div className="w-full h-full">
           <AgGridReact
-            rowData={selectedSession.rows || []}
+            ref={gridRef}
+            rowModelType="infinite"
+            datasource={datasource}
+            cacheBlockSize={DEFAULT_PAGE_SIZE}
+            pagination={true}
+            paginationPageSize={DEFAULT_PAGE_SIZE}
+            paginationPageSizeSelector={false}
             getRowId={(params: any) => params.data.importRowId}
             columnDefs={columnDefs}
             theme={gridTheme}

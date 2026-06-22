@@ -21,7 +21,7 @@ namespace WMS.Infrastructure.Repositories
             return _wmsDbContext.CodeSequences
                 .SingleOrDefaultAsync(
                     x => x.TenantId == tenantId &&
-                         x.CodeType == codeType.ToUpperInvariant(),
+                         x.CodeType == codeType,
                     ct);
         }
     }

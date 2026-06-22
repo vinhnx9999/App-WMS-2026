@@ -1,12 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Categories.Commands.CreateCategory;
-using WMS.Application.Categories.Commands.UpdateCategory;
 using WMS.Application.Categories.Commands.DeleteCategory;
 using WMS.Application.Categories.Commands.RestoreCategory;
+using WMS.Application.Categories.Commands.UpdateCategory;
+using WMS.Application.Categories.DTOs;
 using WMS.Application.Categories.Queries.GetCategoryById;
 using WMS.Application.Categories.Queries.SearchCategories;
-using WMS.Application.Categories.DTOs;
 using WMS.Application.Common.Models;
 using WMS.Domain.Interfaces;
 

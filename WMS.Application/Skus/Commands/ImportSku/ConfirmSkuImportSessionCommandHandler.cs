@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Domain.Entities.Product;
@@ -11,11 +12,13 @@ namespace WMS.Application.Skus.Commands.ImportSku;
 
 public sealed class ConfirmSkuImportSessionCommandHandler(
     IUnitOfWork uow,
-    ISequenceCodeGenerator sequenceCodeGenerator)
+    ISequenceCodeGenerator sequenceCodeGenerator,
+    ILogger<ConfirmSkuImportSessionCommandHandler> logger)
     : IRequestHandler<ConfirmSkuImportSessionCommand, ConfirmSkuImportSessionResponse>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly ISequenceCodeGenerator _sequenceCodeGenerator = sequenceCodeGenerator;
+    private readonly ILogger<ConfirmSkuImportSessionCommandHandler> _logger = logger;
 
     public async Task<ConfirmSkuImportSessionResponse> Handle(
         ConfirmSkuImportSessionCommand request,
@@ -53,6 +56,8 @@ public sealed class ConfirmSkuImportSessionCommandHandler(
                 request.TenantId,
                 row,
                 ct);
+
+            _logger.LogInformation("skucode value : {SkuCode}", skuCode);
 
             var sku = Sku.Create(
                 tenantId: request.TenantId,

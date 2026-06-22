@@ -16,6 +16,7 @@ import { SkuImportUpload } from "./SkuImportUpload";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
 import { useAgGridTheme } from "@/hooks/use-ag-grid-theme";
+import { DEFAULT_PAGE_SIZE } from "@/constants";
 
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -49,7 +50,6 @@ export function SkuImportTab({ onImportSuccess }: SkuImportTabProps) {
 
   // Pagination & Grid State
   const [totalCount, setTotalCount] = useState<number | null>(null);
-  const limit = 10;
   const gridRef = useRef<AgGridReact>(null);
   const gridTheme = useAgGridTheme();
 
@@ -62,10 +62,10 @@ export function SkuImportTab({ onImportSuccess }: SkuImportTabProps) {
     return {
       getRows: async (params: IGetRowsParams) => {
         try {
-          const pageNum = Math.floor(params.startRow / limit) + 1;
+          const pageNum = Math.floor(params.startRow / DEFAULT_PAGE_SIZE) + 1;
           const res = await skuService.searchImportSessions({
             page: pageNum,
-            limit
+            limit: DEFAULT_PAGE_SIZE
           });
           if (res.success && res.data) {
             setTotalCount(res.data.totalCount);
@@ -432,11 +432,11 @@ export function SkuImportTab({ onImportSuccess }: SkuImportTabProps) {
                     columnDefs={columnDefs}
                     datasource={datasource}
                     rowModelType="infinite"
-                    cacheBlockSize={limit}
+                    cacheBlockSize={DEFAULT_PAGE_SIZE}
                     maxConcurrentDatasourceRequests={1}
-                    infiniteInitialRowCount={limit}
+                    infiniteInitialRowCount={DEFAULT_PAGE_SIZE}
                     pagination={true}
-                    paginationPageSize={limit}
+                    paginationPageSize={DEFAULT_PAGE_SIZE}
                     paginationPageSizeSelector={false}
                     theme={gridTheme}
                     overlayLoadingTemplate={`<span class="ag-overlay-loading-center">${t("translation:common.loading")}</span>`}

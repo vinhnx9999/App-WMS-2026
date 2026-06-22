@@ -10,6 +10,7 @@ import { skuService } from "../services/sku.service";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAgGridTheme } from "@/hooks/use-ag-grid-theme";
+import { DEFAULT_PAGE_SIZE } from "@/constants";
 
 interface SkuListTabProps {
   onDeleteSku: (sku: SkuDto) => void;
@@ -145,18 +146,16 @@ export const SkuListTab = forwardRef<AgGridReact, SkuListTabProps>(({ onDeleteSk
     }
   ], [t, onDeleteSku]);
 
-  const pageSize = 10;
-
   const datasource = useMemo<IDatasource>(() => {
     return {
       getRows: async (params: IGetRowsParams) => {
         try {
           setIsLoading(true);
-          const page = Math.floor(params.startRow / pageSize) + 1;
+          const page = Math.floor(params.startRow / DEFAULT_PAGE_SIZE) + 1;
           const response = await skuService.searchSkus({
             search: debouncedSearch || undefined,
             page,
-            limit: pageSize
+            limit: DEFAULT_PAGE_SIZE
           });
           setIsLoading(false);
           if (response.success && response.data) {
@@ -245,11 +244,11 @@ export const SkuListTab = forwardRef<AgGridReact, SkuListTabProps>(({ onDeleteSk
             columnDefs={columnDefs}
             datasource={datasource}
             rowModelType="infinite"
-            cacheBlockSize={pageSize}
+            cacheBlockSize={DEFAULT_PAGE_SIZE}
             maxConcurrentDatasourceRequests={1}
-            infiniteInitialRowCount={pageSize}
+            infiniteInitialRowCount={DEFAULT_PAGE_SIZE}
             pagination={true}
-            paginationPageSize={pageSize}
+            paginationPageSize={DEFAULT_PAGE_SIZE}
             paginationPageSizeSelector={false}
             theme={gridTheme}
             loading={isLoading}
