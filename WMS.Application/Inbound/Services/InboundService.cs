@@ -14,7 +14,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly ICurrentUser _user = user;
-    private readonly IDashboardNotifier _notifier = notifier;   
+    private readonly IDashboardNotifier _notifier = notifier;
 
     public async Task<InboundOrderDto> CreateAsync(CreateInboundRequest req, CancellationToken ct)
     {
@@ -24,7 +24,6 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
             SupplierId = req.SupplierId,
             ExpectedDate = req.ExpectedDate,
             Notes = req.Notes,
-            CreatedBy = _user.Id,
             Status = InboundStatus.Pending,
             Items = [.. req.Items.Select(i => new InboundItem
             {
@@ -59,7 +58,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
             });
 
             await PushDashboardSummaryAsync(ct);
-        }       
+        }
 
         return MapToDto(order);
     }

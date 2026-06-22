@@ -1,6 +1,7 @@
 ﻿using WMS.Domain.Common;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Enums;
 
 namespace WMS.Domain.Entities;
@@ -33,8 +34,17 @@ public class InventoryItem : BaseEntity
     // Methods
     public void UpdateStatus()
     {
-        Status = Quantity <= 0 ? ItemStatus.OutOfStock
-               : Quantity <= MinQuantity ? ItemStatus.LowStock
-               : ItemStatus.InStock;
+        if (Quantity <= 0)
+        {
+            Status = ItemStatus.OutOfStock;
+        }
+        else if (Quantity <= MinQuantity)
+        {
+            Status = ItemStatus.LowStock;
+        }
+        else
+        {
+            Status = ItemStatus.InStock;
+        }
     }
 }

@@ -7,6 +7,7 @@ import Customers from "../features/master-data/customers/Customer";
 import Products from "../features/master-data/product/ProductListPage";
 import LoginPage from "@/features/authentication/LoginPage";
 import ErrorPage from "@/components/ErrorPage";
+import CategoryListPage from "@/features/master-data/category/CategoryListPage";
 
 export const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
                     {
                         path: "products",
                         element: <Products />,
+                    },
+                    {
+                        path: "categories",
+                        element: <CategoryListPage />,
                     },
                     {
                         path: "skus",

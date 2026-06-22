@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
@@ -28,7 +29,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var result = await handler.Handle(command, TestContext.Current.CancellationToken);
@@ -66,7 +67,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
             .Setup(x => x.NextAsync(TenantA, CodeSequenceTypes.Sku, It.IsAny<CancellationToken>()))
             .ReturnsAsync("SKU-AUTO-100");
 
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var result = await handler.Handle(command, TestContext.Current.CancellationToken);
@@ -98,7 +99,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var result = await handler.Handle(command, TestContext.Current.CancellationToken);
@@ -125,7 +126,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var act = () => handler.Handle(command, TestContext.Current.CancellationToken);
@@ -142,7 +143,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, Guid.NewGuid());
         var act = () => handler.Handle(command, TestContext.Current.CancellationToken);
@@ -169,7 +170,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var act = () => handler.Handle(command, TestContext.Current.CancellationToken);
@@ -199,7 +200,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var act = () => handler.Handle(command, TestContext.Current.CancellationToken);
@@ -230,7 +231,7 @@ public sealed class ConfirmSkuImportSessionCommandHandlerTests : BaseSkuHandlerT
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var sequenceCodeGenerator = new Mock<ISequenceCodeGenerator>();
-        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object);
+        var handler = new ConfirmSkuImportSessionCommandHandler(CreateUnitOfWork(db), sequenceCodeGenerator.Object, NullLogger<ConfirmSkuImportSessionCommandHandler>.Instance);
 
         var command = new ConfirmSkuImportSessionCommand(TenantA, session.Id);
         var act = () => handler.Handle(command, TestContext.Current.CancellationToken);

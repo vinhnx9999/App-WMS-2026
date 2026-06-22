@@ -10,6 +10,7 @@ import type { ProductDto } from "./models/product-dto.model";
 import { productService } from "./services/product.service";
 import { categoryService } from "../category/services/category.service";
 import { useAgGridTheme } from "@/hooks/use-ag-grid-theme";
+import { DEFAULT_PAGE_SIZE } from "@/constants";
 
 import {
     Dialog,
@@ -218,21 +219,18 @@ export default function ProductListPage() {
         }
     ], [t, allCategories]);
 
-    // Page size config
-    const pageSize = 10;
-
     const datasource = useMemo<IDatasource>(() => {
         return {
             getRows: async (params: IGetRowsParams) => {
                 try {
                     setIsLoading(true);
 
-                    const page = Math.floor(params.startRow / pageSize) + 1;
+                    const page = Math.floor(params.startRow / DEFAULT_PAGE_SIZE) + 1;
 
                     const response = await productService.searchProducts({
                         search: debouncedSearch || undefined,
                         page,
-                        limit: pageSize
+                        limit: DEFAULT_PAGE_SIZE
                     });
 
                     setIsLoading(false);
@@ -440,11 +438,11 @@ export default function ProductListPage() {
                         columnDefs={columnDefs}
                         datasource={datasource}
                         rowModelType="infinite"
-                        cacheBlockSize={pageSize}
+                        cacheBlockSize={DEFAULT_PAGE_SIZE}
                         maxConcurrentDatasourceRequests={1}
-                        infiniteInitialRowCount={pageSize}
+                        infiniteInitialRowCount={DEFAULT_PAGE_SIZE}
                         pagination={true}
-                        paginationPageSize={pageSize}
+                        paginationPageSize={DEFAULT_PAGE_SIZE}
                         paginationPageSizeSelector={false}
                         theme={gridTheme}
                         loading={isLoading}

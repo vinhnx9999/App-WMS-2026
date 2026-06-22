@@ -13,7 +13,6 @@ public class InboundOrder : BaseEntity
     public InboundStatus Status { get; set; } = InboundStatus.Pending;
     public decimal TotalValue { get; set; }
     public string? Notes { get; set; }
-    public Guid? CreatedBy { get; set; }
 
     public Supplier Supplier { get; set; } = null!;
     public User? Creator { get; set; }

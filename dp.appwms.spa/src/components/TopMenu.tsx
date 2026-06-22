@@ -11,7 +11,8 @@ import {
   Users,
   Sun,
   Moon,
-  Box
+  Box,
+  Tags
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -102,35 +103,49 @@ export default function TopMenu() {
             onPointerMove={preventHover}
             className="p-1.5 bg-popover text-popover-foreground border border-border rounded-lg shadow-md min-w-[200px]"
           >
-            <ul className="flex flex-col gap-1 w-full">
-              <li>
-                <NavigationMenuLink asChild>
-                  <Link
-                    to="/master-data/products"
-                    className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/master-data/skus"
-                      ? "font-semibold text-primary bg-accent/50"
-                      : "font-medium"
-                      }`}
-                  >
-                    <Box className="size-4 text-slate-400" />
-                    {t("translation:navigation.products")}
-                  </Link>
-                </NavigationMenuLink>
-              </li>
-              <li>
-                <NavigationMenuLink asChild>
-                  <Link
-                    to="/master-data/skus"
-                    className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/master-data/skus"
-                      ? "font-semibold text-primary bg-accent/50"
-                      : "font-medium"
-                      }`}
-                  >
-                    <Layers className="size-4 text-slate-400" />
-                    {t("translation:navigation.skus")}
-                  </Link>
-                </NavigationMenuLink>
-              </li>
+              <ul className="flex flex-col gap-1 w-full">
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/master-data/products"
+                      className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/master-data/products"
+                        ? "font-semibold text-primary bg-accent/50"
+                        : "font-medium"
+                        }`}
+                    >
+                      <Box className="size-4 text-slate-400" />
+                      {t("translation:navigation.products")}
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/master-data/categories"
+                      className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/master-data/categories"
+                        ? "font-semibold text-primary bg-accent/50"
+                        : "font-medium"
+                        }`}
+                    >
+                      <Tags className="size-4 text-slate-400" />
+                      {t("translation:navigation.categories")}
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/master-data/skus"
+                      className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/master-data/skus"
+                        ? "font-semibold text-primary bg-accent/50"
+                        : "font-medium"
+                        }`}
+                    >
+                      <Layers className="size-4 text-slate-400" />
+                      {t("translation:navigation.skus")}
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
               <li>
                 <NavigationMenuLink asChild>
                   <Link

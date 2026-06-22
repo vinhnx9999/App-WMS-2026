@@ -13,6 +13,7 @@
     "dashboard": "Dashboard",
     "masterData": "Master Data",
     "products": "Product",
+    "categories": "Categories",
     "skus": "SKU Catalog",
     "suppliers": "Suppliers",
     "customers": "Customers",
@@ -135,6 +136,32 @@
         "DUPLICATE_SKU": "SKU code already exists in the system.",
         "generic": "Unknown error during data validation."
       }
+    }
+  },
+  "categories": {
+    "addCategory": "Add Category",
+    "createTitle": "Create New Category",
+    "createSuccess": "Category created successfully",
+    "categoryName": "Category Name",
+    "categoryNamePlaceholder": "Enter category name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter category description",
+    "slug": "Slug",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "deleteTooltip": "Delete category",
+    "deleteTitle": "Delete Category",
+    "confirmDelete": "Are you sure you want to delete this category? This action cannot be undone.",
+    "deleteSuccess": "Category deleted successfully",
+    "updateSuccess": "Category updated successfully",
+    "searchPlaceholder": "Search by category name...",
+    "errors": {
+      "nameRequired": "Category name is required.",
+      "nameTooLong": "Category name must not exceed 200 characters.",
+      "descriptionTooLong": "Description must not exceed 500 characters.",
+      "categoryInUse": "Cannot delete category because it is associated with active products.",
+      "generic": "An error occurred. Please try again later.",
+      "validationFailed": "Invalid input data. Please check again."
     }
   }
 }

@@ -8,6 +8,7 @@ using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Entities.Security;
+using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Infrastructure.Persistence;

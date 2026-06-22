@@ -2,11 +2,11 @@ import type { SkuDto } from "../models/sku-dto.model";
 import type { CreateSkuRequest } from "../models/create-sku-request";
 import type { UpdateSkuRequest } from "../models/update-sku-request";
 
-import type { ApiResponse, PagedResult } from "@/types/response";
+import type { ApiResponse, PagedResult } from "@/models/response";
 import type { SearchSkusParams } from "../models/search-sku-param.model";
-import apiClient from "@/api/apiClient";
 import { ENDPOINTS } from "@/api/endpoints";
 import type { UpdateSkuImportRowRequest } from "../models/update-sku-import-request";
+import apiClient from "@/api/api-client";
 
 
 
@@ -152,9 +152,11 @@ export const skuService = {
     /**
      * Get SKU Import Session details
      */
-    getImportSession: async (id: string): Promise<ApiResponse<any>> => {
+    getImportSession: async (id: string, page?: number, limit?: number): Promise<ApiResponse<any>> => {
         try {
-            const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/sessions/${id}`);
+            const response = await apiClient.get<ApiResponse<any>>(`${ENDPOINTS.SKU.IMPORT_SESSION}/import/sessions/${id}`, {
+                params: { page, limit }
+            });
             return response.data;
         } catch (error) {
             console.error("Error getting SKU import session:", error);

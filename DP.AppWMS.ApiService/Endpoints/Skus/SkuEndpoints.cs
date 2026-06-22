@@ -195,13 +195,22 @@ public sealed class SkuEndpoints : IEndpoint
 
     private async Task<IResult> GetImportSessionById(
         Guid id,
+        [FromQuery] int? page,
+        [FromQuery] int? limit,
         ISender sender,
         ICurrentUser currentUser,
         CancellationToken cancellationToken)
     {
+        int pageNumber = page ?? 1;
+        int pageSize = limit ?? 10;
+        if (pageNumber <= 0) pageNumber = 1;
+        if (pageSize <= 0) pageSize = 10;
+
         var result = await sender.Send(new GetSkuImportSessionQuery(
             currentUser.TenantId,
-            id
+            id,
+            pageNumber,
+            pageSize
         ), cancellationToken);
 
         return Results.Ok(ApiResponse<GetSkuImportSessionResponse>.Ok(result));

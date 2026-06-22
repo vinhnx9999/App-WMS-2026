@@ -13,6 +13,7 @@
     "dashboard": "Bảng điều khiển",
     "masterData": "Dữ liệu gốc",
     "products": "Danh mục sản phẩm",
+    "categories": "Nhóm sản phẩm",
     "skus": "Danh mục SKU",
     "suppliers": "Nhà cung ứng",
     "customers": "Khách hàng",
@@ -135,6 +136,32 @@
         "DUPLICATE_SKU": "Mã SKU đã tồn tại trên hệ thống.",
         "generic": "Lỗi không xác định khi kiểm tra dữ liệu."
       }
+    }
+  },
+  "categories": {
+    "addCategory": "Thêm nhóm",
+    "createTitle": "Tạo nhóm sản phẩm mới",
+    "createSuccess": "Tạo nhóm sản phẩm thành công",
+    "categoryName": "Tên nhóm sản phẩm",
+    "categoryNamePlaceholder": "Nhập tên nhóm sản phẩm",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Nhập mô tả nhóm sản phẩm",
+    "slug": "Slug",
+    "createdAt": "Ngày tạo",
+    "actions": "Hành động",
+    "deleteTooltip": "Xóa nhóm sản phẩm",
+    "deleteTitle": "Xóa nhóm sản phẩm",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa nhóm sản phẩm này không? Thao tác này không thể hoàn tác.",
+    "deleteSuccess": "Xóa nhóm sản phẩm thành công",
+    "updateSuccess": "Cập nhật nhóm sản phẩm thành công",
+    "searchPlaceholder": "Tìm theo tên nhóm sản phẩm...",
+    "errors": {
+      "nameRequired": "Tên nhóm sản phẩm là bắt buộc.",
+      "nameTooLong": "Tên nhóm sản phẩm không được vượt quá 200 ký tự.",
+      "descriptionTooLong": "Mô tả không được vượt quá 500 ký tự.",
+      "categoryInUse": "Không thể xóa nhóm sản phẩm vì nhóm này đang liên kết với các sản phẩm đang hoạt động.",
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại sau.",
+      "validationFailed": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại."
     }
   }
 }

@@ -17,7 +17,7 @@ namespace WMS.Application.Common.Service
 
             if (sequence is null)
             {
-                sequence = new CodeSequence(tenantId, codeType.ToUpperInvariant(), codeType);
+                sequence = new CodeSequence(tenantId, codeType, codeType);
                 await _codeSequenceRepository.AddAsync(sequence, ct);
             }
 

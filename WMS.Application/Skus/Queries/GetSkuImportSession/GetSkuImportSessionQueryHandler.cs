@@ -17,7 +17,6 @@ public sealed class GetSkuImportSessionQueryHandler(IUnitOfWork uow)
         CancellationToken ct)
     {
         var session = await _uow.Repository<SkuImportSession>().Query()
-            .Include(x => x.Rows)
             .FirstOrDefaultAsync(x =>
                 x.Id == request.ImportSessionId
                 && x.TenantId == request.TenantId
@@ -32,9 +31,17 @@ public sealed class GetSkuImportSessionQueryHandler(IUnitOfWork uow)
                 "Import session not found.");
         }
 
-        var rows = session.Rows
-            .Where(x => !x.IsDeleted)
+        var rowsQuery = _uow.Repository<SkuImportRow>().Query()
+            .Where(x => x.ImportSessionId == request.ImportSessionId
+                        && x.TenantId == request.TenantId
+                        && !x.IsDeleted);
+
+        var totalCount = await rowsQuery.CountAsync(ct);
+
+        var pagedRows = await rowsQuery
             .OrderBy(x => x.RowNumber)
+            .Skip((request.Page - 1) * request.Limit)
+            .Take(request.Limit)
             .Select(x => new SkuImportRowPreview(
                 x.Id,
                 x.RowNumber,
@@ -48,7 +55,15 @@ public sealed class GetSkuImportSessionQueryHandler(IUnitOfWork uow)
                 x.IsValid,
                 x.ErrorCode,
                 x.ErrorMessage))
-            .ToList();
+            .ToListAsync(ct);
+
+        var pagedResult = new PagedResult<SkuImportRowPreview>
+        {
+            Items = pagedRows,
+            TotalCount = totalCount,
+            PageNumber = request.Page,
+            PageSize = request.Limit
+        };
 
         return new GetSkuImportSessionResponse(
             ImportSessionId: session.Id,
@@ -62,6 +77,6 @@ public sealed class GetSkuImportSessionQueryHandler(IUnitOfWork uow)
             CancelledAt: session.CancelledAt,
             FailedAt: session.FailedAt,
             FailureReason: session.FailureReason,
-            Rows: rows);
+            Rows: pagedResult);
     }
 }
