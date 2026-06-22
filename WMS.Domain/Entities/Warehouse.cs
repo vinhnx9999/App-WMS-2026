@@ -1,8 +1,7 @@
 ﻿using WMS.Domain.Common;
 
-namespace WMS.Domain.Entities
+namespace WMS.Domain.Entities;
+
+public class Warehouse : BaseEntity
 {
-    public class Warehouse : BaseEntity
-    {
-    }
 }
