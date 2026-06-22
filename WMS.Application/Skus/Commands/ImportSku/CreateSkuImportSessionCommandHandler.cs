@@ -45,25 +45,23 @@ public sealed class CreateSkuImportSessionCommandHandler(
 
         ValidateDuplicateRowNumbers(rows);
 
-        var productsByCode = await LoadProductsByCode(
-            request.TenantId,
-            rows,
-            ct);
+        var validationInputs = rows.Select(x => new SkuImportRowValidationInput
+        {
+            RowNumber = x.RowNumber,
+            ProductCode = x.ProductCode,
+            SkuCode = x.SkuCode,
+            Name = x.Name,
+            GoodsNature = x.GoodsNature,
+            Description = x.Description,
+            ReferencePrice = x.ReferencePrice
+        }).ToList();
 
-        var duplicateSkuRowsInRequest = FindDuplicateManualSkuCodesInRequest(rows);
-
-        var existingSkuCodes = await LoadExistingManualSkuCodes(
-            request.TenantId,
-            rows,
-            ct);
+        var validationHelper = new SkuImportValidationHelper(_uow);
+        var validationResults = await validationHelper.ValidateRowsAsync(request.TenantId, validationInputs, ct);
 
         foreach (var row in rows)
         {
-            var validation = ValidateRow(
-                row,
-                productsByCode,
-                duplicateSkuRowsInRequest,
-                existingSkuCodes);
+            var validation = validationResults[row.RowNumber];
 
             session.AddRow(
                 rowNumber: row.RowNumber,
@@ -101,150 +99,6 @@ public sealed class CreateSkuImportSessionCommandHandler(
         }
     }
 
-    private async Task<Dictionary<string, Domain.Entities.Product.Product>> LoadProductsByCode(
-        Guid tenantId,
-        IReadOnlyList<ImportSkuRowRequest> rows,
-        CancellationToken ct)
-    {
-        var productCodes = rows
-            .Where(x => !string.IsNullOrWhiteSpace(x.ProductCode))
-            .Select(x => NormalizeCode(x.ProductCode!))
-            .Distinct()
-            .ToList();
-
-        if (productCodes.Count == 0)
-        {
-            return [];
-        }
-
-        return await _uow.Repository<Domain.Entities.Product.Product>().Query()
-            .Where(x =>
-                x.TenantId == tenantId
-                && productCodes.Contains(x.ProductCode)
-                && !x.IsDeleted)
-            .ToDictionaryAsync(x => x.ProductCode, x => x, ct);
-    }
-
-    private static HashSet<int> FindDuplicateManualSkuCodesInRequest(
-        IReadOnlyList<ImportSkuRowRequest> rows)
-    {
-        var firstRowBySkuCode = new Dictionary<string, int>();
-        var duplicateRows = new HashSet<int>();
-
-        foreach (var row in rows)
-        {
-            if (string.IsNullOrWhiteSpace(row.SkuCode))
-            {
-                continue;
-            }
-
-            var normalizedSkuCode = NormalizeCode(row.SkuCode);
-
-            if (firstRowBySkuCode.ContainsKey(normalizedSkuCode))
-            {
-                duplicateRows.Add(row.RowNumber);
-            }
-            else
-            {
-                firstRowBySkuCode[normalizedSkuCode] = row.RowNumber;
-            }
-        }
-
-        return duplicateRows;
-    }
-
-    private async Task<HashSet<string>> LoadExistingManualSkuCodes(
-        Guid tenantId,
-        IReadOnlyList<ImportSkuRowRequest> rows,
-        CancellationToken ct)
-    {
-        var skuCodes = rows
-            .Where(x => !string.IsNullOrWhiteSpace(x.SkuCode))
-            .Select(x => NormalizeCode(x.SkuCode!))
-            .Distinct()
-            .ToList();
-
-        if (skuCodes.Count == 0)
-        {
-            return [];
-        }
-
-        var existingSkuCodes = await _uow.Repository<Sku>().Query()
-            .Where(x =>
-                x.TenantId == tenantId
-                && skuCodes.Contains(x.SkuCode)
-                && !x.IsDeleted)
-            .Select(x => x.SkuCode)
-            .ToListAsync(ct);
-
-        return existingSkuCodes.ToHashSet();
-    }
-
-    private static RowValidationResult ValidateRow(
-        ImportSkuRowRequest row,
-        IReadOnlyDictionary<string, Domain.Entities.Product.Product> productsByCode,
-        IReadOnlySet<int> duplicateSkuRowsInRequest,
-        IReadOnlySet<string> existingSkuCodes)
-    {
-        if (row.RowNumber <= 0)
-        {
-            return RowValidationResult.Invalid(
-                "INVALID_ROW_NUMBER",
-                "Row number must be greater than zero.");
-        }
-
-        if (string.IsNullOrWhiteSpace(row.ProductCode))
-        {
-            return RowValidationResult.Invalid(
-                "PRODUCT_CODE_REQUIRED",
-                "Product code is required.");
-        }
-
-        var normalizedProductCode = NormalizeCode(row.ProductCode);
-
-        if (!productsByCode.TryGetValue(normalizedProductCode, out var product))
-        {
-            return RowValidationResult.Invalid(
-                "PRODUCT_NOT_FOUND",
-                "Product code does not exist.");
-        }
-
-        if (string.IsNullOrWhiteSpace(row.Name))
-        {
-            return RowValidationResult.Invalid(
-                "SKU_NAME_REQUIRED",
-                "SKU name is required.");
-        }
-
-        if (row.ReferencePrice is < 0)
-        {
-            return RowValidationResult.Invalid(
-                "INVALID_REFERENCE_PRICE",
-                "Reference price must be greater than or equal to zero.");
-        }
-
-        if (!string.IsNullOrWhiteSpace(row.SkuCode))
-        {
-            var normalizedSkuCode = NormalizeCode(row.SkuCode);
-
-            if (duplicateSkuRowsInRequest.Contains(row.RowNumber))
-            {
-                return RowValidationResult.Invalid(
-                    "DUPLICATE_SKU_IN_IMPORT",
-                    "SKU code is duplicated in the import rows.");
-            }
-
-            if (existingSkuCodes.Contains(normalizedSkuCode))
-            {
-                return RowValidationResult.Invalid(
-                    "DUPLICATE_SKU",
-                    "SKU code already exists for this tenant.");
-            }
-        }
-
-        return RowValidationResult.Valid(product.Id);
-    }
-
     private static CreateSkuImportSessionResponse MapResponse(
         SkuImportSession session)
     {
@@ -270,37 +124,5 @@ public sealed class CreateSkuImportSessionCommandHandler(
                     ErrorCode: x.ErrorCode,
                     ErrorMessage: x.ErrorMessage))
                 .ToList());
-    }
-
-    private static string NormalizeCode(string code)
-    {
-        return code.Trim().ToUpperInvariant();
-    }
-
-    private sealed record RowValidationResult(
-        bool IsValid,
-        Guid? ProductId,
-        string? ErrorCode,
-        string? ErrorMessage)
-    {
-        public static RowValidationResult Valid(Guid productId)
-        {
-            return new RowValidationResult(
-                IsValid: true,
-                ProductId: productId,
-                ErrorCode: null,
-                ErrorMessage: null);
-        }
-
-        public static RowValidationResult Invalid(
-            string errorCode,
-            string errorMessage)
-        {
-            return new RowValidationResult(
-                IsValid: false,
-                ProductId: null,
-                ErrorCode: errorCode,
-                ErrorMessage: errorMessage);
-        }
     }
 }

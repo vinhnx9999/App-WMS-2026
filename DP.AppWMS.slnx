@@ -19,6 +19,10 @@
     <Project Path="WMS.Infrastructure/WMS.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/FrontEnd/">
+    <Project Path="DP.AppWMS.SPA/dp.appwms.spa.esproj">
+      <Build />
+      <Deploy />
+    </Project>
     <Project Path="DP.AppWMS.Web/DP.AppWMS.Web.csproj" />
   </Folder>
   <Folder Name="/Tests/">

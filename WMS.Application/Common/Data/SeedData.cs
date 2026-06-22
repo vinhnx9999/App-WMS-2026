@@ -1,4 +1,5 @@
-﻿using WMS.Infrastructure.Persistence;
+using WMS.Domain.Entities.Security;
+using WMS.Infrastructure.Persistence;
 
 namespace WMS.Application.Common.Data;
 
@@ -6,27 +7,27 @@ public static class SeedData
 {
     public static async Task InitializeAsync(WmsDbContext db)
     {
-        //if (db.Roles.Any()) return;
+        if (db.Set<Role>().Any()) return;
 
-        //var adminRole = new Role
-        //{
-        //    Name = "admin",
-        //    Description = "Quản trị",
-        //    Permissions = new { ["full"] = true }
-        //};
-        //var managerRole = new Role { Name = "manager", Description = "Quản lý kho" };
-        //var keeperRole = new Role { Name = "keeper", Description = "Thủ kho" };
-        //var plannerRole = new Role { Name = "planner", Description = "Kế hoạch" };
-        //var viewerRole = new Role { Name = "viewer", Description = "Chỉ xem" };
-        //db.Roles.AddRange(adminRole, managerRole, keeperRole, plannerRole, viewerRole);
+        var adminRole = new Role
+        {
+            Name = "admin",
+            Description = "Quản trị",
+            Permissions = new Dictionary<string, bool> { ["full"] = true }
+        };
+        var managerRole = new Role { Name = "manager", Description = "Quản lý kho" };
+        var keeperRole = new Role { Name = "keeper", Description = "Thủ kho" };
+        var plannerRole = new Role { Name = "planner", Description = "Kế hoạch" };
+        var viewerRole = new Role { Name = "viewer", Description = "Chỉ xem" };
+        db.Set<Role>().AddRange(adminRole, managerRole, keeperRole, plannerRole, viewerRole);
 
-        //db.Users.Add(new User
-        //{
-        //    Email = "admin@wms.vn",
-        //    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-        //    FullName = "Nguyễn Văn Admin",
-        //    RoleId = adminRole.Id,
-        //});
+        db.Set<User>().Add(new User
+        {
+            Email = "admin@wms.vn",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123@"),
+            FullName = "Nguyễn Văn Admin",
+            RoleId = adminRole.Id,
+        });
 
         //var catPhone = new Category { Name = "Điện thoại", Slug = "dien-thoai" };
         //var catLaptop = new Category { Name = "Laptop", Slug = "laptop" };
@@ -103,7 +104,7 @@ public static class SeedData
         //        UnitPrice = 299000
         //    });
 
-        foreach (var item in db.InventoryItems.Local) item.UpdateStatus();
+        // foreach (var item in db.InventoryItems.Local) item.UpdateStatus();
 
         await db.SaveChangesAsync();
     }

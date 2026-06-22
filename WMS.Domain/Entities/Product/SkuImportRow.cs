@@ -127,6 +127,22 @@ public class SkuImportRow : BaseEntity
             errorMessage);
     }
 
+    public void UpdateValues(
+        string? productCode,
+        string? skuCode,
+        string? name,
+        string? goodsNature,
+        string? description,
+        decimal? referencePrice)
+    {
+        ProductCode = NormalizeCodeOrNull(productCode);
+        SkuCode = NormalizeCodeOrNull(skuCode);
+        Name = Utilities.NormalizeNullable(name);
+        GoodsNature = Utilities.NormalizeNullable(goodsNature);
+        Description = Utilities.NormalizeNullable(description);
+        ReferencePrice = referencePrice;
+    }
+
     public void MarkInvalid(
         string errorCode,
         string errorMessage)

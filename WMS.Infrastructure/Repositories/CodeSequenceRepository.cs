@@ -16,14 +16,12 @@ namespace WMS.Infrastructure.Repositories
 
         public Task<CodeSequence?> GetByCodeTypeAsync(Guid tenantId, string codeType, CancellationToken ct = default)
         {
-            var normalizedCodeType = codeType
-            .Trim()
-            .ToUpperInvariant();
+
 
             return _wmsDbContext.CodeSequences
                 .SingleOrDefaultAsync(
                     x => x.TenantId == tenantId &&
-                         x.CodeType == normalizedCodeType,
+                         x.CodeType == codeType.ToUpperInvariant(),
                     ct);
         }
     }

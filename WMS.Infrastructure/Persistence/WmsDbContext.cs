@@ -23,7 +23,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
         //optionsBuilder.AddInterceptors(_auditInterceptor);
     }
     public DbSet<Tenant> Tenants => Set<Tenant>();
-    //public DbSet<User> Users { get; set; } = null!;
+    // public DbSet<User> Users { get; set; } = null!;
     //public DbSet<Role> Roles => Set<Role>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
     public DbSet<Category> Categories => Set<Category>();
