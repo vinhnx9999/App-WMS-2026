@@ -2,7 +2,7 @@ import type { SkuDto } from "../models/sku-dto.model";
 import type { CreateSkuRequest } from "../models/create-sku-request";
 import type { UpdateSkuRequest } from "../models/update-sku-request";
 
-import type { ApiResponse, PagedResult } from "@/types/response";
+import type { ApiResponse, PagedResult } from "@/models/response";
 import type { SearchSkusParams } from "../models/search-sku-param.model";
 import { ENDPOINTS } from "@/api/endpoints";
 import type { UpdateSkuImportRowRequest } from "../models/update-sku-import-request";

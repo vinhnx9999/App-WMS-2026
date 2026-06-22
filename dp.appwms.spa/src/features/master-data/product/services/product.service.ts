@@ -1,5 +1,5 @@
 import type { ProductDto } from "../models/product-dto.model";
-import type { ApiResponse, PagedResult } from "@/types/response";
+import type { ApiResponse, PagedResult } from "@/models/response";
 import type { SearchProductsParams } from "../models/search-product-param.model";
 import type { CreateProductRequest } from "../models/create-product-request";
 import { ENDPOINTS } from "@/api/endpoints";

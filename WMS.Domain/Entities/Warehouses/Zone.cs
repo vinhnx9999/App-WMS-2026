@@ -1,7 +1,7 @@
 ﻿using WMS.Domain.Common;
 using WMS.Domain.Enums;
 
-namespace WMS.Domain.Entities;
+namespace WMS.Domain.Entities.Warehouses;
 
 public class Zone : BaseEntity
 {

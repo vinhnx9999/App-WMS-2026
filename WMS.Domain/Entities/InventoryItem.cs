@@ -1,6 +1,7 @@
 ﻿using WMS.Domain.Common;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Enums;
 
 namespace WMS.Domain.Entities;

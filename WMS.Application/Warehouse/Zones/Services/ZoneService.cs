@@ -3,7 +3,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Warehouse.Zones.DTOs;
-using WMS.Domain.Entities;
+using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Warehouse.Zones.Services;

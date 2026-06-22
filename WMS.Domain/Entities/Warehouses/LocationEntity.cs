@@ -1,6 +1,6 @@
 ﻿using WMS.Domain.Common;
 
-namespace WMS.Domain.Entities;
+namespace WMS.Domain.Entities.Warehouses;
 
 public class LocationEntity : BaseEntity
 {
