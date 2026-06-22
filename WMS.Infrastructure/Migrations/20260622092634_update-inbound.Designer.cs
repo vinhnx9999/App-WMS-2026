@@ -13,7 +13,7 @@ namespace WMS.Infrastructure.Migrations
 {
     [DbContext(typeof(WmsDbContext))]
     [Migration("20260622092634_update-inbound")]
-    partial class updateinbound
+    partial class UpdateInbound
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

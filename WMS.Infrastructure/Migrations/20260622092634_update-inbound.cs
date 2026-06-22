@@ -5,8 +5,7 @@
 namespace WMS.Infrastructure.Migrations;
 
 /// <inheritdoc />
-/// #pragma warning disable CS_W1036
-public partial class updateinbound : Migration
+public partial class UpdateInbound : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
