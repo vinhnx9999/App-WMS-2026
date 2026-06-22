@@ -156,7 +156,7 @@
               "RelativeDocumentMoniker": "DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
               "ToolTip": "D:\\App-WMS-2026\\DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
               "RelativeToolTip": "DP.AppWMS.ApiService\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAGcBAAAAAAAAAAAuwG4BAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAEoBAAAAAAAAAAAqwEYBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-20T06:34:13.733Z",
               "EditorCaption": ""
@@ -171,8 +171,7 @@
               "RelativeToolTip": "DP.AppWMS.ApiService\\Endpoints\\Skus\\SkuEndpoints.cs",
               "ViewState": "AgIAAMUAAAAAAAAAAAAYwLwAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-20T06:31:12.847Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-20T06:31:12.847Z"
             },
             {
               "$type": "Document",
@@ -196,8 +195,7 @@
               "RelativeToolTip": "dp.appwms.spa\\src\\features\\master-data\\product\\ProductListPage.tsx",
               "ViewState": "AgIAAF0AAAAAAAAAAAAjwGYAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-06-19T08:38:13.351Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-19T08:38:13.351Z"
             },
             {
               "$type": "Document",
@@ -209,8 +207,7 @@
               "RelativeToolTip": "WMS.Application\\Skus\\Commands\\ImportSku\\CreateSkuImportSessionCommandHandler.cs",
               "ViewState": "AgIAADQAAAAAAAAAAAAQwDsAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-19T03:53:47.857Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-19T03:53:47.857Z"
             },
             {
               "$type": "Document",
@@ -222,8 +219,7 @@
               "RelativeToolTip": "DP.AppWMS.ApiService\\Properties\\launchSettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-20T06:20:19.561Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-20T06:20:19.561Z"
             },
             {
               "$type": "Document",
@@ -403,8 +399,7 @@
               "RelativeToolTip": "WMS.Application\\Skus\\Commands\\CreateSku\\CreateSkuCommandHandler.cs",
               "ViewState": "AgIAAE0AAAAAAAAAAAAowF8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-18T09:26:53.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-18T09:26:53.492Z"
             },
             {
               "$type": "Document",

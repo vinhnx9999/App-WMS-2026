@@ -1,6 +1,5 @@
-﻿namespace DP.AppWMS.Web.Resources
+﻿namespace DP.AppWMS.Web.Resources;
+
+public class SharedResource
 {
-    public class SharedResource
-    {
-    }
 }
