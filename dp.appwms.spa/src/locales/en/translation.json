@@ -202,5 +202,39 @@
       "validationFailed": "Invalid input data. Please check again.",
       "generic": "An error occurred. Please try again later."
     }
+  },
+  "customers": {
+    "addCustomer": "Add Customer",
+    "createTitle": "Create New Customer",
+    "createSuccess": "Customer created successfully",
+    "customerCode": "Customer Code",
+    "customerName": "Customer Name",
+    "address": "Address",
+    "phone": "Phone Number",
+    "type": "Customer Type",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "deleteTooltip": "Delete customer",
+    "deleteTitle": "Delete Customer",
+    "confirmDelete": "Are you sure you want to delete this customer? This action cannot be undone.",
+    "deleteSuccess": "Customer deleted successfully",
+    "updateSuccess": "Customer updated successfully",
+    "searchPlaceholder": "Search by code, customer name...",
+    "codePlaceholder": "Leave blank to auto-generate code",
+    "namePlaceholder": "Enter customer name",
+    "addressPlaceholder": "Enter address",
+    "phonePlaceholder": "Enter phone number",
+    "typePlaceholder": "Enter customer type (e.g. VIP, Wholesale...)",
+    "errors": {
+      "codeTooLong": "Customer code must not exceed 100 characters.",
+      "nameRequired": "Customer name is required.",
+      "nameTooLong": "Customer name must not exceed 100 characters.",
+      "addressTooLong": "Address must not exceed 250 characters.",
+      "phoneTooLong": "Phone number must not exceed 50 characters.",
+      "typeTooLong": "Customer type must not exceed 50 characters.",
+      "duplicateCode": "Customer code already exists in the system.",
+      "validationFailed": "Invalid input data. Please check again.",
+      "generic": "An error occurred. Please try again later."
+    }
   }
 }

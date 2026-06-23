@@ -104,8 +104,8 @@ public sealed class CustomerEndpoints : IEndpoint
         CancellationToken cancellationToken)
     {
         await sender.Send(new UpdateCustomerCommand(
-            currentUser.TenantId,
             id,
+            currentUser.TenantId,
             request.Name,
             request.Address,
             request.Phone,

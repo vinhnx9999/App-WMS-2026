@@ -202,5 +202,39 @@
       "validationFailed": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.",
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại sau."
     }
+  },
+  "customers": {
+    "addCustomer": "Thêm khách hàng",
+    "createTitle": "Tạo khách hàng mới",
+    "createSuccess": "Tạo khách hàng thành công",
+    "customerCode": "Mã khách hàng",
+    "customerName": "Tên khách hàng",
+    "address": "Địa chỉ",
+    "phone": "Số điện thoại",
+    "type": "Loại khách hàng",
+    "createdAt": "Ngày tạo",
+    "actions": "Hành động",
+    "deleteTooltip": "Xóa khách hàng",
+    "deleteTitle": "Xóa khách hàng",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa khách hàng này không? Thao tác này không thể hoàn tác.",
+    "deleteSuccess": "Xóa khách hàng thành công",
+    "updateSuccess": "Cập nhật khách hàng thành công",
+    "searchPlaceholder": "Tìm theo mã, tên khách hàng...",
+    "codePlaceholder": "Để trống để tự động tạo mã",
+    "namePlaceholder": "Nhập tên khách hàng",
+    "addressPlaceholder": "Nhập địa chỉ",
+    "phonePlaceholder": "Nhập số điện thoại",
+    "typePlaceholder": "Nhập loại khách hàng (VD: VIP, Đại lý...)",
+    "errors": {
+      "codeTooLong": "Mã khách hàng không được vượt quá 100 ký tự.",
+      "nameRequired": "Tên khách hàng là bắt buộc.",
+      "nameTooLong": "Tên khách hàng không được vượt quá 100 ký tự.",
+      "addressTooLong": "Địa chỉ không được vượt quá 250 ký tự.",
+      "phoneTooLong": "Số điện thoại không được vượt quá 50 ký tự.",
+      "typeTooLong": "Loại khách hàng không được vượt quá 50 ký tự.",
+      "duplicateCode": "Mã khách hàng đã tồn tại trong hệ thống.",
+      "validationFailed": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.",
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại sau."
+    }
   }
 }

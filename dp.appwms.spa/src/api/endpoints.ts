@@ -13,6 +13,9 @@ export const ENDPOINTS = {
     },
     SUPPLIER: {
         SEARCH: Base_URL + "/suppliers",
+    },
+    CUSTOMER: {
+        SEARCH: Base_URL + "/customers",
     }
 } as const;
 
