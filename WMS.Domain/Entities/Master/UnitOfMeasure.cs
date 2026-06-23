@@ -1,8 +1,9 @@
 using WMS.Domain.Common;
+using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities;
 
-public class UnitOfMeasure : BaseEntity
+public class UnitOfMeasure : BaseEntity, IAggregateRoot
 {
     private UnitOfMeasure() { }
     public string Code { get; private set; } = null!;

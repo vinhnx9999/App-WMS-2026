@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WMS.Application.Common.Models;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.SAP.DataClient;

@@ -49,8 +49,8 @@ public class SkuUnitOfMeasure : BaseEntity
         MarkDeleted(deletedBy);
     }
 
-    internal void Restore(string? restoredBy)
+    internal void Restore()
     {
-        MarkRestored(restoredBy);
+        MarkRestored();
     }
 }

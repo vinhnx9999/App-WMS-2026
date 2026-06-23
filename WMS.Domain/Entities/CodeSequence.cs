@@ -1,9 +1,10 @@
 using WMS.Domain.Common;
 using WMS.Domain.Extensions;
+using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities
 {
-    public class CodeSequence : BaseEntity
+    public class CodeSequence : BaseEntity, IAggregateRoot
     {
         /// <summary>
         /// Type of code sequence (e.g., "SKU", "PRODUCT", etc.)

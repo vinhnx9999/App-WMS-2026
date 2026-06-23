@@ -2,7 +2,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 //var postgres = builder.AddPostgres("postgres").AddDatabase("Default", "wms_db");
 
-var cache = builder.AddRedis("Redis");
+var cache = builder.AddRedis("Redis").WithDataVolume("redis-data");
 
 var apiService = builder.AddProject<Projects.DP_AppWMS_ApiService>("apiservice")
      .WithReference(cache)

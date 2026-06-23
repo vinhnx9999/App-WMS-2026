@@ -10,6 +10,9 @@ export const ENDPOINTS = {
     },
     CATEGORY: {
         SEARCH: Base_URL + "/categories",
+    },
+    SUPPLIER: {
+        SEARCH: Base_URL + "/suppliers",
     }
 } as const;
 

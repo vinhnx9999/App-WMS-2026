@@ -35,7 +35,7 @@ const createSkuSchema = z.object({
     )
 });
 
-export default function Skus() {
+export default function SkusListPage() {
     const { t } = useTranslation();
     const gridRef = useRef<AgGridReact>(null);
 

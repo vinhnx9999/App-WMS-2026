@@ -4,6 +4,7 @@ using WMS.Application.SignalR;
 using WMS.Application.SignalR.DTOs;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;

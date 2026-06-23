@@ -31,3 +31,11 @@ _Avoid_: Product unit
 **SKU Attribute**:
 A SKU attribute describes a characteristic that distinguishes one SKU from another under the same product.
 _Avoid_: SKU specification
+
+**Supplier**:
+A supplier is an independent master-data aggregate root representing a goods provider to the warehouse. A supplier may be soft-deleted freely regardless of related inbound orders; each inbound order retains its own supplier reference as historical data. A deleted supplier may be restored.
+_Avoid_: Vendor, Provider
+
+**Supplier Code**:
+A supplier code is the stable business identifier for a supplier. Supplier codes are immutable after creation, unique within a tenant, normalized to uppercase, and soft-deleted suppliers do not release their codes for reuse.
+_Avoid_: Supplier ID, partner code

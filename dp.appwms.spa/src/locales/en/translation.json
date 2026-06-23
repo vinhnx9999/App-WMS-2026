@@ -163,5 +163,44 @@
       "generic": "An error occurred. Please try again later.",
       "validationFailed": "Invalid input data. Please check again."
     }
+  },
+  "suppliers": {
+    "addSupplier": "Add Supplier",
+    "createTitle": "Create New Supplier",
+    "createSuccess": "Supplier created successfully",
+    "supplierCode": "Supplier Code",
+    "supplierName": "Supplier Name",
+    "contactName": "Contact Person",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "deleteTooltip": "Delete supplier",
+    "deleteTitle": "Delete Supplier",
+    "confirmDelete": "Are you sure you want to delete this supplier? This action cannot be undone.",
+    "deleteSuccess": "Supplier deleted successfully",
+    "updateSuccess": "Supplier updated successfully",
+    "searchPlaceholder": "Search by code, supplier name...",
+    "codePlaceholder": "Enter supplier code (e.g. SUP001)",
+    "namePlaceholder": "Enter supplier name",
+    "contactPlaceholder": "Enter contact person name",
+    "phonePlaceholder": "Enter phone number",
+    "emailPlaceholder": "Enter email address",
+    "addressPlaceholder": "Enter supplier address",
+    "errors": {
+      "codeRequired": "Supplier code is required.",
+      "codeTooLong": "Supplier code must not exceed 50 characters.",
+      "nameRequired": "Supplier name is required.",
+      "nameTooLong": "Supplier name must not exceed 255 characters.",
+      "contactTooLong": "Contact person name must not exceed 255 characters.",
+      "phoneTooLong": "Phone number must not exceed 20 characters.",
+      "emailTooLong": "Email must not exceed 255 characters.",
+      "addressTooLong": "Address must not exceed 500 characters.",
+      "invalidEmail": "Invalid email format.",
+      "duplicateCode": "Supplier code already exists in the system.",
+      "validationFailed": "Invalid input data. Please check again.",
+      "generic": "An error occurred. Please try again later."
+    }
   }
 }

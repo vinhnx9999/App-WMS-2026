@@ -1,13 +1,13 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import DashboardPage from "../features/dashboard/DashboardPage";
-import Skus from "../features/master-data/skus/SkusListPage";
-import Suppliers from "../features/master-data/suppliers/Suppliers";
 import Customers from "../features/master-data/customers/Customer";
-import Products from "../features/master-data/product/ProductListPage";
 import LoginPage from "@/features/authentication/LoginPage";
 import ErrorPage from "@/components/ErrorPage";
 import CategoryListPage from "@/features/master-data/category/CategoryListPage";
+import SupplierListPage from "@/features/master-data/suppliers/SupplierListPage";
+import SkusListPage from "@/features/master-data/skus/SkusListPage";
+import ProductListPage from "@/features/master-data/product/ProductListPage";
 
 export const router = createBrowserRouter([
     {
@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "products",
-                        element: <Products />,
+                        element: <ProductListPage />,
                     },
                     {
                         path: "categories",
@@ -36,11 +36,11 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "skus",
-                        element: <Skus />,
+                        element: <SkusListPage />,
                     },
                     {
                         path: "suppliers",
-                        element: <Suppliers />,
+                        element: <SupplierListPage />,
                     },
                     {
                         path: "customers",
@@ -71,7 +71,6 @@ export const router = createBrowserRouter([
                 ),
             },
         ],
-
     },
     {
         path: "/auth",

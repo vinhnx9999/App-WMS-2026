@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WMS.Application.Common.Models;
+using WMS.Application.Common.Service;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;
@@ -15,11 +17,15 @@ public class OdooInboundSyncService(
     IOdooClient odoo,
     IUnitOfWork uow,
     IOptions<OdooConfig> config,
+    ICurrentUser currentUser,
+    ISequenceCodeGenerator codeGenerator,
     ILogger<OdooInboundSyncService> log) : IOdooInboundSyncService
 {
     private readonly IOdooClient _odoo = odoo;
     private readonly IUnitOfWork _uow = uow;
     private readonly OdooMappingConfig _mapping = config.Value.Mapping;
+    private readonly ICurrentUser _currentUser = currentUser;
+    private readonly ISequenceCodeGenerator _codeGenerator = codeGenerator;
     private readonly ILogger<OdooInboundSyncService> _log = log;
 
     /// <summary>Pull incoming pickings từ Odoo → WMS InboundOrders</summary>
@@ -68,8 +74,12 @@ public class OdooInboundSyncService(
 
             if (supplier == null)
             {
-                // Auto-create supplier from Odoo partner
-                supplier = new Supplier { Name = partnerName };
+                var code = await _codeGenerator.NextAsync(_currentUser.TenantId, CodeSequenceTypes.Supplier, ct);
+                supplier = Supplier.Create(
+                    tenantId: _currentUser.TenantId,
+                    code: code,
+                    name: partnerName
+                );
                 await supplierRepo.AddAsync(supplier, ct);
             }
 
@@ -186,6 +196,8 @@ public class OdooInboundSyncService(
         }
         return "";
     }
+
+
 
     private static List<int> ExtractIds(
         Dictionary<string, object?> record, string field)
