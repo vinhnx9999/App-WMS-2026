@@ -163,5 +163,44 @@
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại sau.",
       "validationFailed": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại."
     }
+  },
+  "suppliers": {
+    "addSupplier": "Thêm nhà cung ứng",
+    "createTitle": "Tạo nhà cung ứng mới",
+    "createSuccess": "Tạo nhà cung ứng thành công",
+    "supplierCode": "Mã nhà cung ứng",
+    "supplierName": "Tên nhà cung ứng",
+    "contactName": "Người liên hệ",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "address": "Địa chỉ",
+    "createdAt": "Ngày tạo",
+    "actions": "Hành động",
+    "deleteTooltip": "Xóa nhà cung ứng",
+    "deleteTitle": "Xóa nhà cung ứng",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa nhà cung ứng này không? Thao tác này không thể hoàn tác.",
+    "deleteSuccess": "Xóa nhà cung ứng thành công",
+    "updateSuccess": "Cập nhật nhà cung ứng thành công",
+    "searchPlaceholder": "Tìm theo mã, tên nhà cung ứng...",
+    "codePlaceholder": "Nhập mã nhà cung ứng (VD: NCC001)",
+    "namePlaceholder": "Nhập tên nhà cung ứng",
+    "contactPlaceholder": "Nhập tên người liên hệ",
+    "phonePlaceholder": "Nhập số điện thoại",
+    "emailPlaceholder": "Nhập email liên hệ",
+    "addressPlaceholder": "Nhập địa chỉ nhà cung ứng",
+    "errors": {
+      "codeRequired": "Mã nhà cung ứng là bắt buộc.",
+      "codeTooLong": "Mã nhà cung ứng không được vượt quá 50 ký tự.",
+      "nameRequired": "Tên nhà cung ứng là bắt buộc.",
+      "nameTooLong": "Tên nhà cung ứng không được vượt quá 255 ký tự.",
+      "contactTooLong": "Tên người liên hệ không được vượt quá 255 ký tự.",
+      "phoneTooLong": "Số điện thoại không được vượt quá 20 ký tự.",
+      "emailTooLong": "Email không được vượt quá 255 ký tự.",
+      "addressTooLong": "Địa chỉ không được vượt quá 500 ký tự.",
+      "invalidEmail": "Email không đúng định dạng.",
+      "duplicateCode": "Mã nhà cung ứng đã tồn tại trong hệ thống.",
+      "validationFailed": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.",
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại sau."
+    }
   }
 }
