@@ -30,8 +30,10 @@ public sealed class SearchSuppliersQueryHandler(IUnitOfWork uow)
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
+#pragma warning disable CS-R1018
             var keyword = request.Search.Trim().ToLower();
             query = query.Where(x => x.Code.ToLower().Contains(keyword) || x.Name.ToLower().Contains(keyword));
+#pragma warning restore CS-R1018
         }
 
         var totalCount = await query.CountAsync(ct);
