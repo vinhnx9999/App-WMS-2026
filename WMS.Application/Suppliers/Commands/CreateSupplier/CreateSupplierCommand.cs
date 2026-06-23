@@ -26,18 +26,9 @@ public sealed class CreateSupplierCommandHandler(IUnitOfWork uow, ISequenceCodeG
 
     public async Task<CreateSupplierResponse> Handle(CreateSupplierCommand request, CancellationToken ct)
     {
-        string supplierCode;
-        if (string.IsNullOrWhiteSpace(request.Code))
-        {
-            supplierCode = await _sequenceCodeGenerator.NextAsync(
-                request.TenantId,
-                CodeSequenceTypes.Supplier,
-                ct);
-        }
-        else
-        {
-            supplierCode = request.Code.Trim();
-        }
+        var supplierCode = string.IsNullOrWhiteSpace(request.Code)
+                            ? await _sequenceCodeGenerator.NextAsync(request.TenantId, CodeSequenceTypes.Supplier, ct)
+                            : request.Code.Trim();
 
         var existing = await _uow.Repository<Supplier>().Query()
             .AnyAsync(x => x.TenantId == request.TenantId && x.Code == supplierCode, ct);
