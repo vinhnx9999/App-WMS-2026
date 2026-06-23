@@ -8,8 +8,8 @@ public sealed class CreateSupplierCommandValidator : AbstractValidator<CreateSup
     public CreateSupplierCommandValidator()
     {
         RuleFor(x => x.Code)
-            .NotEmpty().WithMessage("Supplier code is required.")
-            .MaximumLength(50).WithMessage("Supplier code must not exceed 50 characters.");
+            .MaximumLength(50).WithMessage("Supplier code must not exceed 50 characters.")
+            .When(x => !string.IsNullOrEmpty(x.Code));
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Supplier name is required.")

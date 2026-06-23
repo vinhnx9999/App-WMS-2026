@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef, type FormEvent } from "react";
+import { useState, useMemo, useEffect, useRef, type SubmitEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
 import { useTranslation } from "react-i18next";
@@ -353,7 +353,7 @@ export default function SupplierListPage() {
         }
     };
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormErrors({});
 

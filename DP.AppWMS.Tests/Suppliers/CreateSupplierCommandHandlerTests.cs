@@ -1,17 +1,22 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using WMS.Application.Common.Service;
 using WMS.Application.Suppliers.Commands.CreateSupplier;
 using WMS.Application.Suppliers.Validators;
 using WMS.Domain.Entities.Master;
+using WMS.Domain.Enums;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Suppliers;
 
 public sealed class CreateSupplierCommandHandlerTests : BaseSupplierHandlerTest
 {
-    private static CreateSupplierCommandHandler CreateHandler(WmsDbContext db)
+    private readonly Mock<ISequenceCodeGenerator> _sequenceCodeGeneratorMock = new();
+
+    private CreateSupplierCommandHandler CreateHandler(WmsDbContext db)
     {
-        return new CreateSupplierCommandHandler(CreateUnitOfWork(db));
+        return new CreateSupplierCommandHandler(CreateUnitOfWork(db), _sequenceCodeGeneratorMock.Object);
     }
 
     [Fact]
@@ -47,19 +52,49 @@ public sealed class CreateSupplierCommandHandlerTests : BaseSupplierHandlerTest
         saved.Name.Should().Be("Supplier One");
     }
 
+    [Fact]
+    public async Task Handle_WithEmptyCode_GeneratesSupplierCode()
+    {
+        await using var connection = await OpenConnectionAsync();
+        await using var db = CreateDbContext(connection);
+        await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
+
+        _sequenceCodeGeneratorMock
+            .Setup(x => x.NextAsync(TenantA, CodeSequenceTypes.Supplier, It.IsAny<CancellationToken>()))
+            .ReturnsAsync("SUP-000001");
+
+        var handler = CreateHandler(db);
+        var command = new CreateSupplierCommand(
+            TenantA,
+            "",
+            "Supplier One",
+            "John Doe",
+            "123456789",
+            "john@supplier.com",
+            "123 Main St");
+
+        var result = await handler.Handle(command, TestContext.Current.CancellationToken);
+
+        result.Id.Should().NotBeEmpty();
+        result.Code.Should().Be("SUP-000001");
+        result.Name.Should().Be("Supplier One");
+
+        _sequenceCodeGeneratorMock.Verify(x => x.NextAsync(TenantA, CodeSequenceTypes.Supplier, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null)]
-    public void Validator_WhenCodeOrNameEmpty_ShouldFail(string? emptyVal)
+    public void Validator_WhenNameEmpty_ShouldFail(string? emptyVal)
     {
         var validator = new CreateSupplierCommandValidator();
 
-        var badCodeResult = validator.Validate(new CreateSupplierCommand(TenantA, emptyVal!, "Name", null, null, null, null));
-        badCodeResult.IsValid.Should().BeFalse();
-
         var badNameResult = validator.Validate(new CreateSupplierCommand(TenantA, "SUP01", emptyVal!, null, null, null, null));
         badNameResult.IsValid.Should().BeFalse();
+
+        var goodCodeResult = validator.Validate(new CreateSupplierCommand(TenantA, emptyVal, "Name", null, null, null, null));
+        goodCodeResult.IsValid.Should().BeTrue();
     }
 
     [Fact]

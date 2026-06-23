@@ -1,5 +1,5 @@
 export interface CreateSupplierRequest {
-    code: string;
+    code?: string;
     name: string;
     contact?: string | null;
     phone?: string | null;
