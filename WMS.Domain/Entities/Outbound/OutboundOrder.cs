@@ -13,7 +13,6 @@ public class OutboundOrder : BaseEntity, IAggregateRoot
     public DateOnly? ExpectedDelivery { get; private set; }
     public OutboundStatus Status { get; private set; } = OutboundStatus.Pending;
     public decimal TotalValue { get; private set; }
-
     public Customer Customer { get; private set; } = null!;
     public ICollection<OutboundItem> Items { get; private set; } = [];
     public string? Notes { get; private set; }
@@ -54,7 +53,6 @@ public class OutboundOrder : BaseEntity, IAggregateRoot
         {
             throw new DomainException("INVALID_TOTAL_VALUE", "Tổng giá trị đơn xuất không được phép âm.");
         }
-
         TotalValue = totalValue;
     }
 
