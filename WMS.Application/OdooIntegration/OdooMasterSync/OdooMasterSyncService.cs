@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WMS.Application.Common.Service;
 using WMS.Domain.Entities;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Enums;
@@ -14,11 +15,15 @@ namespace WMS.Application.OdooIntegration.OdooMasterSync;
 public class OdooMasterSyncService(
     IOdooClient odoo, IUnitOfWork uow,
     IOptions<OdooConfig> config,
+    ICurrentUser currentUser,
+    ISequenceCodeGenerator codeGenerator,
     ILogger<OdooMasterSyncService> log) : IOdooMasterSyncService
 {
     private readonly IOdooClient _odoo = odoo;
     private readonly IUnitOfWork _uow = uow;
     private readonly OdooMappingConfig _mapping = config.Value.Mapping;
+    private readonly ICurrentUser _currentUser = currentUser;
+    private readonly ISequenceCodeGenerator _codeGenerator = codeGenerator;
     private readonly ILogger<OdooMasterSyncService> _log = log;
 
     /// <summary>Sync products từ Odoo → WMS InventoryItem</summary>
@@ -142,12 +147,15 @@ public class OdooMasterSyncService(
             if (isSupplier && !await supplierRepo.ExistsAsync(
                 s => s.Name == name))
             {
-                await supplierRepo.AddAsync(new Supplier
-                {
-                    Name = name,
-                    Phone = phone,
-                    Email = email
-                }, ct);
+                var code = await _codeGenerator.NextAsync(_currentUser.TenantId, CodeSequenceTypes.Supplier, ct);
+
+                await supplierRepo.AddAsync(Supplier.Create(
+                    tenantId: _currentUser.TenantId,
+                    code: code,
+                    name: name,
+                    phone: phone,
+                    email: email
+                ), ct);
                 synced++;
             }
 

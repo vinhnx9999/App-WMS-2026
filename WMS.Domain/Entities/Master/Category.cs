@@ -1,8 +1,9 @@
 using WMS.Domain.Common;
+using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities;
 
-public class Category : BaseEntity
+public class Category : BaseEntity, IAggregateRoot
 {
     public string Name { get; set; } = null!;
     public string? Slug { get; set; }

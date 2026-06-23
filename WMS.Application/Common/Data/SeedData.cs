@@ -1,4 +1,5 @@
 using WMS.Domain.Entities.Security;
+using WMS.Domain.Entities.Master;
 using WMS.Infrastructure.Persistence;
 
 namespace WMS.Application.Common.Data;
@@ -39,9 +40,10 @@ public static class SeedData
         //var zoneC = new Zone { Name = "Khu C", ZoneCode = "ZC", TotalLocations = 360 };
         //db.Zones.AddRange(zoneA, zoneB, zoneC);
 
+        //var tenantId = Guid.Empty;
         //db.Suppliers.AddRange(
-        //    new Supplier { Name = "Samsung Vina", Email = "sales@samsung.vn" },
-        //    new Supplier { Name = "Apple Vietnam", Email = "supply@apple.vn" });
+        //    Supplier.Create(tenantId, "SAM-VINA", "Samsung Vina", email: "sales@samsung.vn"),
+        //    Supplier.Create(tenantId, "APL-VN", "Apple Vietnam", email: "supply@apple.vn"));
 
         //db.Partners.AddRange(
         //    new Partner { Name = "FPT Shop", Type = "Retail" },

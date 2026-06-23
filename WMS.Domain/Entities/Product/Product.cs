@@ -1,8 +1,9 @@
 using WMS.Domain.Common;
+using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities.Product;
 
-public class Product : BaseEntity
+public class Product : BaseEntity, IAggregateRoot
 {
     /// <summary>
     /// Private constructor for EF Core

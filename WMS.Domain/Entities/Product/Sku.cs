@@ -1,9 +1,10 @@
 ﻿using WMS.Domain.Common;
 using WMS.Domain.Extensions;
+using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities.Product;
 
-public class Sku : BaseEntity
+public class Sku : BaseEntity, IAggregateRoot
 {
     private readonly List<SkuAttributeValue> _attributes = new();
     private readonly List<SkuUnitOfMeasure> _allowedUnits = new();

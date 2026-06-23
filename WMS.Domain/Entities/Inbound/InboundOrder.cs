@@ -1,5 +1,6 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 using WMS.Domain.Entities.Security;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Enums;
 
 namespace WMS.Domain.Entities.Inbound;

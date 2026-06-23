@@ -1,6 +1,7 @@
 ﻿using WMS.Domain.Common;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.Product;
 using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Enums;
 
@@ -21,7 +22,7 @@ public class InventoryItem : BaseEntity
 
     // Navigation    
     public LocationEntity? Location { get; set; }
-    public Product.Sku? Sku { get; set; }
+    public Sku? Sku { get; set; }
     public ICollection<InboundItem> InboundItems { get; set; } = [];
     public ICollection<OutboundItem> OutboundItems { get; set; } = [];
     public string? SkuCode { get; set; }
@@ -31,7 +32,6 @@ public class InventoryItem : BaseEntity
     public Guid? ZoneId { get; set; }
     public string? LocationName { get; set; }
 
-    // Methods
     public void UpdateStatus()
     {
         if (Quantity <= 0)
