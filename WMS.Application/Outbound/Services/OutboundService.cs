@@ -52,7 +52,6 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
             Destination = request.Destination,
             ExpectedDelivery = request.ExpectedDelivery,
             Notes = request.Notes ?? "",
-            CreatedBy = _user.Id,
             Status = OutboundStatus.Pending,
             Items = [.. request.Items.Select(i => new OutboundItem
             {

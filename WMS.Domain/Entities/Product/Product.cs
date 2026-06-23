@@ -69,7 +69,7 @@ public class Product : BaseEntity, IAggregateRoot
             throw new DomainException(
                 "PRODUCT_NOT_DELETED",
                 "Only deleted products can be restored.");
-        MarkRestored(restoredBy);
+        MarkRestored();
     }
 
 }

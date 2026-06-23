@@ -78,12 +78,12 @@ public class Supplier : BaseEntity, IAggregateRoot
         MarkDeleted(deletedBy);
     }
 
-    public void Restore(string? restoredBy = null)
+    public void Restore()
     {
         if (!IsDeleted)
         {
             throw new DomainException("SUPPLIER_NOT_DELETED", "Only deleted suppliers can be restored.");
         }
-        MarkRestored(restoredBy);
+        MarkRestored();
     }
 }

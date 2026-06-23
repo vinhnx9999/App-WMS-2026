@@ -11,7 +11,6 @@ public class OutboundOrder : BaseEntity
     public DateOnly? ExpectedDelivery { get; set; }
     public OutboundStatus Status { get; set; } = OutboundStatus.Pending;
     public decimal TotalValue { get; set; }
-    public Guid? CreatedBy { get; set; }
 
     public Customer Customer { get; set; } = null!;
     public ICollection<OutboundItem> Items { get; set; } = [];

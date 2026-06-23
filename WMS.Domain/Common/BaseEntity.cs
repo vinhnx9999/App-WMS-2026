@@ -10,11 +10,11 @@ public abstract class BaseEntity
     /// <summary>
     /// Tenant id
     /// </summary>
-    public Guid TenantId { get; protected set; }
+    public Guid TenantId { get; protected set; } = Guid.NewGuid();
 
     /// <summary>
     /// Created At
-    /// </summary>
+    /// </summary> 
     public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
 
     /// <summary>
@@ -59,7 +59,7 @@ public abstract class BaseEntity
         DeletedBy = deletedBy;
     }
 
-    public void MarkRestored(string? updatedBy = null)
+    public void MarkRestored()
     {
         if (!IsDeleted)
         {

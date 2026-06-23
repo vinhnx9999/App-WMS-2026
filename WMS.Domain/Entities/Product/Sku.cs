@@ -131,7 +131,7 @@ public class Sku : BaseEntity, IAggregateRoot
 
     protected void Restore(string? updatedBy)
     {
-        MarkRestored(updatedBy);
+        MarkRestored();
     }
 
     /// <summary>
