@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using WMS.Application.Common.Models;
 using WMS.Domain.Entities.ErpSync;
@@ -174,7 +174,7 @@ public class OdooWebhookService(
                 if (order.Status != OutboundStatus.Shipped
                     && order.Status != OutboundStatus.Delivered)
                 {
-                    order.Status = OutboundStatus.Shipped;
+                    order.Ship();
                     //  await _uow.SaveChangesAsync(ct);
                 }
             }

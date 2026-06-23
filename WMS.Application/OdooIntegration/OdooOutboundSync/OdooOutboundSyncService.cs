@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WMS.Application.Common.Models;
+using WMS.Application.Common.Service;
 using WMS.Domain.Entities;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
@@ -14,11 +16,15 @@ namespace WMS.Application.OdooIntegration.OdooOutboundSync
     public class OdooOutboundSyncService(
         IOdooClient odoo, IUnitOfWork uow,
         IOptions<OdooConfig> config,
+        ICurrentUser currentUser,
+        ISequenceCodeGenerator codeGenerator,
         ILogger<OdooOutboundSyncService> log) : IOdooOutboundSyncService
     {
         private readonly IOdooClient _odoo = odoo;
         private readonly IUnitOfWork _uow = uow;
         private readonly OdooMappingConfig _mapping = config.Value.Mapping;
+        private readonly ICurrentUser _currentUser = currentUser;
+        private readonly ISequenceCodeGenerator _codeGenerator = codeGenerator;
         private readonly ILogger<OdooOutboundSyncService> _log = log;
 
         /// <summary>Pull outgoing deliveries từ Odoo</summary>
@@ -57,7 +63,13 @@ namespace WMS.Application.OdooIntegration.OdooOutboundSync
 
                 if (partner == null)
                 {
-                    partner = new Customer { Name = partnerName, Type = "Customer" };
+                    var code = await _codeGenerator.NextAsync(_currentUser.TenantId, CodeSequenceTypes.Customer, ct);
+                    partner = Customer.Create(
+                        tenantId: _currentUser.TenantId,
+                        code: code,
+                        name: partnerName,
+                        type: CodeSequenceTypes.Customer
+                    );
                     await partnerRepo.AddAsync(partner, ct);
                 }
 
@@ -71,15 +83,14 @@ namespace WMS.Application.OdooIntegration.OdooOutboundSync
                 var origin = picking.TryGetValue("origin", out var o)
                     ? o?.ToString() : null;
 
-                var order = new OutboundOrder
-                {
-                    ShipmentNumber = name,
-                    CustomerId = partner.Id,
-                    Destination = partnerName,
-                    ExpectedDelivery = deliveryDate,
-                    Notes = $"Odoo Origin: {origin}",
-                    Status = OutboundStatus.Pending,
-                };
+                var order = OutboundOrder.Create(
+                    tenantId: _currentUser.TenantId,
+                    shipmentNumber: name,
+                    customerId: partner.Id,
+                    destination: partnerName,
+                    expectedDelivery: deliveryDate,
+                    notes: $"Odoo Origin: {origin}"
+                );
 
                 await orderRepo.AddAsync(order, ct);
                 synced++;

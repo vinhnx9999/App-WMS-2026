@@ -162,12 +162,15 @@ public class OdooMasterSyncService(
             if (isCustomer && !await partnerRepo.ExistsAsync(
                 pt => pt.Name == name))
             {
-                await partnerRepo.AddAsync(new Customer
-                {
-                    Name = name,
-                    Phone = phone,
-                    Type = "Customer"
-                }, ct);
+                var code = await _codeGenerator.NextAsync(_currentUser.TenantId, CodeSequenceTypes.Customer, ct);
+
+                await partnerRepo.AddAsync(Customer.Create(
+                    tenantId: _currentUser.TenantId,
+                    code: code,
+                    name: name,
+                    phone: phone,
+                    type: CodeSequenceTypes.Customer
+                ), ct);
                 synced++;
             }
         }
