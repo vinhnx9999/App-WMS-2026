@@ -1,13 +1,13 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import DashboardPage from "../features/dashboard/DashboardPage";
-import Customers from "../features/master-data/customers/Customer";
 import LoginPage from "@/features/authentication/LoginPage";
 import ErrorPage from "@/components/ErrorPage";
 import CategoryListPage from "@/features/master-data/category/CategoryListPage";
 import SupplierListPage from "@/features/master-data/suppliers/SupplierListPage";
 import SkusListPage from "@/features/master-data/skus/SkusListPage";
 import ProductListPage from "@/features/master-data/product/ProductListPage";
+import CustomerListPage from "../features/master-data/customers/CustomerListPage";
 
 export const router = createBrowserRouter([
     {
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "customers",
-                        element: <Customers />,
+                        element: <CustomerListPage />,
                     },
                 ],
             },

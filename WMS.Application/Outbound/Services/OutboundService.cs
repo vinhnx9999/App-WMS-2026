@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Outbound.DTOs;
@@ -45,23 +45,25 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
     {
         var orderNumber = await GenerateShipmentNumber();
 
-        var order = new OutboundOrder
+        var items = request.Items.Select(i => new OutboundItem
         {
-            ShipmentNumber = orderNumber,
-            CustomerId = request.PartnerId,
-            Destination = request.Destination,
-            ExpectedDelivery = request.ExpectedDelivery,
-            Notes = request.Notes ?? "",
-            Status = OutboundStatus.Pending,
-            Items = [.. request.Items.Select(i => new OutboundItem
-            {
-                InventoryItemId = i.InventoryItemId,
-                Quantity = i.Quantity,
-            })]
-        };
+            InventoryItemId = i.InventoryItemId,
+            Quantity = i.Quantity,
+        });
+
+        var order = OutboundOrder.Create(
+            tenantId: _user.TenantId,
+            shipmentNumber: orderNumber,
+            customerId: request.PartnerId,
+            destination: request.Destination,
+            expectedDelivery: request.ExpectedDelivery,
+            notes: request.Notes ?? "",
+            items: items
+        );
 
         // Validate stock & calculate total
         var invRepo = _uow.Repository<InventoryItem>();
+        decimal totalValue = 0;
         foreach (var item in order.Items)
         {
             var inv = await invRepo.GetByIdAsync(item.InventoryItemId, ct)
@@ -71,8 +73,9 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
                 throw new AppException(400, "INSUFFICIENT_STOCK",
                     $"Sản phẩm {inv.Sku} chỉ còn {inv.Quantity}, không đủ để xuất {item.Quantity}");
 
-            order.TotalValue += inv.UnitPrice * item.Quantity;
+            totalValue += inv.UnitPrice * item.Quantity;
         }
+        order.UpdateTotalValue(totalValue);
 
         await _uow.Repository<OutboundOrder>().AddAsync(order, ct);
         await _uow.SaveChangesAsync(ct);
@@ -87,8 +90,7 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
             .FirstOrDefaultAsync(x => x.Id == orderId && !x.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Đơn xuất không tồn tại");
 
-        if (order.Status == OutboundStatus.Shipped || order.Status == OutboundStatus.Delivered)
-            throw new AppException(400, "ALREADY_SHIPPED", "Đơn đã được xuất kho");
+        order.Ship();
 
         var invRepo = _uow.Repository<InventoryItem>();
 
@@ -150,7 +152,7 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
 
         }
 
-        order.Status = OutboundStatus.Shipped;
+        // status transition is already done via order.Ship()
         await _uow.SaveChangesAsync(ct);
 
         // ── Push order status ──
@@ -169,10 +171,7 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
         var order = await _uow.Repository<OutboundOrder>().GetByIdAsync(orderId, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Đơn xuất không tồn tại");
 
-        if (order.Status == OutboundStatus.Shipped)
-            throw new AppException(400, "CANNOT_CANCEL", "Không thể hủy đơn đã xuất kho");
-
-        order.Status = OutboundStatus.Cancelled;
+        order.Cancel();
         await _uow.SaveChangesAsync(ct);
     }
 

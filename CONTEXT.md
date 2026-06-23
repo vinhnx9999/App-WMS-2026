@@ -39,3 +39,12 @@ _Avoid_: Vendor, Provider
 **Supplier Code**:
 A supplier code is the stable business identifier for a supplier. Supplier codes are immutable after creation, unique within a tenant, normalized to uppercase, and soft-deleted suppliers do not release their codes for reuse.
 _Avoid_: Supplier ID, partner code
+
+**Customer**:
+A customer is an independent master-data aggregate root representing a goods receiver from the warehouse. A customer may be soft-deleted freely regardless of related outbound orders; each outbound order retains its own customer reference (via CustomerId) as historical data. A deleted customer may be restored.
+_Avoid_: Client, Partner, Receiver
+
+**Customer Code**:
+A customer code is the stable business identifier for a customer. Customer codes are immutable after creation, unique within a tenant, normalized to uppercase, and soft-deleted customers do not release their codes for reuse.
+_Avoid_: Customer ID, partner code
+
