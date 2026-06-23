@@ -30,8 +30,8 @@ public sealed class SearchSuppliersQueryHandler(IUnitOfWork uow)
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
-            var keyword = request.Search.Trim().ToLowerInvariant();
-            query = query.Where(x => x.Code.ToLowerInvariant().Contains(keyword) || x.Name.ToLowerInvariant().Contains(keyword));
+            var keyword = request.Search.Trim().ToLower();
+            query = query.Where(x => x.Code.ToLower().Contains(keyword) || x.Name.ToLower().Contains(keyword));
         }
 
         var totalCount = await query.CountAsync(ct);

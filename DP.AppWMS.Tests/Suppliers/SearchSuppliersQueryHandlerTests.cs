@@ -1,6 +1,4 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using WMS.Application.Common.Models;
 using WMS.Application.Suppliers.Queries.SearchSuppliers;
 using WMS.Domain.Entities.Master;
 using WMS.Infrastructure.Persistence;
