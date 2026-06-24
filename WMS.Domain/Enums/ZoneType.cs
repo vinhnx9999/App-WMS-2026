@@ -2,5 +2,8 @@
 
 public enum ZoneType
 {
-    Standard, Cold, Hazardous, Returns
+    Standard,
+    Cold,
+    Hazardous,
+    Returns
 }

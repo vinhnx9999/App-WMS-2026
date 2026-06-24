@@ -35,6 +35,11 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
     public DbSet<UnitOfMeasure> UnitOfMeasures => Set<UnitOfMeasure>();
     public DbSet<SkuUnitOfMeasure> SkuUnitOfMeasures => Set<SkuUnitOfMeasure>();
     public DbSet<Zone> Zones => Set<Zone>();
+    public DbSet<Warehouse> Warehouses => Set<Warehouse>();
+    public DbSet<WarehouseArea> WarehouseAreas => Set<WarehouseArea>();
+    public DbSet<Block> Blocks => Set<Block>();
+    public DbSet<LocationEntity> Locations => Set<LocationEntity>();
+    public DbSet<WarehouseRuleSetting> WarehouseRuleSettings => Set<WarehouseRuleSetting>();
     public DbSet<Supplier> Suppliers => Set<Supplier>();
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<InboundOrder> InboundOrders => Set<InboundOrder>();

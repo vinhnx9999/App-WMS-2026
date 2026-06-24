@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +23,9 @@ using WMS.Application.SAPIntegration.SapInboundSync;
 using WMS.Application.SAPIntegration.SapMasterSync;
 using WMS.Application.SignalR;
 using WMS.Application.Warehouse.Zones.Services;
+using WMS.Application.Warehouse.Services;
 using WMS.Domain.Interfaces;
+using WMS.Domain.Interfaces.Warehouses;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;
 using WMS.Infrastructure.ERPs.Odoo.DataConfig;
 using WMS.Infrastructure.ERPs.SAP.DataClient;
@@ -144,6 +146,8 @@ public static class DependencyInjection
         services.AddScoped<IReportService, ReportService>();
 
         services.AddScoped<IZoneService, ZoneService>();
+        services.AddScoped<WarehouseProvisioningService>();
+        services.AddScoped<IWarehouseRuleResolutionService, WarehouseRuleResolutionService>();
 
         return services;
     }
