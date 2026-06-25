@@ -38,7 +38,7 @@ public class WarehouseTests
     }
 
     [Fact]
-    public async Task Warehouse_EnsureDefaultStructure_ShouldProvisionDefaultAreaAndBlock()
+    public async Task Warehouse_EnsureDefaultStructure_ShouldProvisionDefaultAreaAndBlockAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -121,7 +121,7 @@ public class WarehouseTests
     }
 
     [Fact]
-    public async Task WarehouseRuleResolutionService_ShouldResolveHighestSpecificityRule()
+    public async Task WarehouseRuleResolutionService_ShouldResolveHighestSpecificityRuleAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();

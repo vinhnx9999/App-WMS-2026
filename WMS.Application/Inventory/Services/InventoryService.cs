@@ -38,7 +38,7 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
             var zoneIdQuery = _uow.Repository<Zone>().Query()
                 .Where(z => z.ZoneCode == query.Zone && !z.IsDeleted)
                 .Select(z => (Guid?)z.Id);
-            q = q.Where(x => x.Location != null && x.Location.ZoneId != null && zoneIdQuery.Contains(x.Location.ZoneId));
+            q = q.Where(x => zoneIdQuery.Contains(x.Location!.ZoneId));
         }
 
         var total = await q.CountAsync(ct);
