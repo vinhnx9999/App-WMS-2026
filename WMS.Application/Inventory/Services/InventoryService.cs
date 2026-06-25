@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using WMS.Application.Common.Models;
 using WMS.Application.Inventory.DTOs;
+using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
@@ -51,7 +52,7 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
 
         if (!string.IsNullOrWhiteSpace(query.Zone))
         {
-            itemsQuery = itemsQuery.Where(x => x.zone != null && x.zone.ZoneCode == query.Zone);
+            itemsQuery = itemsQuery.Where(x => x.zone.ZoneCode == query.Zone);
         }
 
         var total = await itemsQuery.CountAsync(ct);
@@ -213,63 +214,16 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
 
         var skuId = request.SkuId ?? entity.SkuId;
         var locationId = request.LocationId ?? entity.LocationId;
-        var supplierId = request.SupplierId.HasValue ? request.SupplierId : entity.SupplierId;
+        var supplierId = request.SupplierId ?? entity.SupplierId;
         var serialNumber = request.SerialNumber ?? entity.SerialNumber;
-        var palletId = request.PalletId.HasValue ? request.PalletId : entity.PalletId;
+        var palletId = request.PalletId ?? entity.PalletId;
         var quantity = request.Quantity ?? entity.Quantity;
         var unitPrice = request.UnitPrice ?? entity.UnitPrice;
         var putawayDate = request.PutawayDate ?? entity.PutawayDate;
-        var expiryDate = request.ExpiryDate.HasValue ? request.ExpiryDate : entity.ExpiryDate;
+        var expiryDate = request.ExpiryDate ?? entity.ExpiryDate;
 
-        if (skuId != entity.SkuId ||
-            locationId != entity.LocationId ||
-            supplierId != entity.SupplierId ||
-            serialNumber != entity.SerialNumber ||
-            palletId != entity.PalletId ||
-            expiryDate != entity.ExpiryDate)
-        {
-            var exists = await repo.ExistsAsync(x =>
-                x.Id != id &&
-                x.TenantId == entity.TenantId &&
-                x.SkuId == skuId &&
-                x.LocationId == locationId &&
-                x.SupplierId == supplierId &&
-                x.SerialNumber == serialNumber &&
-                x.PalletId == palletId &&
-                x.ExpiryDate == expiryDate &&
-                !x.IsDeleted);
-
-            if (exists)
-                throw new AppException(409, "DUPLICATE", "Dòng tồn kho với các thuộc tính này đã tồn tại trong kho");
-        }
-
-        if (request.SkuId.HasValue && request.SkuId.Value != entity.SkuId)
-        {
-            var skuExists = await _uow.Repository<Sku>().ExistsAsync(x => x.Id == request.SkuId.Value && !x.IsDeleted);
-            if (!skuExists)
-                throw new AppException(404, "NOT_FOUND", "SKU không tồn tại");
-        }
-
-        if (request.LocationId.HasValue && request.LocationId.Value != entity.LocationId)
-        {
-            var locExists = await _uow.Repository<LocationEntity>().ExistsAsync(x => x.Id == request.LocationId.Value && !x.IsDeleted);
-            if (!locExists)
-                throw new AppException(404, "NOT_FOUND", "Vị trí không tồn tại");
-        }
-
-        if (request.PalletId.HasValue && request.PalletId.Value != entity.PalletId)
-        {
-            var palletExists = await _uow.Repository<Pallet>().ExistsAsync(x => x.Id == request.PalletId.Value && !x.IsDeleted);
-            if (!palletExists)
-                throw new AppException(404, "NOT_FOUND", "Pallet không tồn tại");
-        }
-
-        if (request.SupplierId.HasValue && request.SupplierId.Value != entity.SupplierId)
-        {
-            var supplierExists = await _uow.Repository<Supplier>().ExistsAsync(x => x.Id == request.SupplierId.Value && !x.IsDeleted);
-            if (!supplierExists)
-                throw new AppException(404, "NOT_FOUND", "Nhà cung cấp không tồn tại");
-        }
+        await EnsureNoDuplicateForUpdateAsync(id, entity, skuId, locationId, supplierId, serialNumber, palletId, expiryDate, repo);
+        await ValidateReferencesAsync(request, entity);
 
         entity.Update(
             skuId,
@@ -285,6 +239,79 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
 
         await _uow.SaveChangesAsync(ct);
         await AuditAsync("UPDATE", "InventoryItem", entity.Id, oldData, entity, ct);
+    }
+
+    private async Task EnsureNoDuplicateForUpdateAsync(
+        Guid id,
+        InventoryItem entity,
+        Guid skuId,
+        Guid locationId,
+        Guid? supplierId,
+        string? serialNumber,
+        Guid? palletId,
+        DateTime? expiryDate,
+        IRepository<InventoryItem> repo)
+    {
+        var keyFieldsChanged =
+            skuId != entity.SkuId ||
+            locationId != entity.LocationId ||
+            supplierId != entity.SupplierId ||
+            serialNumber != entity.SerialNumber ||
+            palletId != entity.PalletId ||
+            expiryDate != entity.ExpiryDate;
+
+        if (!keyFieldsChanged)
+        {
+            return;
+        }
+
+        var exists = await repo.ExistsAsync(x =>
+            x.Id != id &&
+            x.TenantId == entity.TenantId &&
+            x.SkuId == skuId &&
+            x.LocationId == locationId &&
+            x.SupplierId == supplierId &&
+            x.SerialNumber == serialNumber &&
+            x.PalletId == palletId &&
+            x.ExpiryDate == expiryDate &&
+            !x.IsDeleted);
+
+        if (exists)
+        {
+            throw new AppException(409, "DUPLICATE", "Dòng tồn kho với các thuộc tính này đã tồn tại trong kho");
+        }
+    }
+
+    private async Task ValidateReferencesAsync(UpdateInventoryRequest request, InventoryItem entity)
+    {
+        if (request.SkuId.HasValue && request.SkuId.Value != entity.SkuId)
+        {
+            await ValidateReferenceExistsAsync<Sku>(request.SkuId.Value, "SKU không tồn tại");
+        }
+
+        if (request.LocationId.HasValue && request.LocationId.Value != entity.LocationId)
+        {
+            await ValidateReferenceExistsAsync<LocationEntity>(request.LocationId.Value, "Vị trí không tồn tại");
+        }
+
+        if (request.PalletId.HasValue && request.PalletId.Value != entity.PalletId)
+        {
+            await ValidateReferenceExistsAsync<Pallet>(request.PalletId.Value, "Pallet không tồn tại");
+        }
+
+        if (request.SupplierId.HasValue && request.SupplierId.Value != entity.SupplierId)
+        {
+            await ValidateReferenceExistsAsync<Supplier>(request.SupplierId.Value, "Nhà cung cấp không tồn tại");
+        }
+    }
+
+    private async Task ValidateReferenceExistsAsync<T>(Guid id, string errorMessage) where T : BaseEntity
+    {
+        var exists = await _uow.Repository<T>().ExistsAsync(x => x.Id == id && !x.IsDeleted);
+        if (!exists)
+        {
+            throw new AppException(404, "NOT_FOUND", errorMessage);
+        }
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken ct)
