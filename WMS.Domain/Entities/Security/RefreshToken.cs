@@ -1,4 +1,5 @@
-﻿using WMS.Domain.Common;
+using System.ComponentModel.DataAnnotations.Schema;
+using WMS.Domain.Common;
 
 namespace WMS.Domain.Entities.Security;
 
@@ -17,6 +18,8 @@ public class RefreshToken : BaseEntity
 
     public User User { get; set; } = null!;
 
+    [NotMapped]
     public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
+    [NotMapped]
     public bool IsActive => !IsRevoked && !IsExpired;
 }

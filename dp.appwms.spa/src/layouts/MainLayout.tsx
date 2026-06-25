@@ -1,6 +1,7 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/auth-store";
+import { useWarehouseStore } from "@/store/warehouse-store";
 import {
   Bell, User, Settings, ChevronDown, LogOut, Globe
 } from "lucide-react";
@@ -23,14 +24,26 @@ import TopMenu from "../components/TopMenu";
 
 export default function MainLayout() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
-  const { user, isAuthenticated, isLoading, logout } = useAuthStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
+  const {
+    warehouses,
+    selectedWarehouse,
+    isLoading: isWarehouseLoading,
+    fetchWarehouses,
+    setSelectedWarehouse,
+    clearSelection
+  } = useWarehouseStore();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      navigate("/auth", { replace: true });
+    if (isAuthenticated) {
+      fetchWarehouses();
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isAuthenticated, fetchWarehouses]);
+
+  const handleLogout = () => {
+    clearSelection();
+    logout();
+  };
 
   const toggleLanguage = () => {
     const nextLang = i18n.language === "vi" ? "en" : "vi";
@@ -42,15 +55,6 @@ export default function MainLayout() {
     const parts = name.split(" ");
     return parts.map(p => p[0]).join("").substring(0, 2).toUpperCase();
   };
-
-  if (isLoading) {
-    return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-muted-foreground gap-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        <span>Đang kiểm tra phiên đăng nhập...</span>
-      </div>
-    );
-  }
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-background text-foreground">
@@ -64,12 +68,41 @@ export default function MainLayout() {
         {/* Navigation Menu */}
         <TopMenu />
 
-
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-muted rounded-lg text-xs font-semibold text-muted-foreground">
-            <span>{t("translation:navigation.warehouse")}: DUY PHAT 1</span>
-            <ChevronDown className="size-3" />
-          </div>
+          {/* Warehouse Switcher */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-1.5 px-3 py-1.5 bg-muted hover:bg-muted/80 rounded-lg text-xs font-semibold text-muted-foreground cursor-pointer focus:outline-none transition-colors border border-transparent hover:border-border">
+                <span>
+                  {t("translation:navigation.warehouse")}:{" "}
+                  {selectedWarehouse ? selectedWarehouse.name : ""}
+                </span>
+                <ChevronDown className="size-3" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 z-50">
+              {isWarehouseLoading ? (
+                <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+                  {t("translation:common.loading")}
+                </DropdownMenuItem>
+              ) : warehouses.length === 0 ? (
+                <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+                  {t("translation:common.noWarehouse")}
+                </DropdownMenuItem>
+              ) : (
+                warehouses.map((wh) => (
+                  <DropdownMenuItem
+                    key={wh.id}
+                    className={`cursor-pointer text-xs ${selectedWarehouse?.id === wh.id ? "font-bold text-primary" : ""
+                      }`}
+                    onSelect={() => setSelectedWarehouse(wh)}
+                  >
+                    {wh.name}
+                  </DropdownMenuItem>
+                ))
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
 
           <button
@@ -118,7 +151,7 @@ export default function MainLayout() {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
-                onSelect={logout}
+                onSelect={handleLogout}
                 className="cursor-pointer text-destructive focus:bg-destructive/10"
               >
                 <LogOut className="size-4 mr-2" />

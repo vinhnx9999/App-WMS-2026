@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
@@ -134,7 +134,8 @@ public class AuthService(
                 .FindAsync(
                     t => t.UserId == userId
                       && t.Token == refreshTokenHash
-                      && t.IsActive,
+                      && !t.IsRevoked
+                      && t.ExpiresAt > DateTime.UtcNow,
                     ct);
 
             var token = tokens.FirstOrDefault();
@@ -150,7 +151,9 @@ public class AuthService(
         if (req.LogoutAllDevices)
         {
             var allTokens = await _uow.Repository<RefreshToken>()
-                .FindAsync(t => t.UserId == userId && t.IsActive, ct);
+                .FindAsync(t => t.UserId == userId
+                              && !t.IsRevoked
+                              && t.ExpiresAt > DateTime.UtcNow, ct);
 
             foreach (var t in allTokens)
             {
@@ -309,7 +312,9 @@ public class AuthService(
         Guid userId, CancellationToken ct)
     {
         var allTokens = await _uow.Repository<RefreshToken>()
-            .FindAsync(t => t.UserId == userId && t.IsActive, ct);
+            .FindAsync(t => t.UserId == userId
+                          && !t.IsRevoked
+                          && t.ExpiresAt > DateTime.UtcNow, ct);
 
         foreach (var t in allTokens)
         {

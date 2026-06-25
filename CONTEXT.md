@@ -48,3 +48,53 @@ _Avoid_: Client, Partner, Receiver
 A customer code is the stable business identifier for a customer. Customer codes are immutable after creation, unique within a tenant, normalized to uppercase, and soft-deleted customers do not release their codes for reuse.
 _Avoid_: Customer ID, partner code
 
+## Warehouse Physical Structure
+
+**Warehouse**:
+The mandatory top-level physical boundary of storage operations. A warehouse has a unique code and address. It may optionally be subdivided into Areas and Blocks, but must always contain at least one Location.
+_Avoid_: Storage facility, depot
+
+**WarehouseArea**:
+A physical subdivision of a Warehouse representing a named region such as a building wing or aisle group. Every warehouse always has at least one WarehouseArea — a system-provisioned Default Area is created automatically when the first Location without an explicit Area is registered. User-created areas are distinct from the Default Area.
+_Avoid_: Section, sector, region
+
+**Block**:
+A physical subdivision of a WarehouseArea, typically representing a rack, shelf unit, or floor bay. Every warehouse always has at least one Block — a system-provisioned Default Block is created automatically alongside the Default Area. Every Block requires a parent WarehouseArea.
+_Avoid_: Rack, shelf (as domain terms)
+
+**Default Area**:
+A system-provisioned WarehouseArea created automatically (IsDefault=true) when the first Location without an explicit Area is registered in a Warehouse. At most one Default Area exists per Warehouse. It is not visible in Area management UI and cannot be targeted by WarehouseRuleSetting. Users interact with it only implicitly via ungrouped Locations.
+_Avoid_: System area, implicit area, general area
+
+**Default Block**:
+A system-provisioned Block created automatically alongside the Default Area (IsDefault=true). At most one Default Block exists per Warehouse. It always resides in the Default Area. Locations created without an explicit Block are assigned to the Default Block. It is not visible in Block management UI and cannot be targeted by WarehouseRuleSetting.
+_Avoid_: System block, implicit block, general block
+
+**Location**:
+The mandatory, discrete storage position within a warehouse. A Location always belongs to exactly one Warehouse (WarehouseId), exactly one Block (BlockId — may be the Default Block), and exactly one WarehouseArea (AreaId — may be the Default Area). A Location carries physical coordinates (floor level, row, bay, bin) as scalar attributes. A Location belongs to at most one Zone at a time.
+_Avoid_: Bin, slot, cell, position (as standalone domain terms)
+
+**Location Coordinates**:
+Physical position attributes on a Location: floor level, row, bay, and bin. These are scalar values stored directly on the Location entity, not separate domain entities or foreign keys.
+_Avoid_: Rack coordinates, location address
+
+## Warehouse Logical Structure
+
+**Zone**:
+A tenant-scoped master-data logical grouping of Locations representing a business area (e.g. "Cold Storage", "Receiving", "Hazardous"). Zone has no warehouse affiliation — it is reusable across warehouses. A Zone's location count is computed dynamically from Location records; it is never stored on the Zone entity itself.
+_Avoid_: Physical zone, warehouse zone (implies containment), area (use WarehouseArea instead)
+
+## Warehouse Rules
+
+**WarehouseRuleSetting**:
+A picking-strategy rule scoped to a target (Location, Zone, Block, or Area within a Warehouse) with optional SKU and Supplier filters. A rule carries its own WHERE context (WarehouseId required; LocationId, ZoneId, BlockId, AreaId nullable) rather than being referenced by its target entities. No two rules may share the same combination of (WarehouseId, LocationId, ZoneId, BlockId, AreaId, SkuId, SupplierId).
+_Avoid_: Picking policy, warehouse configuration, rule policy
+
+**Picking Strategy**:
+The inventory rotation strategy applied when selecting stock for an outbound operation. Values: FIFO (First In First Out), LIFO (Last In First Out), FEFO (First Expired First Out). Defaults to FIFO when no matching rule exists.
+_Avoid_: Rotation rule, inventory strategy
+
+**Rule Specificity**:
+The computed precedence of a WarehouseRuleSetting, determined by how many dimensions it constrains. Spatial tier precedence is: Location > Zone > Block > Area > Warehouse. Within the same spatial tier, constraining SkuId and SupplierId adds additional specificity. The most specific matching rule wins. Explicit priority integers are not used.
+_Avoid_: Rule priority, rule weight
+

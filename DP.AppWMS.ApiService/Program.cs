@@ -11,10 +11,8 @@ using Serilog;
 using System.Text;
 using WMS.Application;
 using WMS.Application.Common.Behaviors;
-using WMS.Application.Common.Data;
 using WMS.Application.OdooIntegration.HealthCheck;
 using WMS.Application.SAPIntegration.HealthCheck;
-using WMS.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -202,12 +200,12 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<TokenRevocationMiddleware>();
 
 // Migrate + Seed
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<WmsDbContext>();
-    await db.Database.MigrateAsync();
-    await SeedData.InitializeAsync(db);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<WmsDbContext>();
+//    await db.Database.MigrateAsync();
+//    await SeedData.InitializeAsync(db);
+//}
 
 app.Run();
 

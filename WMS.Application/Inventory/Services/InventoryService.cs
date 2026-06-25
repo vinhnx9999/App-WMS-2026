@@ -1,9 +1,10 @@
-﻿using Mapster;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using WMS.Application.Common.Models;
 using WMS.Application.Inventory.DTOs;
 using WMS.Domain.Entities;
+using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Inventory.Services;
@@ -33,7 +34,12 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
         }
 
         if (!string.IsNullOrWhiteSpace(query.Zone))
-            q = q.Where(x => x.Location != null && x.Location.ZoneCode == query.Zone);
+        {
+            var zoneIdQuery = _uow.Repository<Zone>().Query()
+                .Where(z => z.ZoneCode == query.Zone && !z.IsDeleted)
+                .Select(z => (Guid?)z.Id);
+            q = q.Where(x => zoneIdQuery.Contains(x.Location!.ZoneId));
+        }
 
         var total = await q.CountAsync(ct);
 
@@ -66,10 +72,23 @@ public class InventoryService(IUnitOfWork uow, ICurrentUser user) : IInventorySe
             .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Sản phẩm không tồn tại");
 
+        string zoneName = item.ZoneName ?? "";
+        Guid? zoneId = item.ZoneId;
+
+        if (item.Location?.ZoneId != null)
+        {
+            zoneId = item.Location.ZoneId;
+            var zone = await _uow.Repository<Zone>().GetByIdAsync(zoneId.Value, ct);
+            if (zone != null)
+            {
+                zoneName = zone.Name;
+            }
+        }
+
         return new InventoryDto(
             item.Id, item.Sku?.SkuCode ?? "", item.Name, item.Description,
             item.CategoryName, item.CategoryId,
-            item.Location?.Zone?.Name ?? "", item.Location?.ZoneId,
+            zoneName, zoneId,
             item.Location?.Name ?? "", item.Quantity, item.MinQuantity,
             item.UnitPrice, item.Status, item.UpdatedAt ?? item.CreatedAt);
     }

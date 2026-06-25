@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import AuthGuard from "@/components/AuthGuard";
 import DashboardPage from "../features/dashboard/DashboardPage";
 import LoginPage from "@/features/authentication/LoginPage";
 import ErrorPage from "@/components/ErrorPage";
@@ -12,7 +13,11 @@ import CustomerListPage from "../features/master-data/customers/CustomerListPage
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout />,
+        element: (
+            <AuthGuard>
+                <MainLayout />
+            </AuthGuard>
+        ),
         errorElement: <ErrorPage />,
         children: [
             {

@@ -17,7 +17,7 @@ interface AuthState {
 
   initializeAuth: () => void;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   setAccessToken: (token: string) => void;
 }
 
@@ -67,17 +67,22 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  logout: () => {
+  logout: async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {
-      axios.post(`${API_URL}/v1/auth/logout`,
-        { refreshToken, logoutAllDevices: false },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      ).catch(err => {
+      try {
+        await axios.post(`${API_URL}/v1/auth/logout`,
+          { refreshToken, logoutAllDevices: false },
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            timeout: 3000, // 3s 
+          }
+        );
+      } catch (err) {
         console.error("Backend logout API failed:", err);
-      });
+      }
     }
 
     localStorage.removeItem("accessToken");
@@ -89,7 +94,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: false
     });
 
-    // Redirect to login page
     window.location.href = "/auth";
   },
 
