@@ -2,10 +2,10 @@ using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using WMS.Application.Warehouse.Queries.WarehouseLookup;
 using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
-using WMS.Application.Warehouse.Queries.WarehouseLookup;
 
 namespace DP.AppWMS.Tests.Warehouses;
 
@@ -36,7 +36,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_ReturnsOnlyWarehousesForRequestedTenant()
+    public async Task Handle_ReturnsOnlyWarehousesForRequestedTenantAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -63,7 +63,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_ExcludesSoftDeletedWarehouses()
+    public async Task Handle_ExcludesSoftDeletedWarehousesAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -89,7 +89,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_ReturnsWarehousesOrderedByNameAscending()
+    public async Task Handle_ReturnsWarehousesOrderedByNameAscendingAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -117,7 +117,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_WhenNoWarehousesExist_ReturnsEmptyList()
+    public async Task Handle_WhenNoWarehousesExist_ReturnsEmptyListAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -135,7 +135,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_ReturnsOnlySpecificFields()
+    public async Task Handle_ReturnsOnlySpecificFieldsAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -160,7 +160,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_WhenTenantHasMultipleActiveWarehouses_ReturnsAll()
+    public async Task Handle_WhenTenantHasMultipleActiveWarehouses_ReturnsAllAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -185,7 +185,7 @@ public sealed class WarehouseLookupTests
     }
 
     [Fact]
-    public async Task Handle_WithEmptyTenantId_ReturnsEmptyList()
+    public async Task Handle_WithEmptyTenantId_ReturnsEmptyListAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();

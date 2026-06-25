@@ -1,9 +1,8 @@
-﻿namespace WMS.Domain.Enums
+﻿namespace WMS.Domain.Enums;
+
+public enum WarehouseRuleType
 {
-    public enum WarehouseRuleType
-    {
-        LIFO,
-        FIFO,
-        FEFO
-    }
+    LIFO,
+    FIFO,
+    FEFO
 }
