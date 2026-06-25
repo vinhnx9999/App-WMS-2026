@@ -13,6 +13,7 @@ public static class ApiRoutes
         public const string Categories = "categories";
         public const string Suppliers = "suppliers";
         public const string Customers = "customers";
+        public const string Warehouses = "warehouses";
     }
 
     public static class Groups
@@ -22,5 +23,6 @@ public static class ApiRoutes
         public const string Categories = $"{Base}/{Resources.Categories}";
         public const string Suppliers = $"{Base}/{Resources.Suppliers}";
         public const string Customers = $"{Base}/{Resources.Customers}";
+        public const string Warehouses = $"{Base}/{Resources.Warehouses}";
     }
 }

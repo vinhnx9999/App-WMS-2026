@@ -16,6 +16,9 @@ export const ENDPOINTS = {
     },
     CUSTOMER: {
         SEARCH: Base_URL + "/customers",
+    },
+    WAREHOUSE: {
+        LOOKUP: Base_URL + "/warehouses/lookup",
     }
 } as const;
 

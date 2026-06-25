@@ -7,7 +7,8 @@
       "save": "Lưu"
     },
     "loading": "Đang tải dữ liệu",
-    "noData": "Không có dữ liệu"
+    "noData": "Không có dữ liệu",
+    "noWarehouse": "Không có kho hàng"
   },
   "navigation": {
     "dashboard": "Bảng điều khiển",

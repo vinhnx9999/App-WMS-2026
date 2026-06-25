@@ -7,7 +7,8 @@
       "save": "Save"
     },
     "loading": "Loading data",
-    "noData": "No data"
+    "noData": "No data",
+    "noWarehouse": "No warehouses"
   },
   "navigation": {
     "dashboard": "Dashboard",

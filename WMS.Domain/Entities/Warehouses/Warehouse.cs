@@ -21,6 +21,10 @@ public class Warehouse : BaseEntity, IAggregateRoot
 
     public ICollection<WarehouseArea> Areas { get; private set; } = [];
 
+    /// <summary>
+    /// Default structure to create if not exists 
+    /// </summary>
+    /// <returns></returns>
     public (WarehouseArea DefaultArea, Block DefaultBlock) EnsureDefaultStructure()
     {
         var defaultArea = Areas.FirstOrDefault(a => a.IsDefault && !a.IsDeleted);
