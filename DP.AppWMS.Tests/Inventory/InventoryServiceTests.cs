@@ -129,7 +129,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenSkuNotFound_ThrowsNotFoundException()
+    public async Task UpdateAsync_WhenSkuNotFound_ThrowsNotFoundExceptionAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
