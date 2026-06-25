@@ -8,7 +8,8 @@
     },
     "loading": "Đang tải dữ liệu",
     "noData": "Không có dữ liệu",
-    "noWarehouse": "Không có kho hàng"
+    "noWarehouse": "Không có kho hàng",
+    "checkingSession": "Đang kiểm tra phiên đăng nhập"
   },
   "navigation": {
     "dashboard": "Bảng điều khiển",

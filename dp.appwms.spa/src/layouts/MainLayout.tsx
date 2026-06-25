@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/auth-store";
 import { useWarehouseStore } from "@/store/warehouse-store";
@@ -24,8 +24,7 @@ import TopMenu from "../components/TopMenu";
 
 export default function MainLayout() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
-  const { user, isAuthenticated, isLoading, logout } = useAuthStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
   const {
     warehouses,
     selectedWarehouse,
@@ -34,12 +33,6 @@ export default function MainLayout() {
     setSelectedWarehouse,
     clearSelection
   } = useWarehouseStore();
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      navigate("/auth", { replace: true });
-    }
-  }, [isLoading, isAuthenticated, navigate]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -62,15 +55,6 @@ export default function MainLayout() {
     const parts = name.split(" ");
     return parts.map(p => p[0]).join("").substring(0, 2).toUpperCase();
   };
-
-  if (isLoading) {
-    return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-muted-foreground gap-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        <span>Đang kiểm tra phiên đăng nhập</span>
-      </div>
-    );
-  }
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-background text-foreground">

@@ -20,7 +20,7 @@ interface WarehouseState {
   clearSelection: () => void;
 }
 
-export const useWarehouseStore = create<WarehouseState>((set, get) => ({
+export const useWarehouseStore = create<WarehouseState>((set) => ({
   warehouses: [],
   selectedWarehouse: null,
   isLoading: false,
