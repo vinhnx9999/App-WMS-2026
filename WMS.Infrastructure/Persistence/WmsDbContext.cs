@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -5,8 +6,10 @@ using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.ErpSync;
 using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.PalletAggregateRoot;
 using WMS.Domain.Entities.Product;
 using WMS.Domain.Entities.Security;
 using WMS.Domain.Entities.Warehouses;
@@ -14,7 +17,10 @@ using WMS.Domain.Interfaces;
 
 namespace WMS.Infrastructure.Persistence;
 
-public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser currentUser) :
+public class WmsDbContext(
+    DbContextOptions<WmsDbContext> options,
+    ICurrentUser currentUser,
+    IMediator mediator) :
     IdentityDbContext<IdentityUser>(options)
 {
     //, AuditInterceptor auditInterceptor
@@ -28,6 +34,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
     // public DbSet<User> Users { get; set; } = null!;
     //public DbSet<Role> Roles => Set<Role>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
+    public DbSet<Pallet> Pallets => Set<Pallet>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Sku> Skus => Set<Sku>();
     public DbSet<SkuAttribute> Specifications => Set<SkuAttribute>();
@@ -63,7 +70,7 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
         mb.ApplyConfigurationsFromAssembly(typeof(WmsDbContext).Assembly);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken ct = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
         var now = DateTime.UtcNow;
         var user = _currentUser.Email;
@@ -83,6 +90,36 @@ public class WmsDbContext(DbContextOptions<WmsDbContext> options, ICurrentUser c
             }
         }
 
-        return base.SaveChangesAsync(ct);
+        // Get domain events
+        var domainEntities = ChangeTracker.Entries<BaseEntity>()
+            .Where(x => x.Entity.DomainEvents.Any())
+            .ToList();
+
+        var domainEvents = domainEntities
+            .SelectMany(x => x.Entity.DomainEvents)
+            .ToList();
+
+        var result = await base.SaveChangesAsync(ct);
+
+        // Publish events and clear them after successful save
+        await DispatchDomainEventsAsync(domainEntities, domainEvents, ct);
+
+        return result;
+    }
+
+    private async Task DispatchDomainEventsAsync(
+        List<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity>> domainEntities,
+        List<DomainEvent> domainEvents,
+        CancellationToken ct)
+    {
+        foreach (var entity in domainEntities)
+        {
+            entity.Entity.ClearEvents();
+        }
+
+        foreach (var domainEvent in domainEvents)
+        {
+            await mediator.Publish(domainEvent, ct);
+        }
     }
 }

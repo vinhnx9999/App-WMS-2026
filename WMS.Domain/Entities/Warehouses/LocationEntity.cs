@@ -51,6 +51,4 @@ public class LocationEntity : BaseEntity, IAggregateRoot
     /// </summary>
     public int? Z { get; private set; }
 
-    // Navigation
-    public ICollection<InventoryItem> InventoryItems { get; private set; } = [];
 }

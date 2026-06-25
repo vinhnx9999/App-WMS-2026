@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -64,7 +64,7 @@ namespace DP.AppWMS.Tests.Skus
                 .UseSqlite(connection)
                 .Options;
 
-            return new WmsDbContext(options, Mock.Of<ICurrentUser>());
+            return new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
         }
 
         protected static UnitOfWork CreateUnitOfWork(WmsDbContext db)

@@ -29,7 +29,7 @@ public class WarehouseTests
             .UseSqlite(connection)
             .Options;
 
-        return new WmsDbContext(options, Mock.Of<ICurrentUser>());
+        return new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
     }
 
     private static UnitOfWork CreateUnitOfWork(WmsDbContext db)

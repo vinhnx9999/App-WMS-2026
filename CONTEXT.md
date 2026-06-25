@@ -98,3 +98,29 @@ _Avoid_: Rotation rule, inventory strategy
 The computed precedence of a WarehouseRuleSetting, determined by how many dimensions it constrains. Spatial tier precedence is: Location > Zone > Block > Area > Warehouse. Within the same spatial tier, constraining SkuId and SupplierId adds additional specificity. The most specific matching rule wins. Explicit priority integers are not used.
 _Avoid_: Rule priority, rule weight
 
+## Inventory
+
+**InventoryItem**:
+An independent aggregate root identifying a specific quantity of physical goods in the warehouse. It is uniquely identified by the combination of six attributes: `SkuId` (Product SKU), `LocationId` (Physical Location), `SupplierId` (Supplier), `SerialNumber` (Serial Number), `PalletId` (Pallet), and `ExpiryDate` (Expiry Date).
+_Avoid_: Stock line, inventory row
+
+**Pallet**:
+A physical handling unit representing a pallet in the warehouse. An inventory line can belong to a specific Pallet (via PalletId) or contain loose items (PalletId = null). A pallet is identified by a unique PalletCode (also known as PLN) and carries optional attributes such as material (Wood, Plastic, Steel), weight, dimensions (length, width, height), and maximum load capacity.
+_Avoid_: LPN, pallet unit
+
+**Available Quantity**:
+The actual quantity of goods available for outbound operations or stock transfers. When the status is `Available`, it is computed as: `Quantity` (physical quantity) - `AllocatedQuantity` (reserved quantity). If the status is `Hold` or `OutOfStock`, the available quantity is always 0.
+_Avoid_: Free stock
+
+**Allocated Quantity**:
+The quantity of goods in the inventory line that has been reserved for pending outbound orders.
+_Avoid_: Reserved quantity
+
+**Putaway Date**:
+The timestamp when a physical stock line was registered at its location. Used for FIFO/LIFO picking strategy calculations.
+_Avoid_: Inward date, receive timestamp
+
+**Expiry Date**:
+The date after which the goods should not be sold or shipped. Used for FEFO picking strategy calculations.
+_Avoid_: Expiration date, best before date
+

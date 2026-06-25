@@ -3,7 +3,9 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Warehouse.Zones.DTOs;
+using WMS.Domain.Entities;
 using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Warehouse.Zones.Services;
@@ -21,13 +23,18 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
             .OrderBy(z => z.ZoneCode)
             .ToListAsync(ct);
 
+        var inventoryLocs = await _uow.Repository<InventoryItem>().Query()
+            .Where(i => !i.IsDeleted && i.Quantity > 0)
+            .Select(i => i.LocationId)
+            .Distinct()
+            .ToListAsync(ct);
+
         var locationStats = await _uow.Repository<LocationEntity>().Query()
             .Where(l => !l.IsDeleted && l.ZoneId != null)
             .Select(l => new
             {
                 l.ZoneId,
-                l.Id,
-                HasInventory = l.InventoryItems.Any(i => !i.IsDeleted && i.Quantity > 0)
+                l.Id
             })
             .ToListAsync(ct);
 
@@ -38,7 +45,7 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
                 g => new
                 {
                     Total = g.Count(),
-                    Used = g.Count(x => x.HasInventory)
+                    Used = g.Count(x => inventoryLocs.Contains(x.Id))
                 });
 
         return [.. zones.Select(z => {
@@ -61,16 +68,19 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
             .FirstOrDefaultAsync(z => z.Id == id && !z.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Khu vực không tồn tại");
 
+        var inventoryLocs = await _uow.Repository<InventoryItem>().Query()
+            .Where(i => !i.IsDeleted && i.Quantity > 0)
+            .Select(i => i.LocationId)
+            .Distinct()
+            .ToListAsync(ct);
+
         var locations = await _uow.Repository<LocationEntity>().Query()
             .Where(l => l.ZoneId == id && !l.IsDeleted)
-            .Select(l => new
-            {
-                HasInventory = l.InventoryItems.Any(i => !i.IsDeleted && i.Quantity > 0)
-            })
+            .Select(l => l.Id)
             .ToListAsync(ct);
 
         int total = locations.Count;
-        int used = locations.Count(x => x.HasInventory);
+        int used = locations.Count(x => inventoryLocs.Contains(x));
         decimal pct = total > 0 ? (decimal)used / total * 100 : 0;
 
         return new ZoneDto(

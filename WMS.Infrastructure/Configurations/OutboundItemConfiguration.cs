@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WMS.Domain.Entities.Outbound;
 
@@ -17,7 +17,7 @@ namespace WMS.Infrastructure.Configurations
           .HasForeignKey(b => b.OutboundOrderId)
           .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Ignore(b => b.InventoryItem);
+
 
 
 

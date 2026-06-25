@@ -1,4 +1,4 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 
 namespace WMS.Domain.Entities.Outbound;
 
@@ -10,6 +10,5 @@ public class OutboundItem : BaseEntity
     public int PickedQuantity { get; set; }
 
     public OutboundOrder OutboundOrder { get; set; } = null!;
-    public InventoryItem InventoryItem { get; set; } = null!;
     public string? Note { get; set; }
 }

@@ -106,7 +106,7 @@ public sealed class ProductDeleteCommandHandlerTests
             .UseSqlite(connection)
             .Options;
 
-        return new WmsDbContext(options, Mock.Of<ICurrentUser>());
+        return new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
     }
 
     private static DeleteProductCommandHandler CreateHandler(WmsDbContext db)

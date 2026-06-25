@@ -6,6 +6,8 @@ using WMS.Application.Common.Service;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Master;
+using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;
@@ -160,7 +162,10 @@ public class OdooInboundSyncService(
             {
                 var inv = _uow.Repository<InventoryItem>()
                     .GetByIdAsync(i.InventoryItemId).GetAwaiter().GetResult();
-                return inv?.Sku?.SkuCode == productCode;
+                if (inv == null) return false;
+                var sku = _uow.Repository<Sku>()
+                    .GetByIdAsync(inv.SkuId).GetAwaiter().GetResult();
+                return sku?.SkuCode == productCode;
             });
 
             if (wmsItem == null) continue;
