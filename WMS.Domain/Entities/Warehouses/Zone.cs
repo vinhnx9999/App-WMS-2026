@@ -1,7 +1,7 @@
 using WMS.Domain.Common;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
-using WMS.Domain.Entities.InventoryAggregateRoot;
 
 namespace WMS.Domain.Entities.Warehouses;
 

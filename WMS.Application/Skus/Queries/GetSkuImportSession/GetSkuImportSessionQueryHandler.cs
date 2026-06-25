@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Skus.Commands.ImportSku;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Skus.Queries.GetSkuImportSession;

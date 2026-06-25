@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Skus.Queries.GetSkuImportSession;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;

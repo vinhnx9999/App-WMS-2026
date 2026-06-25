@@ -4,11 +4,12 @@ using System.Text.Json;
 using WMS.Application.Common.Models;
 using WMS.Application.Inventory.DTOs;
 using WMS.Domain.Entities;
-using WMS.Domain.Entities.Product;
-using WMS.Domain.Entities.Master;
-using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Entities.InventoryAggregateRoot;
+using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.PalletAggregateRoot;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
+using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Inventory.Services;

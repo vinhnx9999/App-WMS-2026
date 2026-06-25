@@ -1,7 +1,7 @@
 using WMS.Domain.Common;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Domain.Entities.Product;
+namespace WMS.Domain.Entities.ProductAggregateRoot;
 
 public class Product : BaseEntity, IAggregateRoot
 {

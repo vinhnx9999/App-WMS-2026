@@ -5,7 +5,8 @@ using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Skus.Commands.ImportSku;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Enums;
 
 namespace DP.AppWMS.Tests.Skus;

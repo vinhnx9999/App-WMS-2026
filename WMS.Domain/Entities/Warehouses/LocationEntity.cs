@@ -14,9 +14,9 @@ public class LocationEntity : BaseEntity, IAggregateRoot
         Guid blockId,
         Guid? zoneId,
         string name,
-        int? x = null,
-        int? y = null,
-        int? z = null)
+        int? coorX = null,
+        int? coorY = null,
+        int? coorZ = null)
     {
         TenantId = tenantId;
         WarehouseId = warehouseId;
@@ -24,9 +24,9 @@ public class LocationEntity : BaseEntity, IAggregateRoot
         BlockId = blockId;
         ZoneId = zoneId;
         Name = name;
-        X = x;
-        Y = y;
-        Z = z;
+        CoorX = coorX;
+        CoorY = coorY;
+        CoorZ = coorZ;
     }
 
     public Guid WarehouseId { get; private set; }
@@ -40,15 +40,15 @@ public class LocationEntity : BaseEntity, IAggregateRoot
     /// <summary>
     /// Bay
     /// </summary>
-    public int? X { get; private set; }
+    public int? CoorX { get; private set; }
 
     /// <summary>
     /// Row
     /// </summary>
-    public int? Y { get; private set; }
+    public int? CoorY { get; private set; }
     /// <summary>
     /// Floor
     /// </summary>
-    public int? Z { get; private set; }
+    public int? CoorZ { get; private set; }
 
 }

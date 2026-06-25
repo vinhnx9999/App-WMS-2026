@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.SkuAggregateRoot;
 
 namespace WMS.Infrastructure.Configurations;
 

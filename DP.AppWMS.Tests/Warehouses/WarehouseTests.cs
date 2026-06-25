@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using WMS.Application.Warehouse.Services;
 using WMS.Domain.Common;
+using WMS.Domain.Entities.RuleAggregateRoot;
 using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;

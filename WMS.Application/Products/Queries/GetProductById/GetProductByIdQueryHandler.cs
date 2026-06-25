@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Products.DTOs;
+using WMS.Domain.Entities.ProductAggregateRoot;
 using WMS.Domain.Interfaces;
 
 
@@ -14,7 +15,7 @@ public sealed class GetProductByIdQueryHandler(IUnitOfWork uow)
 
     public async Task<GetProductByIdResponse> Handle(GetProductByIdQuery request, CancellationToken ct)
     {
-        var products = _uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking()
+        var products = _uow.Repository<Product>().Query().AsNoTracking()
             .Where(x => x.Id == request.Id && x.TenantId == request.TenantId && !x.IsDeleted);
 
         var categories = _uow.Repository<Domain.Entities.Category>().Query().AsNoTracking();

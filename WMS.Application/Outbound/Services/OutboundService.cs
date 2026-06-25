@@ -5,10 +5,10 @@ using WMS.Application.SignalR;
 using WMS.Application.SignalR.DTOs;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Outbound;
-using WMS.Domain.Entities.Product;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
+using WMS.Domain.Entities.SkuAggregateRoot;
 
 namespace WMS.Application.Outbound.Services;
 

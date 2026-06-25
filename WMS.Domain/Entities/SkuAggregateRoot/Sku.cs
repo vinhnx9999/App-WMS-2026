@@ -2,7 +2,7 @@ using WMS.Domain.Common;
 using WMS.Domain.Extensions;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Domain.Entities.Product;
+namespace WMS.Domain.Entities.SkuAggregateRoot;
 
 public class Sku : BaseEntity, IAggregateRoot
 {

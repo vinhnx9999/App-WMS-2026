@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Products.Commands.UpdateProduct;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
 
 namespace DP.AppWMS.Tests.Products;
 

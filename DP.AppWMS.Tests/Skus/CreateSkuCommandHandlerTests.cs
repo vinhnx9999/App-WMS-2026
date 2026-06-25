@@ -4,7 +4,8 @@ using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Skus.Commands.CreateSku;
 using WMS.Application.Skus.Validators;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Infrastructure.Persistence;
 
 namespace DP.AppWMS.Tests.Skus;

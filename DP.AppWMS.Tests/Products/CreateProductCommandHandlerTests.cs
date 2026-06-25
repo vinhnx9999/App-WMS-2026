@@ -4,7 +4,7 @@ using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Products.Commands.CreateProduct;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Infrastructure.Persistence;
 

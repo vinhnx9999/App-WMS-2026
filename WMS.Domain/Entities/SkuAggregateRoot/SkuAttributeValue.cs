@@ -1,6 +1,6 @@
 using WMS.Domain.Common;
 
-namespace WMS.Domain.Entities.Product;
+namespace WMS.Domain.Entities.SkuAggregateRoot;
 
 public class SkuAttributeValue : BaseEntity
 {

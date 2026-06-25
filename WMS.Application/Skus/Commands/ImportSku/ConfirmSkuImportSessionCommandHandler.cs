@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Extensions;
 using WMS.Domain.Interfaces;
@@ -166,7 +167,7 @@ public sealed class ConfirmSkuImportSessionCommandHandler(
             .Distinct()
             .ToList();
 
-        var activeProductIds = await _uow.Repository<Domain.Entities.Product.Product>().Query()
+        var activeProductIds = await _uow.Repository<Product>().Query()
             .Where(x =>
                 x.TenantId == tenantId
                 && productIds.Contains(x.Id)
@@ -240,7 +241,7 @@ public sealed class ConfirmSkuImportSessionCommandHandler(
         }
     }
 
-    private async Task<Dictionary<Guid, Domain.Entities.Product.Product>> LoadProductsById(
+    private async Task<Dictionary<Guid, Product>> LoadProductsById(
         Guid tenantId,
         IReadOnlyList<SkuImportRow> rows,
         CancellationToken ct)
@@ -250,7 +251,7 @@ public sealed class ConfirmSkuImportSessionCommandHandler(
             .Distinct()
             .ToList();
 
-        return await _uow.Repository<Domain.Entities.Product.Product>().Query()
+        return await _uow.Repository<Product>().Query()
             .Where(x =>
                 x.TenantId == tenantId
                 && productIds.Contains(x.Id)

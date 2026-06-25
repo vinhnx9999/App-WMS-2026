@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
 using WMS.Application.Skus.DTOs;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
@@ -59,12 +60,12 @@ public sealed class CreateSkuCommandHandler(IUnitOfWork uow, ISequenceCodeGenera
             sku.UpdatedAt);
     }
 
-    private async Task<Domain.Entities.Product.Product> LoadProductReference(
+    private async Task<Product> LoadProductReference(
        Guid productId,
        Guid tenantId,
        CancellationToken ct)
     {
-        var product = await _uow.Repository<Domain.Entities.Product.Product>().Query()
+        var product = await _uow.Repository<Product>().Query()
             .FirstOrDefaultAsync(x =>
                 x.Id == productId
                 && x.TenantId == tenantId

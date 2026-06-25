@@ -10,8 +10,11 @@ using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.PalletAggregateRoot;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.RuleAggregateRoot;
 using WMS.Domain.Entities.Security;
+using WMS.Domain.Entities.SkuAggregateRoot;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 

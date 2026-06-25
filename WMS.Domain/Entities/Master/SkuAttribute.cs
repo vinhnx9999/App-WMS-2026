@@ -1,5 +1,5 @@
 using WMS.Domain.Common;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities;
