@@ -51,7 +51,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WithValidData_UpdatesInventory()
+    public async Task UpdateAsync_WithValidData_UpdatesInventoryAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
@@ -115,7 +115,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenInventoryNotFound_ThrowsNotFoundException()
+    public async Task UpdateAsync_WhenInventoryNotFound_ThrowsNotFoundExceptionAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
@@ -159,7 +159,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenLocationNotFound_ThrowsNotFoundException()
+    public async Task UpdateAsync_WhenLocationNotFound_ThrowsNotFoundExceptionAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
@@ -189,7 +189,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenPalletNotFound_ThrowsNotFoundException()
+    public async Task UpdateAsync_WhenPalletNotFound_ThrowsNotFoundExceptionAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
@@ -219,7 +219,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenSupplierNotFound_ThrowsNotFoundException()
+    public async Task UpdateAsync_WhenSupplierNotFound_ThrowsNotFoundExceptionAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
@@ -249,7 +249,7 @@ public sealed class InventoryServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenDuplicateInventoryExists_ThrowsConflictException()
+    public async Task UpdateAsync_WhenDuplicateInventoryExists_ThrowsConflictExceptionAsync()
     {
         await using var connection = await OpenConnectionAsync();
         await using var db = CreateDbContext(connection);
