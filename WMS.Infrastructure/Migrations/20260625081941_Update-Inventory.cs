@@ -141,7 +141,7 @@ public partial class UpdateInventory : Migration
             table: "inventory_items",
             type: "bytea",
             nullable: false,
-            defaultValue: new byte[0]);
+            defaultValue: Array.Empty<byte>());
 
         migrationBuilder.CreateTable(
             name: "pallets",

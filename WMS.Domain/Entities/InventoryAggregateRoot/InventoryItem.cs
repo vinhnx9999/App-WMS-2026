@@ -72,7 +72,7 @@ public class InventoryItem : BaseEntity, IAggregateRoot
     public ItemStatus Status { get; private set; } = ItemStatus.Available;
     public DateTime PutawayDate { get; private set; }
     public DateTime? ExpiryDate { get; private set; }
-    public byte[] RowVersion { get; private set; } = [];
+    public byte[] RowVersion { get; private set; } = default!;
 
     public int AvailableQuantity => Status == ItemStatus.Available ? Math.Max(0, Quantity - AllocatedQuantity) : 0;
 

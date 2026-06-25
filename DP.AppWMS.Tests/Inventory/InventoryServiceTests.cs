@@ -279,7 +279,7 @@ public sealed class InventoryServiceTests
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var service = CreateService(db);
-        
+
         // Attempt to update item 2's SerialNumber to "SN-001", making it duplicate of item 1.
         var request = new UpdateInventoryRequest(null, null, null, SerialNumber: "SN-001", null, null, null, null, null);
 
