@@ -15,7 +15,6 @@ using WMS.Domain.Entities.RuleAggregateRoot;
 using WMS.Domain.Entities.Security;
 using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Entities.WarehouseAggregateRoot;
-using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Infrastructure.Persistence;

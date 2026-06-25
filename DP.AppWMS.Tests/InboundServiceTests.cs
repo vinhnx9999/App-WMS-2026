@@ -6,10 +6,9 @@ using WMS.Application.Inbound.Services;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
-using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
-using WMS.Domain.Entities.InventoryAggregateRoot;
 using ITransaction = WMS.Domain.Interfaces.ITransaction;
 
 namespace DP.AppWMS.Tests;

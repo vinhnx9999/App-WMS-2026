@@ -3,7 +3,7 @@ using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Domain.Entities.Warehouses;
+namespace WMS.Domain.Entities;
 
 public class Zone : BaseEntity, IAggregateRoot
 {

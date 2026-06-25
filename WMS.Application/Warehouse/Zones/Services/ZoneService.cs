@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Warehouse.Zones.DTOs;
 using WMS.Domain.Entities;
-using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Interfaces;
 

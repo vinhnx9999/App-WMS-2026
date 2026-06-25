@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using WMS.Domain.Entities;
 using WMS.Domain.Entities.RuleAggregateRoot;
-using WMS.Domain.Entities.Warehouses;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Interfaces.Warehouses;

@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using WMS.Application.Warehouse.Queries.WarehouseLookup;
-using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 
 namespace WMS.Infrastructure.Configurations;

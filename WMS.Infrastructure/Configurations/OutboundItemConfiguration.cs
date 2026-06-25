@@ -12,14 +12,10 @@ namespace WMS.Infrastructure.Configurations
             builder.HasIndex(b => b.InventoryItemId);
 
             builder
-          .HasOne(b => b.OutboundOrder)
-          .WithMany(b => b.Items)
-          .HasForeignKey(b => b.OutboundOrderId)
-          .OnDelete(DeleteBehavior.Cascade);
-
-
-
-
+              .HasOne(b => b.OutboundOrder)
+              .WithMany(b => b.Items)
+              .HasForeignKey(b => b.OutboundOrderId)
+              .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("outbound_items");
         }

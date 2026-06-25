@@ -1,7 +1,7 @@
 using WMS.Domain.Common;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Domain.Entities.Warehouses;
+namespace WMS.Domain.Entities;
 
 public class LocationEntity : BaseEntity, IAggregateRoot
 {
