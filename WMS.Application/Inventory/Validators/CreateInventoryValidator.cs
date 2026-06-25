@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using WMS.Application.Inventory.DTOs;
 
 namespace WMS.Application.Inventory.Validators;
@@ -7,21 +7,19 @@ public class CreateInventoryValidator : AbstractValidator<CreateInventoryRequest
 {
     public CreateInventoryValidator()
     {
-        RuleFor(x => x.Sku)
-            .NotEmpty().WithMessage("SKU không được để trống")
-            .MaximumLength(50);
+        RuleFor(x => x.SkuId)
+            .NotEmpty().WithMessage("SkuId không được để trống");
 
-        RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Tên sản phẩm không được để trống")
-            .MaximumLength(255);
+        RuleFor(x => x.LocationId)
+            .NotEmpty().WithMessage("LocationId không được để trống");
 
         RuleFor(x => x.Quantity)
             .GreaterThanOrEqualTo(0).WithMessage("Số lượng phải >= 0");
 
-        RuleFor(x => x.MinQuantity)
-            .GreaterThanOrEqualTo(0);
-
         RuleFor(x => x.UnitPrice)
-            .GreaterThan(0).WithMessage("Đơn giá phải lớn hơn 0");
+            .GreaterThanOrEqualTo(0).WithMessage("Đơn giá phải >= 0");
+
+        RuleFor(x => x.PutawayDate)
+            .NotEmpty().WithMessage("Ngày lưu kho không được để trống");
     }
 }

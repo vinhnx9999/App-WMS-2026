@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using WMS.Application.Warehouse.Services;
 using WMS.Domain.Common;
-using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities;
+using WMS.Domain.Entities.RuleAggregateRoot;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
@@ -29,7 +31,7 @@ public class WarehouseTests
             .UseSqlite(connection)
             .Options;
 
-        return new WmsDbContext(options, Mock.Of<ICurrentUser>());
+        return new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
     }
 
     private static UnitOfWork CreateUnitOfWork(WmsDbContext db)
@@ -153,9 +155,9 @@ public class WarehouseTests
             blockId: customBlock.Id,
             zoneId: zone.Id,
             name: "LOC-01",
-            x: 1,
-            y: 2,
-            z: 3
+            coorX: 1,
+            coorY: 2,
+            coorZ: 3
         );
         db.Locations.Add(location);
 

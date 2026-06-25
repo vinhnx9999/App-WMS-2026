@@ -1,8 +1,8 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 using WMS.Domain.Extensions;
 using WMS.Domain.Interfaces;
 
-namespace WMS.Domain.Entities.Product;
+namespace WMS.Domain.Entities.SkuAggregateRoot;
 
 public class Sku : BaseEntity, IAggregateRoot
 {
@@ -16,7 +16,9 @@ public class Sku : BaseEntity, IAggregateRoot
       string? name,
       string? goodsNature,
       string? description,
-      decimal? referencePrice)
+      decimal? referencePrice,
+      string? barcode = null,
+      int minQuantity = 0)
     {
         TenantId = tenantId;
         ProductId = productId;
@@ -25,6 +27,8 @@ public class Sku : BaseEntity, IAggregateRoot
         GoodsNature = goodsNature;
         Description = description;
         ReferencePrice = referencePrice;
+        Barcode = barcode;
+        MinQuantity = minQuantity;
     }
     /// <summary>
     /// Product ID
@@ -56,6 +60,16 @@ public class Sku : BaseEntity, IAggregateRoot
     public decimal? ReferencePrice { get; private set; }
 
     /// <summary>
+    /// Barcode of the SKU
+    /// </summary>
+    public string? Barcode { get; private set; }
+
+    /// <summary>
+    /// Minimum safety stock quantity for low stock alerting
+    /// </summary>
+    public int MinQuantity { get; private set; }
+
+    /// <summary>
     /// Attribute values associated with this SKU
     /// </summary>
     public IReadOnlyCollection<SkuAttributeValue> Attributes => _attributes.AsReadOnly();
@@ -75,7 +89,9 @@ public class Sku : BaseEntity, IAggregateRoot
      string? name,
      string? goodsNature,
      string? description,
-     decimal? referencePrice)
+     decimal? referencePrice,
+     string? barcode = null,
+     int minQuantity = 0)
     {
         if (tenantId == Guid.Empty)
             throw new DomainException("TenantId is required.");
@@ -89,6 +105,9 @@ public class Sku : BaseEntity, IAggregateRoot
         if (referencePrice < 0)
             throw new DomainException("Reference price cannot be negative.");
 
+        if (minQuantity < 0)
+            throw new DomainException("Min quantity cannot be negative.");
+
         return new Sku(
             tenantId,
             productId,
@@ -96,7 +115,9 @@ public class Sku : BaseEntity, IAggregateRoot
             Utilities.NormalizeNullable(name),
             Utilities.NormalizeNullable(goodsNature),
             Utilities.NormalizeNullable(description),
-            referencePrice);
+            referencePrice,
+            Utilities.NormalizeNullable(barcode),
+            minQuantity);
     }
 
 
@@ -109,7 +130,9 @@ public class Sku : BaseEntity, IAggregateRoot
         string? name = null,
         string? goodsNature = null,
         string? description = null,
-        decimal? referencePrice = null)
+        decimal? referencePrice = null,
+        string? barcode = null,
+        int? minQuantity = null)
     {
         if (referencePrice is < 0)
         {
@@ -118,10 +141,22 @@ public class Sku : BaseEntity, IAggregateRoot
                 "Reference price must be greater than or equal to zero.");
         }
 
+        if (minQuantity is < 0)
+        {
+            throw new DomainException(
+                "INVALID_MIN_QUANTITY",
+                "Minimum quantity must be greater than or equal to zero.");
+        }
+
         Name = name?.Trim();
         GoodsNature = goodsNature?.Trim();
         Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
         ReferencePrice = referencePrice;
+        Barcode = barcode?.Trim();
+        if (minQuantity.HasValue)
+        {
+            MinQuantity = minQuantity.Value;
+        }
     }
 
     public void Delete(string? deletedBy = null)

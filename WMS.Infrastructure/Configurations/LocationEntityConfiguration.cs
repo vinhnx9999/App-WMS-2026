@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities;
 
 namespace WMS.Infrastructure.Configurations;
 
@@ -17,9 +17,9 @@ public class LocationEntityConfiguration : BaseEntityConfiguration<LocationEntit
         builder.Property(l => l.BlockId).IsRequired();
 
         // Coordinates
-        builder.Property(l => l.X);
-        builder.Property(l => l.Y);
-        builder.Property(l => l.Z);
+        builder.Property(l => l.CoorX);
+        builder.Property(l => l.CoorY);
+        builder.Property(l => l.CoorZ);
 
         // Zone relationship with SetNull on delete
         builder.HasOne<Zone>()

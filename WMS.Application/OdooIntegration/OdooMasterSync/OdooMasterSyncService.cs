@@ -3,8 +3,8 @@ using Microsoft.Extensions.Options;
 using WMS.Application.Common.Service;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Master;
-using WMS.Domain.Entities.Outbound;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;
@@ -26,7 +26,7 @@ public class OdooMasterSyncService(
     private readonly ISequenceCodeGenerator _codeGenerator = codeGenerator;
     private readonly ILogger<OdooMasterSyncService> _log = log;
 
-    /// <summary>Sync products từ Odoo → WMS InventoryItem</summary>
+    /// <summary>Sync products từ Odoo → WMS Sku & Product</summary>
     public async Task<int> SyncProductsAsync(CancellationToken ct)
     {
         _log.LogInformation("Syncing products from Odoo...");
@@ -38,7 +38,10 @@ public class OdooMasterSyncService(
         };
 
         int offset = 0, synced = 0;
-        var repo = _uow.Repository<InventoryItem>();
+        var skuRepo = _uow.Repository<Sku>();
+        var productRepo = _uow.Repository<Product>();
+        var categoryRepo = _uow.Repository<Category>();
+        var tenantId = _currentUser.TenantId;
 
         while (true)
         {
@@ -55,12 +58,9 @@ public class OdooMasterSyncService(
 
             foreach (var p in products)
             {
-                var sku = p.TryGetValue("default_code", out var dc)
+                var skuCode = p.TryGetValue("default_code", out var dc)
                     ? dc?.ToString() : "";
-                if (string.IsNullOrEmpty(sku)) continue;
-
-                var existing = (await repo.FindAsync(
-                    x => $"{x.Sku.SkuCode}" == sku, ct)).FirstOrDefault();
+                if (string.IsNullOrEmpty(skuCode)) continue;
 
                 var name = p.TryGetValue("name", out var n)
                     ? n?.ToString() ?? "" : "";
@@ -69,29 +69,64 @@ public class OdooMasterSyncService(
                 var price = p.TryGetValue("standard_price", out var pr)
                     ? ToDecimal(pr) : 0;
 
-                if (existing != null)
+                // Sync category
+                Guid? categoryId = null;
+                if (p.TryGetValue("categ_id", out var catObj) && catObj is List<object> catList && catList.Count >= 2)
                 {
-                    // Update
-                    existing.Name = name;
-                    existing.Barcode = barcode;
-                    existing.UnitPrice = price;
-                    existing.UpdateStatus();
+                    var catName = catList[1].ToString() ?? "";
+                    if (!string.IsNullOrEmpty(catName))
+                    {
+                        var existingCat = (await categoryRepo.FindAsync(c => c.Name == catName, ct)).FirstOrDefault();
+                        if (existingCat != null)
+                        {
+                            categoryId = existingCat.Id;
+                        }
+                        else
+                        {
+                            var newCat = Category.Create(tenantId, catName);
+                            await categoryRepo.AddAsync(newCat, ct);
+                            categoryId = newCat.Id;
+                        }
+                    }
+                }
+
+                // Sync Product
+                var existingProduct = (await productRepo.FindAsync(x => x.ProductCode == skuCode, ct)).FirstOrDefault();
+                if (existingProduct == null)
+                {
+                    existingProduct = Product.Create(tenantId, skuCode, name, description: "", categoryId: categoryId);
+                    await productRepo.AddAsync(existingProduct, ct);
                 }
                 else
                 {
-                    var itemSku = await _uow.Repository<Sku>().FindAsync(
-                        s => $"{s.SkuCode}" == sku, ct);
-                    var skuId = itemSku?.FirstOrDefault()?.Id ?? Guid.Empty;
-                    // Create
-                    var item = new InventoryItem
-                    {
-                        SkuId = skuId,
-                        Name = name,
-                        Barcode = barcode,
-                        UnitPrice = price,
-                        Status = ItemStatus.OutOfStock,
-                    };
-                    await repo.AddAsync(item, ct);
+                    existingProduct.Update(name, description: "", categoryId: categoryId);
+                }
+
+                // Sync Sku
+                var existingSku = (await skuRepo.FindAsync(x => x.SkuCode == skuCode, ct)).FirstOrDefault();
+                if (existingSku == null)
+                {
+                    var newSku = Sku.Create(
+                        tenantId: tenantId,
+                        productId: existingProduct.Id,
+                        skuCode: skuCode,
+                        name: name,
+                        goodsNature: "Odoo product",
+                        description: "",
+                        referencePrice: price,
+                        barcode: barcode
+                    );
+                    await skuRepo.AddAsync(newSku, ct);
+                }
+                else
+                {
+                    existingSku.Update(
+                        name: name,
+                        goodsNature: "Odoo product",
+                        description: "",
+                        referencePrice: price,
+                        barcode: barcode
+                    );
                 }
 
                 synced++;

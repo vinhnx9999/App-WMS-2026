@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 
 namespace WMS.Infrastructure.Configurations;
 

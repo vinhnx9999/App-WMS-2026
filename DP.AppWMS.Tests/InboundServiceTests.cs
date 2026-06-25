@@ -6,7 +6,7 @@ using WMS.Application.Inbound.Services;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
-using WMS.Domain.Entities.Warehouses;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using ITransaction = WMS.Domain.Interfaces.ITransaction;
@@ -67,12 +67,9 @@ public class InboundServiceTests
         var invRepo = new Mock<IRepository<InventoryItem>>();
         invRepo
             .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(WithId(new InventoryItem
-            {
-                SkuCode = "TEST-001",
-                Quantity = 50,
-                MinQuantity = 10,
-            }, itemId));
+            .ReturnsAsync(WithId(InventoryItem.Create(
+                Guid.Empty, Guid.Empty, Guid.Empty, null, null, null, 50, 0, DateTime.UtcNow, null
+            ), itemId));
 
         var auditRepo = new Mock<IRepository<AuditLog>>();
 
@@ -151,12 +148,9 @@ public class InboundServiceTests
         var invRepo = new Mock<IRepository<InventoryItem>>();
         invRepo
             .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(WithId(new InventoryItem
-            {
-                SkuCode = "TEST-001",
-                Quantity = 50,
-                MinQuantity = 10,
-            }, itemId));
+            .ReturnsAsync(WithId(InventoryItem.Create(
+                Guid.Empty, Guid.Empty, Guid.Empty, null, null, null, 50, 0, DateTime.UtcNow, null
+            ), itemId));
 
         _uowMock.Setup(x => x.Repository<InboundOrder>())
             .Returns(orderRepo.Object);

@@ -1,4 +1,4 @@
-﻿using WMS.Domain.Common;
+using WMS.Domain.Common;
 
 namespace WMS.Domain.Entities.Inbound;
 
@@ -11,5 +11,4 @@ public class InboundItem : BaseEntity
     public string? Note { get; set; }
 
     public InboundOrder InboundOrder { get; set; } = null!;
-    public InventoryItem InventoryItem { get; set; } = null!;
 }

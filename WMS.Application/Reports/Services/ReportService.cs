@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WMS.Application.Reports.DTOs;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Inbound;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
+using WMS.Domain.Entities.SkuAggregateRoot;
 
 namespace WMS.Application.Reports.Services;
 
@@ -27,8 +29,11 @@ public class ReportService(IUnitOfWork uow) : IReportService
         var outboundThisMonth = await _uow.Repository<OutboundOrder>()
             .CountAsync(x => x.CreatedAt >= monthStart && x.Status == OutboundStatus.Shipped);
 
-        var lowStockAlerts = await _uow.Repository<InventoryItem>()
-            .CountAsync(x => !x.IsDeleted && x.Status != ItemStatus.InStock);
+        var lowStockAlerts = await (from item in _uow.Repository<InventoryItem>().Query()
+                                    join sku in _uow.Repository<Sku>().Query() on item.SkuId equals sku.Id
+                                    where item.Quantity <= sku.MinQuantity && item.Quantity > 0 && !item.IsDeleted
+                                    select item.Id)
+                                   .CountAsync(ct);
 
         var totalValue = await _uow.Repository<InventoryItem>().Query()
             .Where(x => !x.IsDeleted)
@@ -59,15 +64,22 @@ public class ReportService(IUnitOfWork uow) : IReportService
 
     public async Task<List<AlertDto>> GetLowStockAlertsAsync(CancellationToken ct)
     {
-        var items = await _uow.Repository<InventoryItem>().Query()
-            .Include(x => x.Location)
-            .Where(x => !x.IsDeleted && x.Status != ItemStatus.InStock)
-            .OrderBy(x => x.Quantity)
-            .ToListAsync(ct);
+        var items = await (from item in _uow.Repository<InventoryItem>().Query()
+                            where !item.IsDeleted
+                            join sku in _uow.Repository<Sku>().Query() on item.SkuId equals sku.Id
+                            where item.Quantity <= sku.MinQuantity && item.Quantity > 0
+                            join loc in _uow.Repository<LocationEntity>().Query() on item.LocationId equals loc.Id
+                            orderby item.Quantity
+                            select new { item, sku, loc })
+                           .ToListAsync(ct);
 
         return [.. items.Select(x => new AlertDto(
-            x.Id, x.Sku?.SkuCode ?? "", x.Name,
-            x.Quantity, x.MinQuantity, x.Status,
-            x.Location?.Name ?? ""))];
+            x.item.Id, 
+            x.sku.SkuCode ?? "", 
+            x.sku.Name ?? "",
+            x.item.Quantity, 
+            x.sku.MinQuantity, 
+            x.item.Status,
+            x.loc.Name ?? ""))];
     }
 }

@@ -1,5 +1,5 @@
 using FluentAssertions;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
 
 namespace DP.AppWMS.Tests.Products;
 

@@ -1,7 +1,7 @@
 using WMS.Domain.Common;
 using WMS.Domain.Extensions;
 
-namespace WMS.Domain.Entities.Product;
+namespace WMS.Domain.Entities.SkuAggregateRoot;
 
 public class SkuImportRow : BaseEntity
 {

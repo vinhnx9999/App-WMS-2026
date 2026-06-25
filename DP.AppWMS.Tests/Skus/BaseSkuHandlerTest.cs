@@ -1,11 +1,11 @@
-﻿using Microsoft.Data.Sqlite;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
-using ProductAggregate = WMS.Domain.Entities.Product.Product;
+using ProductAggregate = WMS.Domain.Entities.ProductAggregateRoot.Product;
 
 namespace DP.AppWMS.Tests.Skus
 {
@@ -64,7 +64,7 @@ namespace DP.AppWMS.Tests.Skus
                 .UseSqlite(connection)
                 .Options;
 
-            return new WmsDbContext(options, Mock.Of<ICurrentUser>());
+            return new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
         }
 
         protected static UnitOfWork CreateUnitOfWork(WmsDbContext db)

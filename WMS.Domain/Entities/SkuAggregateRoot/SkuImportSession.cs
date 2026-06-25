@@ -2,7 +2,7 @@ using WMS.Domain.Common;
 using WMS.Domain.Enums;
 using WMS.Domain.Extensions;
 
-namespace WMS.Domain.Entities.Product;
+namespace WMS.Domain.Entities.SkuAggregateRoot;
 
 public class SkuImportSession : BaseEntity
 {

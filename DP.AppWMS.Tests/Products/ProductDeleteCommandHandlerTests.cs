@@ -5,7 +5,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Products.Commands.DeleteProduct;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 
@@ -106,7 +107,7 @@ public sealed class ProductDeleteCommandHandlerTests
             .UseSqlite(connection)
             .Options;
 
-        return new WmsDbContext(options, Mock.Of<ICurrentUser>());
+        return new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
     }
 
     private static DeleteProductCommandHandler CreateHandler(WmsDbContext db)

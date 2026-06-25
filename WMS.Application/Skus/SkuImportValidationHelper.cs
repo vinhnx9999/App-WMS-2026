@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Skus;

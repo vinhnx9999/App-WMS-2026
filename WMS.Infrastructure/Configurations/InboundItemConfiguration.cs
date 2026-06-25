@@ -17,7 +17,7 @@ public class InboundItemConfiguration : BaseEntityConfiguration<InboundItem>
             .HasForeignKey(b => b.InboundOrderId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Ignore(b => b.InventoryItem);
+
 
 
         builder.ToTable("inbound_items");

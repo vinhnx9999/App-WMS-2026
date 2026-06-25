@@ -15,7 +15,7 @@ public sealed class WarehouseLookupQueryHandler(IUnitOfWork uow)
 
     public async Task<List<WarehouseLookupResponse>> Handle(WarehouseLookupQuery request, CancellationToken ct)
     {
-        return await _uow.Repository<Domain.Entities.Warehouses.Warehouse>().Query()
+        return await _uow.Repository<Domain.Entities.WarehouseAggregateRoot.Warehouse>().Query()
             .AsNoTracking()
             .Where(x => x.TenantId == request.TenantId && !x.IsDeleted)
             .OrderBy(x => x.Name)

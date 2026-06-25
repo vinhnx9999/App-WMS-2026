@@ -1,6 +1,6 @@
 using FluentAssertions;
 using WMS.Application.Products.Queries.SearchProducts;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
 
 namespace DP.AppWMS.Tests.Products;
 

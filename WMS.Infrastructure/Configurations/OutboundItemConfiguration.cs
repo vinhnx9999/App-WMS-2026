@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WMS.Domain.Entities.Outbound;
 
@@ -12,14 +12,10 @@ namespace WMS.Infrastructure.Configurations
             builder.HasIndex(b => b.InventoryItemId);
 
             builder
-          .HasOne(b => b.OutboundOrder)
-          .WithMany(b => b.Items)
-          .HasForeignKey(b => b.OutboundOrderId)
-          .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Ignore(b => b.InventoryItem);
-
-
+              .HasOne(b => b.OutboundOrder)
+              .WithMany(b => b.Items)
+              .HasForeignKey(b => b.OutboundOrderId)
+              .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("outbound_items");
         }

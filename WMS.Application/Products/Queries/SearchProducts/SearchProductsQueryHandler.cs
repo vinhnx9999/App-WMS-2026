@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Products.DTOs;
+using WMS.Domain.Entities.ProductAggregateRoot;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Products.Queries.SearchProducts;
@@ -16,7 +17,7 @@ public sealed class SearchProductsQueryHandler(IUnitOfWork uow)
         var page = Math.Max(request.Page, PaginationDefaults.Page);
         var limit = Math.Clamp(request.Limit, PaginationDefaults.MinLimit, PaginationDefaults.MaxLimit);
 
-        var products = _uow.Repository<Domain.Entities.Product.Product>().Query().AsNoTracking()
+        var products = _uow.Repository<Product>().Query().AsNoTracking()
             .Where(x => x.TenantId == request.TenantId && !x.IsDeleted);
 
         var categories = _uow.Repository<Domain.Entities.Category>().Query().AsNoTracking();

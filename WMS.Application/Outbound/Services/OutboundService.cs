@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Outbound.DTOs;
@@ -6,8 +5,10 @@ using WMS.Application.SignalR;
 using WMS.Application.SignalR.DTOs;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
+using WMS.Domain.Entities.SkuAggregateRoot;
 
 namespace WMS.Application.Outbound.Services;
 
@@ -20,24 +21,22 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
     public async Task<List<OutboundOrderDto>> GetListAsync(CancellationToken ct)
     {
         var orders = await _uow.Repository<OutboundOrder>().Query()
-            .Include(x => x.Customer)
-            .Include(x => x.Items).ThenInclude(i => i.InventoryItem)
             .Where(x => !x.IsDeleted)
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync(ct);
 
-        return [.. orders.Select(MapToDto)];
+        var list = new List<OutboundOrderDto>();
+        foreach (var order in orders)
+        {
+            var dto = await GetOutboundOrderDtoAsync(order.Id, ct);
+            list.Add(dto);
+        }
+        return list;
     }
 
     public async Task<OutboundOrderDto> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        var order = await _uow.Repository<OutboundOrder>().Query()
-            .Include(x => x.Customer)
-            .Include(x => x.Items).ThenInclude(i => i.InventoryItem)
-            .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, ct)
-            ?? throw new AppException(404, "NOT_FOUND", "Đơn xuất không tồn tại");
-
-        return MapToDto(order);
+        return await GetOutboundOrderDtoAsync(id, ct);
     }
 
     public async Task<OutboundOrderDto> CreateAsync(
@@ -61,7 +60,7 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
             items: items
         );
 
-        // Validate stock & calculate total
+        // Validate stock, allocate stock, & calculate total
         var invRepo = _uow.Repository<InventoryItem>();
         decimal totalValue = 0;
         foreach (var item in order.Items)
@@ -69,9 +68,8 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
             var inv = await invRepo.GetByIdAsync(item.InventoryItemId, ct)
                 ?? throw new AppException(404, "NOT_FOUND", $"Sản phẩm {item.InventoryItemId} không tồn tại");
 
-            if (inv.Quantity < item.Quantity)
-                throw new AppException(400, "INSUFFICIENT_STOCK",
-                    $"Sản phẩm {inv.Sku} chỉ còn {inv.Quantity}, không đủ để xuất {item.Quantity}");
+            // Perform Domain stock allocation
+            inv.Allocate(item.Quantity);
 
             totalValue += inv.UnitPrice * item.Quantity;
         }
@@ -100,62 +98,61 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
                 .FirstOrDefault(x => x.InventoryItemId == shipped.InventoryItemId);
             if (orderItem is null) continue;
 
-
             orderItem.PickedQuantity = shipped.PickedQuantity;
 
-            // Decrease inventory
+            // Decrease inventory using DeductShippedStock
             var invItem = await invRepo.GetByIdAsync(shipped.InventoryItemId, ct)
                 ?? throw new AppException(404, "NOT_FOUND", $"Sản phẩm {shipped.InventoryItemId} không tồn tại");
-
-            if (invItem.Quantity < shipped.PickedQuantity)
-                throw new AppException(400, "INSUFFICIENT_STOCK",
-                    $"Tồn kho {invItem.Sku} chỉ còn {invItem.Quantity}");
 
             var oldQty = invItem.Quantity;
             var oldStatus = invItem.Status;
 
-            invItem.Quantity -= shipped.PickedQuantity;
-            invItem.UpdateStatus();
+            invItem.DeductShippedStock(shipped.PickedQuantity, orderItem.Quantity);
 
-            // ── Push inventory change ──
+            var sku = await _uow.Repository<Sku>().GetByIdAsync(invItem.SkuId, ct);
+            var isLowStock = sku != null && invItem.Quantity <= sku.MinQuantity && invItem.Quantity > 0;
+
+            // Push inventory change
             await _notifier.InventoryChangedAsync(new InventoryChangedData
             {
                 ItemId = invItem.Id,
-                Sku = invItem.SkuCode ?? "",
-                Name = invItem.Name ?? "",
+                Sku = sku?.SkuCode ?? "",
+                Name = sku?.Name ?? "",
                 OldQuantity = oldQty,
                 NewQuantity = invItem.Quantity,
                 OldStatus = oldStatus,
                 NewStatus = invItem.Status,
-                ZoneId = invItem.ZoneId,
+                ZoneId = null,
                 ChangeType = "outbound",
             });
 
-            // ── Push stock alerts ──
-            if (invItem.Status == ItemStatus.LowStock)
+            // Push stock alerts
+            if (isLowStock)
+            {
                 await _notifier.LowStockAlertAsync(new StockAlertData
                 {
                     ItemId = invItem.Id,
-                    Sku = invItem.SkuCode ?? "",
-                    Name = invItem.Name ?? "",
+                    Sku = sku?.SkuCode ?? "",
+                    Name = sku?.Name ?? "",
                     CurrentQuantity = invItem.Quantity,
-                    MinQuantity = invItem.MinQuantity,
+                    MinQuantity = sku?.MinQuantity ?? 0,
                 });
+            }
 
             if (invItem.Status == ItemStatus.OutOfStock)
+            {
                 await _notifier.OutOfStockAlertAsync(new StockAlertData
                 {
                     ItemId = invItem.Id,
-                    Sku = invItem.SkuCode ?? "",
-                    Name = invItem.Name ?? "",
+                    Sku = sku?.SkuCode ?? "",
+                    Name = sku?.Name ?? "",
                 });
-
+            }
         }
 
-        // status transition is already done via order.Ship()
         await _uow.SaveChangesAsync(ct);
 
-        // ── Push order status ──
+        // Push order status
         await _notifier.OutboundStatusChangedAsync(new OrderStatusChangedData
         {
             OrderId = order.Id,
@@ -168,10 +165,27 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
 
     public async Task CancelAsync(Guid orderId, CancellationToken ct)
     {
-        var order = await _uow.Repository<OutboundOrder>().GetByIdAsync(orderId, ct)
+        var order = await _uow.Repository<OutboundOrder>().Query()
+            .Include(x => x.Items)
+            .FirstOrDefaultAsync(x => x.Id == orderId && !x.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Đơn xuất không tồn tại");
 
+        if (order.Status == OutboundStatus.Shipped || order.Status == OutboundStatus.Delivered)
+            throw new AppException(400, "INVALID_STATE", "Không thể hủy đơn đã xuất hàng");
+
         order.Cancel();
+
+        // Release stock allocations
+        var invRepo = _uow.Repository<InventoryItem>();
+        foreach (var item in order.Items)
+        {
+            var inv = await invRepo.GetByIdAsync(item.InventoryItemId, ct);
+            if (inv != null)
+            {
+                inv.ReleaseAllocation(item.Quantity);
+            }
+        }
+
         await _uow.SaveChangesAsync(ct);
     }
 
@@ -181,14 +195,38 @@ public class OutboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotif
         return $"SHP-{count + 1:D4}";
     }
 
-    private static OutboundOrderDto MapToDto(OutboundOrder o) => new(
-        o.Id, o.ShipmentNumber, o.Customer?.Name ?? "",
-        o.Destination, o.ExpectedDelivery, o.Status, o.TotalValue,
-        o.Items.Count,
-        [.. o.Items.Select(i => new OutboundItemDto(
-            i.InventoryItemId,
-            i.InventoryItem?.Sku?.SkuCode ?? "",
-            i.InventoryItem?.Name ?? "",
-            i.Quantity, i.PickedQuantity, i.Note ?? ""))],
-        o.CreatedAt);
+    private async Task<OutboundOrderDto> GetOutboundOrderDtoAsync(Guid orderId, CancellationToken ct)
+    {
+        var order = await _uow.Repository<OutboundOrder>().Query()
+            .Include(x => x.Customer)
+            .FirstOrDefaultAsync(x => x.Id == orderId, ct)
+            ?? throw new AppException(404, "NOT_FOUND", "Đơn xuất không tồn tại");
+
+        var items = await (from item in _uow.Repository<OutboundItem>().Query()
+                            where item.OutboundOrderId == orderId
+                            join inv in _uow.Repository<InventoryItem>().Query() on item.InventoryItemId equals inv.Id
+                            join sku in _uow.Repository<Sku>().Query() on inv.SkuId equals sku.Id
+                            select new OutboundItemDto(
+                                item.InventoryItemId,
+                                sku.SkuCode ?? "",
+                                sku.Name ?? "",
+                                item.Quantity,
+                                item.PickedQuantity,
+                                item.Note ?? ""
+                             ))
+                            .ToListAsync(ct);
+
+        return new OutboundOrderDto(
+            order.Id,
+            order.ShipmentNumber,
+            order.Customer?.Name ?? "",
+            order.Destination,
+            order.ExpectedDelivery,
+            order.Status,
+            order.TotalValue,
+            items.Count,
+            items,
+            order.CreatedAt
+        );
+    }
 }

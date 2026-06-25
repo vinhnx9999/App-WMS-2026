@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using WMS.Application.Skus.Queries.SearchSkus;
 using WMS.Domain.Entities;
-using WMS.Domain.Entities.Product;
+using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.Persistence;
 
