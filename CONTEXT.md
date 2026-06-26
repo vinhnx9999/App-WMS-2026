@@ -127,7 +127,7 @@ _Avoid_: Expiration date, best before date
 ## Inbound Workflow
 
 **InboundWorkflowConfig**:
-An aggregate root configuring the sequence of inbound steps for a given warehouse, supplier, or product category combination, resolved using a priority fallback hierarchy.
+An aggregate root configuring the sequence of inbound steps for a given warehouse, supplier, or category combination, resolved using a priority fallback hierarchy.
 _Avoid_: Inbound routing config, step mapping
 
 **InboundWorkflowStep**:
@@ -147,7 +147,7 @@ An aggregate root representing the assignment to move received or inspected item
 _Avoid_: Stock movement task, placement order
 
 **GoodsReceiptNote (GRN)**:
-An aggregate root representing the finalized receipt record created automatically upon completing a putaway task. Generating a GRN updates inventory stock lines and triggers ERP sync.
+An aggregate root representing the finalized receipt record created automatically upon completing a putaway task. Generating a GRN updates inventory stock lines and triggers ERP sync. In physical operations, this represents the official, legally binding "Phiếu nhập kho" (Goods Receipt Note) indicating inventory is on the shelf and available for use, whereas InboundReceipt is only a temporary gate-dock receipt.
 _Avoid_: Receiving voucher, completed receipt record
 
 **InboundOrderHistory**:

@@ -1,6 +1,7 @@
 using FluentAssertions;
 using WMS.Domain.Common;
 using WMS.Domain.Entities.QcInspectionAggregateRoot;
+using WMS.Domain.Enums;
 
 namespace DP.AppWMS.Tests.Inbound;
 

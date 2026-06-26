@@ -12,7 +12,10 @@ public class PutawayTaskCompletedHistoryHandler(
     public async Task Handle(PutawayTaskCompletedEvent notification, CancellationToken ct)
     {
         var task = notification.Task;
-        if (task.InboundOrderId == null) return;
+        if (task.InboundOrderId == null)
+        {
+            return;
+        }
 
         var history = new InboundOrderHistory(
             task.InboundOrderId.Value,
@@ -24,7 +27,7 @@ public class PutawayTaskCompletedHistoryHandler(
             currentUser.Email ?? "System",
             "Putaway",
             "Putaway_Finished",
-            $"Completed putaway task {task.TaskNumber} at warehouse {task.WarehouseId}.");
+            $"Completed putaway task {task.PutawayTaskNumber} at warehouse {task.WarehouseId}.");
 
         await historyRepo.AddAsync(history, ct);
     }

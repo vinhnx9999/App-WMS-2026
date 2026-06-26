@@ -8,19 +8,19 @@ public class InboundWorkflowOrchestrator
     public InboundWorkflowConfig ResolveConfig(
         Guid warehouseId,
         Guid? supplierId,
-        Guid? productCategoryId,
+        Guid? categoryId,
         IEnumerable<InboundWorkflowConfig> configs)
     {
         var configsList = configs.ToList();
 
-        // 1. Exact match on WarehouseId AND SupplierId AND ProductCategoryId
+        // 1. Exact match on WarehouseId AND SupplierId AND CategoryId
         var match1 = configsList.FirstOrDefault(c =>
             c.WarehouseId == warehouseId &&
             c.SupplierId == supplierId &&
-            c.ProductCategoryId == productCategoryId &&
+            c.CategoryId == categoryId &&
             c.WarehouseId != null &&
             c.SupplierId != null &&
-            c.ProductCategoryId != null);
+            c.CategoryId != null);
         if (match1 != null) return match1;
 
         // 2. Match on WarehouseId AND SupplierId
@@ -29,30 +29,30 @@ public class InboundWorkflowOrchestrator
             c.SupplierId == supplierId &&
             c.WarehouseId != null &&
             c.SupplierId != null &&
-            c.ProductCategoryId == null);
+            c.CategoryId == null);
         if (match2 != null) return match2;
 
-        // 3. Match on WarehouseId AND ProductCategoryId
+        // 3. Match on WarehouseId AND CategoryId
         var match3 = configsList.FirstOrDefault(c =>
             c.WarehouseId == warehouseId &&
-            c.ProductCategoryId == productCategoryId &&
+            c.CategoryId == categoryId &&
             c.WarehouseId != null &&
             c.SupplierId == null &&
-            c.ProductCategoryId != null);
+            c.CategoryId != null);
         if (match3 != null) return match3;
 
         // 4. Match on WarehouseId only
         var match4 = configsList.FirstOrDefault(c =>
             c.WarehouseId == warehouseId &&
             c.SupplierId == null &&
-            c.ProductCategoryId == null);
+            c.CategoryId == null);
         if (match4 != null) return match4;
 
         // 5. Global Default (all values null)
         var match5 = configsList.FirstOrDefault(c =>
             c.WarehouseId == null &&
             c.SupplierId == null &&
-            c.ProductCategoryId == null);
+            c.CategoryId == null);
         if (match5 != null) return match5;
 
         // Fallback default configuration

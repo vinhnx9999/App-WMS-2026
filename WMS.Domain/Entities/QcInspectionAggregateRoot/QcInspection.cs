@@ -1,15 +1,9 @@
 using WMS.Domain.Common;
+using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities.QcInspectionAggregateRoot;
-
-public enum QcStatus
-{
-    Pending = 0,
-    Inspecting = 1,
-    Completed = 2
-}
 
 public class QcInspection : BaseEntity, IAggregateRoot
 {

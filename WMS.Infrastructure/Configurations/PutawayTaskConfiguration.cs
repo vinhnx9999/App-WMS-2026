@@ -8,7 +8,7 @@ public class PutawayTaskConfiguration : BaseEntityConfiguration<PutawayTask>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<PutawayTask> builder)
     {
-        builder.HasIndex(x => x.TaskNumber).IsUnique();
+        builder.HasIndex(x => x.PutawayTaskNumber).IsUnique();
         builder.ToTable("putaway_tasks");
 
         builder.HasMany(x => x.Items)

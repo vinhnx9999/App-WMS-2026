@@ -14,27 +14,31 @@ public class InboundWorkflowConfig : BaseEntity, IAggregateRoot
         Guid tenantId,
         Guid? warehouseId,
         Guid? supplierId,
-        Guid? productCategoryId,
+        Guid? categoryId,
         bool allowOverReceive = true,
         decimal? overReceiveTolerancePercentage = null)
     {
         TenantId = tenantId;
         WarehouseId = warehouseId;
         SupplierId = supplierId;
-        ProductCategoryId = productCategoryId;
+        CategoryId = categoryId;
         AllowOverReceive = allowOverReceive;
         OverReceiveTolerancePercentage = overReceiveTolerancePercentage;
     }
 
     public Guid? WarehouseId { get; private set; }
     public Guid? SupplierId { get; private set; }
-    public Guid? ProductCategoryId { get; private set; }
+    public Guid? CategoryId { get; private set; }
     /// <summary>
-    /// Indicates whether over-receiving is allowed for inbound shipments. If set to true, it means that the system permits receiving quantities beyond the ordered amount. If set to false, it means that over-receiving is not allowed, and any attempt to receive more than the ordered quantity will result in an exception or alert.
+    /// Indicates whether over-receiving is allowed for inbound shipments.
+    /// If set to true, it means that the system permits receiving quantities beyond the ordered amount.
+    /// If set to false, it means that over-receiving is not allowed, and any attempt to receive more than the ordered quantity will result in an exception or alert.
     /// </summary>
     public bool AllowOverReceive { get; private set; } = true;
     /// <summary>
-    /// The percentage of over-receive tolerance allowed for inbound shipments. This value is used to determine the maximum quantity that can be received beyond the ordered quantity without triggering an exception or alert. If set to null, it indicates that there is no specific tolerance percentage defined.
+    /// The percentage of over-receive tolerance allowed for inbound shipments. 
+    /// This value is used to determine the maximum quantity that can be received beyond the ordered quantity without triggering an exception or alert.
+    /// If set to null, it indicates that there is no specific tolerance percentage defined.
     /// </summary>
     public decimal? OverReceiveTolerancePercentage { get; private set; }
 

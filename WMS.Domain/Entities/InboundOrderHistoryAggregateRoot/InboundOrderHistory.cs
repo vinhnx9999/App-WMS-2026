@@ -17,7 +17,13 @@ public class InboundOrderHistory : BaseEntity, IAggregateRoot
     public string Details { get; private set; }
     public DateTime Timestamp { get; private set; }
 
-    private InboundOrderHistory() { PerformedBy = null!; Step = null!; Action = null!; Details = null!; }
+    private InboundOrderHistory()
+    {
+        PerformedBy = null!;
+        Step = null!;
+        Action = null!;
+        Details = null!;
+    }
 
     public InboundOrderHistory(
         Guid inboundOrderId,

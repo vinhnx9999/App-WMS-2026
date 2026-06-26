@@ -12,7 +12,7 @@ public class InboundWorkflowConfigConfiguration : BaseEntityConfiguration<Inboun
 
         builder.Property(c => c.WarehouseId);
         builder.Property(c => c.SupplierId);
-        builder.Property(c => c.ProductCategoryId);
+        builder.Property(c => c.CategoryId);
         builder.Property(c => c.AllowOverReceive).IsRequired().HasDefaultValue(true);
         builder.Property(c => c.OverReceiveTolerancePercentage);
 

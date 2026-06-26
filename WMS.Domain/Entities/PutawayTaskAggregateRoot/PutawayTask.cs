@@ -1,20 +1,13 @@
 using WMS.Domain.Common;
+using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities.PutawayTaskAggregateRoot;
 
-public enum PutawayStatus
-{
-    Pending = 0,
-    SentToWcs = 1,
-    Processing = 2,
-    Completed = 3
-}
-
 public class PutawayTask : BaseEntity, IAggregateRoot
 {
-    public string TaskNumber { get; private set; }
+    public string PutawayTaskNumber { get; private set; }
     public Guid? InboundOrderId { get; private set; }
     public Guid? InboundReceiptId { get; private set; }
     public Guid? QcInspectionId { get; private set; }
@@ -24,9 +17,9 @@ public class PutawayTask : BaseEntity, IAggregateRoot
     private readonly List<PutawayTaskItem> _items = new();
     public IReadOnlyCollection<PutawayTaskItem> Items => _items.AsReadOnly();
 
-    public PutawayTask(string taskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
+    public PutawayTask(string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
     {
-        TaskNumber = taskNumber;
+        PutawayTaskNumber = putawayTaskNumber;
         InboundOrderId = inboundOrderId;
         InboundReceiptId = inboundReceiptId;
         QcInspectionId = qcInspectionId;

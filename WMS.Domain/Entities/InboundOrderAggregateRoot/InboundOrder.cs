@@ -4,6 +4,10 @@ using WMS.Domain.Interfaces;
 
 namespace WMS.Domain.Entities.InboundOrderAggregateRoot;
 
+/// <summary>
+/// AKA Purchase Order (PO) or Inbound Shipment.
+/// Represents an order placed to a supplier for goods to be received into the warehouse
+/// </summary>
 public class InboundOrder : BaseEntity, IAggregateRoot
 {
     public string OrderNumber { get; set; } = null!;

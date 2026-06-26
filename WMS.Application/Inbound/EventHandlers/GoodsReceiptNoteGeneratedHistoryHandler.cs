@@ -1,4 +1,5 @@
 using MediatR;
+using WMS.Application.Common.Service;
 using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
@@ -12,7 +13,10 @@ public class GoodsReceiptNoteGeneratedHistoryHandler(
     public async Task Handle(GoodsReceiptNoteGeneratedEvent notification, CancellationToken ct)
     {
         var grn = notification.Grn;
-        if (grn.InboundOrderId == null) return;
+        if (grn.InboundOrderId == null)
+        {
+            return;
+        }
 
         var history = new InboundOrderHistory(
             grn.InboundOrderId.Value,
