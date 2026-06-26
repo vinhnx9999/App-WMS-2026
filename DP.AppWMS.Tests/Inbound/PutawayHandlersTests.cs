@@ -1,18 +1,16 @@
 using FluentAssertions;
 using Moq;
-using WMS.Domain.Common;
-using WMS.Domain.Entities.InboundOrderAggregateRoot;
-using WMS.Domain.Entities.InventoryAggregateRoot;
-using WMS.Domain.Entities.PutawayTaskAggregateRoot;
-using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
-using WMS.Domain.Interfaces;
-using WMS.Domain.Events;
-using WMS.Application.Inbound.Handlers;
 using System.Linq.Expressions;
 using WMS.Application.Common.Service;
-
+using WMS.Application.Inbound.Handlers;
+using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
+using WMS.Domain.Entities.InventoryAggregateRoot;
+using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Events;
+using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.Tests.Inbound;
 
@@ -38,7 +36,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task UpdateInventoryHandler_WhenNoMatchingInventoryExists_ShouldCreateNewInventoryItem()
+    public async Task UpdateInventoryHandler_WhenNoMatchingInventoryExists_ShouldCreateNewInventoryItemAsync()
     {
         // Arrange
         var skuId = Guid.NewGuid();
@@ -85,7 +83,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task UpdateInventoryHandler_WhenMatchingInventoryExists_ShouldAddStockToExistingItem()
+    public async Task UpdateInventoryHandler_WhenMatchingInventoryExists_ShouldAddStockToExistingItemAsync()
     {
         // Arrange
         var skuId = Guid.NewGuid();
@@ -126,7 +124,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task GenerateGrnHandler_ShouldCreateGoodsReceiptNote()
+    public async Task GenerateGrnHandler_ShouldCreateGoodsReceiptNoteAsync()
     {
         // Arrange
         var skuId = Guid.NewGuid();
@@ -162,7 +160,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task InboundReceiptCompletedEventHandler_ShouldAddHistory()
+    public async Task InboundReceiptCompletedEventHandler_ShouldAddHistoryAsync()
     {
         var historyRepoMock = new Mock<IRepository<InboundOrderHistory>>();
         InboundOrderHistory? loggedHistory = null;
