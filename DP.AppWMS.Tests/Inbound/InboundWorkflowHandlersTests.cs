@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Moq;
+using WMS.Application.Common.Service;
 using WMS.Application.Inbound.Handlers;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
@@ -12,7 +13,6 @@ using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Orchestrator;
-using WMS.Application.Common.Service;
 
 
 namespace DP.AppWMS.Tests.Inbound;
@@ -44,7 +44,7 @@ public class InboundWorkflowHandlersTests
 
         _sequenceCodeGeneratorMock
             .Setup(x => x.NextAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Guid tenantId, string codeType, CancellationToken ct) => 
+            .ReturnsAsync((Guid tenantId, string codeType, CancellationToken ct) =>
                 codeType == "QcInspection" ? "QC-TEST" : "PT-TEST");
 
         _handlers = new InboundWorkflowHandlers(
