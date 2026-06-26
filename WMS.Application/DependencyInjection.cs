@@ -22,10 +22,11 @@ using WMS.Application.Reports.Services;
 using WMS.Application.SAPIntegration.SapInboundSync;
 using WMS.Application.SAPIntegration.SapMasterSync;
 using WMS.Application.SignalR;
-using WMS.Application.Warehouse.Zones.Services;
 using WMS.Application.Warehouse.Services;
+using WMS.Application.Warehouse.Zones.Services;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Interfaces.Warehouses;
+using WMS.Domain.Orchestrator;
 using WMS.Infrastructure.ERPs.Odoo.DataClient;
 using WMS.Infrastructure.ERPs.Odoo.DataConfig;
 using WMS.Infrastructure.ERPs.SAP.DataClient;
@@ -148,6 +149,7 @@ public static class DependencyInjection
         services.AddScoped<IZoneService, ZoneService>();
         services.AddScoped<WarehouseProvisioningService>();
         services.AddScoped<IWarehouseRuleResolutionService, WarehouseRuleResolutionService>();
+        services.AddScoped<InboundWorkflowOrchestrator>();
 
         return services;
     }

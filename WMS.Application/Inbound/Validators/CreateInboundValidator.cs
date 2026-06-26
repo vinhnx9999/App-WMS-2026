@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using WMS.Application.Inbound.DTOs;
 
 namespace WMS.Application.Inbound.Validators;
@@ -16,7 +16,7 @@ public class CreateInboundValidator
 
         RuleForEach(x => x.Items).ChildRules(item =>
         {
-            item.RuleFor(x => x.InventoryItemId)
+            item.RuleFor(x => x.SkuId)
                 .NotEmpty();
             item.RuleFor(x => x.Quantity)
                 .GreaterThan(0)

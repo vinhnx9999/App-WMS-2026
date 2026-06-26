@@ -124,3 +124,33 @@ _Avoid_: Inward date, receive timestamp
 The date after which the goods should not be sold or shipped. Used for FEFO picking strategy calculations.
 _Avoid_: Expiration date, best before date
 
+## Inbound Workflow
+
+**InboundWorkflowConfig**:
+An aggregate root configuring the sequence of inbound steps for a given warehouse, supplier, or category combination, resolved using a priority fallback hierarchy.
+_Avoid_: Inbound routing config, step mapping
+
+**InboundWorkflowStep**:
+A child entity representing a specific stage in the inbound workflow sequence. Values: `PO` (Purchase Order planning), `Receive` (Gate/dock receiving), `QC` (Quality inspection), and `Putaway` (Physical stock placement).
+_Avoid_: Inbound phase, workflow stage
+
+**InboundReceipt**:
+An aggregate root recording the physical receipt of goods at the loading dock, supporting partial shipments and enforcing over-receiving policies based on the resolved workflow config.
+_Avoid_: Gate receipt, receiving report
+
+**QcInspection**:
+An aggregate root representing a quality inspection session, tracking `PassedQuantity` and `FailedQuantity` for SKU lines.
+_Avoid_: QC check, inspection form
+
+**PutawayTask**:
+An aggregate root representing the assignment to move received or inspected items to storage locations, integrated with automated systems (WCS) via the `SentToWcs` status when targeting automated areas.
+_Avoid_: Stock movement task, placement order
+
+**GoodsReceiptNote (GRN)**:
+An aggregate root representing the finalized receipt record created automatically upon completing a putaway task. Generating a GRN updates inventory stock lines and triggers ERP sync. In physical operations, this represents the official, legally binding "Phiếu nhập kho" (Goods Receipt Note) indicating inventory is on the shelf and available for use, whereas InboundReceipt is only a temporary gate-dock receipt.
+_Avoid_: Receiving voucher, completed receipt record
+
+**InboundOrderHistory**:
+A timeline audit log tracking individual workflow milestones, including the user, timestamp, state transitions, and item quantities.
+_Avoid_: Order logs, workflow audit trail
+

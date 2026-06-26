@@ -1,4 +1,4 @@
-﻿namespace WMS.Application.Inbound.DTOs;
+namespace WMS.Application.Inbound.DTOs;
 
 public record ReceiveItemRequest(
-    Guid InventoryItemId, int ReceivedQuantity, string? Note);
+    Guid SkuId, int ReceivedQuantity, string? Note);

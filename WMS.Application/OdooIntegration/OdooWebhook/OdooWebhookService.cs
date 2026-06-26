@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using WMS.Application.Common.Models;
 using WMS.Domain.Entities.ErpSync;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;

@@ -662,7 +662,135 @@ namespace WMS.Infrastructure.Migrations
                     b.ToTable("webhook_events", (string)null);
                 });
 
-            modelBuilder.Entity("WMS.Domain.Entities.Inbound.InboundItem", b =>
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("GrnNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid>("PutawayTaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("GrnNumber")
+                        .IsUnique();
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("goods_receipt_notes", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNoteItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("GoodsReceiptNoteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("InventoryItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("GoodsReceiptNoteId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SkuId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("goods_receipt_note_items", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -684,9 +812,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<Guid>("InboundOrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("InventoryItemId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -700,6 +825,9 @@ namespace WMS.Infrastructure.Migrations
 
                     b.Property<int>("ReceivedQuantity")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
@@ -717,16 +845,16 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasIndex("InboundOrderId");
 
-                    b.HasIndex("InventoryItemId");
-
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SkuId");
 
                     b.HasIndex("TenantId");
 
                     b.ToTable("inbound_items", (string)null);
                 });
 
-            modelBuilder.Entity("WMS.Domain.Entities.Inbound.InboundOrder", b =>
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -737,9 +865,6 @@ namespace WMS.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
@@ -787,8 +912,6 @@ namespace WMS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
-
                     b.HasIndex("DeletedAt");
 
                     b.HasIndex("IsDeleted");
@@ -796,11 +919,343 @@ namespace WMS.Infrastructure.Migrations
                     b.HasIndex("OrderNumber")
                         .IsUnique();
 
-                    b.HasIndex("SupplierId");
-
                     b.HasIndex("TenantId");
 
                     b.ToTable("inbound_orders", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderHistoryAggregateRoot.InboundOrderHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("GoodsReceiptNoteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("InboundOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("PerformedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("PutawayTaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("QcInspectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Step")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("InboundOrderId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("inbound_order_histories", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("ReceiptNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ReceiptNumber")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("inbound_receipts", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceiptItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("ExpectedQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ReceivedQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("InboundReceiptId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SkuId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("inbound_receipt_items", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("AllowOverReceive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal?>("OverReceiveTolerancePercentage")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("inbound_workflow_configs", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowStep", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StepType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("WorkflowConfigId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("WorkflowConfigId");
+
+                    b.ToTable("inbound_workflow_steps", (string)null);
                 });
 
             modelBuilder.Entity("WMS.Domain.Entities.InventoryAggregateRoot.InventoryItem", b =>
@@ -1392,6 +1847,268 @@ namespace WMS.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("products", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("PutawayTaskNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("QcInspectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("PutawayTaskNumber")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("putaway_tasks", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTaskItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ActualLocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("PutawayQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("PutawayTaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TargetLocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("PutawayTaskId");
+
+                    b.HasIndex("SkuId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("putaway_task_items", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("InspectionNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("InspectionNumber")
+                        .IsUnique();
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("qc_inspections", (string)null);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspectionItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("FailedQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PassedQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("QcInspectionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ReceivedQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedAt");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("QcInspectionId");
+
+                    b.HasIndex("SkuId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("qc_inspection_items", (string)null);
                 });
 
             modelBuilder.Entity("WMS.Domain.Entities.RuleAggregateRoot.WarehouseRuleSetting", b =>
@@ -2425,6 +3142,9 @@ namespace WMS.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<bool>("IsAutomated")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsDefault")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -2590,9 +3310,17 @@ namespace WMS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WMS.Domain.Entities.Inbound.InboundItem", b =>
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNoteItem", b =>
                 {
-                    b.HasOne("WMS.Domain.Entities.Inbound.InboundOrder", "InboundOrder")
+                    b.HasOne("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", null)
+                        .WithMany("Items")
+                        .HasForeignKey("GoodsReceiptNoteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", "InboundOrder")
                         .WithMany("Items")
                         .HasForeignKey("InboundOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2601,21 +3329,21 @@ namespace WMS.Infrastructure.Migrations
                     b.Navigation("InboundOrder");
                 });
 
-            modelBuilder.Entity("WMS.Domain.Entities.Inbound.InboundOrder", b =>
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceiptItem", b =>
                 {
-                    b.HasOne("WMS.Domain.Entities.Security.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
+                    b.HasOne("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", null)
+                        .WithMany("Items")
+                        .HasForeignKey("InboundReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("WMS.Domain.Entities.Master.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowStep", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", null)
+                        .WithMany("Steps")
+                        .HasForeignKey("WorkflowConfigId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("WMS.Domain.Entities.InventoryAggregateRoot.InventoryItem", b =>
@@ -2642,6 +3370,22 @@ namespace WMS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("OutboundOrder");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTaskItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", null)
+                        .WithMany("Items")
+                        .HasForeignKey("PutawayTaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspectionItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", null)
+                        .WithMany("Items")
+                        .HasForeignKey("QcInspectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WMS.Domain.Entities.Security.RefreshToken", b =>
@@ -2723,12 +3467,37 @@ namespace WMS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WMS.Domain.Entities.Inbound.InboundOrder", b =>
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", b =>
                 {
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", b =>
+                {
+                    b.Navigation("Steps");
+                });
+
             modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundOrder", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", b =>
                 {
                     b.Navigation("Items");
                 });
