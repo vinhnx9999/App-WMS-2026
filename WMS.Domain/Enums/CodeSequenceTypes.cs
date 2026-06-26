@@ -10,5 +10,9 @@ namespace WMS.Domain.Enums
         public const string PurchaseOrder = "PurchaseOrder";
         public const string Supplier = "Supplier";
         public const string Customer = "Customer";
+        public const string InboundReceipt = "InboundReceipt";
+        public const string GoodsReceiptNote = "GoodsReceiptNote";
+        public const string QcInspection = "QcInspection";
+        public const string PutawayTask = "PutawayTask";
     }
 }

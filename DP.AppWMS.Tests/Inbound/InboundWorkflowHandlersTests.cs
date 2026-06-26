@@ -12,6 +12,8 @@ using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Orchestrator;
+using WMS.Application.Common.Service;
+
 
 namespace DP.AppWMS.Tests.Inbound;
 
@@ -24,6 +26,8 @@ public class InboundWorkflowHandlersTests
     private readonly Mock<IRepository<QcInspection>> _qcRepoMock;
     private readonly Mock<IRepository<PutawayTask>> _putawayRepoMock;
     private readonly InboundWorkflowOrchestrator _orchestrator;
+    private readonly Mock<ICurrentUser> _currentUserMock;
+    private readonly Mock<ISequenceCodeGenerator> _sequenceCodeGeneratorMock;
     private readonly InboundWorkflowHandlers _handlers;
 
     public InboundWorkflowHandlersTests()
@@ -35,6 +39,13 @@ public class InboundWorkflowHandlersTests
         _qcRepoMock = new Mock<IRepository<QcInspection>>();
         _putawayRepoMock = new Mock<IRepository<PutawayTask>>();
         _orchestrator = new InboundWorkflowOrchestrator();
+        _currentUserMock = new Mock<ICurrentUser>();
+        _sequenceCodeGeneratorMock = new Mock<ISequenceCodeGenerator>();
+
+        _sequenceCodeGeneratorMock
+            .Setup(x => x.NextAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Guid tenantId, string codeType, CancellationToken ct) => 
+                codeType == "QcInspection" ? "QC-TEST" : "PT-TEST");
 
         _handlers = new InboundWorkflowHandlers(
             _configRepoMock.Object,
@@ -43,11 +54,13 @@ public class InboundWorkflowHandlersTests
             _productRepoMock.Object,
             _qcRepoMock.Object,
             _putawayRepoMock.Object,
-            _orchestrator);
+            _orchestrator,
+            _currentUserMock.Object,
+            _sequenceCodeGeneratorMock.Object);
     }
 
     [Fact]
-    public async Task HandleInboundReceiptCompletedEvent_ShouldCreateQcAndPutawayDocumentsBasedOnConfig()
+    public async Task HandleInboundReceiptCompletedEvent_ShouldCreateQcAndPutawayDocumentsBasedOnConfigAsync()
     {
         // Arrange
         var warehouseId = Guid.NewGuid();

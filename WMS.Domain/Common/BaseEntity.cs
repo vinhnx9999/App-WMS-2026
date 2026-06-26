@@ -10,7 +10,7 @@ public abstract class BaseEntity
     /// <summary>
     /// Tenant id
     /// </summary>
-    public Guid TenantId { get; protected set; } = Guid.NewGuid();
+    public Guid TenantId { get; protected set; }
 
     /// <summary>
     /// Created At

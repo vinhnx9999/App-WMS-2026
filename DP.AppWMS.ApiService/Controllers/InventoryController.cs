@@ -24,7 +24,7 @@ public class InventoryController(IInventoryService svc) : BaseController
     {
         var query = new InventoryQuery(search, null, zone, status, page, limit);
         var result = await _svc.GetListAsync(query, ct);
-        return Ok(ApiResponse<PagedResult<InventoryDto>>.Ok(result));        
+        return Ok(ApiResponse<PagedResult<InventoryDto>>.Ok(result));
     }
 
     [HttpGet("{id:guid}")]

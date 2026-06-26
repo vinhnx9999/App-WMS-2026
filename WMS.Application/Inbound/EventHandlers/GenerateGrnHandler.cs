@@ -2,18 +2,21 @@ using MediatR;
 using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
+using WMS.Application.Common.Service;
+using WMS.Domain.Enums;
 
 namespace WMS.Application.Inbound.Handlers;
 
 public class GenerateGrnHandler(
     IRepository<GoodsReceiptNote> grnRepo,
-    ICurrentUser currentUser) : INotificationHandler<PutawayTaskCompletedEvent>
+    ISequenceCodeGenerator sequenceCodeGenerator) : INotificationHandler<PutawayTaskCompletedEvent>
 {
     public async Task Handle(PutawayTaskCompletedEvent notification, CancellationToken ct)
     {
         var task = notification.Task;
+        var grnNumber = await sequenceCodeGenerator.NextAsync(task.TenantId, CodeSequenceTypes.GoodsReceiptNote, ct);
         var grn = GoodsReceiptNote.Create(
-            $"GRN-{Guid.NewGuid().ToString()[..8].ToUpper()}",
+            grnNumber,
             task.InboundOrderId,
             task.InboundReceiptId,
             task.Id,
