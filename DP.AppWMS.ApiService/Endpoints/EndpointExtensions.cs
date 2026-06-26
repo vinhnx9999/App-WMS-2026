@@ -4,6 +4,7 @@ using DP.AppWMS.ApiService.Endpoints.Products;
 using DP.AppWMS.ApiService.Endpoints.Skus;
 using DP.AppWMS.ApiService.Endpoints.Suppliers;
 using DP.AppWMS.ApiService.Endpoints.Warehouses;
+using DP.AppWMS.ApiService.Endpoints.Inbound;
 
 namespace DP.AppWMS.ApiService.Endpoints
 {
@@ -17,6 +18,7 @@ namespace DP.AppWMS.ApiService.Endpoints
             services.AddSingleton<IEndpoint, SupplierEndpoints>();
             services.AddSingleton<IEndpoint, CustomerEndpoints>();
             services.AddSingleton<IEndpoint, WarehouseEndpoints>();
+            services.AddSingleton<IEndpoint, InboundEndpoints>();
 
             return services;
         }

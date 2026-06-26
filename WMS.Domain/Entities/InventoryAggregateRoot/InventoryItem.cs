@@ -65,7 +65,6 @@ public class InventoryItem : BaseEntity, IAggregateRoot
     public Guid? SupplierId { get; private set; }
     public string? SerialNumber { get; private set; }
     public Guid? PalletId { get; private set; }
-
     public int Quantity { get; private set; }
     public int AllocatedQuantity { get; private set; }
     public decimal UnitPrice { get; private set; }

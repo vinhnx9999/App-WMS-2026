@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WMS.Application.Common.Models;
 using WMS.Application.Common.Service;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.SkuAggregateRoot;
@@ -159,11 +159,8 @@ public class OdooInboundSyncService(
             var productCode = ExtractMany2oneName(move, "product_id");
             var wmsItem = order.Items.FirstOrDefault(i =>
             {
-                var inv = _uow.Repository<InventoryItem>()
-                    .GetByIdAsync(i.InventoryItemId).GetAwaiter().GetResult();
-                if (inv == null) return false;
                 var sku = _uow.Repository<Sku>()
-                    .GetByIdAsync(inv.SkuId).GetAwaiter().GetResult();
+                    .GetByIdAsync(i.SkuId).GetAwaiter().GetResult();
                 return sku?.SkuCode == productCode;
             });
 

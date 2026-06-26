@@ -4,7 +4,7 @@ using WMS.Application.Common.Models;
 using WMS.Application.OdooIntegration.OdooWebhook;
 using WMS.Domain.Common;
 using WMS.Domain.Entities.ErpSync;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Infrastructure.ERPs.Odoo.OdooWebhook;

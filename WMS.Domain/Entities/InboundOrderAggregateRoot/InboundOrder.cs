@@ -1,11 +1,10 @@
 using WMS.Domain.Common;
-using WMS.Domain.Entities.Security;
-using WMS.Domain.Entities.Master;
 using WMS.Domain.Enums;
+using WMS.Domain.Interfaces;
 
-namespace WMS.Domain.Entities.Inbound;
+namespace WMS.Domain.Entities.InboundOrderAggregateRoot;
 
-public class InboundOrder : BaseEntity
+public class InboundOrder : BaseEntity, IAggregateRoot
 {
     public string OrderNumber { get; set; } = null!;
     public Guid SupplierId { get; set; }
@@ -15,7 +14,5 @@ public class InboundOrder : BaseEntity
     public decimal TotalValue { get; set; }
     public string? Notes { get; set; }
 
-    public Supplier Supplier { get; set; } = null!;
-    public User? Creator { get; set; }
     public ICollection<InboundItem> Items { get; set; } = [];
 }

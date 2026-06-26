@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Moq;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Infrastructure.ERPs.SAP.RfcClient;
 using WMS.Infrastructure.ERPs.SAP.RfcClient.DTOs.GoodsReceipt;
 
@@ -21,7 +21,7 @@ public class SapGrMappingTests
             [
                 new()
                 {
-                    InventoryItemId = Guid.NewGuid(),
+                    SkuId = Guid.NewGuid(),
                     Quantity = 100,
                     ReceivedQuantity = 98,
                 }

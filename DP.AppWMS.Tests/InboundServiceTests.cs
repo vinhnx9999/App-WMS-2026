@@ -5,7 +5,7 @@ using WMS.Application.Inbound.DTOs;
 using WMS.Application.Inbound.Services;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
@@ -48,7 +48,7 @@ public class InboundServiceTests
             [
                 new()
                 {
-                    InventoryItemId = itemId,
+                    SkuId = itemId,
                     Quantity = 100,
                     ReceivedQuantity = 0,
                 }
@@ -134,7 +134,7 @@ public class InboundServiceTests
             [
                 new()
                 {
-                    InventoryItemId = itemId,
+                    SkuId = itemId,
                     Quantity = 100,
                     ReceivedQuantity = 0,
                 }

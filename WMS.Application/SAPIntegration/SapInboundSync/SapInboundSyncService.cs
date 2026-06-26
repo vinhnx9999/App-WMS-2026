@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WMS.Application.Common.Models;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.SkuAggregateRoot;
@@ -115,17 +115,12 @@ public class SapInboundSyncService(
             HeaderText = $"WMS GR - {order.OrderNumber}",
         };
 
-        var itemRepo = _uow.Repository<InventoryItem>();
         var skuRepo = _uow.Repository<Sku>();
         foreach (var item in order.Items)
         {
-            var inv = await itemRepo.GetByIdAsync(item.InventoryItemId, ct);
-            var skuName = "";
-            if (inv != null)
-            {
-                var sku = await skuRepo.GetByIdAsync(inv.SkuId, ct);
-                skuName = sku?.Name ?? "";
-            }
+            var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
+            var skuName = sku?.Name ?? "";
+
             grRequest.Items.Add(new SapGrItem
             {
                 Material = skuName,

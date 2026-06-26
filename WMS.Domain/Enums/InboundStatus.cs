@@ -2,5 +2,9 @@
 
 public enum InboundStatus
 {
-    Pending, Approved, Receiving, Completed, Cancelled
+    Pending,
+    Approved,
+    Receiving,
+    Completed,
+    Cancelled
 }

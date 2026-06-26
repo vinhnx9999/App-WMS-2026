@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.ErpSync;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
@@ -17,9 +17,17 @@ using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Interfaces;
 
+using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
+using WMS.Domain.Entities.InboundReceiptAggregateRoot;
+using WMS.Domain.Entities.QcInspectionAggregateRoot;
+using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
+using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
+
 namespace WMS.Infrastructure.Persistence;
 
 public class WmsDbContext(
+
     DbContextOptions<WmsDbContext> options,
     ICurrentUser currentUser,
     IMediator mediator) :
@@ -63,6 +71,18 @@ public class WmsDbContext(
     public DbSet<CodeSequence> CodeSequences => Set<CodeSequence>();
     public DbSet<SkuImportSession> SkuImportSessions => Set<SkuImportSession>();
     public DbSet<SkuImportRow> SkuImportRows => Set<SkuImportRow>();
+    public DbSet<InboundWorkflowConfig> InboundWorkflowConfigs => Set<InboundWorkflowConfig>();
+    public DbSet<InboundWorkflowStep> InboundWorkflowSteps => Set<InboundWorkflowStep>();
+    public DbSet<InboundReceipt> InboundReceipts => Set<InboundReceipt>();
+    public DbSet<InboundReceiptItem> InboundReceiptItems => Set<InboundReceiptItem>();
+    public DbSet<QcInspection> QcInspections => Set<QcInspection>();
+    public DbSet<QcInspectionItem> QcInspectionItems => Set<QcInspectionItem>();
+    public DbSet<PutawayTask> PutawayTasks => Set<PutawayTask>();
+    public DbSet<PutawayTaskItem> PutawayTaskItems => Set<PutawayTaskItem>();
+    public DbSet<GoodsReceiptNote> GoodsReceiptNotes => Set<GoodsReceiptNote>();
+    public DbSet<GoodsReceiptNoteItem> GoodsReceiptNoteItems => Set<GoodsReceiptNoteItem>();
+    public DbSet<InboundOrderHistory> InboundOrderHistories => Set<InboundOrderHistory>();
+
 
     protected override void OnModelCreating(ModelBuilder mb)
     {

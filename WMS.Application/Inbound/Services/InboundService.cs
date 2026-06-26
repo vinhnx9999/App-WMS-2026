@@ -4,13 +4,19 @@ using WMS.Application.Inbound.DTOs;
 using WMS.Application.SignalR;
 using WMS.Application.SignalR.DTOs;
 using WMS.Domain.Entities;
-using WMS.Domain.Entities.Inbound;
+using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Entities.SkuAggregateRoot;
+
+using WMS.Domain.Entities.InboundReceiptAggregateRoot;
+using WMS.Domain.Entities.QcInspectionAggregateRoot;
+using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
+using WMS.Domain.Entities.ProductAggregateRoot;
 
 namespace WMS.Application.Inbound.Services;
 
@@ -31,18 +37,18 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
             Status = InboundStatus.Pending,
             Items = [.. req.Items.Select(i => new InboundItem
             {
-                InventoryItemId = i.InventoryItemId,
+                SkuId = i.SkuId,
                 Quantity = i.Quantity,
             })]
         };
 
         // Calculate total value
-        var invRepo = _uow.Repository<InventoryItem>();
+        var skuRepo = _uow.Repository<Sku>();
         foreach (var item in order.Items)
         {
-            var inv = await invRepo.GetByIdAsync(item.InventoryItemId, ct);
-            if (inv != null)
-                order.TotalValue += inv.UnitPrice * item.Quantity;
+            var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
+            if (sku != null)
+                order.TotalValue += (sku.ReferencePrice ?? 0) * item.Quantity;
         }
 
         await _uow.Repository<InboundOrder>().AddAsync(order, ct);
@@ -119,7 +125,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
         foreach (var received in req.Items)
         {
             var orderItem = order.Items
-                .FirstOrDefault(x => x.InventoryItemId == received.InventoryItemId);
+                .FirstOrDefault(x => x.SkuId == received.SkuId);
             if (orderItem is null) continue;
 
             orderItem.ReceivedQuantity = received.ReceivedQuantity;
@@ -127,7 +133,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
 
             // Increase inventory
             await UpdateInventoryStock(
-                received.InventoryItemId,
+                received.SkuId,
                 received.ReceivedQuantity, ct);
         }
 
@@ -139,14 +145,38 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
     }
 
     private async Task UpdateInventoryStock(
-        Guid itemId, int qty, CancellationToken ct)
+        Guid skuId, int qty, CancellationToken ct)
     {
-        var item = await _uow.Repository<InventoryItem>()
-            .GetByIdAsync(itemId, ct)
-            ?? throw new AppException(404, "NOT_FOUND",
-                $"Sản phẩm {itemId} không tồn tại");
-
-        item.AddStock(qty);
+        var item = await _uow.Repository<InventoryItem>().GetByIdAsync(skuId, ct);
+        if (item == null)
+        {
+            var items = await _uow.Repository<InventoryItem>()
+                .FindAsync(x => x.SkuId == skuId && !x.IsDeleted, ct);
+            item = items.FirstOrDefault();
+        }
+        
+        if (item != null)
+        {
+            item.AddStock(qty);
+        }
+        else
+        {
+            var location = await _uow.Repository<LocationEntity>().Query().FirstOrDefaultAsync(x => !x.IsDeleted, ct);
+            var locationId = location?.Id ?? Guid.Empty;
+            var newItem = InventoryItem.Create(
+                Guid.Empty,
+                skuId,
+                locationId,
+                null,
+                null,
+                null,
+                qty,
+                0,
+                DateTime.UtcNow,
+                null
+            );
+            await _uow.Repository<InventoryItem>().AddAsync(newItem, ct);
+        }
     }
 
     private async Task<string> GenerateOrderNumber()
@@ -158,15 +188,15 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
 
     private async Task<InboundOrderDto> GetInboundOrderDtoAsync(Guid orderId, CancellationToken ct)
     {
-        var order = await _uow.Repository<InboundOrder>().Query()
-            .Include(x => x.Supplier)
-            .FirstOrDefaultAsync(x => x.Id == orderId, ct)
+        var order = await _uow.Repository<InboundOrder>().GetByIdAsync(orderId, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Đơn nhập không tồn tại");
+
+        var supplier = await _uow.Repository<Supplier>().GetByIdAsync(order.SupplierId, ct);
+        var supplierName = supplier?.Name ?? "";
 
         var items = await (from item in _uow.Repository<InboundItem>().Query()
                             where item.InboundOrderId == orderId
-                            join inv in _uow.Repository<InventoryItem>().Query() on item.InventoryItemId equals inv.Id
-                            join sku in _uow.Repository<Sku>().Query() on inv.SkuId equals sku.Id
+                            join sku in _uow.Repository<Sku>().Query() on item.SkuId equals sku.Id
                             select new InboundItemDto(
                                 sku.SkuCode ?? "",
                                 sku.Name ?? "",
@@ -178,7 +208,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
         return new InboundOrderDto(
             order.Id,
             order.OrderNumber,
-            order.Supplier?.Name ?? "",
+            supplierName,
             order.ExpectedDate,
             order.Status,
             order.TotalValue,
@@ -190,7 +220,6 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
     public async Task<List<InboundOrderDto>> GetListAsync(CancellationToken ct)
     {
         var orders = await _uow.Repository<InboundOrder>().Query()
-            .Include(x => x.Supplier)
             .ToListAsync(ct);
 
         var list = new List<InboundOrderDto>();
