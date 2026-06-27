@@ -7,7 +7,7 @@ namespace WMS.Domain.Entities.PutawayTaskAggregateRoot;
 
 public class PutawayTask : BaseEntity, IAggregateRoot
 {
-    public string PutawayTaskNumber { get; private set; }
+    public string PutawayTaskNumber { get; private set; } = default!;
     public Guid? InboundOrderId { get; private set; }
     public Guid? InboundReceiptId { get; private set; }
     public Guid? QcInspectionId { get; private set; }
@@ -17,8 +17,11 @@ public class PutawayTask : BaseEntity, IAggregateRoot
     private readonly List<PutawayTaskItem> _items = new();
     public IReadOnlyCollection<PutawayTaskItem> Items => _items.AsReadOnly();
 
-    public PutawayTask(string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
+    private PutawayTask() { }
+
+    private PutawayTask(Guid tenantId, string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
     {
+        TenantId = tenantId;
         PutawayTaskNumber = putawayTaskNumber;
         InboundOrderId = inboundOrderId;
         InboundReceiptId = inboundReceiptId;
@@ -26,8 +29,34 @@ public class PutawayTask : BaseEntity, IAggregateRoot
         WarehouseId = warehouseId;
     }
 
-    public void AddItem(PutawayTaskItem item)
+    public static PutawayTask Create(Guid tenantId, string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
     {
+        return new PutawayTask(tenantId, putawayTaskNumber, inboundOrderId, inboundReceiptId, qcInspectionId, warehouseId);
+    }
+
+    public void AddItem(
+        Guid skuId,
+        int putawayQuantity,
+        Guid? targetLocationId = null,
+        Guid? actualLocationId = null,
+        Guid? palletId = null,
+        Guid? supplierId = null,
+        DateTime? expiryDate = null,
+        string? serialNumber = null,
+        string? lotNumber = null)
+    {
+        var item = PutawayTaskItem.Create(
+            TenantId,
+            skuId,
+            putawayQuantity,
+            targetLocationId,
+            actualLocationId,
+            palletId,
+            supplierId,
+            expiryDate,
+            serialNumber,
+            lotNumber);
+
         _items.Add(item);
     }
 

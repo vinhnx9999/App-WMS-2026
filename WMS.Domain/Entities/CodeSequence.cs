@@ -57,7 +57,7 @@ namespace WMS.Domain.Entities
                 .ToString()
                 .PadLeft(PaddingLength, '0');
 
-            return $"{Prefix}{numberPart}";
+            return $"{Prefix}-{numberPart}";
         }
 
 

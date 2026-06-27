@@ -7,6 +7,7 @@ using WMS.Application.Common.Models;
 using WMS.Application.Inbound.Commands.CompletePutaway;
 using WMS.Application.Inbound.Commands.CompleteQc;
 using WMS.Application.Inbound.Commands.CompleteReceipt;
+using WMS.Application.Inbound.Commands.CreateDirectPutaway;
 using WMS.Application.Inbound.Commands.CreateReceipt;
 using WMS.Application.Inbound.Commands.StartQc;
 using WMS.Application.Inbound.DTOs;
@@ -77,6 +78,12 @@ public sealed class InboundEndpoints : IEndpoint
             .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,manager,keeper" })
             .Produces<ApiResponse>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
+
+        group.MapPost("/putaway/direct", CreateDirectPutaway)
+            .WithName("CreateDirectPutaway").WithTags("Inbound")
+            .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,manager,keeper" })
+            .Produces<ApiResponse<Guid>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
     }
 
     private static async Task<IResult> GetList(
@@ -167,10 +174,24 @@ public sealed class InboundEndpoints : IEndpoint
     private static async Task<IResult> CompletePutaway(
         Guid id,
         [FromBody] CompletePutawayRequest request,
+        ICurrentUser currentUser,
         ISender sender,
         CancellationToken ct)
     {
-        await sender.Send(new CompletePutawayCommand(id, request), ct);
+        await sender.Send(new CompletePutawayCommand(currentUser.TenantId, id, request), ct);
         return Results.Ok(ApiResponse.Ok(null, "Đã hoàn tất cất hàng, cập nhật tồn kho và tạo GRN"));
+    }
+
+    private static async Task<IResult> CreateDirectPutaway(
+        [FromBody] CreateDirectPutawayRequest request,
+        [FromServices] IValidator<CreateDirectPutawayRequest> validator,
+        ICurrentUser currentUser,
+        ISender sender,
+        CancellationToken ct)
+    {
+        var requestWithTenant = request with { TenantId = currentUser.TenantId };
+        await ValidationFilter.ValidateAsync(validator, requestWithTenant);
+        var result = await sender.Send(new CreateDirectPutawayCommand(currentUser.TenantId, requestWithTenant), ct);
+        return Results.Ok(ApiResponse<Guid>.Ok(result, "Đã tạo nhiệm vụ cất hàng trực tiếp"));
     }
 }

@@ -101,11 +101,11 @@ _Avoid_: Rule priority, rule weight
 ## Inventory
 
 **InventoryItem**:
-An independent aggregate root identifying a specific quantity of physical goods in the warehouse. It is uniquely identified by the combination of six attributes: `SkuId` (Product SKU), `LocationId` (Physical Location), `SupplierId` (Supplier), `SerialNumber` (Serial Number), `PalletId` (Pallet), and `ExpiryDate` (Expiry Date).
+An independent aggregate root identifying a specific quantity of physical goods in the warehouse. It is uniquely identified by the combination of seven attributes: `SkuId` (Product SKU), `LocationId` (Physical Location), `SupplierId` (Supplier), `SerialNumber` (Serial Number), `PalletId` (Pallet), `ExpiryDate` (Expiry Date), and `LotNumber` (Lot Number). For serial-tracked items, the quantity is always 1, and duplicate active serial numbers within the warehouse are prohibited.
 _Avoid_: Stock line, inventory row
 
 **Pallet**:
-A physical handling unit representing a pallet in the warehouse. An inventory line can belong to a specific Pallet (via PalletId) or contain loose items (PalletId = null). A pallet is identified by a unique PalletCode (also known as PLN) and carries optional attributes such as material (Wood, Plastic, Steel), weight, dimensions (length, width, height), and maximum load capacity.
+A physical handling unit representing a pallet in the warehouse. An inventory line can belong to a specific Pallet (via PalletId) or contain loose items (PalletId = null). A pallet is identified by a unique PalletCode (also known as PLN) and carries optional attributes such as material (Wood, Plastic, Steel), weight, dimensions (length, width, height), and maximum load capacity. Pallets can restrict SKU mixing (`IsMixSku`) and enforce maximum quantity constraints (`MaxQtyInPallet` configured at the SKU level).
 _Avoid_: LPN, pallet unit
 
 **Available Quantity**:

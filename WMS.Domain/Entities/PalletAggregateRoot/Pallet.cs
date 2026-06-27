@@ -13,6 +13,7 @@ public class Pallet : BaseEntity, IAggregateRoot
         TenantId = tenantId;
         PalletCode = palletCode;
         Status = PalletStatus.Empty;
+        IsMixSku = true;
     }
 
     public static Pallet Create(Guid tenantId, string palletCode)
@@ -32,6 +33,7 @@ public class Pallet : BaseEntity, IAggregateRoot
     public decimal? Height { get; private set; }
     public decimal? MaxLoadCapacity { get; private set; }
     public PalletStatus Status { get; private set; } = PalletStatus.Empty;
+    public bool IsMixSku { get; private set; } = true;
 
     public void UpdateProperties(
         PalletMaterial? material,
@@ -52,5 +54,10 @@ public class Pallet : BaseEntity, IAggregateRoot
     public void UpdateStatus(PalletStatus status)
     {
         Status = status;
+    }
+
+    public void UpdateMixSkuOption(bool isMixSku)
+    {
+        IsMixSku = isMixSku;
     }
 }

@@ -24,5 +24,9 @@ public class PalletConfiguration : BaseEntityConfiguration<Pallet>
         builder.Property(e => e.Status)
             .HasConversion<string>()
             .HasMaxLength(50);
+
+        builder.Property(e => e.IsMixSku)
+            .HasDefaultValue(true)
+            .IsRequired();
     }
 }

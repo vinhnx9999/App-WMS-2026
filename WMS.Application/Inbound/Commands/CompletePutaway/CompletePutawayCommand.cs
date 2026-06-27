@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Inbound.DTOs;
 using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.InventoryAggregateRoot;
+using WMS.Domain.Entities.PalletAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Inbound.Commands.CompletePutaway;
 
-public sealed record CompletePutawayCommand(Guid PutawayTaskId, CompletePutawayRequest Request) : IRequest;
+public sealed record CompletePutawayCommand(Guid TenantId, Guid PutawayTaskId, CompletePutawayRequest Request) : IRequest;
 
 public sealed class CompletePutawayCommandHandler(IUnitOfWork uow)
     : IRequestHandler<CompletePutawayCommand>
@@ -21,7 +23,7 @@ public sealed class CompletePutawayCommandHandler(IUnitOfWork uow)
         var req = request.Request;
         var putaway = await _uow.Repository<PutawayTask>().Query()
             .Include(p => p.Items)
-            .FirstOrDefaultAsync(p => p.Id == putawayTaskId && !p.IsDeleted, ct)
+            .FirstOrDefaultAsync(p => p.Id == putawayTaskId && p.TenantId == request.TenantId && !p.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Putaway Task not found");
 
         if (putaway.Status == PutawayStatus.Pending || putaway.Status == PutawayStatus.SentToWcs)
@@ -34,7 +36,61 @@ public sealed class CompletePutawayCommandHandler(IUnitOfWork uow)
             var item = putaway.Items.FirstOrDefault(i => i.SkuId == reqItem.SkuId);
             if (item != null)
             {
-                item.CompletePutaway(reqItem.ActualLocationId);
+                // Validate serial number constraint: quantity must be 1 if serial is specified
+                if (!string.IsNullOrEmpty(reqItem.SerialNumber) && item.PutawayQuantity != 1)
+                {
+                    throw new AppException(400, "INVALID_QUANTITY", "Quantity must be 1 when Serial Number is specified.");
+                }
+
+                // Check serial number uniqueness in active inventory
+                if (!string.IsNullOrEmpty(reqItem.SerialNumber))
+                {
+                    var serialExists = await _uow.Repository<InventoryItem>().Query()
+                        .AnyAsync(ii => ii.TenantId == request.TenantId
+                                        && ii.SerialNumber == reqItem.SerialNumber
+                                        && ii.Quantity > 0
+                                        && !ii.IsDeleted, ct);
+                    if (serialExists)
+                    {
+                        throw new AppException(400, "DUPLICATE_SERIAL", "Serial number already exists in active inventory.");
+                    }
+                }
+
+                Guid? palletId = null;
+                if (!string.IsNullOrEmpty(reqItem.PalletCode))
+                {
+                    var pallet = await _uow.Repository<Pallet>().Query()
+                        .FirstOrDefaultAsync(p => p.TenantId == request.TenantId && p.PalletCode == reqItem.PalletCode && !p.IsDeleted, ct);
+                    if (pallet == null)
+                    {
+                        throw new AppException(404, "PALLET_NOT_FOUND", $"Pallet not found: {reqItem.PalletCode}");
+                    }
+
+                    // Check mixed SKU rule: if IsMixSku is false, verify no different SKU exists in active stock on this pallet
+                    if (!pallet.IsMixSku)
+                    {
+                        var hasDifferentSku = await _uow.Repository<InventoryItem>().Query()
+                            .AnyAsync(ii => ii.TenantId == request.TenantId
+                                            && ii.PalletId == pallet.Id
+                                            && ii.SkuId != reqItem.SkuId
+                                            && ii.Quantity > 0
+                                            && !ii.IsDeleted, ct);
+                        if (hasDifferentSku)
+                        {
+                            throw new AppException(400, "MIXED_SKU_NOT_ALLOWED", "Pallet does not allow mixed SKUs.");
+                        }
+                    }
+
+                    palletId = pallet.Id;
+                }
+
+                item.CompletePutaway(
+                    reqItem.ActualLocationId,
+                    palletId: palletId,
+                    supplierId: reqItem.SupplierId,
+                    expiryDate: reqItem.ExpiryDate,
+                    serialNumber: reqItem.SerialNumber,
+                    lotNumber: reqItem.LotNumber);
             }
         }
 

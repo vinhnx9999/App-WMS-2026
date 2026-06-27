@@ -150,6 +150,7 @@ public static class DependencyInjection
         services.AddScoped<WarehouseProvisioningService>();
         services.AddScoped<IWarehouseRuleResolutionService, WarehouseRuleResolutionService>();
         services.AddScoped<InboundWorkflowOrchestrator>();
+        services.AddScoped<WMS.Domain.Services.PalletPutawayDomainService>();
 
         return services;
     }
