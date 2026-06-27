@@ -16,11 +16,14 @@ using WMS.Application.Inbound.Commands.CreateDirectPutaway;
 using WMS.Application.Inbound.DTOs;
 using WMS.Application.Inbound.Validators;
 using WMS.Domain.Common;
+using WMS.Domain.Entities;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 using Microsoft.EntityFrameworkCore;
 using WMS.Infrastructure.Persistence;
 using WMS.Domain.Entities.PalletAggregateRoot;
 using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Enums;
+using MediatR;
 
 namespace DP.AppWMS.Tests.Inbound;
 
@@ -205,6 +208,11 @@ public class PutawayHandlersTests
 
         task.AddItem(skuId, 10, Guid.NewGuid()); // Qty is 10
 
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
+
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -229,6 +237,188 @@ public class PutawayHandlersTests
         // Assert
         await act.Should().ThrowAsync<WMS.Application.Common.Models.AppException>()
             .WithMessage("*Quantity must be 1 when Serial Number is specified*");
+    }
+
+    [Fact]
+    public async Task CompletePutawayCommandHandler_WhenLocationIsBlocked_ShouldThrowAppExceptionAsync()
+    {
+        // Arrange
+        var (connection, db, uow) = await SetupInMemoryDbAsync();
+        using var _conn = connection;
+        using var _db = db;
+
+        var skuId = Guid.NewGuid();
+        var actualLocationId = Guid.NewGuid();
+        var putawayTaskId = Guid.NewGuid();
+
+        // Create and block the location
+        var location = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-BLOCKED");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(location, actualLocationId);
+        location.SetBlocked(true);
+        db.Locations.Add(location);
+
+        var task = PutawayTask.Create(_tenantId, "PT-001", Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(task, putawayTaskId);
+        task.AddItem(skuId, 10, Guid.NewGuid());
+
+        db.PutawayTasks.Add(task);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new CompletePutawayRequest(new List<CompletePutawayItemRequest>
+        {
+            new CompletePutawayItemRequest(
+                SkuId: skuId,
+                ActualLocationId: actualLocationId,
+                PalletCode: null,
+                SupplierId: null,
+                ExpiryDate: null,
+                SerialNumber: null,
+                LotNumber: null)
+        });
+
+        var handler = new CompletePutawayCommandHandler(uow);
+        var command = new CompletePutawayCommand(_tenantId, putawayTaskId, request);
+
+        // Act
+        var act = () => handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<WMS.Application.Common.Models.AppException>()
+            .WithMessage("*đang bị khóa*");
+    }
+
+    [Fact]
+    public async Task CompletePutawayCommandHandler_WhenTargetLocationInWcsBlockAndPalletCodeIsMissing_ShouldThrowDomainExceptionAsync()
+    {
+        // Arrange
+        var (connection, db, uow) = await SetupInMemoryDbAsync();
+        using var _conn = connection;
+        using var _db = db;
+
+        var skuId = Guid.NewGuid();
+        var actualLocationId = Guid.NewGuid();
+        var putawayTaskId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var areaId = Guid.NewGuid();
+        var blockId = Guid.NewGuid();
+
+        // Create Warehouse and Area to satisfy FK constraints
+        var warehouse = new Warehouse(_tenantId, "WH-01", "WH-01");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(warehouse, warehouseId);
+        db.Warehouses.Add(warehouse);
+
+        var area = warehouse.AddArea("Area-01", "A01", false, false);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(area, areaId);
+        db.WarehouseAreas.Add(area);
+
+        // Create Block with WcsBlockId
+        var block = warehouse.AddBlock(areaId, "B01", "B01", false);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(block, blockId);
+        typeof(Block).GetProperty(nameof(Block.WcsBlockId))!.SetValue(block, "WCS-B01");
+        db.Blocks.Add(block);
+
+        // Create Location within WCS block
+        var location = LocationEntity.Create(_tenantId, warehouseId, areaId, blockId, null, "LOC-WCS");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(location, actualLocationId);
+        db.Locations.Add(location);
+
+        var task = PutawayTask.Create(_tenantId, "PT-001", Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(task, putawayTaskId);
+        task.AddItem(skuId, 10, Guid.NewGuid());
+
+        db.PutawayTasks.Add(task);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new CompletePutawayRequest(new List<CompletePutawayItemRequest>
+        {
+            new CompletePutawayItemRequest(
+                SkuId: skuId,
+                ActualLocationId: actualLocationId,
+                PalletCode: null, // Missing PalletCode
+                SupplierId: null,
+                ExpiryDate: null,
+                SerialNumber: null,
+                LotNumber: null)
+        });
+
+        var handler = new CompletePutawayCommandHandler(uow);
+        var command = new CompletePutawayCommand(_tenantId, putawayTaskId, request);
+
+        // Act
+        var act = () => handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<WMS.Domain.Common.DomainException>()
+            .WithMessage("*PalletCode is required for automated WCS zones*");
+    }
+
+    [Fact]
+    public async Task CompletePutawayCommandHandler_WhenTargetLocationInWcsBlockIsOccupied_ShouldThrowAppExceptionAsync()
+    {
+        // Arrange
+        var (connection, db, uow) = await SetupInMemoryDbAsync();
+        using var _conn = connection;
+        using var _db = db;
+
+        var skuId = Guid.NewGuid();
+        var actualLocationId = Guid.NewGuid();
+        var putawayTaskId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var areaId = Guid.NewGuid();
+        var blockId = Guid.NewGuid();
+
+        // Create Warehouse and Area to satisfy FK constraints
+        var warehouse = new Warehouse(_tenantId, "WH-01", "WH-01");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(warehouse, warehouseId);
+        db.Warehouses.Add(warehouse);
+
+        var area = warehouse.AddArea("Area-01", "A01", false, false);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(area, areaId);
+        db.WarehouseAreas.Add(area);
+
+        // Create Block with WcsBlockId
+        var block = warehouse.AddBlock(areaId, "B01", "B01", false);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(block, blockId);
+        typeof(Block).GetProperty(nameof(Block.WcsBlockId))!.SetValue(block, "WCS-B01");
+        db.Blocks.Add(block);
+
+        // Create Location within WCS block
+        var location = LocationEntity.Create(_tenantId, warehouseId, areaId, blockId, null, "LOC-WCS");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(location, actualLocationId);
+        db.Locations.Add(location);
+
+        // Add active inventory at this location (Quantity > 0)
+        var activeInventory = InventoryItem.Create(_tenantId, skuId, actualLocationId, null, null, Guid.NewGuid(), 5, 10.0m, DateTime.UtcNow, null);
+        db.InventoryItems.Add(activeInventory);
+
+        var task = PutawayTask.Create(_tenantId, "PT-001", Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(task, putawayTaskId);
+        task.AddItem(skuId, 10, Guid.NewGuid());
+
+        db.PutawayTasks.Add(task);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new CompletePutawayRequest(new List<CompletePutawayItemRequest>
+        {
+            new CompletePutawayItemRequest(
+                SkuId: skuId,
+                ActualLocationId: actualLocationId,
+                PalletCode: "PL-001",
+                SupplierId: null,
+                ExpiryDate: null,
+                SerialNumber: null,
+                LotNumber: null)
+        });
+
+        var handler = new CompletePutawayCommandHandler(uow);
+        var command = new CompletePutawayCommand(_tenantId, putawayTaskId, request);
+
+        // Act
+        var act = () => handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<WMS.Application.Common.Models.AppException>()
+            .WithMessage("*đã có hàng tồn kho*");
     }
 
     [Fact]
@@ -264,6 +454,11 @@ public class PutawayHandlersTests
         typeof(BaseEntity).GetProperty(nameof(BaseEntity.TenantId))!.SetValue(task, _tenantId);
 
         task.AddItem(skuId, 1, Guid.NewGuid()); // Quantity must be 1 for serial number
+
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
 
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -308,6 +503,11 @@ public class PutawayHandlersTests
         typeof(BaseEntity).GetProperty(nameof(BaseEntity.TenantId))!.SetValue(task, _tenantId);
 
         task.AddItem(skuId, 5, Guid.NewGuid());
+
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
 
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -357,6 +557,11 @@ public class PutawayHandlersTests
         typeof(BaseEntity).GetProperty(nameof(BaseEntity.TenantId))!.SetValue(task, _tenantId);
 
         task.AddItem(skuId, 5, Guid.NewGuid());
+
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
 
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -424,6 +629,11 @@ public class PutawayHandlersTests
 
         task.AddItem(skuId, 5, Guid.NewGuid());
 
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
+
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -490,6 +700,11 @@ public class PutawayHandlersTests
 
         task.AddItem(skuId, 5, Guid.NewGuid());
 
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
+
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -555,6 +770,11 @@ public class PutawayHandlersTests
         typeof(BaseEntity).GetProperty(nameof(BaseEntity.TenantId))!.SetValue(task, _tenantId);
 
         task.AddItem(skuId, 5, Guid.NewGuid());
+
+        // Create and seed target location
+        var targetLocation = LocationEntity.Create(_tenantId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-TEST");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(targetLocation, actualLocationId);
+        db.Locations.Add(targetLocation);
 
         db.PutawayTasks.Add(task);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -899,26 +1119,107 @@ public class PutawayHandlersTests
 
         // Assert
         result.Should().NotBeEmpty();
-        var task = await db.PutawayTasks.Include(t => t.Items).FirstOrDefaultAsync(t => t.Id == result);
+        var task = await db.PutawayTasks.Include(t => t.Items).FirstOrDefaultAsync(t => t.Id == result, cancellationToken: TestContext.Current.CancellationToken);
         task.Should().NotBeNull();
         task!.Items.Should().HaveCount(1);
-        
+
         var palletId = task.Items.First().PalletId;
         palletId.Should().NotBeNull();
-        
-        var pallet = await db.Pallets.FirstOrDefaultAsync(p => p.Id == palletId);
+
+        var pallet = await db.Pallets.FirstOrDefaultAsync(p => p.Id == palletId, cancellationToken: TestContext.Current.CancellationToken);
         pallet.Should().NotBeNull();
         pallet!.PalletCode.Should().Be("PLT000001");
     }
 
-    private async Task<(Microsoft.Data.Sqlite.SqliteConnection Connection, WmsDbContext Db, UnitOfWork Uow)> SetupInMemoryDbAsync()
+    [Fact]
+    public async Task CompletePutawayCommandHandler_WhenTargetLocationInWcsBlock_ShouldRaiseWcsTaskRequiredEventAsync()
+    {
+        // Arrange
+        var mediatorMock = new Mock<IMediator>();
+        var (connection, db, uow) = await SetupInMemoryDbAsync(mediatorMock.Object);
+        using var _conn = connection;
+        using var _db = db;
+
+        var skuId = Guid.NewGuid();
+        var actualLocationId = Guid.NewGuid();
+        var putawayTaskId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var areaId = Guid.NewGuid();
+        var blockId = Guid.NewGuid();
+        var palletCode = "PL-WCS-001";
+
+        // Create Warehouse and Area to satisfy FK constraints
+        var warehouse = new Warehouse(_tenantId, "WH-WCS", "WH-WCS");
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(warehouse, warehouseId);
+        db.Warehouses.Add(warehouse);
+
+        var area = warehouse.AddArea("Area-WCS", "A-WCS", false, false);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(area, areaId);
+        db.WarehouseAreas.Add(area);
+
+        // Create Block with WcsBlockId
+        var block = warehouse.AddBlock(areaId, "B-WCS", "B-WCS", false);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(block, blockId);
+        typeof(Block).GetProperty(nameof(Block.WcsBlockId))!.SetValue(block, "WCS-B01");
+        db.Blocks.Add(block);
+
+        // Create Location within WCS block with coordinates (1, 2, 3) -> "3.1.2"
+        var location = LocationEntity.Create(_tenantId, warehouseId, areaId, blockId, null, "LOC-WCS-TEST", 1, 2, 3);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(location, actualLocationId);
+        db.Locations.Add(location);
+
+        // Create Pallet
+        var pallet = Pallet.Create(_tenantId, palletCode);
+        db.Pallets.Add(pallet);
+
+        var task = PutawayTask.Create(_tenantId, "PT-WCS-001", Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), warehouseId);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(task, putawayTaskId);
+        task.AddItem(skuId, 10, Guid.NewGuid());
+
+        db.PutawayTasks.Add(task);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new CompletePutawayRequest(new List<CompletePutawayItemRequest>
+        {
+            new CompletePutawayItemRequest(
+                SkuId: skuId,
+                ActualLocationId: actualLocationId,
+                PalletCode: palletCode,
+                SupplierId: null,
+                ExpiryDate: null,
+                SerialNumber: null,
+                LotNumber: "LOT-01")
+        });
+
+        var handler = new CompletePutawayCommandHandler(uow);
+        var command = new CompletePutawayCommand(_tenantId, putawayTaskId, request);
+
+        // Act
+        await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        mediatorMock.Verify(m => m.Publish<DomainEvent>(
+            It.Is<DomainEvent>(e => 
+                e is WcsTaskRequiredEvent &&
+                ((WcsTaskRequiredEvent)e).TenantId == _tenantId &&
+                ((WcsTaskRequiredEvent)e).WarehouseId == warehouseId &&
+                ((WcsTaskRequiredEvent)e).PutawayTaskId == putawayTaskId &&
+                ((WcsTaskRequiredEvent)e).Items.Count == 1 &&
+                ((WcsTaskRequiredEvent)e).Items[0].PalletCode == palletCode &&
+                ((WcsTaskRequiredEvent)e).Items[0].ToLocationCode == "3.1.2" &&
+                ((WcsTaskRequiredEvent)e).Items[0].WcsBlockId == "WCS-B01" &&
+                ((WcsTaskRequiredEvent)e).Items[0].LocationId == actualLocationId),
+            It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    private async Task<(Microsoft.Data.Sqlite.SqliteConnection Connection, WmsDbContext Db, UnitOfWork Uow)> SetupInMemoryDbAsync(MediatR.IMediator? mediator = null)
     {
         var connection = new Microsoft.Data.Sqlite.SqliteConnection("DataSource=:memory:");
         await connection.OpenAsync(TestContext.Current.CancellationToken);
         var options = new DbContextOptionsBuilder<WmsDbContext>()
             .UseSqlite(connection)
             .Options;
-        var db = new WmsDbContext(options, Mock.Of<ICurrentUser>(), Mock.Of<MediatR.IMediator>());
+        var db = new WmsDbContext(options, Mock.Of<ICurrentUser>(), mediator ?? Mock.Of<MediatR.IMediator>());
         await db.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
         var uow = new UnitOfWork(db, Microsoft.Extensions.Logging.Abstractions.NullLogger<UnitOfWork>.Instance);
         return (connection, db, uow);

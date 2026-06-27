@@ -2,10 +2,14 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Application.Inbound.DTOs;
-using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Common;
+using WMS.Domain.Entities;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.PalletAggregateRoot;
+using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Enums;
+using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Inbound.Commands.CompletePutaway;
@@ -26,16 +30,67 @@ public sealed class CompletePutawayCommandHandler(IUnitOfWork uow)
             .FirstOrDefaultAsync(p => p.Id == putawayTaskId && p.TenantId == request.TenantId && !p.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Putaway Task not found");
 
-        if (putaway.Status == PutawayStatus.Pending || putaway.Status == PutawayStatus.SentToWcs)
+        if (putaway.Status == PutawayStatus.Pending)
         {
             putaway.StartProcessing();
         }
+
+        var wcsMovementItems = new List<WcsMovementItem>();
 
         foreach (var reqItem in req.Items)
         {
             var item = putaway.Items.FirstOrDefault(i => i.SkuId == reqItem.SkuId);
             if (item != null)
             {
+                // Verify target location exists, type is storage slot, and is not blocked
+                var location = await _uow.Repository<LocationEntity>().Query()
+                    .FirstOrDefaultAsync(l => l.Id == reqItem.ActualLocationId && l.TenantId == request.TenantId && !l.IsDeleted, ct);
+
+                if (location == null)
+                {
+                    throw new AppException(404, "LOCATION_NOT_FOUND", $"Location not found: {reqItem.ActualLocationId}");
+                }
+
+                if (location.IsBlocked)
+                {
+                    throw new AppException(400, "LOCATION_BLOCKED", $"Location {location.Name} đang bị khóa.");
+                }
+
+                if (!location.CanPutway())
+                {
+                    throw new AppException(400, "INVALID_LOCATION", $"Location {location.Name} cannot be used for putaway.");
+                }
+
+                // Check WCS automatic block rules
+                var block = await _uow.Repository<Block>().Query()
+                    .FirstOrDefaultAsync(b => b.Id == location.BlockId && b.TenantId == request.TenantId && !b.IsDeleted, ct);
+
+
+                if (block != null && !string.IsNullOrEmpty(block.WcsBlockId))
+                {
+                    if (string.IsNullOrEmpty(reqItem.PalletCode))
+                    {
+                        throw new DomainException("PALLET_CODE_REQUIRED", $"PalletCode is required for automated WCS zones. Location {location.Name} belongs to an automated WCS zone.");
+                    }
+
+                    var isOccupied = await _uow.Repository<InventoryItem>().Query()
+                        .AnyAsync(ii => ii.TenantId == request.TenantId
+                                        && ii.LocationId == reqItem.ActualLocationId
+                                        && ii.Quantity > 0
+                                        && !ii.IsDeleted, ct);
+                    if (isOccupied)
+                    {
+                        throw new AppException(400, "LOCATION_OCCUPIED", $"Location {location.Name} đã có hàng tồn kho.");
+                    }
+
+                    wcsMovementItems.Add(new WcsMovementItem(
+                        reqItem.PalletCode,
+                        location.GetLocationCode(),
+                        block.WcsBlockId,
+                        location.Id
+                    ));
+                }
+
                 // Validate serial number constraint: quantity must be 1 if serial is specified
                 if (!string.IsNullOrEmpty(reqItem.SerialNumber) && item.PutawayQuantity != 1)
                 {
@@ -92,6 +147,11 @@ public sealed class CompletePutawayCommandHandler(IUnitOfWork uow)
                     serialNumber: reqItem.SerialNumber,
                     lotNumber: reqItem.LotNumber);
             }
+        }
+
+        if (wcsMovementItems.Count > 0)
+        {
+            putaway.RequestWcsMovements(wcsMovementItems);
         }
 
         putaway.CompleteTask();

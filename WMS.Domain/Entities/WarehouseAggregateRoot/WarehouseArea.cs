@@ -6,7 +6,7 @@ public class WarehouseArea : BaseEntity
 {
     private WarehouseArea() { }
 
-    public WarehouseArea(Guid tenantId, Guid warehouseId, string name, string code, bool isDefault = false, bool isAutomated = false)
+    internal WarehouseArea(Guid tenantId, Guid warehouseId, string name, string code, bool isDefault = false, bool isAutomated = false)
     {
         TenantId = tenantId;
         WarehouseId = warehouseId;
@@ -14,6 +14,11 @@ public class WarehouseArea : BaseEntity
         Code = code;
         IsDefault = isDefault;
         IsAutomated = isAutomated;
+    }
+
+    internal static WarehouseArea Create(Guid tenantId, Guid warehouseId, string name, string code, bool isDefault = false, bool isAutomated = false)
+    {
+        return new WarehouseArea(tenantId, warehouseId, name, code, isDefault, isAutomated);
     }
 
     public Guid WarehouseId { get; private set; }

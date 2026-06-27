@@ -62,7 +62,7 @@ public class PutawayTask : BaseEntity, IAggregateRoot
 
     public void StartProcessing()
     {
-        if (Status != PutawayStatus.Pending && Status != PutawayStatus.SentToWcs)
+        if (Status != PutawayStatus.Pending)
         {
             throw new DomainException("Task can only start processing from Pending or SentToWcs status.");
         }
@@ -95,12 +95,11 @@ public class PutawayTask : BaseEntity, IAggregateRoot
         AddEvent(new PutawayTaskCompletedEvent(this));
     }
 
-    public void MarkSentToWcs()
+    public void RequestWcsMovements(IReadOnlyList<WcsMovementItem> items)
     {
-        if (Status != PutawayStatus.Pending)
+        if (items.Any())
         {
-            throw new DomainException("Task can only be sent to WCS from Pending status.");
+            AddEvent(new WcsTaskRequiredEvent(TenantId, WarehouseId, Id, items));
         }
-        Status = PutawayStatus.SentToWcs;
     }
 }

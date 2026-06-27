@@ -143,7 +143,7 @@ An aggregate root representing a quality inspection session, tracking `PassedQua
 _Avoid_: QC check, inspection form
 
 **PutawayTask**:
-An aggregate root representing the assignment to move received or inspected items to storage locations, integrated with automated systems (WCS) via the `SentToWcs` status when targeting automated areas.
+An aggregate root representing the assignment to move received or inspected items to storage locations, integrated with automated systems (WCS) by generating WcsTask and WcsSubTasks when targeting automated shelving blocks.
 _Avoid_: Stock movement task, placement order
 
 **GoodsReceiptNote (GRN)**:
@@ -153,4 +153,18 @@ _Avoid_: Receiving voucher, completed receipt record
 **InboundOrderHistory**:
 A timeline audit log tracking individual workflow milestones, including the user, timestamp, state transitions, and item quantities.
 _Avoid_: Order logs, workflow audit trail
+
+## WCS Integration
+
+**WcsTask**:
+A master-level integration document representing a group of pallet movement commands sent to the Warehouse Control System (WCS). It holds the WcsBlockId and a rollup status.
+_Avoid_: WCS group, robot task header
+
+**WcsSubTask**:
+A child-level movement command representing the physical transport of a single Pallet from a source location (FromLocationCode, defaults to "0.0.0") to a destination location (ToLocationCode, coordinates "z.x.y").
+_Avoid_: WCS command, robot task detail
+
+**WcsSubTaskHistory**:
+An audit log tracking the life cycle of a WcsSubTask (from creation to robot assignment and completion/failure), recording the timestamp and the specific robot code (e.g. "CRANE-01") executing it.
+_Avoid_: WCS history, robot log
 

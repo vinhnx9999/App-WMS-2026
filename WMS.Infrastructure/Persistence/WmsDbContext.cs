@@ -16,7 +16,6 @@ using WMS.Domain.Entities.Security;
 using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Interfaces;
-
 using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
 using WMS.Domain.Entities.QcInspectionAggregateRoot;
@@ -116,6 +115,7 @@ public class WmsDbContext(
         var domainEntities = ChangeTracker.Entries<BaseEntity>()
             .Where(x => x.Entity.DomainEvents.Any())
             .ToList();
+
 
         var domainEvents = domainEntities
             .SelectMany(x => x.Entity.DomainEvents)
