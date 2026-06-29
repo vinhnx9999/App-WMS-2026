@@ -12,7 +12,9 @@ import {
   Sun,
   Moon,
   Box,
-  Tags
+  Tags,
+  ArrowDownToLine,
+  ArrowRight
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -178,7 +180,46 @@ export default function TopMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
 
-        {/* 3. Strategy & Rules Link */}
+        {/* 3. Inbound (Dropdown Menu, click-only) */}
+        <NavigationMenuItem>
+          <NavigationMenuTrigger
+            onPointerEnter={preventHover}
+            onPointerLeave={preventHover}
+            onPointerMove={preventHover}
+            className={`text-sm transition-all ${location.pathname.startsWith("/inbound")
+              ? "text-primary bg-slate-100 dark:bg-slate-800 font-semibold"
+              : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/30 font-medium"
+              }`}
+          >
+            <ArrowDownToLine className="size-4 mr-2" />
+            {t("translation:navigation.inbound")}
+          </NavigationMenuTrigger>
+          <NavigationMenuContent
+            onPointerEnter={preventHover}
+            onPointerLeave={preventHover}
+            onPointerMove={preventHover}
+            className="p-1.5 bg-popover text-popover-foreground border border-border rounded-lg shadow-md min-w-[200px]"
+          >
+            <ul className="flex flex-col gap-1 w-full">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link
+                    to="/inbound/direct"
+                    className={`flex items-center gap-2.5 px-3 py-2 text-sm rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${location.pathname === "/inbound/direct"
+                      ? "font-semibold text-primary bg-accent/50"
+                      : "font-medium"
+                      }`}
+                  >
+                    <ArrowRight className="size-4 text-slate-400" />
+                    {t("translation:navigation.inboundDirect")}
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        {/* 4. Strategy & Rules Link */}
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <NavLink

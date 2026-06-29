@@ -4,12 +4,17 @@
       "search": "Tìm kiếm",
       "cancel": "Hủy",
       "delete": "Xóa",
-      "save": "Lưu"
+      "save": "Lưu",
+      "retry": "Thử lại"
     },
     "loading": "Đang tải dữ liệu",
     "noData": "Không có dữ liệu",
     "noWarehouse": "Không có kho hàng",
-    "checkingSession": "Đang kiểm tra phiên đăng nhập"
+    "checkingSession": "Đang kiểm tra phiên đăng nhập",
+    "zoomIn": "Phóng to",
+    "zoomOut": "Thu nhỏ",
+    "fitToScreen": "Vừa màn hình",
+    "reload": "Tải lại"
   },
   "navigation": {
     "dashboard": "Bảng điều khiển",
@@ -25,7 +30,9 @@
     "profile": "Thông tin cá nhân",
     "settings": "Cấu hình tài khoản",
     "logout": "Đăng xuất",
-    "admin": "Quản trị viên"
+    "admin": "Quản trị viên",
+    "inbound": "Nhập hàng",
+    "inboundDirect": "Cất hàng trực tiếp"
   },
   "products": {
     "addProduct": "Thêm sản phẩm",
@@ -237,6 +244,20 @@
       "duplicateCode": "Mã khách hàng đã tồn tại trong hệ thống.",
       "validationFailed": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.",
       "generic": "Đã xảy ra lỗi. Vui lòng thử lại sau."
+    }
+  },
+  "inbound": {
+    "warehouseMap": "Bản đồ vị trí kho hàng",
+    "selectFloor": "Chọn tầng",
+    "floor": "Tầng {{floor}}",
+    "noLocationsFound": "Không tìm thấy vị trí.",
+    "statusLabel": "Trạng thái:",
+    "status": {
+      "empty": "Vị trí trống",
+      "occupied": "Có chứa hàng",
+      "path": "Lối đi",
+      "blocked": "Vị trí bị khóa",
+      "lift": "Khu vực thang máy"
     }
   }
 }

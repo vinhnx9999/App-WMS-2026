@@ -119,6 +119,7 @@ public static class SeedData
         //    db.Warehouses.AddRange(wh1, wh2);
         //}
 
-        //await db.SaveChangesAsync();
+        await WarehouseMapSeeder.SeedAsync(db);
+        await db.SaveChangesAsync();
     }
 }

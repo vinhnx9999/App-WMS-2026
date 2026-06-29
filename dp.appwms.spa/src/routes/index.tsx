@@ -9,6 +9,7 @@ import SupplierListPage from "@/features/master-data/suppliers/SupplierListPage"
 import SkusListPage from "@/features/master-data/skus/SkusListPage";
 import ProductListPage from "@/features/master-data/product/ProductListPage";
 import CustomerListPage from "../features/master-data/customers/CustomerListPage";
+import InboundDirectPage from "@/features/inbound/InboundDirectPage";
 
 export const router = createBrowserRouter([
     {
@@ -52,6 +53,15 @@ export const router = createBrowserRouter([
                         element: <CustomerListPage />,
                     },
                 ],
+            },
+            {
+                path: "inbound",
+                children: [
+                    {
+                        path: "direct",
+                        element: <InboundDirectPage />,
+                    }
+                ]
             },
             {
                 path: "rules",

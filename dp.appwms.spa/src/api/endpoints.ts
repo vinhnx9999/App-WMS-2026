@@ -19,6 +19,12 @@ export const ENDPOINTS = {
     },
     WAREHOUSE: {
         LOOKUP: Base_URL + "/warehouses/lookup",
+    },
+    LOCATION: {
+        OCCUPANCY: Base_URL + "/locations/occupancy",
+    },
+    INBOUND: {
+        DIRECT_PUTAWAY: Base_URL + "/inbound/putaway/direct",
     }
 } as const;
 

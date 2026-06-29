@@ -1,29 +1,31 @@
 using FluentAssertions;
+using MediatR;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Linq.Expressions;
 using WMS.Application.Common.Service;
+using WMS.Application.Inbound.Commands.CompletePutaway;
+using WMS.Application.Inbound.Commands.CreateDirectPutaway;
+using WMS.Application.Inbound.DTOs;
 using WMS.Application.Inbound.Handlers;
+using WMS.Application.Inbound.Validators;
+using WMS.Domain.Common;
+using WMS.Domain.Entities;
 using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
+using WMS.Domain.Entities.PalletAggregateRoot;
 using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.SkuAggregateRoot;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
+using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
-using WMS.Application.Inbound.Commands.CompletePutaway;
-using WMS.Application.Inbound.Commands.CreateDirectPutaway;
-using WMS.Application.Inbound.DTOs;
-using WMS.Application.Inbound.Validators;
-using WMS.Domain.Common;
-using WMS.Domain.Entities;
-using WMS.Domain.Entities.WarehouseAggregateRoot;
-using Microsoft.EntityFrameworkCore;
+using WMS.Domain.Services;
 using WMS.Infrastructure.Persistence;
-using WMS.Domain.Entities.PalletAggregateRoot;
-using WMS.Domain.Entities.SkuAggregateRoot;
-using WMS.Domain.Enums;
-using MediatR;
 
 namespace DP.AppWMS.Tests.Inbound;
 
@@ -1067,7 +1069,7 @@ public class PutawayHandlersTests
         var act = () => handler.Handle(command, CancellationToken.None);
 
         // Assert
-        await act.Should().ThrowAsync<WMS.Domain.Common.DomainException>()
+        await act.Should().ThrowAsync<DomainException>()
             .WithMessage("*Adding quantity exceeds the maximum pallet capacity*");
     }
 
@@ -1111,7 +1113,7 @@ public class PutawayHandlersTests
                     LotNumber: null)
             });
 
-        var handler = new CreateDirectPutawayCommandHandler(uow, seqGenMock.Object, new WMS.Domain.Services.PalletPutawayDomainService());
+        var handler = new CreateDirectPutawayCommandHandler(uow, seqGenMock.Object, new PalletPutawayDomainService());
         var command = new CreateDirectPutawayCommand(_tenantId, request);
 
         // Act
@@ -1199,7 +1201,7 @@ public class PutawayHandlersTests
 
         // Assert
         mediatorMock.Verify(m => m.Publish<DomainEvent>(
-            It.Is<DomainEvent>(e => 
+            It.Is<DomainEvent>(e =>
                 e is WcsTaskRequiredEvent &&
                 ((WcsTaskRequiredEvent)e).TenantId == _tenantId &&
                 ((WcsTaskRequiredEvent)e).WarehouseId == warehouseId &&
@@ -1212,9 +1214,9 @@ public class PutawayHandlersTests
             It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    private async Task<(Microsoft.Data.Sqlite.SqliteConnection Connection, WmsDbContext Db, UnitOfWork Uow)> SetupInMemoryDbAsync(MediatR.IMediator? mediator = null)
+    private async Task<(SqliteConnection Connection, WmsDbContext Db, UnitOfWork Uow)> SetupInMemoryDbAsync(MediatR.IMediator? mediator = null)
     {
-        var connection = new Microsoft.Data.Sqlite.SqliteConnection("DataSource=:memory:");
+        var connection = new SqliteConnection("DataSource=:memory:");
         await connection.OpenAsync(TestContext.Current.CancellationToken);
         var options = new DbContextOptionsBuilder<WmsDbContext>()
             .UseSqlite(connection)
