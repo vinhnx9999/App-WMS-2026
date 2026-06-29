@@ -21,5 +21,8 @@ public class WarehouseConfiguration : BaseEntityConfiguration<Warehouse>
             .WithOne()
             .HasForeignKey(a => a.WarehouseId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        // Use backing field _areas for materialization (collection is sealed as IReadOnlyCollection)
+        builder.Navigation(w => w.Areas).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

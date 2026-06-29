@@ -26,6 +26,32 @@ public class WarehouseArea : BaseEntity
     public string Code { get; private set; } = null!;
     public bool IsDefault { get; private set; }
     public bool IsAutomated { get; private set; }
-    public ICollection<Block> Blocks { get; private set; } = [];
-}
 
+    private List<Block> _blocks = [];
+
+    /// <summary>
+    /// Read-only access to Blocks. All mutations must go through the Warehouse aggregate root.
+    /// </summary>
+    public IReadOnlyCollection<Block> Blocks => _blocks.AsReadOnly();
+
+    /// <summary>
+    /// Add a block to this area. Only callable within the domain assembly (via Warehouse aggregate root).
+    /// </summary>
+    internal void AddBlock(Block block)
+    {
+        _blocks.Add(block);
+    }
+
+    /// <summary>
+    /// Soft-delete a block in this area. Only callable within the domain assembly (via Warehouse aggregate root).
+    /// </summary>
+    internal void RemoveBlock(Guid blockId, string? deletedBy = null)
+    {
+        var block = _blocks.FirstOrDefault(b => b.Id == blockId && !b.IsDeleted);
+        if (block == null)
+        {
+            throw new DomainException($"Block with ID {blockId} not found in area.");
+        }
+        block.MarkDeleted(deletedBy);
+    }
+}

@@ -19,25 +19,56 @@ public class Warehouse : BaseEntity, IAggregateRoot
     public string Code { get; private set; } = default!;
     public string? Address { get; private set; }
 
-    public ICollection<WarehouseArea> Areas { get; private set; } = [];
+    private List<WarehouseArea> _areas = [];
+
+    /// <summary>
+    /// Read-only access to Areas. All mutations must go through aggregate root methods.
+    /// </summary>
+    public IReadOnlyCollection<WarehouseArea> Areas => _areas.AsReadOnly();
 
     public WarehouseArea AddArea(string name, string code, bool isDefault = false, bool isAutomated = false)
     {
         var area = WarehouseArea.Create(TenantId, Id, name, code, isDefault, isAutomated);
-        Areas.Add(area);
+        _areas.Add(area);
         return area;
     }
 
     public Block AddBlock(Guid areaId, string name, string code, bool isDefault = false)
     {
-        var area = Areas.FirstOrDefault(a => a.Id == areaId && !a.IsDeleted);
+        var area = _areas.FirstOrDefault(a => a.Id == areaId && !a.IsDeleted);
         if (area == null)
         {
             throw new InvalidOperationException($"Area with ID {areaId} not found in warehouse.");
         }
         var block = Block.Create(TenantId, Id, areaId, name, code, isDefault);
-        area.Blocks.Add(block);
+        area.AddBlock(block);
         return block;
+    }
+
+    /// <summary>
+    /// Soft-delete an area and all its blocks.
+    /// </summary>
+    public void RemoveArea(Guid areaId, string? deletedBy = null)
+    {
+        var area = _areas.FirstOrDefault(a => a.Id == areaId && !a.IsDeleted);
+        if (area == null)
+        {
+            throw new InvalidOperationException($"Area with ID {areaId} not found in warehouse.");
+        }
+        area.MarkDeleted(deletedBy);
+    }
+
+    /// <summary>
+    /// Soft-delete a block within a specific area.
+    /// </summary>
+    public void RemoveBlock(Guid areaId, Guid blockId, string? deletedBy = null)
+    {
+        var area = _areas.FirstOrDefault(a => a.Id == areaId && !a.IsDeleted);
+        if (area == null)
+        {
+            throw new InvalidOperationException($"Area with ID {areaId} not found in warehouse.");
+        }
+        area.RemoveBlock(blockId, deletedBy);
     }
 
     /// <summary>
@@ -46,7 +77,7 @@ public class Warehouse : BaseEntity, IAggregateRoot
     /// <returns></returns>
     public (WarehouseArea DefaultArea, Block DefaultBlock) EnsureDefaultStructure()
     {
-        var defaultArea = Areas.FirstOrDefault(a => a.IsDefault && !a.IsDeleted);
+        var defaultArea = _areas.FirstOrDefault(a => a.IsDefault && !a.IsDeleted);
         if (defaultArea == null)
         {
             defaultArea = AddArea("Default", "DEFAULT", true);

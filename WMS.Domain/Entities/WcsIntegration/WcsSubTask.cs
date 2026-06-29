@@ -6,7 +6,6 @@ namespace WMS.Domain.Entities.WcsIntegration;
 public class WcsSubTask : BaseEntity
 {
     public Guid WcsTaskId { get; private set; }
-    public string SubTaskCode { get; private set; } = null!;
     public string PalletCode { get; private set; } = null!;
     public string FromLocationCode { get; private set; } = "0.0.0";
     public string ToLocationCode { get; private set; } = null!;
@@ -19,7 +18,6 @@ public class WcsSubTask : BaseEntity
     public WcsSubTask(
         Guid tenantId,
         Guid wcsTaskId,
-        string subTaskCode,
         string palletCode,
         string toLocationCode,
         string fromLocationCode = "0.0.0",
@@ -27,7 +25,6 @@ public class WcsSubTask : BaseEntity
     {
         TenantId = tenantId;
         WcsTaskId = wcsTaskId;
-        SubTaskCode = subTaskCode;
         PalletCode = palletCode;
         ToLocationCode = toLocationCode;
         FromLocationCode = fromLocationCode;

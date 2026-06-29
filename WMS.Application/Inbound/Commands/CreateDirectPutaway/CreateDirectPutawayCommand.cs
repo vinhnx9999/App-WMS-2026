@@ -112,6 +112,7 @@ public sealed class CreateDirectPutawayCommandHandler(
         var currentQuantitiesOnPalletList = await _uow.Repository<InventoryItem>().Query()
             .Where(ii => ii.TenantId == tenantId && ii.PalletId == pallet.Id && ii.Quantity > 0 && !ii.IsDeleted)
             .ToListAsync(ct);
+
         var currentQuantitiesOnPallet = currentQuantitiesOnPalletList
             .GroupBy(ii => ii.SkuId)
             .ToDictionary(g => g.Key, g => g.Sum(ii => ii.Quantity));

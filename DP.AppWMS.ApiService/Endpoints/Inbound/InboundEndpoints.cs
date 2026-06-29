@@ -184,14 +184,11 @@ public sealed class InboundEndpoints : IEndpoint
 
     private static async Task<IResult> CreateDirectPutaway(
         [FromBody] CreateDirectPutawayRequest request,
-        [FromServices] IValidator<CreateDirectPutawayRequest> validator,
         ICurrentUser currentUser,
         ISender sender,
         CancellationToken ct)
     {
-        var requestWithTenant = request with { TenantId = currentUser.TenantId };
-        await ValidationFilter.ValidateAsync(validator, requestWithTenant);
-        var result = await sender.Send(new CreateDirectPutawayCommand(currentUser.TenantId, requestWithTenant), ct);
+        var result = await sender.Send(new CreateDirectPutawayCommand(currentUser.TenantId, request), ct);
         return Results.Ok(ApiResponse<Guid>.Ok(result, "Đã tạo nhiệm vụ cất hàng trực tiếp"));
     }
 }

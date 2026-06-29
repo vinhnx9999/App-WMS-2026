@@ -111,37 +111,35 @@ public class WmsDbContext(
             }
         }
 
-        // Get domain events
-        var domainEntities = ChangeTracker.Entries<BaseEntity>()
-            .Where(x => x.Entity.DomainEvents.Any())
-            .ToList();
-
-
-        var domainEvents = domainEntities
-            .SelectMany(x => x.Entity.DomainEvents)
-            .ToList();
-
-        var result = await base.SaveChangesAsync(ct);
-
-        // Publish events and clear them after successful save
-        await DispatchDomainEventsAsync(domainEntities, domainEvents, ct);
-
-        return result;
-    }
-
-    private async Task DispatchDomainEventsAsync(
-        List<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity>> domainEntities,
-        List<DomainEvent> domainEvents,
-        CancellationToken ct)
-    {
-        foreach (var entity in domainEntities)
+        // Dispatch domain events before saving to database.
+        // We use a loop because event handlers might enqueue new domain events in the tracker.
+        while (true)
         {
-            entity.Entity.ClearEvents();
+            var domainEntities = ChangeTracker.Entries<BaseEntity>()
+                .Where(x => x.Entity.DomainEvents.Any())
+                .ToList();
+
+            if (!domainEntities.Any())
+            {
+                break;
+            }
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.DomainEvents)
+                .ToList();
+
+            // Clear events immediately to prevent infinite loops if handlers trigger more updates
+            foreach (var entity in domainEntities)
+            {
+                entity.Entity.ClearEvents();
+            }
+
+            foreach (var domainEvent in domainEvents)
+            {
+                await mediator.Publish(domainEvent, ct);
+            }
         }
 
-        foreach (var domainEvent in domainEvents)
-        {
-            await mediator.Publish(domainEvent, ct);
-        }
+        return await base.SaveChangesAsync(ct);
     }
 }
