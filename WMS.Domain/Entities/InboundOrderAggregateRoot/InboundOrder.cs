@@ -16,6 +16,8 @@ public class InboundOrder : BaseEntity, IAggregateRoot
     public DateOnly? ReceivedDate { get; set; }
     public InboundStatus Status { get; set; } = InboundStatus.Pending;
     public decimal TotalValue { get; set; }
+    // TODO : Need more description for this PO 
+    // Should Use value objects
     public string? Notes { get; set; }
 
     public ICollection<InboundItem> Items { get; set; } = [];

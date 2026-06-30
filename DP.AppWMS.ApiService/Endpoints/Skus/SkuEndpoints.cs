@@ -10,6 +10,7 @@ using WMS.Application.Skus.Queries.GetSkuById;
 using WMS.Application.Skus.Queries.GetSkuImportSession;
 using WMS.Application.Skus.Queries.SearchSkuImportSessions;
 using WMS.Application.Skus.Queries.SearchSkus;
+using WMS.Application.Skus.Queries.SkuLookup;
 using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Skus;
@@ -81,6 +82,10 @@ public sealed class SkuEndpoints : IEndpoint
             .WithName("DeleteSku").WithTags("Skus").RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
+
+        group.MapGet("/lookup", LookupSkus)
+            .WithName("LookupSkus").WithTags("Skus").RequireAuthorization()
+            .Produces<ApiResponse<List<SkuLookupResponse>>>(StatusCodes.Status200OK);
     }
 
     #endregion
@@ -280,6 +285,15 @@ public sealed class SkuEndpoints : IEndpoint
         ), cancellationToken);
 
         return Results.Ok(ApiResponse<UpdateSkuImportRowResponse>.Ok(result));
+    }
+
+    private async Task<IResult> LookupSkus(
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new SkuLookupQuery(currentUser.TenantId), cancellationToken);
+        return Results.Ok(ApiResponse<List<SkuLookupResponse>>.Ok(result));
     }
 
     #endregion

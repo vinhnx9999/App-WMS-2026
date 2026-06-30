@@ -12,7 +12,10 @@ public class QcInspectionCompletedEventHandler(
     public async Task Handle(QcInspectionCompletedEvent notification, CancellationToken ct)
     {
         var inspection = notification.Inspection;
-        if (inspection.InboundOrderId == null) return;
+        if (inspection.InboundOrderId == null)
+        {
+            return;
+        }
 
         var history = new InboundOrderHistory(
             inspection.InboundOrderId.Value,
@@ -20,7 +23,7 @@ public class QcInspectionCompletedEventHandler(
             inspection.Id,
             null,
             null,
-            currentUser.Id,
+            currentUser.TenantId,
             currentUser.Email ?? "System",
             "QC",
             "QC_Completed",

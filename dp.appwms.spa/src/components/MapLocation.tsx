@@ -22,6 +22,7 @@ export interface LocationOccupancy {
 
 interface MapLocationProps {
     selectedLocationId?: string;
+    suggestedLocationIds?: string[];
     onSelectLocation?: (location: LocationOccupancy) => void;
 }
 
@@ -38,7 +39,7 @@ const SHADOW_OFFSET_SELECTED = { x: 1, y: 1 };
 const SHADOW_OFFSET_NONE = { x: 0, y: 0 };
 const LOD_SCALE_THRESHOLD = 0.5;
 
-const MapLocation = memo(function MapLocation({ selectedLocationId, onSelectLocation }: MapLocationProps) {
+const MapLocation = memo(function MapLocation({ selectedLocationId, suggestedLocationIds, onSelectLocation }: MapLocationProps) {
     const { t } = useTranslation();
     const { selectedWarehouse } = useWarehouseStore();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -368,6 +369,7 @@ const MapLocation = memo(function MapLocation({ selectedLocationId, onSelectLoca
                         <Layer>
                             {floorLocations.map((loc) => {
                                 const isSelected = loc.id === selectedLocationId;
+                                const isSuggested = suggestedLocationIds?.includes(loc.id) || false;
                                 const color = COLOR_MAP[loc.occupancyStatus] || "#94a3b8";
 
                                 // Map relative grid coordinate to pixel position
@@ -381,6 +383,7 @@ const MapLocation = memo(function MapLocation({ selectedLocationId, onSelectLoca
                                         key={loc.id}
                                         loc={loc}
                                         isSelected={isSelected}
+                                        isSuggested={isSuggested}
                                         isSelectable={isSelectable}
                                         color={color}
                                         px={px}
@@ -460,6 +463,7 @@ export default MapLocation;
 interface LocationCellProps {
     loc: LocationOccupancy;
     isSelected: boolean;
+    isSuggested: boolean;
     isSelectable: boolean;
     color: string;
     px: number;
@@ -475,6 +479,7 @@ interface LocationCellProps {
 const LocationCell = memo(function LocationCell({
     loc,
     isSelected,
+    isSuggested,
     isSelectable,
     color,
     px,
@@ -506,8 +511,9 @@ const LocationCell = memo(function LocationCell({
                 height={CELL_SIZE}
                 fill={color}
                 cornerRadius={4}
-                stroke={isSelected ? "#ffffff" : "#1e293b"}
-                strokeWidth={isSelected ? 3 : 1}
+                stroke={isSelected ? "#ffffff" : isSuggested ? "#a855f7" : "#1e293b"}
+                strokeWidth={isSelected ? 3 : isSuggested ? 2.5 : 1}
+                dash={isSuggested && !isSelected ? [4, 2] : undefined}
                 shadowColor={isSelected ? "#000" : undefined}
                 shadowBlur={isSelected ? 8 : 0}
                 shadowOpacity={isSelected ? 0.4 : 0}

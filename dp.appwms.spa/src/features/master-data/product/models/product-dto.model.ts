@@ -1,7 +1,6 @@
 /**
  * Product Data Transfer Object
  * @param id - Product ID
- * @param tenantId - Tenant ID
  * @param productCode - Product Code
  * @param productName - Product Name
  * @param description - Description
@@ -12,7 +11,6 @@
  */
 export interface ProductDto {
     id: string;
-    tenantId: string;
     productCode: string;
     productName: string | null;
     description: string | null;

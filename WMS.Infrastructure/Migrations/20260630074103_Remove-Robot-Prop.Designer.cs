@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WMS.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using WMS.Infrastructure.Persistence;
 namespace WMS.Infrastructure.Migrations
 {
     [DbContext(typeof(WmsDbContext))]
-    partial class WmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260630074103_Remove-Robot-Prop")]
+    partial class RemoveRobotProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1325,6 +1328,9 @@ namespace WMS.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<Guid?>("ZoneId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
@@ -1336,6 +1342,8 @@ namespace WMS.Infrastructure.Migrations
                     b.HasIndex("Status");
 
                     b.HasIndex("TenantId");
+
+                    b.HasIndex("ZoneId");
 
                     b.HasIndex("TenantId", "SkuId", "LocationId", "SupplierId", "SerialNumber", "PalletId", "ExpiryDate")
                         .IsUnique()
@@ -3588,6 +3596,13 @@ namespace WMS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WMS.Domain.Entities.InventoryAggregateRoot.InventoryItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.Zone", null)
+                        .WithMany("Items")
+                        .HasForeignKey("ZoneId");
+                });
+
             modelBuilder.Entity("WMS.Domain.Entities.LocationEntity", b =>
                 {
                     b.HasOne("WMS.Domain.Entities.Zone", null)
@@ -3786,6 +3801,11 @@ namespace WMS.Infrastructure.Migrations
             modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsTask", b =>
                 {
                     b.Navigation("SubTasks");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.Zone", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

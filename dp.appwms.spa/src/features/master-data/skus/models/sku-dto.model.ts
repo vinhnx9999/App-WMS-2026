@@ -1,7 +1,6 @@
 /**
  * Sku Data Transfer Object
  * @param id - SKU ID
- * @param tenantId - Tenant ID
  * @param productId - Product ID
  * @param productCode - Product Code
  * @param productName - Product Name
@@ -18,7 +17,6 @@
 
 export interface SkuDto {
     id: string;
-    tenantId: string;
     productId: string | null;
     productCode: string | null;
     productName: string | null;

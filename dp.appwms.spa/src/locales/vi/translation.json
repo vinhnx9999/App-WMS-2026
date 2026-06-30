@@ -258,6 +258,54 @@
       "path": "Lối đi",
       "blocked": "Vị trí bị khóa",
       "lift": "Khu vực thang máy"
+    },
+    "tabs": {
+      "po": "Đơn mua hàng (PO)",
+      "receive": "Nhận hàng",
+      "qc": "Kiểm hàng (QC)",
+      "putaway": "Cất hàng (Putaway)",
+      "directPutaway": "Cất hàng trực tiếp",
+      "putawayInfo": "Thông tin cất hàng"
+    },
+    "form": {
+      "sku": "Mã SKU sản phẩm",
+      "skuPlaceholder": "Quét hoặc chọn SKU",
+      "quantity": "Số lượng",
+      "quantityPlaceholder": "Nhập số lượng",
+      "location": "Vị trí / Pallet",
+      "locationPlaceholder": "Quét hoặc chọn vị trí",
+      "targetLocation": "Vị trí đích",
+      "supplier": "Nhà cung cấp",
+      "supplierPlaceholder": "Chọn nhà cung cấp",
+      "lotNumber": "Số lô",
+      "lotNumberPlaceholder": "Nhập số lô",
+      "expiryDate": "Hạn sử dụng",
+      "expiryDatePlaceholder": "Chọn hạn sử dụng",
+      "rememberLot": "Ghi nhớ thông tin lô & Hạn dùng",
+      "advancedFields": "Thông tin chi tiết (F4)",
+      "addToDraft": "Thêm vào hàng chờ",
+      "submit": "Xác nhận cất hàng",
+      "submitHint": "Ấn Ctrl + Enter để xác nhận toàn bộ",
+      "errors": {
+        "skuRequired": "Vui lòng chọn SKU",
+        "quantityRequired": "Vui lòng nhập số lượng",
+        "quantityPositive": "Số lượng phải lớn hơn 0",
+        "locationRequired": "Vui lòng chọn vị trí cất hàng",
+        "mixSupplierWarning": "Cảnh báo: Vị trí này đã chứa hàng của nhà cung cấp khác."
+      }
+    },
+    "draft": {
+      "title": "Danh sách hàng chờ cất",
+      "empty": "Chưa có sản phẩm nào chờ cất. Hãy nhập từ form.",
+      "clearAll": "Xóa hết",
+      "confirmClear": "Bạn có chắc chắn muốn xóa toàn bộ danh sách hàng chờ cất không?",
+      "headers": {
+        "sku": "Sản phẩm",
+        "qty": "SL",
+        "location": "Vị trí",
+        "details": "Thông tin lô",
+        "actions": "Thao tác"
+      }
     }
   }
 }

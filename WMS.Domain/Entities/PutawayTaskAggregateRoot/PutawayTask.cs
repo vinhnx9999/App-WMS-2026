@@ -71,10 +71,10 @@ public class PutawayTask : BaseEntity, IAggregateRoot
 
     public void CompleteTask()
     {
-        if (Status != PutawayStatus.Processing)
-        {
-            throw new DomainException("Task can only be completed from Processing status.");
-        }
+        // if (Status != PutawayStatus.Processing)
+        // {
+        //     throw new DomainException("Task can only be completed from Processing status.");
+        // }
 
         foreach (var item in _items)
         {

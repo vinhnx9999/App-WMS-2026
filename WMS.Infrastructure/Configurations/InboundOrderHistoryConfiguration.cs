@@ -10,6 +10,6 @@ public class InboundOrderHistoryConfiguration : BaseEntityConfiguration<InboundO
     {
         builder.ToTable("inbound_order_histories");
         builder.HasIndex(x => x.InboundOrderId);
-        builder.HasIndex(x => x.UserId);
+
     }
 }

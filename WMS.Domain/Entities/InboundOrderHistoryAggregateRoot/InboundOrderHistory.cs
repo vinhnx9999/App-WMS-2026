@@ -10,7 +10,6 @@ public class InboundOrderHistory : BaseEntity, IAggregateRoot
     public Guid? QcInspectionId { get; private set; }
     public Guid? PutawayTaskId { get; private set; }
     public Guid? GoodsReceiptNoteId { get; private set; }
-    public Guid UserId { get; private set; }
     public string PerformedBy { get; private set; }
     public string Step { get; private set; }
     public string Action { get; private set; }
@@ -31,7 +30,7 @@ public class InboundOrderHistory : BaseEntity, IAggregateRoot
         Guid? qcInspectionId,
         Guid? putawayTaskId,
         Guid? goodsReceiptNoteId,
-        Guid userId,
+        Guid tenantId,
         string performedBy,
         string step,
         string action,
@@ -42,7 +41,7 @@ public class InboundOrderHistory : BaseEntity, IAggregateRoot
         QcInspectionId = qcInspectionId;
         PutawayTaskId = putawayTaskId;
         GoodsReceiptNoteId = goodsReceiptNoteId;
-        UserId = userId;
+        TenantId = tenantId;
         PerformedBy = performedBy;
         Step = step;
         Action = action;

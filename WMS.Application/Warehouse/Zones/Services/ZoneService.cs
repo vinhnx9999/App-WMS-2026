@@ -17,7 +17,6 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
     public async Task<List<ZoneDto>> GetAllAsync(CancellationToken ct)
     {
         var zones = await _uow.Repository<Zone>().Query()
-            .Include(z => z.Items)
             .Where(z => !z.IsDeleted)
             .OrderBy(z => z.ZoneCode)
             .ToListAsync(ct);
@@ -47,15 +46,28 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
                     Used = g.Count(x => inventoryLocs.Contains(x.Id))
                 });
 
+        var itemsCountByZone = await (from item in _uow.Repository<InventoryItem>().Query()
+                                      where !item.IsDeleted
+                                      join loc in _uow.Repository<LocationEntity>().Query() on item.LocationId equals loc.Id
+                                      where !loc.IsDeleted && loc.ZoneId != null
+                                      group item by loc.ZoneId into g
+                                      select new
+                                      {
+                                          ZoneId = g.Key!.Value,
+                                          Count = g.Count()
+                                      })
+                                     .ToDictionaryAsync(x => x.ZoneId, x => x.Count, ct);
+
         return [.. zones.Select(z => {
             statsByZone.TryGetValue(z.Id, out var stats);
             int total = stats?.Total ?? 0;
             int used = stats?.Used ?? 0;
             decimal pct = total > 0 ? (decimal)used / total * 100 : 0;
+            itemsCountByZone.TryGetValue(z.Id, out var itemsCount);
             return new ZoneDto(
                 z.Id, z.Name, z.ZoneCode, z.ZoneType,
                 total, used, pct,
-                z.Description, z.Items.Count(i => !i.IsDeleted)
+                z.Description, itemsCount
             );
         })];
     }
@@ -63,7 +75,6 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
     public async Task<ZoneDto> GetByIdAsync(Guid id, CancellationToken ct)
     {
         var z = await _uow.Repository<Zone>().Query()
-            .Include(z => z.Items)
             .FirstOrDefaultAsync(z => z.Id == id && !z.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Khu vực không tồn tại");
 
@@ -82,10 +93,17 @@ public class ZoneService(IUnitOfWork uow, ICurrentUser currentUser) : IZoneServi
         int used = locations.Count(x => inventoryLocs.Contains(x));
         decimal pct = total > 0 ? (decimal)used / total * 100 : 0;
 
+        var itemsCount = await (from item in _uow.Repository<InventoryItem>().Query()
+                                 where !item.IsDeleted
+                                 join loc in _uow.Repository<LocationEntity>().Query() on item.LocationId equals loc.Id
+                                 where !loc.IsDeleted && loc.ZoneId == id
+                                 select item.Id)
+                                .CountAsync(ct);
+
         return new ZoneDto(
             z.Id, z.Name, z.ZoneCode, z.ZoneType,
             total, used, pct,
-            z.Description, z.Items.Count(i => !i.IsDeleted));
+            z.Description, itemsCount);
     }
 
     public async Task<ZoneDto> CreateAsync(CreateZoneRequest request, CancellationToken ct)

@@ -75,7 +75,7 @@ public class InventoryItem : BaseEntity, IAggregateRoot
     /// <summary>
     /// Robot/crane code that physically moved this inventory item
     /// </summary>
-    public string? Robot { get; private set; }
+    //public string? Robot { get; private set; }
 
     /// <summary>
     /// Row version
@@ -209,9 +209,9 @@ public class InventoryItem : BaseEntity, IAggregateRoot
         return Quantity > 0 || AllocatedQuantity > 0;
     }
 
-    public void UpdateRobot(string robot)
-    {
-        Robot = robot;
-        RowVersion = Guid.NewGuid().ToByteArray();
-    }
+    //public void UpdateRobot(string robot)
+    //{
+    //    Robot = robot;
+    //    RowVersion = Guid.NewGuid().ToByteArray();
+    //}
 }

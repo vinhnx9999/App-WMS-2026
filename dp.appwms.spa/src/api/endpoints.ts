@@ -3,7 +3,8 @@ const Base_URL = "/api/v1";
 export const ENDPOINTS = {
     SKU: {
         SEARCH: Base_URL + "/skus",
-        IMPORT_SESSION: Base_URL + "/skus"
+        IMPORT_SESSION: Base_URL + "/skus",
+        LOOKUP: Base_URL + "/skus/lookup"
     },
     PRODUCT: {
         SEARCH: Base_URL + "/products",
@@ -13,6 +14,7 @@ export const ENDPOINTS = {
     },
     SUPPLIER: {
         SEARCH: Base_URL + "/suppliers",
+        LOOKUP: Base_URL + "/suppliers/lookup"
     },
     CUSTOMER: {
         SEARCH: Base_URL + "/customers",

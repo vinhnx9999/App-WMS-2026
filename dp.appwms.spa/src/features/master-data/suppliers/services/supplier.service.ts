@@ -19,6 +19,20 @@ export const supplierService = {
         }
     },
 
+    /**
+     * Get all suppliers for lookup
+     * @returns Promise of ApiResponse<{ id: string; code: string; name: string }[]>
+     */
+    supplierLookup: async (): Promise<ApiResponse<{ id: string; code: string; name: string }[]>> => {
+        try {
+            const response = await apiClient.get<ApiResponse<{ id: string; code: string; name: string }[]>>(ENDPOINTS.SUPPLIER.LOOKUP);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching supplier lookup:", error);
+            throw error;
+        }
+    },
+
     createSupplier: async (data: CreateSupplierRequest): Promise<ApiResponse<any>> => {
         try {
             const response = await apiClient.post<ApiResponse<any>>(ENDPOINTS.SUPPLIER.SEARCH, data);
