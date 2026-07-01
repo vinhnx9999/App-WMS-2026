@@ -61,9 +61,8 @@ public sealed class CreateDirectPutawayCommandHandler(
                 expiryDate: itemReq.ExpiryDate,
                 serialNumber: itemReq.SerialNumber,
                 lotNumber: itemReq.LotNumber);
-
-            putawayTask.CompleteTask();
         }
+        //    putawayTask.CompleteTask();
 
         await _uow.Repository<PutawayTask>().AddAsync(putawayTask, ct);
         await _uow.SaveChangesAsync(ct);

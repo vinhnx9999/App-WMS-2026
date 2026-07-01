@@ -44,6 +44,12 @@ public class InboundWorkflowConfig : BaseEntity, IAggregateRoot
 
     public IReadOnlyCollection<InboundWorkflowStep> Steps => _steps.AsReadOnly();
 
+    public void UpdateSettings(bool allowOverReceive, decimal? overReceiveTolerancePercentage)
+    {
+        AllowOverReceive = allowOverReceive;
+        OverReceiveTolerancePercentage = overReceiveTolerancePercentage;
+    }
+
     public void UpdateSteps(IEnumerable<InboundWorkflowStep> newSteps)
     {
         var stepsList = newSteps?.ToList() ?? throw new DomainException("Steps collection cannot be null.");

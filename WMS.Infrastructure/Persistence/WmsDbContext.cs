@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.ErpSync;
+using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
+using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
+using WMS.Domain.Entities.InboundReceiptAggregateRoot;
+using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.PalletAggregateRoot;
 using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.QcInspectionAggregateRoot;
 using WMS.Domain.Entities.RuleAggregateRoot;
 using WMS.Domain.Entities.Security;
 using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Interfaces;
-using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
-using WMS.Domain.Entities.InboundReceiptAggregateRoot;
-using WMS.Domain.Entities.QcInspectionAggregateRoot;
-using WMS.Domain.Entities.PutawayTaskAggregateRoot;
-using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
-using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
 
 namespace WMS.Infrastructure.Persistence;
 
@@ -95,20 +95,11 @@ public class WmsDbContext(
     {
         var now = DateTime.UtcNow;
         var user = _currentUser.Email;
+        var currentTenantId = _currentUser.TenantId;
 
-        foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+        if (currentTenantId == Guid.Empty)
         {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Property(nameof(BaseEntity.CreatedAt)).CurrentValue = now;
-                entry.Property(nameof(BaseEntity.CreatedBy)).CurrentValue = user;
-            }
-
-            if (entry.State == EntityState.Modified)
-            {
-                entry.Property(nameof(BaseEntity.UpdatedAt)).CurrentValue = now;
-                entry.Property(nameof(BaseEntity.UpdatedBy)).CurrentValue = user;
-            }
+            throw new InvalidOperationException("Current tenant ID is not set.");
         }
 
         // Dispatch domain events before saving to database.
@@ -137,6 +128,22 @@ public class WmsDbContext(
             foreach (var domainEvent in domainEvents)
             {
                 await mediator.Publish(domainEvent, ct);
+            }
+        }
+
+
+        foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Property(nameof(BaseEntity.CreatedAt)).CurrentValue = now;
+                entry.Property(nameof(BaseEntity.CreatedBy)).CurrentValue = user;
+            }
+
+            if (entry.State == EntityState.Modified)
+            {
+                entry.Property(nameof(BaseEntity.UpdatedAt)).CurrentValue = now;
+                entry.Property(nameof(BaseEntity.UpdatedBy)).CurrentValue = user;
             }
         }
 
