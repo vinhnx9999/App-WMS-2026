@@ -4,12 +4,17 @@
       "search": "Search",
       "cancel": "Cancel",
       "delete": "Delete",
-      "save": "Save"
+      "save": "Save",
+      "retry": "Retry"
     },
     "loading": "Loading data",
     "noData": "No data",
     "noWarehouse": "No warehouses",
-    "checkingSession": "Checking active session"
+    "checkingSession": "Checking active session",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "fitToScreen": "Fit to Screen",
+    "reload": "Reload"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -25,7 +30,9 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "admin": "Administrator"
+    "admin": "Administrator",
+    "inbound": "Inbound",
+    "inboundDirect": "Direct Putaway"
   },
   "products": {
     "addProduct": "Add Product",
@@ -237,6 +244,68 @@
       "duplicateCode": "Customer code already exists in the system.",
       "validationFailed": "Invalid input data. Please check again.",
       "generic": "An error occurred. Please try again later."
+    }
+  },
+  "inbound": {
+    "warehouseMap": "Warehouse Location Map",
+    "selectFloor": "Select Floor",
+    "floor": "Floor {{floor}}",
+    "noLocationsFound": "No locations found.",
+    "statusLabel": "Status:",
+    "status": {
+      "empty": "Empty Slot",
+      "occupied": "Occupied",
+      "path": "Path",
+      "blocked": "Blocked Slot",
+      "lift": "Lift Zone"
+    },
+    "tabs": {
+      "po": "Purchase Order",
+      "receive": "Receive Goods",
+      "qc": "QC Inspection",
+      "putaway": "Putaway",
+      "directPutaway": "Direct Putaway",
+      "putawayInfo": "Putaway Info"
+    },
+    "form": {
+      "sku": "Product SKU",
+      "skuPlaceholder": "Scan or select SKU",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity",
+      "location": "Location / Pallet",
+      "locationPlaceholder": "Scan or select location",
+      "targetLocation": "Target Location",
+      "supplier": "Supplier",
+      "supplierPlaceholder": "Select supplier",
+      "lotNumber": "Lot Number",
+      "lotNumberPlaceholder": "Enter lot number",
+      "expiryDate": "Expiry Date",
+      "expiryDatePlaceholder": "Select expiry date",
+      "rememberLot": "Remember Lot & Expiry",
+      "advancedFields": "Advanced Details (F4)",
+      "addToDraft": "Add to Draft",
+      "submit": "Confirm Putaway",
+      "submitHint": "Press Ctrl + Enter to submit all",
+      "errors": {
+        "skuRequired": "SKU is required",
+        "quantityRequired": "Quantity is required",
+        "quantityPositive": "Quantity must be greater than 0",
+        "locationRequired": "Location is required",
+        "mixSupplierWarning": "Warning: This location already contains goods from another supplier."
+      }
+    },
+    "draft": {
+      "title": "Draft Putaway Items",
+      "empty": "No items in draft. Add items using the form.",
+      "clearAll": "Clear All",
+      "confirmClear": "Are you sure you want to clear the entire draft?",
+      "headers": {
+        "sku": "SKU",
+        "qty": "Qty",
+        "location": "Location",
+        "details": "Details",
+        "actions": "Actions"
+      }
     }
   }
 }

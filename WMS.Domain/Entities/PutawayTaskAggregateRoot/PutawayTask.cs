@@ -7,7 +7,7 @@ namespace WMS.Domain.Entities.PutawayTaskAggregateRoot;
 
 public class PutawayTask : BaseEntity, IAggregateRoot
 {
-    public string PutawayTaskNumber { get; private set; }
+    public string PutawayTaskNumber { get; private set; } = default!;
     public Guid? InboundOrderId { get; private set; }
     public Guid? InboundReceiptId { get; private set; }
     public Guid? QcInspectionId { get; private set; }
@@ -17,8 +17,11 @@ public class PutawayTask : BaseEntity, IAggregateRoot
     private readonly List<PutawayTaskItem> _items = new();
     public IReadOnlyCollection<PutawayTaskItem> Items => _items.AsReadOnly();
 
-    public PutawayTask(string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
+    private PutawayTask() { }
+
+    private PutawayTask(Guid tenantId, string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
     {
+        TenantId = tenantId;
         PutawayTaskNumber = putawayTaskNumber;
         InboundOrderId = inboundOrderId;
         InboundReceiptId = inboundReceiptId;
@@ -26,14 +29,40 @@ public class PutawayTask : BaseEntity, IAggregateRoot
         WarehouseId = warehouseId;
     }
 
-    public void AddItem(PutawayTaskItem item)
+    public static PutawayTask Create(Guid tenantId, string putawayTaskNumber, Guid? inboundOrderId, Guid? inboundReceiptId, Guid? qcInspectionId, Guid warehouseId)
     {
+        return new PutawayTask(tenantId, putawayTaskNumber, inboundOrderId, inboundReceiptId, qcInspectionId, warehouseId);
+    }
+
+    public void AddItem(
+        Guid skuId,
+        int putawayQuantity,
+        Guid? targetLocationId = null,
+        Guid? actualLocationId = null,
+        Guid? palletId = null,
+        Guid? supplierId = null,
+        DateTime? expiryDate = null,
+        string? serialNumber = null,
+        string? lotNumber = null)
+    {
+        var item = PutawayTaskItem.Create(
+            TenantId,
+            skuId,
+            putawayQuantity,
+            targetLocationId,
+            actualLocationId,
+            palletId,
+            supplierId,
+            expiryDate,
+            serialNumber,
+            lotNumber);
+
         _items.Add(item);
     }
 
     public void StartProcessing()
     {
-        if (Status != PutawayStatus.Pending && Status != PutawayStatus.SentToWcs)
+        if (Status != PutawayStatus.Pending)
         {
             throw new DomainException("Task can only start processing from Pending or SentToWcs status.");
         }
@@ -42,10 +71,10 @@ public class PutawayTask : BaseEntity, IAggregateRoot
 
     public void CompleteTask()
     {
-        if (Status != PutawayStatus.Processing)
-        {
-            throw new DomainException("Task can only be completed from Processing status.");
-        }
+        // if (Status != PutawayStatus.Processing)
+        // {
+        //     throw new DomainException("Task can only be completed from Processing status.");
+        // }
 
         foreach (var item in _items)
         {
@@ -66,12 +95,11 @@ public class PutawayTask : BaseEntity, IAggregateRoot
         AddEvent(new PutawayTaskCompletedEvent(this));
     }
 
-    public void MarkSentToWcs()
+    public void RequestWcsMovements(IReadOnlyList<WcsMovementItem> items)
     {
-        if (Status != PutawayStatus.Pending)
+        if (items.Any())
         {
-            throw new DomainException("Task can only be sent to WCS from Pending status.");
+            AddEvent(new WcsTaskRequiredEvent(TenantId, WarehouseId, Id, items));
         }
-        Status = PutawayStatus.SentToWcs;
     }
 }

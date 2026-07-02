@@ -92,7 +92,8 @@ public class InboundWorkflowHandlers(
         {
             var tenantId = currentUser.TenantId != Guid.Empty ? currentUser.TenantId : receipt.TenantId;
             var taskNumber = await codeSequenceGenerator.NextAsync(tenantId, CodeSequenceTypes.PutawayTask, ct);
-            var putawayTask = new PutawayTask(
+            var putawayTask = PutawayTask.Create(
+                tenantId,
                 taskNumber,
                 receipt.InboundOrderId,
                 receipt.Id,
@@ -101,7 +102,7 @@ public class InboundWorkflowHandlers(
 
             foreach (var item in putawayItems)
             {
-                putawayTask.AddItem(new PutawayTaskItem(item.SkuId, item.ReceivedQuantity, Guid.Empty));
+                putawayTask.AddItem(item.SkuId, item.ReceivedQuantity, Guid.Empty);
             }
 
             await putawayRepo.AddAsync(putawayTask, ct);
@@ -148,7 +149,8 @@ public class InboundWorkflowHandlers(
         {
             var tenantId = currentUser.TenantId != Guid.Empty ? currentUser.TenantId : inspection.TenantId;
             var taskNumber = await codeSequenceGenerator.NextAsync(tenantId, CodeSequenceTypes.PutawayTask, ct);
-            var putawayTask = new PutawayTask(
+            var putawayTask = PutawayTask.Create(
+                tenantId,
                 taskNumber,
                 inspection.InboundOrderId,
                 inspection.InboundReceiptId,
@@ -157,7 +159,7 @@ public class InboundWorkflowHandlers(
 
             foreach (var item in putawayItems)
             {
-                putawayTask.AddItem(new PutawayTaskItem(item.SkuId, item.PassedQuantity, Guid.Empty));
+                putawayTask.AddItem(item.SkuId, item.PassedQuantity, Guid.Empty);
             }
 
             await putawayRepo.AddAsync(putawayTask, ct);

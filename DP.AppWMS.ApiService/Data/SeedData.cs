@@ -107,6 +107,8 @@ public static class SeedData
 
         foreach (var item in db.InventoryItems.Local) item.UpdateStatus();
 
+        await WarehouseMapSeeder.SeedAsync(db);
+
         await db.SaveChangesAsync();
     }
 }

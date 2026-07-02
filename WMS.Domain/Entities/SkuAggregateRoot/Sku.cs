@@ -9,6 +9,7 @@ public class Sku : BaseEntity, IAggregateRoot
     private readonly List<SkuAttributeValue> _attributes = new();
     private readonly List<SkuUnitOfMeasure> _allowedUnits = new();
     private Sku() { }
+
     private Sku(
       Guid tenantId,
       Guid productId,
@@ -18,7 +19,8 @@ public class Sku : BaseEntity, IAggregateRoot
       string? description,
       decimal? referencePrice,
       string? barcode = null,
-      int minQuantity = 0)
+      int minQuantity = 0,
+      int maxQtyInPallet = 100)
     {
         TenantId = tenantId;
         ProductId = productId;
@@ -29,6 +31,7 @@ public class Sku : BaseEntity, IAggregateRoot
         ReferencePrice = referencePrice;
         Barcode = barcode;
         MinQuantity = minQuantity;
+        MaxQtyInPallet = maxQtyInPallet;
     }
     /// <summary>
     /// Product ID
@@ -68,6 +71,10 @@ public class Sku : BaseEntity, IAggregateRoot
     /// Minimum safety stock quantity for low stock alerting
     /// </summary>
     public int MinQuantity { get; private set; }
+    /// <summary>
+    /// Max qty this Sku/1 pallet
+    /// </summary>
+    public int MaxQtyInPallet { get; private set; } = 100;
 
     /// <summary>
     /// Attribute values associated with this SKU
@@ -91,7 +98,8 @@ public class Sku : BaseEntity, IAggregateRoot
      string? description,
      decimal? referencePrice,
      string? barcode = null,
-     int minQuantity = 0)
+     int minQuantity = 0,
+     int maxQtyInPallet = 100)
     {
         if (tenantId == Guid.Empty)
             throw new DomainException("TenantId is required.");
@@ -108,6 +116,9 @@ public class Sku : BaseEntity, IAggregateRoot
         if (minQuantity < 0)
             throw new DomainException("Min quantity cannot be negative.");
 
+        if (maxQtyInPallet <= 0)
+            throw new DomainException("Max quantity in pallet must be greater than zero.");
+
         return new Sku(
             tenantId,
             productId,
@@ -117,7 +128,8 @@ public class Sku : BaseEntity, IAggregateRoot
             Utilities.NormalizeNullable(description),
             referencePrice,
             Utilities.NormalizeNullable(barcode),
-            minQuantity);
+            minQuantity,
+            maxQtyInPallet);
     }
 
 
@@ -132,7 +144,8 @@ public class Sku : BaseEntity, IAggregateRoot
         string? description = null,
         decimal? referencePrice = null,
         string? barcode = null,
-        int? minQuantity = null)
+        int? minQuantity = null,
+        int? maxQtyInPallet = null)
     {
         if (referencePrice is < 0)
         {
@@ -148,6 +161,13 @@ public class Sku : BaseEntity, IAggregateRoot
                 "Minimum quantity must be greater than or equal to zero.");
         }
 
+        if (maxQtyInPallet is <= 0)
+        {
+            throw new DomainException(
+                "INVALID_MAX_QTY_IN_PALLET",
+                "Max quantity in pallet must be greater than zero.");
+        }
+
         Name = name?.Trim();
         GoodsNature = goodsNature?.Trim();
         Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
@@ -156,6 +176,10 @@ public class Sku : BaseEntity, IAggregateRoot
         if (minQuantity.HasValue)
         {
             MinQuantity = minQuantity.Value;
+        }
+        if (maxQtyInPallet.HasValue)
+        {
+            MaxQtyInPallet = maxQtyInPallet.Value;
         }
     }
 

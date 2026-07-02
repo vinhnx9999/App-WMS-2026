@@ -136,11 +136,8 @@ public class WarehouseTests
         db.Warehouses.Add(warehouse);
 
         // Create a non-default area and block
-        var customArea = new WarehouseArea(TenantId, warehouse.Id, "Custom Area", "CUSTOM_AREA");
-        warehouse.Areas.Add(customArea);
-
-        var customBlock = new Block(TenantId, warehouse.Id, customArea.Id, "Custom Block", "CUSTOM_BLOCK");
-        customArea.Blocks.Add(customBlock);
+        var customArea = warehouse.AddArea("Custom Area", "CUSTOM_AREA");
+        var customBlock = warehouse.AddBlock(customArea.Id, "Custom Block", "CUSTOM_BLOCK");
 
         // Create zone and location
         var zone = new Zone(TenantId, "Special Zone", "ZONE01", ZoneType.Standard);
@@ -148,7 +145,7 @@ public class WarehouseTests
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
-        var location = new LocationEntity(
+        var location = LocationEntity.Create(
             tenantId: TenantId,
             warehouseId: warehouse.Id,
             areaId: customArea.Id,

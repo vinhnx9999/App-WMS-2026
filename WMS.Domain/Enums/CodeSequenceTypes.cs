@@ -14,5 +14,7 @@ namespace WMS.Domain.Enums
         public const string GoodsReceiptNote = "GoodsReceiptNote";
         public const string QcInspection = "QcInspection";
         public const string PutawayTask = "PutawayTask";
+        public const string Pallet = "Pallet";
+        public const string WcsInboundTask = "WcsInboundTask";
     }
 }

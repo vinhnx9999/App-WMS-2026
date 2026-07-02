@@ -73,6 +73,11 @@ public class InventoryItem : BaseEntity, IAggregateRoot
     public DateTime? ExpiryDate { get; private set; }
 
     /// <summary>
+    /// Robot/crane code that physically moved this inventory item
+    /// </summary>
+    //public string? Robot { get; private set; }
+
+    /// <summary>
     /// Row version
     /// </summary>
     //skipcq: CS-W1096
@@ -198,4 +203,15 @@ public class InventoryItem : BaseEntity, IAggregateRoot
         ExpiryDate = expiryDate;
         RowVersion = Guid.NewGuid().ToByteArray();
     }
+
+    public bool IsOccupyingLocation()
+    {
+        return Quantity > 0 || AllocatedQuantity > 0;
+    }
+
+    //public void UpdateRobot(string robot)
+    //{
+    //    Robot = robot;
+    //    RowVersion = Guid.NewGuid().ToByteArray();
+    //}
 }

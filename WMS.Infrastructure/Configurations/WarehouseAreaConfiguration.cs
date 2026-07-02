@@ -20,6 +20,9 @@ public class WarehouseAreaConfiguration : BaseEntityConfiguration<WarehouseArea>
             .HasForeignKey(b => b.AreaId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        // Use backing field _blocks for materialization (collection is sealed as IReadOnlyCollection)
+        builder.Navigation(a => a.Blocks).UsePropertyAccessMode(PropertyAccessMode.Field);
+
         // Unique index for IsDefault = true per Warehouse
         builder.HasIndex(a => new { a.WarehouseId, a.IsDefault })
             .IsUnique()

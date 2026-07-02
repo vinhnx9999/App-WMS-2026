@@ -12,7 +12,7 @@ public class InboundWorkflowConfigTests
     {
         // Arrange
         var config = new InboundWorkflowConfig(Guid.NewGuid(), Guid.NewGuid(), null, null);
-        var steps = Enumerable.Empty<InboundWorkflowStep>();
+        var steps = Enumerable.Empty<InboundStepDefinition>();
 
         // Act
         var act = () => config.UpdateSteps(steps);
@@ -27,7 +27,7 @@ public class InboundWorkflowConfigTests
     {
         // Arrange
         var config = new InboundWorkflowConfig(Guid.NewGuid(), Guid.NewGuid(), null, null);
-        var steps = new List<InboundWorkflowStep>
+        var steps = new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 1, "PO"),
             new(InboundStepType.Receive, 2, "Receive"),
@@ -47,7 +47,7 @@ public class InboundWorkflowConfigTests
     {
         // Arrange
         var config = new InboundWorkflowConfig(Guid.NewGuid(), Guid.NewGuid(), null, null);
-        var steps = new List<InboundWorkflowStep>
+        var steps = new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 1, "PO"),
             new(InboundStepType.Putaway, 2, "Putaway"),
@@ -67,7 +67,7 @@ public class InboundWorkflowConfigTests
     {
         // Arrange
         var config = new InboundWorkflowConfig(Guid.NewGuid(), Guid.NewGuid(), null, null);
-        var steps = new List<InboundWorkflowStep>
+        var steps = new List<InboundStepDefinition>
         {
             new(InboundStepType.Receive, 1, "Receive"),
             new(InboundStepType.QC, 2, "QC"),

@@ -7,7 +7,7 @@ public class InboundWorkflowStep : BaseEntity
 {
     private InboundWorkflowStep() { }
 
-    public InboundWorkflowStep(InboundStepType stepType, int sequence, string displayName)
+    internal InboundWorkflowStep(InboundStepType stepType, int sequence, string displayName)
     {
         StepType = stepType;
         Sequence = sequence;

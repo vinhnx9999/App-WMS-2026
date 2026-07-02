@@ -11,60 +11,52 @@ public class InboundWorkflowOrchestrator
         Guid? categoryId,
         IEnumerable<InboundWorkflowConfig> configs)
     {
-        var configsList = configs.ToList();
+        var bestMatch = configs
+              .Select(c => new { Config = c, Priority = GetMatchPriority(c, warehouseId, supplierId, categoryId) })
+              .Where(x => x.Priority > 0)
+              .MaxBy(x => x.Priority)?
+              .Config;
 
-        // 1. Exact match on WarehouseId AND SupplierId AND CategoryId
-        var match1 = configsList.FirstOrDefault(c =>
-            c.WarehouseId == warehouseId &&
-            c.SupplierId == supplierId &&
-            c.CategoryId == categoryId &&
-            c.WarehouseId != null &&
-            c.SupplierId != null &&
-            c.CategoryId != null);
-        if (match1 != null) return match1;
 
-        // 2. Match on WarehouseId AND SupplierId
-        var match2 = configsList.FirstOrDefault(c =>
-            c.WarehouseId == warehouseId &&
-            c.SupplierId == supplierId &&
-            c.WarehouseId != null &&
-            c.SupplierId != null &&
-            c.CategoryId == null);
-        if (match2 != null) return match2;
+        return bestMatch ?? CreateDefaultFallback();
+    }
 
-        // 3. Match on WarehouseId AND CategoryId
-        var match3 = configsList.FirstOrDefault(c =>
-            c.WarehouseId == warehouseId &&
-            c.CategoryId == categoryId &&
-            c.WarehouseId != null &&
-            c.SupplierId == null &&
-            c.CategoryId != null);
-        if (match3 != null) return match3;
+    private int GetMatchPriority(InboundWorkflowConfig c, Guid warehouseId, Guid? supplierId, Guid? categoryId)
+    {
+        // 1. Exact match: Warehouse + Supplier + Category
+        if (c.WarehouseId == warehouseId && c.SupplierId == supplierId && c.CategoryId == categoryId && c.SupplierId != null && c.CategoryId != null)
+            return 5;
 
-        // 4. Match on WarehouseId only
-        var match4 = configsList.FirstOrDefault(c =>
-            c.WarehouseId == warehouseId &&
-            c.SupplierId == null &&
-            c.CategoryId == null);
-        if (match4 != null) return match4;
+        // 2. Match: Warehouse + Supplier
+        if (c.WarehouseId == warehouseId && c.SupplierId == supplierId && c.SupplierId != null && c.CategoryId == null)
+            return 4;
 
-        // 5. Global Default (all values null)
-        var match5 = configsList.FirstOrDefault(c =>
-            c.WarehouseId == null &&
-            c.SupplierId == null &&
-            c.CategoryId == null);
-        if (match5 != null) return match5;
+        // 3. Match: Warehouse + Category
+        if (c.WarehouseId == warehouseId && c.CategoryId == categoryId && c.SupplierId == null && c.CategoryId != null)
+            return 3;
 
-        // Fallback default configuration
-        var defaultConfig = new InboundWorkflowConfig(Guid.Empty, null, null, null, true, null);
-        defaultConfig.UpdateSteps(new List<InboundWorkflowStep>
+        // 4. Match: Warehouse only
+        if (c.WarehouseId == warehouseId && c.SupplierId == null && c.CategoryId == null)
+            return 2;
+
+        // 5. Global Default
+        if (c.WarehouseId == null && c.SupplierId == null && c.CategoryId == null)
+            return 1;
+
+        return 0;
+    }
+
+    private InboundWorkflowConfig CreateDefaultFallback()
+    {
+        var config = new InboundWorkflowConfig(Guid.Empty, null, null, null, true, null);
+        config.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "Plan/PO"),
             new(InboundStepType.Receive, 1, "Receive"),
             new(InboundStepType.QC, 2, "Quality Control"),
             new(InboundStepType.Putaway, 3, "Putaway")
         });
-        return defaultConfig;
+        return config;
     }
 
     public InboundStepType? GetNextStep(

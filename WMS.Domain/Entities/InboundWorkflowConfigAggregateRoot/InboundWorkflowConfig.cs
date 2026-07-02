@@ -44,14 +44,24 @@ public class InboundWorkflowConfig : BaseEntity, IAggregateRoot
 
     public IReadOnlyCollection<InboundWorkflowStep> Steps => _steps.AsReadOnly();
 
-    public void UpdateSteps(IEnumerable<InboundWorkflowStep> newSteps)
+    public void UpdateSettings(bool allowOverReceive, decimal? overReceiveTolerancePercentage)
     {
-        var stepsList = newSteps?.ToList() ?? throw new DomainException("Steps collection cannot be null.");
+        AllowOverReceive = allowOverReceive;
+        OverReceiveTolerancePercentage = overReceiveTolerancePercentage;
+    }
 
-        if (stepsList.Count == 0)
+    public void UpdateSteps(IEnumerable<InboundStepDefinition> newStepDefs)
+    {
+        var defsList = newStepDefs?.ToList() ?? throw new DomainException("Steps collection cannot be null.");
+
+        if (defsList.Count == 0)
         {
             throw new DomainException("Workflow steps cannot be empty.");
         }
+
+        var stepsList = defsList
+            .Select(s => new InboundWorkflowStep(s.StepType, s.Sequence, s.DisplayName))
+            .ToList();
 
         var hasPutaway = stepsList.Any(s => s.StepType == InboundStepType.Putaway);
         if (!hasPutaway)

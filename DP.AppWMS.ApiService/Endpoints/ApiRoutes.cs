@@ -15,6 +15,7 @@ public static class ApiRoutes
         public const string Customers = "customers";
         public const string Warehouses = "warehouses";
         public const string Inbound = "inbound";
+        public const string Locations = "locations";
     }
 
     public static class Groups
@@ -26,5 +27,6 @@ public static class ApiRoutes
         public const string Customers = $"{Base}/{Resources.Customers}";
         public const string Warehouses = $"{Base}/{Resources.Warehouses}";
         public const string Inbound = $"{Base}/{Resources.Inbound}";
+        public const string Locations = $"{Base}/{Resources.Locations}";
     }
 }

@@ -2,7 +2,6 @@ import type { SearchParams } from "@/models/search-params";
 
 export interface CategoryDto {
     id: string;
-    tenantId: string;
     name: string;
     slug: string | null;
     description: string | null;

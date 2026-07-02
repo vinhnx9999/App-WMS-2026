@@ -16,7 +16,7 @@ public class InboundWorkflowOrchestratorTests
     private InboundWorkflowConfig CreateConfig(Guid? warehouseId, Guid? supplierId, Guid? categoryId)
     {
         var config = new InboundWorkflowConfig(_tenantId, warehouseId, supplierId, categoryId);
-        config.UpdateSteps(new List<InboundWorkflowStep>
+        config.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "PO"),
             new(InboundStepType.Putaway, 1, "Putaway")

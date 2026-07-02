@@ -1,5 +1,4 @@
 using WMS.Domain.Common;
-using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
@@ -22,5 +21,4 @@ public class Zone : BaseEntity, IAggregateRoot
     public string ZoneCode { get; set; } = null!;
     public ZoneType ZoneType { get; set; } = ZoneType.Standard;
     public string? Description { get; set; }
-    public ICollection<InventoryItem> Items { get; set; } = [];
 }

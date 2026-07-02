@@ -31,6 +31,20 @@ export const skuService = {
     },
 
     /**
+     * Get all SKUs for lookup
+     * @returns Promise of ApiResponse<{ id: string; code: string; name: string }[]>
+     */
+    skuLookup: async (): Promise<ApiResponse<{ id: string; code: string; name: string }[]>> => {
+        try {
+            const response = await apiClient.get<ApiResponse<{ id: string; code: string; name: string }[]>>(ENDPOINTS.SKU.LOOKUP);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching SKU lookup:", error);
+            throw error;
+        }
+    },
+
+    /**
      * Create SKU
      * @param data - Create SKU request
      * @returns Promise of ApiResponse<any>

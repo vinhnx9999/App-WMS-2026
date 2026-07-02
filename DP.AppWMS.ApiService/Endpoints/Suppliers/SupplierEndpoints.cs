@@ -8,6 +8,7 @@ using WMS.Application.Suppliers.Commands.UpdateSupplier;
 using WMS.Application.Suppliers.DTOs;
 using WMS.Application.Suppliers.Queries.GetSupplierById;
 using WMS.Application.Suppliers.Queries.SearchSuppliers;
+using WMS.Application.Suppliers.Queries.SupplierLookup;
 using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Suppliers;
@@ -50,6 +51,10 @@ public sealed class SupplierEndpoints : IEndpoint
             .Produces(StatusCodes.Status204NoContent)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
+
+        group.MapGet("/lookup", LookupSuppliers)
+            .WithName("LookupSuppliers").WithTags("Suppliers").RequireAuthorization()
+            .Produces<ApiResponse<List<SupplierLookupResponse>>>(StatusCodes.Status200OK);
     }
 
     private async Task<IResult> CreateSupplier(
@@ -134,5 +139,14 @@ public sealed class SupplierEndpoints : IEndpoint
     {
         await sender.Send(new RestoreSupplierCommand(currentUser.TenantId, id), cancellationToken);
         return Results.NoContent();
+    }
+
+    private async Task<IResult> LookupSuppliers(
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new SupplierLookupQuery(currentUser.TenantId), cancellationToken);
+        return Results.Ok(ApiResponse<List<SupplierLookupResponse>>.Ok(result));
     }
 }

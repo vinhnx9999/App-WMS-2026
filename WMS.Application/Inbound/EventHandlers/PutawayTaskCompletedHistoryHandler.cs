@@ -23,7 +23,7 @@ public class PutawayTaskCompletedHistoryHandler(
             task.QcInspectionId,
             task.Id,
             null,
-            currentUser.Id,
+            currentUser.TenantId,
             currentUser.Email ?? "System",
             "Putaway",
             "Putaway_Finished",

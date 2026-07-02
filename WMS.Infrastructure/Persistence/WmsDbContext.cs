@@ -5,24 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.ErpSync;
+using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
+using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
+using WMS.Domain.Entities.InboundReceiptAggregateRoot;
+using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.PalletAggregateRoot;
 using WMS.Domain.Entities.ProductAggregateRoot;
+using WMS.Domain.Entities.PutawayTaskAggregateRoot;
+using WMS.Domain.Entities.QcInspectionAggregateRoot;
 using WMS.Domain.Entities.RuleAggregateRoot;
 using WMS.Domain.Entities.Security;
 using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Interfaces;
-
-using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
-using WMS.Domain.Entities.InboundReceiptAggregateRoot;
-using WMS.Domain.Entities.QcInspectionAggregateRoot;
-using WMS.Domain.Entities.PutawayTaskAggregateRoot;
-using WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot;
-using WMS.Domain.Entities.InboundOrderHistoryAggregateRoot;
 
 namespace WMS.Infrastructure.Persistence;
 
@@ -96,6 +95,42 @@ public class WmsDbContext(
     {
         var now = DateTime.UtcNow;
         var user = _currentUser.Email;
+        var currentTenantId = _currentUser.TenantId;
+
+        //if (currentTenantId == Guid.Empty)
+        //{
+        //    throw new InvalidOperationException("Current tenant ID is not set.");
+        //}
+
+        // Dispatch domain events before saving to database.
+        // We use a loop because event handlers might enqueue new domain events in the tracker.
+        while (true)
+        {
+            var domainEntities = ChangeTracker.Entries<BaseEntity>()
+                .Where(x => x.Entity.DomainEvents.Any())
+                .ToList();
+
+            if (!domainEntities.Any())
+            {
+                break;
+            }
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.DomainEvents)
+                .ToList();
+
+            // Clear events immediately to prevent infinite loops if handlers trigger more updates
+            foreach (var entity in domainEntities)
+            {
+                entity.Entity.ClearEvents();
+            }
+
+            foreach (var domainEvent in domainEvents)
+            {
+                await mediator.Publish(domainEvent, ct);
+            }
+        }
+
 
         foreach (var entry in ChangeTracker.Entries<BaseEntity>())
         {
@@ -112,36 +147,6 @@ public class WmsDbContext(
             }
         }
 
-        // Get domain events
-        var domainEntities = ChangeTracker.Entries<BaseEntity>()
-            .Where(x => x.Entity.DomainEvents.Any())
-            .ToList();
-
-        var domainEvents = domainEntities
-            .SelectMany(x => x.Entity.DomainEvents)
-            .ToList();
-
-        var result = await base.SaveChangesAsync(ct);
-
-        // Publish events and clear them after successful save
-        await DispatchDomainEventsAsync(domainEntities, domainEvents, ct);
-
-        return result;
-    }
-
-    private async Task DispatchDomainEventsAsync(
-        List<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity>> domainEntities,
-        List<DomainEvent> domainEvents,
-        CancellationToken ct)
-    {
-        foreach (var entity in domainEntities)
-        {
-            entity.Entity.ClearEvents();
-        }
-
-        foreach (var domainEvent in domainEvents)
-        {
-            await mediator.Publish(domainEvent, ct);
-        }
+        return await base.SaveChangesAsync(ct);
     }
 }

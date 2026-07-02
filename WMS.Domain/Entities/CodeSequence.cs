@@ -38,7 +38,7 @@ namespace WMS.Domain.Entities
             int paddingLength = 6)
         {
             TenantId = tenantId;
-            CodeType = Utilities.NormalizeCode(codeType);
+            CodeType = codeType;
             Prefix = Utilities.NormalizeCode(prefix);
             CurrentNumber = currentNumber;
             PaddingLength = paddingLength;
@@ -57,7 +57,7 @@ namespace WMS.Domain.Entities
                 .ToString()
                 .PadLeft(PaddingLength, '0');
 
-            return $"{Prefix}{numberPart}";
+            return $"{Prefix}-{numberPart}";
         }
 
 

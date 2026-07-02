@@ -5,4 +5,9 @@ public record CompletePutawayRequest(
 
 public record CompletePutawayItemRequest(
     Guid SkuId,
-    Guid ActualLocationId);
+    Guid ActualLocationId,
+    string? PalletCode = null,
+    Guid? SupplierId = null,
+    DateTime? ExpiryDate = null,
+    string? SerialNumber = null,
+    string? LotNumber = null);

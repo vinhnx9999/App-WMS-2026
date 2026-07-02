@@ -16,6 +16,10 @@ public class SkuConfiguration : BaseEntityConfiguration<Sku>
 
         builder.HasIndex(x => new { x.TenantId, x.ProductId });
 
+        builder.Property(x => x.MaxQtyInPallet)
+            .HasDefaultValue(100)
+            .IsRequired();
+
         builder.HasMany(x => x.AllowedUnits)
       .WithOne()
       .HasForeignKey(x => x.SkuId)

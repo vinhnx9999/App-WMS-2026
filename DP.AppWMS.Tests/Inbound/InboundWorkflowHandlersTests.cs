@@ -91,7 +91,7 @@ public class InboundWorkflowHandlersTests
 
         // Config 1: PO -> Receive -> QC -> Putaway (For Sku1 category)
         var configQC = new InboundWorkflowConfig(tenantId, warehouseId, supplierId, cat1);
-        configQC.UpdateSteps(new List<InboundWorkflowStep>
+        configQC.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "PO"),
             new(InboundStepType.Receive, 1, "Receive"),
@@ -101,7 +101,7 @@ public class InboundWorkflowHandlersTests
 
         // Config 2: PO -> Receive -> Putaway (Bypasses QC for Sku2 category)
         var configNoQC = new InboundWorkflowConfig(tenantId, warehouseId, supplierId, cat2);
-        configNoQC.UpdateSteps(new List<InboundWorkflowStep>
+        configNoQC.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "PO"),
             new(InboundStepType.Receive, 1, "Receive"),

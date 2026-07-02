@@ -65,7 +65,7 @@ public sealed class InventoryServiceTests
         var sku = Sku.Create(TenantA, product.Id, "SKU-001", "Test SKU", null, null, 10m);
         db.Skus.Add(sku);
 
-        var location = new LocationEntity(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
+        var location = LocationEntity.Create(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
         db.Set<LocationEntity>().Add(location);
 
         var pallet = Pallet.Create(TenantA, "PAL-001");
@@ -142,7 +142,7 @@ public sealed class InventoryServiceTests
         var sku = Sku.Create(TenantA, product.Id, "SKU-001", "Test SKU", null, null, 10m);
         db.Skus.Add(sku);
 
-        var location = new LocationEntity(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
+        var location = LocationEntity.Create(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
         db.Set<LocationEntity>().Add(location);
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -172,7 +172,7 @@ public sealed class InventoryServiceTests
         var sku = Sku.Create(TenantA, product.Id, "SKU-001", "Test SKU", null, null, 10m);
         db.Skus.Add(sku);
 
-        var location = new LocationEntity(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
+        var location = LocationEntity.Create(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
         db.Set<LocationEntity>().Add(location);
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -202,7 +202,7 @@ public sealed class InventoryServiceTests
         var sku = Sku.Create(TenantA, product.Id, "SKU-001", "Test SKU", null, null, 10m);
         db.Skus.Add(sku);
 
-        var location = new LocationEntity(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
+        var location = LocationEntity.Create(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
         db.Set<LocationEntity>().Add(location);
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -232,7 +232,7 @@ public sealed class InventoryServiceTests
         var sku = Sku.Create(TenantA, product.Id, "SKU-001", "Test SKU", null, null, 10m);
         db.Skus.Add(sku);
 
-        var location = new LocationEntity(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
+        var location = LocationEntity.Create(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
         db.Set<LocationEntity>().Add(location);
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -263,7 +263,7 @@ public sealed class InventoryServiceTests
         var sku = Sku.Create(TenantA, product.Id, "SKU-001", "Test SKU", null, null, 10m);
         db.Skus.Add(sku);
 
-        var location = new LocationEntity(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
+        var location = LocationEntity.Create(TenantA, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "Loc-001");
         db.Set<LocationEntity>().Add(location);
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
