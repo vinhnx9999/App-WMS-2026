@@ -21,6 +21,7 @@ export const ENDPOINTS = {
     },
     WAREHOUSE: {
         LOOKUP: Base_URL + "/warehouses/lookup",
+        INBOUND_WORKFLOW_CONFIG: Base_URL + "/warehouses/inbound-workflow-config",
     },
     LOCATION: {
         OCCUPANCY: Base_URL + "/locations/occupancy",

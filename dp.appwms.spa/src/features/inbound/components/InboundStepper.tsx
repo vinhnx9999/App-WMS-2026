@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Check } from "lucide-react";
-import type { WorkflowStep } from "../types/inbound-types";
+import type { WorkflowStep } from "../models/inbound.model";
 
 interface InboundStepperProps {
   enabledSteps: WorkflowStep[];

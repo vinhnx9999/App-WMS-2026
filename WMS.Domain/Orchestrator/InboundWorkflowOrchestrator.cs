@@ -59,11 +59,12 @@ public class InboundWorkflowOrchestrator
         var defaultConfig = new InboundWorkflowConfig(Guid.Empty, null, null, null, true, null);
         defaultConfig.UpdateSteps(new List<InboundWorkflowStep>
         {
-            new(InboundStepType.PO, 0, "Plan/PO"),
+            new(InboundStepType.PO, 0, "PO"),
             new(InboundStepType.Receive, 1, "Receive"),
             new(InboundStepType.QC, 2, "Quality Control"),
             new(InboundStepType.Putaway, 3, "Putaway")
         });
+
         return defaultConfig;
     }
 

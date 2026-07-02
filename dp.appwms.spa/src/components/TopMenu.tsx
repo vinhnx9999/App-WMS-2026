@@ -13,8 +13,7 @@ import {
   Moon,
   Box,
   Tags,
-  ArrowDownToLine,
-  ArrowRight
+  ArrowDownToLine
 } from "lucide-react";
 import {
   NavigationMenu,

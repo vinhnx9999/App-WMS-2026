@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ClipboardList, Trash2, RefreshCw, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { DraftItem } from "../../types/inbound-types";
+import type { DraftItem } from "../../models/inbound.model";
 
 interface PutawayDraftTableProps {
   draftItems: DraftItem[];

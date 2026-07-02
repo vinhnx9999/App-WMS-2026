@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WMS.Application.Common.Models;
 using WMS.Application.Inbound.Commands.CreateInboundWorkflowConfig;
 using WMS.Application.Inbound.Commands.UpdateInboundWorkflowConfig;
+using WMS.Application.Inbound.DTOs;
 using WMS.Application.Inbound.Queries.GetInboundWorkflowConfig;
 using WMS.Application.Warehouse.Queries.WarehouseLookup;
 using WMS.Domain.Interfaces;
@@ -96,16 +97,3 @@ public sealed class WarehouseEndpoints : IEndpoint
         return Results.Ok(ApiResponse.Ok(null, "Update Inbound Workflow Config Successfully"));
     }
 }
-
-public sealed record CreateInboundWorkflowConfigRequest(
-    Guid WarehouseId,
-    Guid? SupplierId,
-    Guid? CategoryId,
-    bool AllowOverReceive,
-    decimal? OverReceiveTolerancePercentage,
-    List<CreateInboundWorkflowConfigStepDto> Steps);
-
-public sealed record UpdateInboundWorkflowConfigRequest(
-    bool AllowOverReceive,
-    decimal? OverReceiveTolerancePercentage,
-    List<UpdateInboundWorkflowConfigStepDto> Steps);

@@ -7,7 +7,7 @@ import { useWarehouseStore } from "@/store/warehouse-store";
 import { PutawayForm } from "./PutawayForm";
 import { PutawayPendingList } from "./PutawayPendingList";
 import { PutawayDraftTable } from "./PutawayDraftTable";
-import type { PendingPutawayTask, DraftItem } from "../../types/inbound-types";
+import type { PendingPutawayTask, DraftItem } from "../../models/inbound.model";
 import apiClient from "@/api/api-client";
 import { ENDPOINTS } from "@/api/endpoints";
 import type { ApiResponse } from "@/models/response";
@@ -70,52 +70,7 @@ export const PutawayStep: React.FC<PutawayStepProps> = ({ isDirectMode }) => {
   const palletRef = useRef<HTMLInputElement>(null);
 
   // Mocked Pending Putaway Tasks (when preceding steps exist)
-  const [pendingTasks, setPendingTasks] = useState<PendingPutawayTask[]>([
-    {
-      id: "task-1",
-      sku: {
-        id: "sku-1",
-        productId: "p1",
-        productCode: "IP15",
-        productName: "iPhone 15 Pro Max",
-        categoryId: null,
-        categoryName: null,
-        skuCode: "SKU-IPHONE15",
-        name: "iPhone 15 Pro Max 256GB",
-        referencePrice: 1200,
-        goodsNature: "Electronics",
-        description: null,
-        createdAt: "",
-        updatedAt: null
-      },
-      supplier: { id: "sup-1", name: "Apple Vietnam LLC", code: "APL", contact: "", phone: "", email: "", address: "", isDeleted: false, createdAt: "" },
-      quantity: 15,
-      lotNumber: "LOT-2026-001",
-      expiryDate: "2027-12-31"
-    },
-    {
-      id: "task-2",
-      sku: {
-        id: "sku-2",
-        productId: "p2",
-        productCode: "S24U",
-        productName: "Samsung Galaxy S24",
-        categoryId: null,
-        categoryName: null,
-        skuCode: "SKU-SAMS24",
-        name: "Samsung Galaxy S24 Ultra",
-        referencePrice: 1100,
-        goodsNature: "Electronics",
-        description: null,
-        createdAt: "",
-        updatedAt: null
-      },
-      supplier: { id: "sup-2", name: "Samsung Electronics", code: "SSG", contact: "", phone: "", email: "", address: "", isDeleted: false, createdAt: "" },
-      quantity: 8,
-      lotNumber: "LOT-2026-002",
-      expiryDate: "2027-06-30"
-    }
-  ]);
+  const [pendingTasks] = useState<PendingPutawayTask[]>([]);
 
   // Load all warehouse locations once to simulate suggestions
   useEffect(() => {
@@ -131,7 +86,7 @@ export const PutawayStep: React.FC<PutawayStepProps> = ({ isDirectMode }) => {
   }, [selectedWarehouse?.id]);
 
   // Trigger location suggestions based on SKU selection and quantity
-  const triggerSuggestions = useCallback((skuId: string, qtyVal: string, supplierId?: string) => {
+  const triggerSuggestions = useCallback((skuId: string, _qtyVal: string, _supplierId?: string) => {
     if (!skuId || allWarehouseLocations.length === 0) {
       setSuggestedLocationIds([]);
       return;

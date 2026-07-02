@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Layers, Info, ShieldAlert, MoveDown, ChevronDown } from "lucide-react";
+import { Layers, ShieldAlert, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LookupSearchInput, type LookupItem } from "../../../../components/LookupSearchInput";
@@ -96,7 +96,7 @@ export const PutawayForm: React.FC<PutawayFormProps> = ({
 
   // Convert SkuDto to LookupItem
   const skuValue = selectedSku
-    ? { id: selectedSku.id, code: selectedSku.skuCode, name: selectedSku.name }
+    ? { id: selectedSku.id, code: selectedSku.skuCode, name: selectedSku.name ?? "" }
     : null;
 
   // Convert SupplierDto to LookupItem
@@ -105,7 +105,7 @@ export const PutawayForm: React.FC<PutawayFormProps> = ({
     : null;
 
   return (
-    <div className="bg-card text-card-foreground rounded-xl border border-border p-4 shadow-sm min-h-0 flex flex-col">
+    <div className="bg-card text-card-foreground rounded-xl border border-border p-4 shadow-sm min-h-0 flex flex-col" data-suggested-locations={suggestedLocationIds.join(",")}>
       <div className="flex items-center justify-between mb-3 border-b border-border pb-2">
         <div className="flex items-center gap-2">
           <Layers className="size-5 text-primary" aria-hidden="true" />

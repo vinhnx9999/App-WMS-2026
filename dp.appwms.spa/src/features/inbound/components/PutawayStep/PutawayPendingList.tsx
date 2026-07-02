@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Layers, Info } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import type { PendingPutawayTask } from "../../types/inbound-types";
+import type { PendingPutawayTask } from "../../models/inbound.model";
 import type { SkuDto } from "@/features/master-data/skus/models/sku-dto.model";
 import type { LocationOccupancy } from "@/components/MapLocation";
 

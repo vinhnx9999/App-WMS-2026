@@ -97,10 +97,10 @@ public class WmsDbContext(
         var user = _currentUser.Email;
         var currentTenantId = _currentUser.TenantId;
 
-        if (currentTenantId == Guid.Empty)
-        {
-            throw new InvalidOperationException("Current tenant ID is not set.");
-        }
+        //if (currentTenantId == Guid.Empty)
+        //{
+        //    throw new InvalidOperationException("Current tenant ID is not set.");
+        //}
 
         // Dispatch domain events before saving to database.
         // We use a loop because event handlers might enqueue new domain events in the tracker.
