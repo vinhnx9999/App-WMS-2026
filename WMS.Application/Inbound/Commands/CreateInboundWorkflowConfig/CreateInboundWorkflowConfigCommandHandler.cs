@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WMS.Application.Common.Models;
 using WMS.Domain.Common;
@@ -75,10 +75,10 @@ public class CreateInboundWorkflowConfigCommandHandler(IUnitOfWork uow)
             throw new AppException(400, "VALIDATION_FAILED", "Workflow steps cannot be empty.");
         }
 
-        var domainSteps = request.Steps.Select(s => new InboundWorkflowStep(s.StepType, s.Sequence, s.DisplayName)).ToList();
+        var stepDefinitions = request.Steps.Select(s => new InboundStepDefinition(s.StepType, s.Sequence, s.DisplayName)).ToList();
         try
         {
-            config.UpdateSteps(domainSteps);
+            config.UpdateSteps(stepDefinitions);
         }
         catch (DomainException ex)
         {

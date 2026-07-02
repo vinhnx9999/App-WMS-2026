@@ -47,7 +47,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
 
         var warehouseId = Guid.NewGuid();
         var customConfig = new InboundWorkflowConfig(TenantA, warehouseId, null, null, allowOverReceive: true, overReceiveTolerancePercentage: 15m);
-        customConfig.UpdateSteps(new List<InboundWorkflowStep>
+        customConfig.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "Custom PO"),
             new(InboundStepType.Putaway, 1, "Custom Putaway")
@@ -87,7 +87,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
 
         var warehouseId = Guid.NewGuid();
         var globalConfig = new InboundWorkflowConfig(TenantA, null, null, null, allowOverReceive: false, overReceiveTolerancePercentage: null);
-        globalConfig.UpdateSteps(new List<InboundWorkflowStep>
+        globalConfig.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "Global PO"),
             new(InboundStepType.Receive, 1, "Global Receive"),
@@ -165,7 +165,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
 
         // Custom config for Tenant B (should be ignored by Tenant A)
         var customConfigB = new InboundWorkflowConfig(TenantB, warehouseId, null, null, allowOverReceive: true, overReceiveTolerancePercentage: 20m);
-        customConfigB.UpdateSteps(new List<InboundWorkflowStep>
+        customConfigB.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.PO, 0, "PO Tenant B"),
             new(InboundStepType.Putaway, 1, "Putaway Tenant B")
@@ -201,7 +201,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
         var customConfig = new InboundWorkflowConfig(TenantA, warehouseId, null, null, allowOverReceive: true, overReceiveTolerancePercentage: null);
 
         // Add steps out of sequence order
-        customConfig.UpdateSteps(new List<InboundWorkflowStep>
+        customConfig.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.Putaway, 2, "Step 3 - Putaway"),
             new(InboundStepType.PO, 0, "Step 1 - PO"),

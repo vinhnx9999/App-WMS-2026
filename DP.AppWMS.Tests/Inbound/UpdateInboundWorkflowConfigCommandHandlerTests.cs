@@ -53,7 +53,7 @@ public sealed class UpdateInboundWorkflowConfigCommandHandlerTests
 
         // Seed existing InboundWorkflowConfig with Putaway step
         var config = new InboundWorkflowConfig(TenantA, Guid.NewGuid(), null, null, allowOverReceive: false, overReceiveTolerancePercentage: null);
-        config.UpdateSteps(new List<InboundWorkflowStep>
+        config.UpdateSteps(new List<InboundStepDefinition>
         {
             new(InboundStepType.Putaway, 0, "Old Putaway")
         });
@@ -132,7 +132,7 @@ public sealed class UpdateInboundWorkflowConfigCommandHandlerTests
 
         // Seed existing InboundWorkflowConfig for Tenant B
         var config = new InboundWorkflowConfig(TenantB, Guid.NewGuid(), null, null, allowOverReceive: false, overReceiveTolerancePercentage: null);
-        config.UpdateSteps(new List<InboundWorkflowStep> { new(InboundStepType.Putaway, 0, "Putaway") });
+        config.UpdateSteps(new List<InboundStepDefinition> { new(InboundStepType.Putaway, 0, "Putaway") });
         db.Set<InboundWorkflowConfig>().Add(config);
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 

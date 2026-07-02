@@ -221,7 +221,7 @@ public sealed class CreateInboundWorkflowConfigCommandHandlerTests
 
         // Seed existing InboundWorkflowConfig
         var existingConfig = new InboundWorkflowConfig(TenantA, warehouse.Id, null, null, allowOverReceive: true, overReceiveTolerancePercentage: null);
-        existingConfig.UpdateSteps(new List<InboundWorkflowStep> { new(InboundStepType.Putaway, 0, "Putaway") });
+        existingConfig.UpdateSteps(new List<InboundStepDefinition> { new(InboundStepType.Putaway, 0, "Putaway") });
         db.Set<InboundWorkflowConfig>().Add(existingConfig);
 
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);

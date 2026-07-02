@@ -50,14 +50,18 @@ public class InboundWorkflowConfig : BaseEntity, IAggregateRoot
         OverReceiveTolerancePercentage = overReceiveTolerancePercentage;
     }
 
-    public void UpdateSteps(IEnumerable<InboundWorkflowStep> newSteps)
+    public void UpdateSteps(IEnumerable<InboundStepDefinition> newStepDefs)
     {
-        var stepsList = newSteps?.ToList() ?? throw new DomainException("Steps collection cannot be null.");
+        var defsList = newStepDefs?.ToList() ?? throw new DomainException("Steps collection cannot be null.");
 
-        if (stepsList.Count == 0)
+        if (defsList.Count == 0)
         {
             throw new DomainException("Workflow steps cannot be empty.");
         }
+
+        var stepsList = defsList
+            .Select(s => new InboundWorkflowStep(s.StepType, s.Sequence, s.DisplayName))
+            .ToList();
 
         var hasPutaway = stepsList.Any(s => s.StepType == InboundStepType.Putaway);
         if (!hasPutaway)
