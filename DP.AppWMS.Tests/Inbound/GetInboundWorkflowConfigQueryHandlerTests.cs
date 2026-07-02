@@ -38,7 +38,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenCustomConfigExistsForWarehouse_ReturnsCustomConfig()
+    public async Task Handle_WhenCustomConfigExistsForWarehouse_ReturnsCustomConfigAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -78,7 +78,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenNoCustomConfigButTenantGlobalConfigExists_ReturnsTenantGlobalConfig()
+    public async Task Handle_WhenNoCustomConfigButTenantGlobalConfigExists_ReturnsTenantGlobalConfigAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -121,7 +121,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenNoConfigsExistInDb_ReturnsHardcodedDefaultConfig()
+    public async Task Handle_WhenNoConfigsExistInDb_ReturnsHardcodedDefaultConfigAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -154,7 +154,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldOnlyRetrieveConfigsBelongingToRequestedTenant()
+    public async Task Handle_ShouldOnlyRetrieveConfigsBelongingToRequestedTenantAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -190,7 +190,7 @@ public sealed class GetInboundWorkflowConfigQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnStepsOrderedBySequenceAscending()
+    public async Task Handle_ShouldReturnStepsOrderedBySequenceAscendingAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();

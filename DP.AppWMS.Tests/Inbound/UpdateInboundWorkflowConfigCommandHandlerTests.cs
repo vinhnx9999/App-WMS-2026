@@ -3,7 +3,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using WMS.Application.Common.Models;
 using WMS.Application.Inbound.Commands.UpdateInboundWorkflowConfig;
 using WMS.Domain.Common;
 using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
@@ -44,7 +43,7 @@ public sealed class UpdateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithValidData_UpdatesInboundWorkflowConfig()
+    public async Task Handle_WithValidData_UpdatesInboundWorkflowConfigAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -93,7 +92,7 @@ public sealed class UpdateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithNonExistentId_ThrowsNotFoundException()
+    public async Task Handle_WithNonExistentId_ThrowsNotFoundExceptionAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -123,7 +122,7 @@ public sealed class UpdateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithDifferentTenant_ThrowsNotFoundException()
+    public async Task Handle_WithDifferentTenant_ThrowsNotFoundExceptionAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();

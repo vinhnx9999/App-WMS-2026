@@ -197,8 +197,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -246,8 +244,7 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
+
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -294,8 +291,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -359,8 +354,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -428,8 +421,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -493,8 +484,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -542,8 +531,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -596,8 +583,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var otherSkuId = Guid.NewGuid();
@@ -667,8 +652,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var otherSkuId = Guid.NewGuid();
@@ -739,8 +722,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
@@ -810,8 +791,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var targetLocationId = Guid.NewGuid();
@@ -902,8 +881,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var serialNumber = "SN-DIR-DUP";
 
@@ -955,8 +932,6 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
 
         var skuId = Guid.NewGuid();
         var otherSkuId = Guid.NewGuid();
@@ -1015,8 +990,7 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
+
 
         var skuId = Guid.NewGuid();
         var palletCode = "PL-DIR-CAP";
@@ -1078,8 +1052,7 @@ public class PutawayHandlersTests
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
-        using var _conn = connection;
-        using var _db = db;
+
 
         var skuId = Guid.NewGuid();
         var targetLocationId = Guid.NewGuid();
@@ -1139,8 +1112,7 @@ public class PutawayHandlersTests
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var (connection, db, uow) = await SetupInMemoryDbAsync(mediatorMock.Object);
-        using var _conn = connection;
-        using var _db = db;
+
 
         var skuId = Guid.NewGuid();
         var actualLocationId = Guid.NewGuid();
