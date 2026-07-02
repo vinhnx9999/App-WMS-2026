@@ -39,7 +39,14 @@ public sealed class CompleteReceiptCommandHandler(IUnitOfWork uow)
 
             if (inboundOrder != null)
             {
-                supplierId = inboundOrder.SupplierId;
+                var distinctSuppliers = inboundOrder.Items
+                    .Select(i => i.SupplierId)
+                    .Where(id => id.HasValue)
+                    .Select(id => id!.Value)
+                    .Distinct()
+                    .ToList();
+
+                supplierId = distinctSuppliers.Count == 1 ? distinctSuppliers[0] : null;
                 expectedPoQty = inboundOrder.Items.Sum(i => i.Quantity);
 
                 var otherReceipts = await _uow.Repository<InboundReceipt>().Query()

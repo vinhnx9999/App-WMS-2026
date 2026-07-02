@@ -27,6 +27,7 @@ export const ENDPOINTS = {
         OCCUPANCY: Base_URL + "/locations/occupancy",
     },
     INBOUND: {
+        SEARCH: Base_URL + "/inbound/search",
         DIRECT_PUTAWAY: Base_URL + "/inbound/putaway/direct",
     }
 } as const;

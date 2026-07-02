@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
 using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
@@ -31,12 +32,12 @@ public class InboundWorkflowHandlers(
     {
         var receipt = notification.Receipt;
 
-        // Retrieve supplierId from parent inbound order if present
-        Guid? supplierId = null;
+        InboundOrder? inboundOrder = null;
         if (receipt.InboundOrderId.HasValue)
         {
-            var inboundOrder = await inboundOrderRepo.GetByIdAsync(receipt.InboundOrderId.Value, ct);
-            supplierId = inboundOrder?.SupplierId;
+            inboundOrder = await inboundOrderRepo.Query()
+                .Include(x => x.Items)
+                .FirstOrDefaultAsync(x => x.Id == receipt.InboundOrderId.Value && !x.IsDeleted, ct);
         }
 
         var configs = await configRepo.GetAllAsync(ct);
@@ -53,6 +54,13 @@ public class InboundWorkflowHandlers(
             {
                 var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
                 categoryId = product?.CategoryId;
+            }
+
+            Guid? supplierId = null;
+            if (inboundOrder != null)
+            {
+                var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
+                supplierId = orderItem?.SupplierId;
             }
 
             var config = orchestrator.ResolveConfig(receipt.WarehouseId, supplierId, categoryId, configs);
@@ -113,12 +121,12 @@ public class InboundWorkflowHandlers(
     {
         var inspection = notification.Inspection;
 
-        // Retrieve supplierId from parent inbound order if present
-        Guid? supplierId = null;
+        InboundOrder? inboundOrder = null;
         if (inspection.InboundOrderId.HasValue)
         {
-            var inboundOrder = await inboundOrderRepo.GetByIdAsync(inspection.InboundOrderId.Value, ct);
-            supplierId = inboundOrder?.SupplierId;
+            inboundOrder = await inboundOrderRepo.Query()
+                .Include(x => x.Items)
+                .FirstOrDefaultAsync(x => x.Id == inspection.InboundOrderId.Value && !x.IsDeleted, ct);
         }
 
         var configs = await configRepo.GetAllAsync(ct);
@@ -134,6 +142,13 @@ public class InboundWorkflowHandlers(
             {
                 var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
                 categoryId = product?.CategoryId;
+            }
+
+            Guid? supplierId = null;
+            if (inboundOrder != null)
+            {
+                var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
+                supplierId = orderItem?.SupplierId;
             }
 
             var config = orchestrator.ResolveConfig(inspection.WarehouseId, supplierId, categoryId, configs);

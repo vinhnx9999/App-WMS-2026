@@ -67,14 +67,18 @@ public class InboundWorkflowHandlersTests
         var inboundOrderId = Guid.NewGuid();
         var tenantId = Guid.NewGuid();
 
-        var supplierId = Guid.NewGuid();
-        var inboundOrder = new InboundOrder { SupplierId = supplierId };
-        _inboundOrderRepoMock
-            .Setup(x => x.GetByIdAsync(inboundOrderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(inboundOrder);
-
         var sku1 = Sku.Create(tenantId, Guid.NewGuid(), "SKU1", "Sku 1", null, null, 10m);
         var sku2 = Sku.Create(tenantId, Guid.NewGuid(), "SKU2", "Sku 2", null, null, 10m);
+
+        var supplierId = Guid.NewGuid();
+        var inboundOrder = InboundOrder.Create(tenantId, "PO-001", null, null);
+        typeof(WMS.Domain.Common.BaseEntity).GetProperty(nameof(WMS.Domain.Common.BaseEntity.Id))!.SetValue(inboundOrder, inboundOrderId);
+        inboundOrder.AddItem(sku1.Id, 10, supplierId);
+        inboundOrder.AddItem(sku2.Id, 20, supplierId);
+
+        _inboundOrderRepoMock
+            .Setup(x => x.Query())
+            .Returns(new List<InboundOrder> { inboundOrder }.AsQueryable());
 
         _skuRepoMock.Setup(x => x.GetByIdAsync(sku1.Id, It.IsAny<CancellationToken>())).ReturnsAsync(sku1);
         _skuRepoMock.Setup(x => x.GetByIdAsync(sku2.Id, It.IsAny<CancellationToken>())).ReturnsAsync(sku2);

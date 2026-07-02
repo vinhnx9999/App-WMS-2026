@@ -70,15 +70,10 @@ public class SapInboundSyncService(
             }
 
             // Create order
-            var order = new InboundOrder
-            {
-                OrderNumber = poNumber,
-                SupplierId = supplier.Id,
-                Status = InboundStatus.Pending,
-            };
+            var order = InboundOrder.Create(supplier.TenantId, poNumber, null, "Synced from SAP");
 
             if (po.TryGetProperty("TotalNetAmount", out var total))
-                order.TotalValue = total.GetDecimal();
+                order.SetTotalValue(total.GetDecimal());
 
             await orderRepo.AddAsync(order, ct);
             synced++;

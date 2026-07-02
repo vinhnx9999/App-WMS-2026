@@ -30,3 +30,45 @@ export interface DraftItem {
   palletCode: string;
   location: LocationOccupancy;
 }
+
+export const InboundStatus = {
+  Pending: 0,
+  Approved: 1,
+  Receiving: 2,
+  Completed: 3,
+  Cancelled: 4,
+} as const;
+
+export type InboundStatus = typeof InboundStatus[keyof typeof InboundStatus];
+
+export interface InboundItemDto {
+  skuCode: string;
+  skuName: string;
+  quantity: number;
+  receivedQuantity: number;
+  supplierId: string | null;
+  supplierName: string;
+}
+
+export interface InboundOrderDto {
+  id: string;
+  orderNumber: string;
+  supplierName: string;
+  expectedDate: string | null;
+  status: InboundStatus;
+  totalValue: number;
+  itemsCount: number;
+  items: InboundItemDto[];
+}
+
+export interface SearchInboundOrdersParams {
+  search?: string;
+  supplierId?: string;
+  status?: InboundStatus;
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  limit?: number;
+}
+
+

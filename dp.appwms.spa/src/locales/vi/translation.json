@@ -306,6 +306,40 @@
         "details": "Thông tin lô",
         "actions": "Thao tác"
       }
+    },
+    "po": {
+      "description": "Danh sách đơn mua hàng (Purchase Order) cần nhập kho.",
+      "nextAction": "Tiếp tục sang Nhận hàng",
+      "searchPlaceholder": "Tìm kiếm theo mã PO...",
+      "filterSupplier": "Chọn nhà cung cấp",
+      "allSuppliers": "Tất cả nhà cung cấp",
+      "filterStatus": "Trạng thái",
+      "columns": {
+        "orderNumber": "Số đơn PO",
+        "supplierName": "Nhà cung cấp",
+        "expectedDate": "Ngày dự kiến",
+        "totalValue": "Tổng giá trị",
+        "itemsCount": "Số mặt hàng",
+        "status": "Trạng thái",
+        "actions": "Thao tác"
+      },
+      "status": {
+        "all": "Tất cả trạng thái",
+        "pending": "Chờ xử lý",
+        "approved": "Đã duyệt",
+        "receiving": "Đang nhận hàng",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã hủy",
+        "unknown": "Không rõ"
+      },
+      "actions": {
+        "viewDetails": "Xem chi tiết mặt hàng",
+        "receive": "Nhận hàng"
+      }
+    },
+    "receive": {
+      "description": "Chọn một đơn mua hàng ở bước trước để tiến hành nhập hàng vào kho.",
+      "nextAction": "Chuyển sang kiểm hàng"
     }
   }
 }

@@ -10,5 +10,13 @@ public class InboundConfiguration : BaseEntityConfiguration<InboundOrder>
     {
         builder.HasIndex(x => x.OrderNumber).IsUnique();
         builder.ToTable("inbound_orders");
+
+        builder.HasMany(x => x.Items)
+            .WithOne(x => x.InboundOrder)
+            .HasForeignKey(x => x.InboundOrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Metadata.FindNavigation(nameof(InboundOrder.Items))
+            ?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

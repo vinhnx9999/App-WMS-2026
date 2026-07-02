@@ -59,13 +59,13 @@ public class PutawayHandlersTests
         var supplierId = Guid.NewGuid();
         var inboundOrderId = Guid.NewGuid();
 
-        var inboundOrder = new InboundOrder
-        {
-            SupplierId = supplierId
-        };
+        var inboundOrder = InboundOrder.Create(_tenantId, "PO-001", null, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(inboundOrder, inboundOrderId);
+        inboundOrder.AddItem(skuId, 10, supplierId);
+
         _inboundOrderRepoMock
-            .Setup(x => x.GetByIdAsync(inboundOrderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(inboundOrder);
+            .Setup(x => x.Query())
+            .Returns(new List<InboundOrder> { inboundOrder }.AsQueryable());
 
         var task = PutawayTask.Create(_tenantId, "PT-001", inboundOrderId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
         task.AddItem(skuId, 10, locationId);
@@ -105,13 +105,13 @@ public class PutawayHandlersTests
         var supplierId = Guid.NewGuid();
         var inboundOrderId = Guid.NewGuid();
 
-        var inboundOrder = new InboundOrder
-        {
-            SupplierId = supplierId
-        };
+        var inboundOrder = InboundOrder.Create(_tenantId, "PO-001", null, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(inboundOrder, inboundOrderId);
+        inboundOrder.AddItem(skuId, 10, supplierId);
+
         _inboundOrderRepoMock
-            .Setup(x => x.GetByIdAsync(inboundOrderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(inboundOrder);
+            .Setup(x => x.Query())
+            .Returns(new List<InboundOrder> { inboundOrder }.AsQueryable());
 
         var task = PutawayTask.Create(_tenantId, "PT-001", inboundOrderId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
         task.AddItem(skuId, 10, locationId);
@@ -787,7 +787,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenValidRequest_ShouldCreateTaskInPendingStatusWithFieldsCorrectly()
+    public async Task CreateDirectPutawayCommandHandler_WhenValidRequest_ShouldCreateTaskInPendingStatusWithFieldsCorrectlyAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
@@ -848,7 +848,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public void CreateDirectPutawayRequestValidator_WhenSerialNumberIsProvidedAndQtyIsNotOne_ShouldHaveValidationError()
+    public void CreateDirectPutawayRequestValidator_WhenSerialNumberIsProvidedAndQtyIsNotOne_ShouldHaveValidationErrorAsync()
     {
         // Arrange
         var validator = new CreateDirectPutawayRequestValidator();
@@ -928,7 +928,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenPalletHasDifferentSKUAndIsMixSkuIsFalse_ShouldThrowAppException()
+    public async Task CreateDirectPutawayCommandHandler_WhenPalletHasDifferentSKUAndIsMixSkuIsFalse_ShouldThrowAppExceptionAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
@@ -986,7 +986,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenAddingExceedsMaxQtyInPallet_ShouldThrowDomainException()
+    public async Task CreateDirectPutawayCommandHandler_WhenAddingExceedsMaxQtyInPallet_ShouldThrowDomainExceptionAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
@@ -1048,7 +1048,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenPalletCodeIsEmpty_ShouldGeneratePalletCodeUsingCodeSequence()
+    public async Task CreateDirectPutawayCommandHandler_WhenPalletCodeIsEmpty_ShouldGeneratePalletCodeUsingCodeSequenceAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();

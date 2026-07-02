@@ -1,7 +1,7 @@
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { InboundStepper } from "./components/InboundStepper";
-import { INBOUND_STEPS, type WorkflowStep } from "./models/inbound.model";
+import { INBOUND_STEPS, type WorkflowStep, type InboundOrderDto } from "./models/inbound.model";
 import { useInboundWorkflow } from "../../hooks/use-inbound-workflow";
 import { PurchaseOrderStep } from "./components/PurchaseOrderStep";
 import { ReceiveStep } from "./components/ReceiveStep";
@@ -13,6 +13,7 @@ export default function InboundPage() {
   const { t } = useTranslation();
   const [isPendingTransition, startTransition] = useTransition();
   const { enabledSteps, activeStep, setActiveStep, isLoading, isDirectMode } = useInboundWorkflow();
+  const [selectedOrder, setSelectedOrder] = useState<InboundOrderDto | null>(null);
 
   // Navigate to the next enabled step
   const handleNextStep = (current: WorkflowStep) => {
@@ -43,7 +44,13 @@ export default function InboundPage() {
         <InboundStepper
           enabledSteps={enabledSteps}
           activeStep={activeStep}
-          onStepChange={(step) => startTransition(() => setActiveStep(step))}
+          onStepChange={(step) => startTransition(() => {
+            // Reset selected order if returning to PO step
+            if (step === INBOUND_STEPS.PO) {
+              setSelectedOrder(null);
+            }
+            setActiveStep(step);
+          })}
         />
       </div>
 
@@ -54,9 +61,18 @@ export default function InboundPage() {
             <Spinner className="size-8 text-primary" />
           </div>
         ) : activeStep === INBOUND_STEPS.PO ? (
-          <PurchaseOrderStep onNext={() => handleNextStep(INBOUND_STEPS.PO)} />
+          <PurchaseOrderStep
+            onNext={() => handleNextStep(INBOUND_STEPS.PO)}
+            onSelectOrder={(order) => {
+              setSelectedOrder(order);
+              handleNextStep(INBOUND_STEPS.PO);
+            }}
+          />
         ) : activeStep === INBOUND_STEPS.RECEIVE ? (
-          <ReceiveStep onNext={() => handleNextStep(INBOUND_STEPS.RECEIVE)} />
+          <ReceiveStep
+            onNext={() => handleNextStep(INBOUND_STEPS.RECEIVE)}
+            selectedOrder={selectedOrder}
+          />
         ) : activeStep === INBOUND_STEPS.QC ? (
           <QcStep onNext={() => handleNextStep(INBOUND_STEPS.QC)} />
         ) : (
@@ -66,3 +82,4 @@ export default function InboundPage() {
     </div>
   );
 }
+

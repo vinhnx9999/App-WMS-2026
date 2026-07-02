@@ -8,9 +8,6 @@ public class CreateInboundValidator
 {
     public CreateInboundValidator()
     {
-        RuleFor(x => x.SupplierId)
-            .NotEmpty().WithMessage("Nhà cung cấp không được để trống");
-
         RuleFor(x => x.Items)
             .NotEmpty().WithMessage("Đơn phải có ít nhất 1 sản phẩm");
 

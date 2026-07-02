@@ -126,6 +126,14 @@ _Avoid_: Expiration date, best before date
 
 ## Inbound Workflow
 
+**InboundOrder**:
+An aggregate root representing an order placed for goods to be received into the warehouse. It encapsulates all items, totals, dates, and state transitions. To enforce domain integrity, its properties cannot be modified directly from outside, and its constructor is private, exposing creation through static factory methods. Supplier association is handled at the item level rather than at the order level.
+_Avoid_: Purchase Order, PO, Inbound Shipment
+
+**InboundItem**:
+A child entity owned and managed exclusively by the `InboundOrder` aggregate root. It represents a specific SKU quantity to be received, along with its optional `SupplierId`, allowing an order to consist of items from different suppliers. It cannot be instantiated or modified directly from outside the aggregate boundary.
+_Avoid_: Order item, receipt line
+
 **InboundWorkflowConfig**:
 An aggregate root configuring the sequence of inbound steps for a given warehouse, supplier, or category combination, resolved using a priority fallback hierarchy.
 _Avoid_: Inbound routing config, step mapping
@@ -164,7 +172,21 @@ _Avoid_: WCS group, robot task header
 A child-level movement command representing the physical transport of a single Pallet from a source location (FromLocationCode, defaults to "0.0.0") to a destination location (ToLocationCode, coordinates "z.x.y").
 _Avoid_: WCS command, robot task detail
 
+
 **WcsSubTaskHistory**:
 An audit log tracking the life cycle of a WcsSubTask (from creation to robot assignment and completion/failure), recording the timestamp and the specific robot code (e.g. "CRANE-01") executing it.
 _Avoid_: WCS history, robot log
 
+## PO List UI & Workflow Decisions
+
+**PO List UI**:
+The frontend SPA implements the Purchase Order (PO) list page using AG Grid Community, configured with the `infinite` row model for server-side pagination, search, and sorting. It maps UI search keywords (debounced) and column sorting (`params.sortModel`) to the backend `SearchInboundOrdersQuery`.
+_Avoid_: Client-side sorting/filtering for large datasets.
+
+**PO Detail Panel**:
+Row details for an Inbound Order are displayed in a sliding side panel (Sheet component from shadcn UI) showing the list of items (`InboundItemDto[]`) instead of nested row grids.
+_Avoid_: AG Grid Enterprise nested grid features (due to Community edition limits).
+
+**Inbound Workflow Navigation**:
+The `selectedOrder` state is maintained in the parent `InboundPage.tsx` component. Selecting a PO for receiving sets this state and triggers an automatic transition of the active stepper to the `RECEIVE` step.
+_Avoid_: Requiring manual stepper clicks to advance after selecting a PO.

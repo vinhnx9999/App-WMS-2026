@@ -1,38 +1,37 @@
 using DP.AppWMS.ApiService.Endpoints.Categories;
 using DP.AppWMS.ApiService.Endpoints.Customers;
+using DP.AppWMS.ApiService.Endpoints.Inbound;
+using DP.AppWMS.ApiService.Endpoints.Locations;
 using DP.AppWMS.ApiService.Endpoints.Products;
 using DP.AppWMS.ApiService.Endpoints.Skus;
 using DP.AppWMS.ApiService.Endpoints.Suppliers;
 using DP.AppWMS.ApiService.Endpoints.Warehouses;
-using DP.AppWMS.ApiService.Endpoints.Inbound;
-using DP.AppWMS.ApiService.Endpoints.Locations;
 
-namespace DP.AppWMS.ApiService.Endpoints
+namespace DP.AppWMS.ApiService.Endpoints;
+
+public static class EndpointExtensions
 {
-    public static class EndpointExtensions
+    public static IServiceCollection AddEndpoints(this IServiceCollection services)
     {
-        public static IServiceCollection AddEndpoints(this IServiceCollection services)
-        {
-            services.AddSingleton<IEndpoint, SkuEndpoints>();
-            services.AddSingleton<IEndpoint, ProductEndpoints>();
-            services.AddSingleton<IEndpoint, CategoryEndpoints>();
-            services.AddSingleton<IEndpoint, SupplierEndpoints>();
-            services.AddSingleton<IEndpoint, CustomerEndpoints>();
-            services.AddSingleton<IEndpoint, WarehouseEndpoints>();
-            services.AddSingleton<IEndpoint, InboundEndpoints>();
-            services.AddSingleton<IEndpoint, LocationEndpoints>();
+        services.AddSingleton<IEndpoint, SkuEndpoints>();
+        services.AddSingleton<IEndpoint, ProductEndpoints>();
+        services.AddSingleton<IEndpoint, CategoryEndpoints>();
+        services.AddSingleton<IEndpoint, SupplierEndpoints>();
+        services.AddSingleton<IEndpoint, CustomerEndpoints>();
+        services.AddSingleton<IEndpoint, WarehouseEndpoints>();
+        services.AddSingleton<IEndpoint, InboundEndpoints>();
+        services.AddSingleton<IEndpoint, LocationEndpoints>();
 
-            return services;
-        }
+        return services;
+    }
 
-        public static WebApplication MapEndpoints(this WebApplication app)
+    public static WebApplication MapEndpoints(this WebApplication app)
+    {
+        var endpoints = app.Services.GetServices<IEndpoint>();
+        foreach (var endpoint in endpoints)
         {
-            var endpoints = app.Services.GetServices<IEndpoint>();
-            foreach (var endpoint in endpoints)
-            {
-                endpoint.MapEndpoint(app);
-            }
-            return app;
+            endpoint.MapEndpoint(app);
         }
+        return app;
     }
 }

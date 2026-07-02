@@ -1,5 +1,6 @@
-﻿namespace WMS.Application.Inbound.DTOs;
+namespace WMS.Application.Inbound.DTOs;
 
 public record InboundItemDto(
     string Sku, string ItemName,
-    int Quantity, int ReceivedQuantity);
+    int Quantity, int ReceivedQuantity,
+    Guid? SupplierId, string? SupplierName);

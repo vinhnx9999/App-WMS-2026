@@ -19,7 +19,7 @@ public class Warehouse : BaseEntity, IAggregateRoot
     public string Code { get; private set; } = default!;
     public string? Address { get; private set; }
 
-    private List<WarehouseArea> _areas = [];
+    private readonly List<WarehouseArea> _areas = [];
 
     /// <summary>
     /// Read-only access to Areas. All mutations must go through aggregate root methods.

@@ -11,7 +11,9 @@ using WMS.Application.Inbound.Commands.CreateDirectPutaway;
 using WMS.Application.Inbound.Commands.CreateReceipt;
 using WMS.Application.Inbound.Commands.StartQc;
 using WMS.Application.Inbound.DTOs;
+using WMS.Application.Inbound.Queries.SearchInboundOrders;
 using WMS.Application.Inbound.Services;
+using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Inbound;
@@ -25,6 +27,10 @@ public sealed class InboundEndpoints : IEndpoint
         group.MapGet("/", GetList)
             .WithName("GetInboundList").WithTags("Inbound").RequireAuthorization()
             .Produces<ApiResponse<List<InboundOrderDto>>>(StatusCodes.Status200OK);
+
+        group.MapGet("/search", Search)
+            .WithName("SearchInboundOrders").WithTags("Inbound").RequireAuthorization()
+            .Produces<ApiResponse<PagedResult<InboundOrderDto>>>(StatusCodes.Status200OK);
 
         group.MapGet("/{id:guid}", GetById)
             .WithName("GetInboundById").WithTags("Inbound").RequireAuthorization()
@@ -190,5 +196,31 @@ public sealed class InboundEndpoints : IEndpoint
     {
         var result = await sender.Send(new CreateDirectPutawayCommand(currentUser.TenantId, request), ct);
         return Results.Ok(ApiResponse<Guid>.Ok(result, "Đã tạo nhiệm vụ cất hàng trực tiếp"));
+    }
+
+    private static async Task<IResult> Search(
+        [FromQuery] string? search,
+        [FromQuery] Guid? supplierId,
+        [FromQuery] InboundStatus? status,
+        [FromQuery] string? sortBy,
+        [FromQuery] string? sortOrder,
+        [FromQuery] int page = PaginationDefaults.Page,
+        [FromQuery] int limit = PaginationDefaults.Limit,
+        ISender sender = default!,
+        ICurrentUser currentUser = default!,
+        CancellationToken ct = default)
+    {
+        var query = new SearchInboundOrdersQuery(
+            currentUser.TenantId,
+            search,
+            supplierId,
+            status,
+            sortBy,
+            sortOrder,
+            page,
+            limit
+        );
+        var result = await sender.Send(query, ct);
+        return Results.Ok(ApiResponse<PagedResult<InboundOrderDto>>.Ok(result));
     }
 }

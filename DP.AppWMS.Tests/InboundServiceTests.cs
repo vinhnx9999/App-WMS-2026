@@ -40,20 +40,8 @@ public class InboundServiceTests
         var itemId = Guid.NewGuid();
 
         var orderRepo = new Mock<IRepository<InboundOrder>>();
-        var order = WithId(new InboundOrder
-        {
-            OrderNumber = "PO-TEST-001",
-            Status = InboundStatus.Pending,
-            Items =
-            [
-                new()
-                {
-                    SkuId = itemId,
-                    Quantity = 100,
-                    ReceivedQuantity = 0,
-                }
-            ]
-        }, orderId);
+        var order = WithId(InboundOrder.Create(Guid.Empty, "PO-TEST-001", null, null), orderId);
+        order.AddItem(itemId, 100, null);
 
         orderRepo
             .Setup(x => x.Query())
@@ -126,20 +114,8 @@ public class InboundServiceTests
         var itemId = Guid.NewGuid();
 
         var orderRepo = new Mock<IRepository<InboundOrder>>();
-        var order = WithId(new InboundOrder
-        {
-            OrderNumber = "PO-TEST-001",
-            Status = InboundStatus.Pending,
-            Items =
-            [
-                new()
-                {
-                    SkuId = itemId,
-                    Quantity = 100,
-                    ReceivedQuantity = 0,
-                }
-            ]
-        }, orderId);
+        var order = WithId(InboundOrder.Create(Guid.Empty, "PO-TEST-001", null, null), orderId);
+        order.AddItem(itemId, 100, null);
 
         orderRepo
             .Setup(x => x.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))

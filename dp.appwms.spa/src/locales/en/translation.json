@@ -306,6 +306,40 @@
         "details": "Details",
         "actions": "Actions"
       }
+    },
+    "po": {
+      "description": "List of Purchase Orders (PO) that need to be received.",
+      "nextAction": "Proceed to Receive Goods",
+      "searchPlaceholder": "Search by PO number...",
+      "filterSupplier": "Filter supplier",
+      "allSuppliers": "All suppliers",
+      "filterStatus": "Status",
+      "columns": {
+        "orderNumber": "PO Number",
+        "supplierName": "Supplier",
+        "expectedDate": "Expected Date",
+        "totalValue": "Total Value",
+        "itemsCount": "Items Count",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "all": "All statuses",
+        "pending": "Pending",
+        "approved": "Approved",
+        "receiving": "Receiving",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "unknown": "Unknown"
+      },
+      "actions": {
+        "viewDetails": "View item details",
+        "receive": "Receive"
+      }
+    },
+    "receive": {
+      "description": "Select a purchase order in the previous step to proceed with receiving.",
+      "nextAction": "Proceed to QC inspection"
     }
   }
 }
