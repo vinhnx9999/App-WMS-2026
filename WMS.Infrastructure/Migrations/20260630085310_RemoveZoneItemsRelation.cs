@@ -1,23 +1,21 @@
-using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WMS.Infrastructure.Migrations
+namespace WMS.Infrastructure.Migrations;
+
+/// <inheritdoc />
+public partial class RemoveZoneItemsRelation : Migration
 {
     /// <inheritdoc />
-    public partial class RemoveZoneItemsRelation : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
 
-        }
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
 
-        }
     }
 }
