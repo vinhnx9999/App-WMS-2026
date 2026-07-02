@@ -6,9 +6,7 @@ using Moq;
 using WMS.Application.Common.Models;
 using WMS.Application.Inbound.Commands.CreateInboundWorkflowConfig;
 using WMS.Domain.Common;
-using WMS.Domain.Entities;
 using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
-using WMS.Domain.Entities.Master;
 using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
@@ -46,7 +44,7 @@ public sealed class CreateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithValidData_CreatesInboundWorkflowConfig()
+    public async Task Handle_WithValidData_CreatesInboundWorkflowConfigAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -99,7 +97,7 @@ public sealed class CreateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithNonExistentWarehouse_ThrowsNotFoundException()
+    public async Task Handle_WithNonExistentWarehouse_ThrowsNotFoundExceptionAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -132,7 +130,7 @@ public sealed class CreateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithNonExistentSupplier_ThrowsNotFoundException()
+    public async Task Handle_WithNonExistentSupplier_ThrowsNotFoundExceptionAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -170,7 +168,7 @@ public sealed class CreateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithNonExistentCategory_ThrowsNotFoundException()
+    public async Task Handle_WithNonExistentCategory_ThrowsNotFoundExceptionAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
@@ -208,7 +206,7 @@ public sealed class CreateInboundWorkflowConfigCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WithDuplicateConfiguration_ThrowsAppException()
+    public async Task Handle_WithDuplicateConfiguration_ThrowsAppExceptionAsync()
     {
         // Arrange
         await using var connection = await OpenConnectionAsync();
