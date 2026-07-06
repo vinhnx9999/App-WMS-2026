@@ -30,6 +30,13 @@ export const ENDPOINTS = {
         SEARCH: Base_URL + "/inbound/search",
         DIRECT_PUTAWAY: Base_URL + "/inbound/putaway/direct",
         GET_BY_ID: (id: string) => `${Base_URL}/inbound/${id}`,
+        FORCE_COMPLETE: (id: string) => `${Base_URL}/inbound/${id}/force-complete`,
+        RECEIPTS: {
+            CREATE: Base_URL + "/inbound/receipts",
+            SEARCH: Base_URL + "/inbound/receipts/search",
+            GET_BY_ID: (id: string) => `${Base_URL}/inbound/receipts/${id}`,
+            COMPLETE: (id: string) => `${Base_URL}/inbound/receipts/${id}/complete`,
+        }
     }
 } as const;
 

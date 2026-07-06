@@ -90,3 +90,91 @@ export interface GetInboundByIdResponse {
   items: InboundItemDetailDto[];
 }
 
+export interface CreatePOItemRequest {
+  skuId: string;
+  quantity: number;
+  supplierId?: string | null;
+}
+
+export interface CreatePORequest {
+  expectedDate?: string | null;
+  notes?: string | null;
+  items: CreatePOItemRequest[];
+}
+
+export interface CreatePoResponse {
+  id: string;
+}
+
+export interface CreateReceiptItemRequest {
+  skuId: string;
+  expectedQuantity: number;
+  receivedQuantity: number;
+  notes?: string | null;
+  supplierId?: string | null;
+  expiryDate?: string | null;
+  serialNumber?: string | null;
+  lotNumber?: string | null;
+}
+
+export interface CreateReceiptRequest {
+  inboundOrderId: string | null;
+  warehouseId: string;
+  items: CreateReceiptItemRequest[];
+}
+
+export interface ReceiveItemRow {
+  skuId: string;
+  skuCode: string;
+  skuName: string;
+  expectedQuantity: number;
+  receivedQuantity: number;
+  notes: string | null;
+  supplierId: string | null;
+  supplierName: string | null;
+  expiryDate: string | null;
+  serialNumber: string | null;
+  lotNumber: string | null;
+}
+
+export interface InboundReceiptDto {
+  id: string;
+  receiptNumber: string;
+  inboundOrderId: string | null;
+  inboundOrderNumber: string | null;
+  warehouseId: string;
+  warehouseName: string | null;
+  status: ReceiptStatus;
+  createdAt: string;
+  itemsCount: number;
+}
+
+export interface InboundReceiptItemDetailDto {
+  skuId: string;
+  skuCode: string | null;
+  skuName: string | null;
+  expectedQuantity: number;
+  receivedQuantity: number;
+  notes: string | null;
+  supplierId: string | null;
+  supplierName: string | null;
+  expiryDate: string | null;
+  serialNumber: string | null;
+  lotNumber: string | null;
+}
+
+export interface GetInboundReceiptByIdResponse {
+  id: string;
+  receiptNumber: string;
+  inboundOrderId: string | null;
+  inboundOrderNumber: string | null;
+  warehouseId: string;
+  warehouseName: string | null;
+  status: ReceiptStatus;
+  createdAt: string;
+  items: InboundReceiptItemDetailDto[];
+}
+
+export type InboundReceiptDetailDto = GetInboundReceiptByIdResponse;
+
+
