@@ -127,8 +127,8 @@ _Avoid_: Expiration date, best before date
 ## Inbound Workflow
 
 **InboundOrder**:
-An aggregate root representing an order placed for goods to be received into the warehouse. It encapsulates all items, totals, dates, and state transitions. To enforce domain integrity, its properties cannot be modified directly from outside, and its constructor is private, exposing creation through static factory methods. Supplier association is handled at the item level rather than at the order level.
-_Avoid_: Purchase Order, PO, Inbound Shipment
+An aggregate root representing an order placed for goods to be received into the warehouse (commonly referred to as a PO). It encapsulates items, totals, dates, and status transitions. Its status lifecycle is simplified to: `Approved` (initial default state for both ERP-synced and manually created POs), `Receiving` (active receiving in progress), `Completed` (fully received or manually closed), and `Cancelled`. To enforce domain integrity, its properties cannot be modified directly from outside, and its constructor is private, exposing creation through static factory methods. Supplier association is handled at the item level rather than at the order level.
+_Avoid_: Purchase Order, PO, Inbound Shipment, Pending status (obsolete)
 
 **InboundItem**:
 A child entity owned and managed exclusively by the `InboundOrder` aggregate root. It represents a specific SKU quantity to be received, along with its optional `SupplierId`, allowing an order to consist of items from different suppliers. It cannot be instantiated or modified directly from outside the aggregate boundary.
@@ -143,15 +143,15 @@ A child entity representing a specific stage in the inbound workflow sequence. V
 _Avoid_: Inbound phase, workflow stage
 
 **InboundReceipt**:
-An aggregate root recording the physical receipt of goods at the loading dock, supporting partial shipments and enforcing over-receiving policies based on the resolved workflow config.
-_Avoid_: Gate receipt, receiving report
+An aggregate root recording the physical receipt of goods at the loading dock, supporting partial shipments and enforcing over-receiving policies based on the resolved workflow config. Its status lifecycle consists only of `Receiving` (active counting session) and `Completed` (finalized and sent for downstream steps).
+_Avoid_: Gate receipt, receiving report, Draft status (obsolete)
 
 **QcInspection**:
 An aggregate root representing a quality inspection session, tracking `PassedQuantity` and `FailedQuantity` for SKU lines.
 _Avoid_: QC check, inspection form
 
 **PutawayTask**:
-An aggregate root representing the assignment to move received or inspected items to storage locations, integrated with automated systems (WCS) by generating WcsTask and WcsSubTasks when targeting automated shelving blocks.
+An aggregate root representing the assignment to move received or inspected items to storage locations.
 _Avoid_: Stock movement task, placement order
 
 **GoodsReceiptNote (GRN)**:
@@ -162,20 +162,9 @@ _Avoid_: Receiving voucher, completed receipt record
 A timeline audit log tracking individual workflow milestones, including the user, timestamp, state transitions, and item quantities.
 _Avoid_: Order logs, workflow audit trail
 
-## WCS Integration
+## WCS Integration (Obsolete)
 
-**WcsTask**:
-A master-level integration document representing a group of pallet movement commands sent to the Warehouse Control System (WCS). It holds the WcsBlockId and a rollup status.
-_Avoid_: WCS group, robot task header
-
-**WcsSubTask**:
-A child-level movement command representing the physical transport of a single Pallet from a source location (FromLocationCode, defaults to "0.0.0") to a destination location (ToLocationCode, coordinates "z.x.y").
-_Avoid_: WCS command, robot task detail
-
-
-**WcsSubTaskHistory**:
-An audit log tracking the life cycle of a WcsSubTask (from creation to robot assignment and completion/failure), recording the timestamp and the specific robot code (e.g. "CRANE-01") executing it.
-_Avoid_: WCS history, robot log
+The WCS robot confirmation wait state (`SentToWcs`) and deferred inventory updates have been abandoned. The system now updates inventory immediately upon putaway task confirmation. The entities `WcsTask`, `WcsSubTask`, and `WcsSubTaskHistory` are no longer utilized.
 
 ## PO List UI & Workflow Decisions
 
@@ -184,9 +173,32 @@ The frontend SPA implements the Purchase Order (PO) list page using AG Grid Comm
 _Avoid_: Client-side sorting/filtering for large datasets.
 
 **PO Detail Panel**:
-Row details for an Inbound Order are displayed in a sliding side panel (Sheet component from shadcn UI) showing the list of items (`InboundItemDto[]`) instead of nested row grids.
-_Avoid_: AG Grid Enterprise nested grid features (due to Community edition limits).
+Row details for an Inbound Order are displayed in a sliding side panel (Sheet component from shadcn UI). When opened, it fetches detailed items by calling the Get Inbound By ID endpoint (`/inbound/{id}`), returning `InboundItemDetailDto` details with nullable `SkuCode`, `SkuName`, and `SupplierName` (retrieved via ID dictionaries in the Query Handler). The sheet displays items in an optimized vertical card-like listing with loading skeletons and error retry support.
+_Avoid_: Direct database joins between separate aggregate roots in writing commands; use ID-based query joins in the read-model Query Handler. Also avoid AG Grid Enterprise nested grid features (due to Community edition limits).
 
 **Inbound Workflow Navigation**:
-The `selectedOrder` state is maintained in the parent `InboundPage.tsx` component. Selecting a PO for receiving sets this state and triggers an automatic transition of the active stepper to the `RECEIVE` step.
-_Avoid_: Requiring manual stepper clicks to advance after selecting a PO.
+The parent `InboundPage.tsx` component maintains the active workflow step and active receipt contexts. Selecting a PO for receiving in Step 1 (PO Step) calls the API to create a new `InboundReceipt` in `Receiving` status and automatically transitions to the `RECEIVE` step, loading the `ReceiveWork` (Full-Screen Detail Work View) for that receipt.
+_Avoid_: Requiring manual stepper clicks to advance after selecting a PO, or directly displaying PO details in the Receive step.
+
+## Inbound UI & Workflow Decisions
+
+**Inbound Workspaces**:
+* Inbound screens are designed as independent pages (PO, Receive, QC, Putaway) to support specific warehouse roles (Purchasing, Dock Unloaders, QC Inspectors, Forklift Operators).
+* Operators can handle multiple POs or batches simultaneously without workflow locks.
+
+**Full-Screen Work View Layout**:
+* *Read-only Views*: Detail sheets like PO details are displayed in a sliding side panel (shadcn UI Sheet) to keep navigation clean.
+* *Data-entry Views*: Active operational steps (Receive/QC/Putaway details) transition to a **Full-Screen Work View** utilizing the full width of the screen. This optimizes AG Grid spacing for inline row-level data entry.
+* *Receive step division*: `ReceiveStep` is a Master Grid showing `InboundReceipt` entities (both `Receiving` and `Completed`). Clicking a `Receiving` receipt navigates to the full-screen `ReceiveWork` detail workspace for inline counting and barcode scanning.
+
+**Pallet Code & Consolidation**:
+* Support scanning pre-printed pallet labels or auto-generating pallet codes on the UI. Gaining pallet codes is optional during Receive/QC (allowing loose count) and can be assigned during Putaway.
+* Scanning an existing physical Pallet Code in Putaway auto-fills and locks the Target Location to the pallet's current shelf location (consolidation), validating backend constraints (`IsMixSku`, `MaxQtyInPallet`).
+
+**No Draft Table (Immediate Putaway Confirmation)**:
+* Removed the Draft Table concept from Putaway. Confirming a row directly commits it to the database, updating inventory and generating the GRN instantly, avoiding data loss if the device disconnects mid-session.
+
+**Partial & Over-Receiving**:
+* A PO supports multiple receiving shipments over time. The `ReceiveWork` workspace displays PO Qty, Previously Received, and Current Received.
+* Supports over-receiving checks against the `overReceiveTolerancePercentage` configuration.
+* Provides a "Force Complete" action for managers to manually close a PO when a supplier short-ships and will not deliver the remainder.

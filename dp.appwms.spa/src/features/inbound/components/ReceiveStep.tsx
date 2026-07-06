@@ -25,8 +25,6 @@ export const ReceiveStep: React.FC<ReceiveStepProps> = ({ onNext, selectedOrder 
               Đơn hàng nhận: {selectedOrder.orderNumber}
             </p>
             <div className="grid grid-cols-2 gap-1 text-muted-foreground">
-              <span>Nhà cung cấp:</span>
-              <span className="text-foreground font-medium text-right">{selectedOrder.supplierName}</span>
               <span>Tổng giá trị:</span>
               <span className="text-foreground font-medium text-right">{selectedOrder.totalValue.toLocaleString()} VND</span>
               <span>Mặt hàng:</span>

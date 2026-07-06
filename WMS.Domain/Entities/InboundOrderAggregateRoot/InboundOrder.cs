@@ -13,7 +13,7 @@ public class InboundOrder : BaseEntity, IAggregateRoot
     public string OrderNumber { get; private set; } = null!;
     public DateOnly? ExpectedDate { get; private set; }
     public DateOnly? ReceivedDate { get; private set; }
-    public InboundStatus Status { get; private set; } = InboundStatus.Pending;
+    public InboundStatus Status { get; private set; } = InboundStatus.Approved;
     public decimal TotalValue { get; private set; }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class InboundOrder : BaseEntity, IAggregateRoot
         OrderNumber = orderNumber;
         ExpectedDate = expectedDate;
         Notes = notes;
-        Status = InboundStatus.Pending;
+        Status = InboundStatus.Approved;
         TotalValue = 0;
     }
 

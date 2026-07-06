@@ -25,10 +25,10 @@ public class InboundWorkflowHandlers(
     InboundWorkflowOrchestrator orchestrator,
     ICurrentUser currentUser,
     ISequenceCodeGenerator codeSequenceGenerator)
-    : INotificationHandler<InboundReceiptCompletedEvent>,
+    : INotificationHandler<CreateInboundReceiptEvent>,
       INotificationHandler<QcInspectionCompletedEvent>
 {
-    public async Task Handle(InboundReceiptCompletedEvent notification, CancellationToken ct)
+    public async Task Handle(CreateInboundReceiptEvent notification, CancellationToken ct)
     {
         var receipt = notification.Receipt;
 
@@ -110,7 +110,19 @@ public class InboundWorkflowHandlers(
 
             foreach (var item in putawayItems)
             {
-                putawayTask.AddItem(item.SkuId, item.ReceivedQuantity, Guid.Empty);
+                DateTime? expiryDateTime = item.ExpiryDate.HasValue 
+                    ? new DateTime(item.ExpiryDate.Value.Year, item.ExpiryDate.Value.Month, item.ExpiryDate.Value.Day, 0, 0, 0, DateTimeKind.Utc)
+                    : null;
+                putawayTask.AddItem(
+                    skuId: item.SkuId,
+                    putawayQuantity: item.ReceivedQuantity,
+                    targetLocationId: Guid.Empty,
+                    actualLocationId: null,
+                    palletId: null,
+                    supplierId: item.SupplierId,
+                    expiryDate: expiryDateTime,
+                    serialNumber: item.SerialNumber,
+                    lotNumber: item.LotNumber);
             }
 
             await putawayRepo.AddAsync(putawayTask, ct);

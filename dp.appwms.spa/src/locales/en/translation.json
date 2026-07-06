@@ -335,6 +335,24 @@
       "actions": {
         "viewDetails": "View item details",
         "receive": "Receive"
+      },
+      "detail": {
+        "itemsTitle": "Items to receive ({{count}})",
+        "qtyProgress": "Received: {{received}} / {{quantity}}",
+        "loadFailed": "Failed to load order details.",
+        "lotNo": "Lot",
+        "expiry": "Expiry",
+        "unknownSku": "Unknown name",
+        "poLabel": "PO: {{number}}",
+        "description": "Item details and quantities to receive.",
+        "totalItems": "Total Items",
+        "itemsCountText": "{{count}} lines of items",
+        "expectedDate": "Expected Date",
+        "totalValue": "Total Value",
+        "statusLabel": "Status",
+        "supplierLabel": "Supplier:",
+        "noItems": "No items.",
+        "receiveButton": "Receive Goods For This Order"
       }
     },
     "receive": {

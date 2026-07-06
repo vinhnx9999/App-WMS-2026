@@ -335,6 +335,24 @@
       "actions": {
         "viewDetails": "Xem chi tiết mặt hàng",
         "receive": "Nhận hàng"
+      },
+      "detail": {
+        "itemsTitle": "Mặt hàng cần nhập ({{count}})",
+        "qtyProgress": "Đã nhận: {{received}} / {{quantity}}",
+        "loadFailed": "Không thể tải chi tiết đơn hàng.",
+        "lotNo": "Lô",
+        "expiry": "HSD",
+        "unknownSku": "Không rõ tên",
+        "poLabel": "Đơn PO: {{number}}",
+        "description": "Chi tiết mặt hàng và số lượng cần nhập kho.",
+        "totalItems": "Tổng mặt hàng",
+        "itemsCountText": "{{count}} dòng mặt hàng",
+        "expectedDate": "Ngày dự kiến",
+        "totalValue": "Tổng giá trị",
+        "statusLabel": "Trạng thái",
+        "supplierLabel": "Nhà cung cấp:",
+        "noItems": "Không có mặt hàng nào.",
+        "receiveButton": "Nhận Hàng Cho Đơn Này"
       }
     },
     "receive": {

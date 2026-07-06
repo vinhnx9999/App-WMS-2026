@@ -29,6 +29,7 @@ export const ENDPOINTS = {
     INBOUND: {
         SEARCH: Base_URL + "/inbound/search",
         DIRECT_PUTAWAY: Base_URL + "/inbound/putaway/direct",
+        GET_BY_ID: (id: string) => `${Base_URL}/inbound/${id}`,
     }
 } as const;
 

@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WMS.Application.Common.DynamicSearch;
 using WMS.Application.Common.Models;
 using WMS.Application.Inbound.Commands.CompletePutaway;
 using WMS.Application.Inbound.Commands.CompleteQc;
@@ -11,9 +12,12 @@ using WMS.Application.Inbound.Commands.CreateDirectPutaway;
 using WMS.Application.Inbound.Commands.CreateReceipt;
 using WMS.Application.Inbound.Commands.StartQc;
 using WMS.Application.Inbound.DTOs;
+using WMS.Application.Inbound.Queries.GetInboundById;
 using WMS.Application.Inbound.Queries.SearchInboundOrders;
+using WMS.Application.Inbound.Commands.ForceCompleteInboundOrder;
+using WMS.Application.Inbound.Queries.GetInboundReceiptById;
+using WMS.Application.Inbound.Queries.SearchInboundReceipts;
 using WMS.Application.Inbound.Services;
-using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
 
 namespace DP.AppWMS.ApiService.Endpoints.Inbound;
@@ -24,23 +28,19 @@ public sealed class InboundEndpoints : IEndpoint
     {
         var group = app.MapGroup(ApiRoutes.Groups.Inbound);
 
-        group.MapGet("/", GetList)
-            .WithName("GetInboundList").WithTags("Inbound").RequireAuthorization()
-            .Produces<ApiResponse<List<InboundOrderDto>>>(StatusCodes.Status200OK);
-
-        group.MapGet("/search", Search)
+        group.MapPost("/search", Search)
             .WithName("SearchInboundOrders").WithTags("Inbound").RequireAuthorization()
             .Produces<ApiResponse<PagedResult<InboundOrderDto>>>(StatusCodes.Status200OK);
 
         group.MapGet("/{id:guid}", GetById)
             .WithName("GetInboundById").WithTags("Inbound").RequireAuthorization()
-            .Produces<ApiResponse<InboundOrderDto>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<GetInboundByIdResponse>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
 
         group.MapPost("/", Create)
             .WithName("CreateInbound").WithTags("Inbound")
             .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,manager,planner" })
-            .Produces<ApiResponse<InboundOrderDto>>(StatusCodes.Status201Created)
+            .Produces<ApiResponse<CreatePoResponse>>(StatusCodes.Status201Created)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
 
         group.MapPut("/{id:guid}/receive", Receive)
@@ -90,23 +90,31 @@ public sealed class InboundEndpoints : IEndpoint
             .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,manager,keeper" })
             .Produces<ApiResponse<Guid>>(StatusCodes.Status200OK)
             .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
-    }
 
-    private static async Task<IResult> GetList(
-        IInboundService svc,
-        CancellationToken ct)
-    {
-        var result = await svc.GetListAsync(ct);
-        return Results.Ok(ApiResponse<List<InboundOrderDto>>.Ok(result));
+        group.MapPut("/{id:guid}/force-complete", ForceCompleteOrder)
+            .WithName("ForceCompleteInboundOrder").WithTags("Inbound")
+            .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,manager,planner" })
+            .Produces<ApiResponse>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status400BadRequest);
+
+        group.MapPost("/receipts/search", SearchReceipts)
+            .WithName("SearchInboundReceipts").WithTags("Inbound").RequireAuthorization()
+            .Produces<ApiResponse<PagedResult<InboundReceiptDto>>>(StatusCodes.Status200OK);
+
+        group.MapGet("/receipts/{id:guid}", GetReceiptById)
+            .WithName("GetInboundReceiptById").WithTags("Inbound").RequireAuthorization()
+            .Produces<ApiResponse<GetInboundReceiptByIdResponse>>(StatusCodes.Status200OK)
+            .Produces<ApiResponse<object>>(StatusCodes.Status404NotFound);
     }
 
     private static async Task<IResult> GetById(
         Guid id,
-        IInboundService svc,
+        ISender sender,
+        ICurrentUser currentUser,
         CancellationToken ct)
     {
-        var result = await svc.GetByIdAsync(id, ct);
-        return Results.Ok(ApiResponse<InboundOrderDto>.Ok(result));
+        var result = await sender.Send(new GetInboundByIdQuery(currentUser.TenantId, id), ct);
+        return Results.Ok(ApiResponse<GetInboundByIdResponse>.Ok(result));
     }
 
     private static async Task<IResult> Create(
@@ -117,7 +125,12 @@ public sealed class InboundEndpoints : IEndpoint
     {
         await ValidationFilter.ValidateAsync(validator, request);
         var result = await svc.CreateAsync(request, ct);
-        return Results.CreatedAtRoute("GetInboundById", new { id = result?.Id }, ApiResponse<InboundOrderDto>.Ok(result));
+        if (result == null)
+        {
+            return Results.BadRequest(ApiResponse.Fail("Không thể tạo đơn nhập"));
+        }
+        var response = new CreatePoResponse(result.Id);
+        return Results.CreatedAtRoute("GetInboundById", new { id = result.Id }, ApiResponse<CreatePoResponse>.Ok(response));
     }
 
     private static async Task<IResult> Receive(
@@ -199,11 +212,7 @@ public sealed class InboundEndpoints : IEndpoint
     }
 
     private static async Task<IResult> Search(
-        [FromQuery] string? search,
-        [FromQuery] Guid? supplierId,
-        [FromQuery] InboundStatus? status,
-        [FromQuery] string? sortBy,
-        [FromQuery] string? sortOrder,
+        [FromBody] List<SearchObject> searchObjects,
         [FromQuery] int page = PaginationDefaults.Page,
         [FromQuery] int limit = PaginationDefaults.Limit,
         ISender sender = default!,
@@ -211,16 +220,44 @@ public sealed class InboundEndpoints : IEndpoint
         CancellationToken ct = default)
     {
         var query = new SearchInboundOrdersQuery(
-            currentUser.TenantId,
-            search,
-            supplierId,
-            status,
-            sortBy,
-            sortOrder,
-            page,
-            limit
+            currentUser.TenantId, searchObjects, page, limit
         );
         var result = await sender.Send(query, ct);
         return Results.Ok(ApiResponse<PagedResult<InboundOrderDto>>.Ok(result));
+    }
+
+    private static async Task<IResult> ForceCompleteOrder(
+        Guid id,
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken ct)
+    {
+        await sender.Send(new ForceCompleteInboundOrderCommand(id, currentUser.TenantId), ct);
+        return Results.Ok(ApiResponse.Ok(null, "Đã cưỡng bức hoàn tất đơn nhập"));
+    }
+
+    private static async Task<IResult> SearchReceipts(
+        [FromBody] List<SearchObject> searchObjects,
+        [FromQuery] int page = PaginationDefaults.Page,
+        [FromQuery] int limit = PaginationDefaults.Limit,
+        ISender sender = default!,
+        ICurrentUser currentUser = default!,
+        CancellationToken ct = default)
+    {
+        var query = new SearchInboundReceiptsQuery(
+            currentUser.TenantId, searchObjects, page, limit
+        );
+        var result = await sender.Send(query, ct);
+        return Results.Ok(ApiResponse<PagedResult<InboundReceiptDto>>.Ok(result));
+    }
+
+    private static async Task<IResult> GetReceiptById(
+        Guid id,
+        ISender sender,
+        ICurrentUser currentUser,
+        CancellationToken ct)
+    {
+        var result = await sender.Send(new GetInboundReceiptByIdQuery(currentUser.TenantId, id), ct);
+        return Results.Ok(ApiResponse<GetInboundReceiptByIdResponse>.Ok(result));
     }
 }

@@ -16,7 +16,7 @@ public class GoodsReceiptNoteGeneratedEvent(GoodsReceiptNote grn) : DomainEvent
     public GoodsReceiptNote Grn { get; } = grn;
 }
 
-public class InboundReceiptCompletedEvent(InboundReceipt receipt) : DomainEvent
+public class CreateInboundReceiptEvent(InboundReceipt receipt) : DomainEvent
 {
     public InboundReceipt Receipt { get; } = receipt;
 }

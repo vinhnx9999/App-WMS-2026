@@ -14,7 +14,7 @@ public class InboundReceiptTests
     public void CompleteReceipt_WhenOverReceiveNotAllowed_AndExceedsExpected_ShouldThrowDomainException()
     {
         // Arrange
-        var receipt = new InboundReceipt("REC-001", Guid.NewGuid(), Guid.NewGuid());
+        var receipt = new InboundReceipt(_tenantId, "REC-001", Guid.NewGuid(), Guid.NewGuid());
         var config = new InboundWorkflowConfig(_tenantId, Guid.NewGuid(), Guid.NewGuid(), null, allowOverReceive: false);
         
         // Act
@@ -29,7 +29,7 @@ public class InboundReceiptTests
     public void CompleteReceipt_WhenOverReceiveAllowed_AndExceedsTolerance_ShouldThrowDomainException()
     {
         // Arrange
-        var receipt = new InboundReceipt("REC-002", Guid.NewGuid(), Guid.NewGuid());
+        var receipt = new InboundReceipt(_tenantId, "REC-002", Guid.NewGuid(), Guid.NewGuid());
         var config = new InboundWorkflowConfig(_tenantId, Guid.NewGuid(), Guid.NewGuid(), null, allowOverReceive: true, overReceiveTolerancePercentage: 10m);
         
         // Act
@@ -44,7 +44,7 @@ public class InboundReceiptTests
     public void CompleteReceipt_WhenOverReceiveAllowed_AndWithinTolerance_ShouldCompleteSuccessfully()
     {
         // Arrange
-        var receipt = new InboundReceipt("REC-003", Guid.NewGuid(), Guid.NewGuid());
+        var receipt = new InboundReceipt(_tenantId, "REC-003", Guid.NewGuid(), Guid.NewGuid());
         var config = new InboundWorkflowConfig(_tenantId, Guid.NewGuid(), Guid.NewGuid(), null, allowOverReceive: true, overReceiveTolerancePercentage: 10m);
         
         // Act
@@ -58,7 +58,7 @@ public class InboundReceiptTests
     public void CompleteReceipt_WhenOverReceiveAllowed_WithNoToleranceLimit_ShouldCompleteSuccessfully()
     {
         // Arrange
-        var receipt = new InboundReceipt("REC-004", Guid.NewGuid(), Guid.NewGuid());
+        var receipt = new InboundReceipt(_tenantId, "REC-004", Guid.NewGuid(), Guid.NewGuid());
         var config = new InboundWorkflowConfig(_tenantId, Guid.NewGuid(), Guid.NewGuid(), null, allowOverReceive: true, overReceiveTolerancePercentage: null);
         
         // Act
@@ -66,5 +66,15 @@ public class InboundReceiptTests
 
         // Assert
         receipt.Status.Should().Be(ReceiptStatus.Completed);
+    }
+
+    [Fact]
+    public void Constructor_ShouldInitializeWithReceivingStatus()
+    {
+        // Arrange & Act
+        var receipt = new InboundReceipt(_tenantId, "REC-005", Guid.NewGuid(), Guid.NewGuid());
+
+        // Assert
+        receipt.Status.Should().Be(ReceiptStatus.Receiving);
     }
 }

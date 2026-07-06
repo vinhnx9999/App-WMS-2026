@@ -32,14 +32,20 @@ export interface DraftItem {
 }
 
 export const InboundStatus = {
-  Pending: 0,
-  Approved: 1,
-  Receiving: 2,
-  Completed: 3,
-  Cancelled: 4,
+  Approved: 0,
+  Receiving: 1,
+  Completed: 2,
+  Cancelled: 3,
 } as const;
 
 export type InboundStatus = typeof InboundStatus[keyof typeof InboundStatus];
+
+export const ReceiptStatus = {
+  Receiving: 0,
+  Completed: 1,
+} as const;
+
+export type ReceiptStatus = typeof ReceiptStatus[keyof typeof ReceiptStatus];
 
 export interface InboundItemDto {
   skuCode: string;
@@ -53,22 +59,34 @@ export interface InboundItemDto {
 export interface InboundOrderDto {
   id: string;
   orderNumber: string;
-  supplierName: string;
   expectedDate: string | null;
   status: InboundStatus;
   totalValue: number;
   itemsCount: number;
-  items: InboundItemDto[];
 }
 
-export interface SearchInboundOrdersParams {
-  search?: string;
-  supplierId?: string;
-  status?: InboundStatus;
-  sortBy?: string;
-  sortOrder?: string;
-  page?: number;
-  limit?: number;
+export interface InboundItemDetailDto {
+  skuId: string;
+  skuCode: string | null;
+  skuName: string | null;
+  quantity: number;
+  receivedQuantity: number;
+  supplierId: string | null;
+  supplierName: string | null;
+  expiryDate: string | null;
+  serialNumber: string | null;
+  lotNumber: string | null;
+  note: string | null;
 }
 
+export interface GetInboundByIdResponse {
+  id: string;
+  orderNumber: string;
+  expectedDate: string | null;
+  receivedDate: string | null;
+  status: InboundStatus;
+  totalValue: number;
+  notes: string | null;
+  items: InboundItemDetailDto[];
+}
 
