@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using WMS.Application.Common.Service;
 using WMS.Application.Inbound.Handlers;
@@ -24,12 +25,14 @@ public class InboundWorkflowHandlersTests
     private readonly InboundWorkflowOrchestrator _orchestrator;
     private readonly Mock<ICurrentUser> _currentUserMock;
     private readonly Mock<ISequenceCodeGenerator> _sequenceCodeGeneratorMock;
+    private readonly Mock<ILogger<InboundWorkflowHandlers>> _loggerMock;
 
     public InboundWorkflowHandlersTests()
     {
         _orchestrator = new InboundWorkflowOrchestrator();
         _currentUserMock = new Mock<ICurrentUser>();
         _sequenceCodeGeneratorMock = new Mock<ISequenceCodeGenerator>();
+        _loggerMock = new Mock<ILogger<InboundWorkflowHandlers>>();
 
         _sequenceCodeGeneratorMock
             .Setup(x => x.NextAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -132,9 +135,10 @@ public class InboundWorkflowHandlersTests
             uow.Repository<PutawayTask>(),
             _orchestrator,
             _currentUserMock.Object,
-            _sequenceCodeGeneratorMock.Object);
+            _sequenceCodeGeneratorMock.Object,
+            _loggerMock.Object);
 
-        var notification = new CreateInboundReceiptEvent(receipt);
+        var notification = new InboundReceiptCompletedEvent(receipt);
 
         // Act
         await handlers.Handle(notification, CancellationToken.None);
@@ -150,5 +154,73 @@ public class InboundWorkflowHandlersTests
         createdPutaway.Should().NotBeNull();
         createdPutaway!.Items.Should().HaveCount(1);
         createdPutaway.Items.First().SkuId.Should().Be(sku2Id);
+    }
+
+    [Fact]
+    public async Task HandleQcInspectionCompletedEvent_ShouldCreatePutawayTaskForPassedItems_AndLogFailedItemsAsync()
+    {
+        // Arrange
+        var (connection, db, uow) = await SetupInMemoryDbAsync();
+        var tenantId = Guid.NewGuid();
+        var warehouseId = Guid.NewGuid();
+        var inboundOrderId = Guid.NewGuid();
+        var supplierId = Guid.NewGuid();
+        var catId = Guid.NewGuid();
+        var prodId = Guid.NewGuid();
+        var sku1Id = Guid.NewGuid();
+
+        var prod = Product.Create(tenantId, "PROD1", "Product 1", null, catId);
+        typeof(WMS.Domain.Common.BaseEntity).GetProperty(nameof(WMS.Domain.Common.BaseEntity.Id))!.SetValue(prod, prodId);
+        db.Products.Add(prod);
+
+        var sku = Sku.Create(tenantId, prodId, "SKU1", "Sku 1", null, null, 10m);
+        typeof(WMS.Domain.Common.BaseEntity).GetProperty(nameof(WMS.Domain.Common.BaseEntity.Id))!.SetValue(sku, sku1Id);
+        db.Skus.Add(sku);
+
+        var config = new InboundWorkflowConfig(tenantId, warehouseId, supplierId, catId);
+        config.UpdateSteps(new List<InboundStepDefinition>
+        {
+            new(InboundStepType.QC, 1, "QC"),
+            new(InboundStepType.Putaway, 2, "Putaway")
+        });
+        db.InboundWorkflowConfigs.Add(config);
+
+        await db.SaveChangesAsync();
+
+        var qcInspection = new QcInspection("QC-001", inboundOrderId, Guid.NewGuid(), warehouseId);
+        qcInspection.AddItem(new QcInspectionItem(sku1Id, 100, 90, 10, "10 items damaged"));
+
+        var handlers = new InboundWorkflowHandlers(
+            uow.Repository<InboundWorkflowConfig>(),
+            uow.Repository<InboundOrder>(),
+            uow.Repository<Sku>(),
+            uow.Repository<Product>(),
+            uow.Repository<QcInspection>(),
+            uow.Repository<PutawayTask>(),
+            _orchestrator,
+            _currentUserMock.Object,
+            _sequenceCodeGeneratorMock.Object,
+            _loggerMock.Object);
+
+        var notification = new QcInspectionCompletedEvent(qcInspection);
+
+        // Act
+        await handlers.Handle(notification, CancellationToken.None);
+        await db.SaveChangesAsync();
+
+        // Assert
+        var createdPutaway = await db.PutawayTasks.Include(p => p.Items).FirstOrDefaultAsync();
+        createdPutaway.Should().NotBeNull();
+        createdPutaway!.Items.Should().HaveCount(1);
+        createdPutaway.Items.First().PutawayQuantity.Should().Be(90);
+
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Failed QC items recorded")),
+                It.IsAny<Exception>(),
+                It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
+            Times.Once);
     }
 }

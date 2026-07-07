@@ -1,35 +1,25 @@
-import React, { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
-import type { ColDef, IDatasource, IGetRowsParams } from "ag-grid-community";
+import type { ColDef, IDatasource, IGetRowsParams, ICellRendererParams } from "ag-grid-community";
 import { useTranslation } from "react-i18next";
-import { Eye, Layers } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAgGridTheme } from "@/hooks/use-ag-grid-theme";
 import { DEFAULT_PAGE_SIZE } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { inboundService } from "../services/inbound.service";
 import { InboundStatus, type InboundOrderDto } from "../models/inbound.model";
-import { PurchaseOrderDetailSheet } from "./PurchaseOrderDetailSheet";
 import { SearchOperators, type SearchObject } from "@/models/search.model";
 
-interface PurchaseOrderStepProps {
-  onNext: () => void;
-  onSelectOrder: (order: InboundOrderDto) => void;
-}
-
-export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
-  onSelectOrder,
-}) => {
+export default function PurchaseOrderListPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const gridTheme = useAgGridTheme();
   const gridRef = useRef<AgGridReact>(null);
 
-  // Loading and Selection States
   const [isLoading, setIsLoading] = useState(false);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [viewingOrder, setViewingOrder] = useState<InboundOrderDto | null>(null);
 
-  // Column definitions for AG Grid
   const columnDefs = useMemo<ColDef<InboundOrderDto>[]>(
     () => [
       {
@@ -38,7 +28,7 @@ export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
         pinned: "left",
         filter: "agTextColumnFilter",
         width: 180,
-        cellRenderer: (params: any) => {
+        cellRenderer: (params: ICellRendererParams<InboundOrderDto>) => {
           if (!params.value) return null;
           return <span className="font-semibold text-primary">{params.value}</span>;
         },
@@ -60,7 +50,6 @@ export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
           if (params.value === undefined || params.value === null) return "0";
           return params.value.toLocaleString("vi-VN") + " VND";
         },
-
       },
       {
         field: "itemsCount",
@@ -73,12 +62,12 @@ export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
         headerName: t("inbound.po.columns.status"),
         flex: 1,
         minWidth: 150,
-        cellRenderer: (params: any) => {
+        cellRenderer: (params: ICellRendererParams<InboundOrderDto>) => {
           if (params.value === undefined || params.value === null) return null;
           const status = params.value as InboundStatus;
 
-          let customClass = "";
-          let labelKey = "";
+          let customClass: string = "";
+          let labelKey: string ;
 
           switch (status) {
             case InboundStatus.Approved:
@@ -113,49 +102,36 @@ export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
       {
         headerName: t("inbound.po.columns.actions"),
         pinned: "right",
-        width: 180,
+        width: 120,
         sortable: false,
         filter: false,
         resizable: false,
-        cellRenderer: (params: any) => {
+        cellRenderer: (params: ICellRendererParams<InboundOrderDto>) => {
           if (!params.data) return null;
           const order = params.data as InboundOrderDto;
-          const isReceivable =
-            order.status === InboundStatus.Approved ||
-            order.status === InboundStatus.Receiving;
 
           return (
             <div className="flex items-center gap-1.5 h-full">
               <Button
                 variant="ghost"
-                size="icon-xs"
-                title={t("inbound.po.actions.viewDetails")}
-                onClick={() => {
-                  setViewingOrder(order);
-                  setIsSheetOpen(true);
-                }}
-              >
-                <Eye className="size-3.5" />
-              </Button>
-              <Button
-                variant="default"
                 size="xs"
                 className="h-7 text-[10px] font-semibold cursor-pointer"
-                disabled={!isReceivable}
-                onClick={() => onSelectOrder(order)}
+                title={t("inbound.po.actions.viewDetails")}
+                onClick={() => {
+                  navigate(`/inbound/po/${order.id}`);
+                }}
               >
-                <Layers className="size-3 mr-1" />
-                {t("inbound.po.actions.receive")}
+                <Eye className="size-3.5 mr-1" />
+                {t("common.button.view", "View")}
               </Button>
             </div>
           );
         },
       },
     ],
-    [t, onSelectOrder]
+    [t, navigate]
   );
 
-  // AG Grid Datasource Configuration
   const datasource = useMemo<IDatasource>(() => {
     return {
       getRows: async (params: IGetRowsParams) => {
@@ -217,7 +193,23 @@ export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
 
   return (
     <div className="h-full w-full flex flex-col overflow-hidden bg-card border rounded-xl shadow-sm">
-      <div className="flex-1 min-h-0 w-full overflow-hidden relative">
+      {/* Header Area with Create Button */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border-b bg-secondary/10">
+        <div>
+          <h2 className="text-lg font-bold text-foreground">{t("inbound.dashboard.purchaseOrders", "Purchase Orders")}</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {t("inbound.dashboard.poDescription", "Manage incoming orders from suppliers")}
+          </p>
+        </div>
+        <Link to="/inbound/po/create">
+          <Button variant="default" size="sm" className="h-8 text-xs font-semibold cursor-pointer">
+            <Plus className="size-3.5 mr-1" />
+            {t("inbound.po.actions.create", "Create PO")}
+          </Button>
+        </Link>
+      </div>
+
+      <div className="flex-1 min-h-0 w-full overflow-hidden relative p-4">
         <div className="w-full h-full">
           <AgGridReact
             ref={gridRef}
@@ -240,22 +232,14 @@ export const PurchaseOrderStep: React.FC<PurchaseOrderStepProps> = ({
               filter: true,
               minWidth: 100,
             }}
+            onRowDoubleClicked={(e) => {
+                if (e.data?.id) {
+                    navigate(`/inbound/po/${e.data.id}`);
+                }
+            }}
           />
         </div>
       </div>
-
-      {/* Detail Slide panel (Sheet) */}
-      <PurchaseOrderDetailSheet
-        open={isSheetOpen}
-        onOpenChange={setIsSheetOpen}
-        order={viewingOrder}
-        onReceive={() => {
-          if (viewingOrder) {
-            setIsSheetOpen(false);
-            onSelectOrder(viewingOrder);
-          }
-        }}
-      />
     </div>
   );
-};
+}

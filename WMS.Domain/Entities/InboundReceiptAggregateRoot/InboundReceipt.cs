@@ -78,6 +78,6 @@ public class InboundReceipt : BaseEntity
         }
 
         Status = ReceiptStatus.Completed;
-        AddEvent(new CreateInboundReceiptEvent(this));
+        AddEvent(new InboundReceiptCompletedEvent(this));
     }
 }

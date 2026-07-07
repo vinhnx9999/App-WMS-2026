@@ -166,39 +166,35 @@ _Avoid_: Order logs, workflow audit trail
 
 The WCS robot confirmation wait state (`SentToWcs`) and deferred inventory updates have been abandoned. The system now updates inventory immediately upon putaway task confirmation. The entities `WcsTask`, `WcsSubTask`, and `WcsSubTaskHistory` are no longer utilized.
 
-## PO List UI & Workflow Decisions
-
-**PO List UI**:
-The frontend SPA implements the Purchase Order (PO) list page using AG Grid Community, configured with the `infinite` row model for server-side pagination, search, and sorting. It maps UI search keywords (debounced) and column sorting (`params.sortModel`) to the backend `SearchInboundOrdersQuery`.
-_Avoid_: Client-side sorting/filtering for large datasets.
-
-**PO Detail Panel**:
-Row details for an Inbound Order are displayed in a sliding side panel (Sheet component from shadcn UI). When opened, it fetches detailed items by calling the Get Inbound By ID endpoint (`/inbound/{id}`), returning `InboundItemDetailDto` details with nullable `SkuCode`, `SkuName`, and `SupplierName` (retrieved via ID dictionaries in the Query Handler). The sheet displays items in an optimized vertical card-like listing with loading skeletons and error retry support.
-_Avoid_: Direct database joins between separate aggregate roots in writing commands; use ID-based query joins in the read-model Query Handler. Also avoid AG Grid Enterprise nested grid features (due to Community edition limits).
-
-**Inbound Workflow Navigation**:
-The parent `InboundPage.tsx` component maintains the active workflow step and active receipt contexts. Selecting a PO for receiving in Step 1 (PO Step) calls the API to create a new `InboundReceipt` in `Receiving` status and automatically transitions to the `RECEIVE` step, loading the `ReceiveWork` (Full-Screen Detail Work View) for that receipt.
-_Avoid_: Requiring manual stepper clicks to advance after selecting a PO, or directly displaying PO details in the Receive step.
-
 ## Inbound UI & Workflow Decisions
 
-**Inbound Workspaces**:
-* Inbound screens are designed as independent pages (PO, Receive, QC, Putaway) to support specific warehouse roles (Purchasing, Dock Unloaders, QC Inspectors, Forklift Operators).
-* Operators can handle multiple POs or batches simultaneously without workflow locks.
+**Independent Pages & Routing**:
+The inbound module is strictly separated into independent pages via nested routes (e.g., `/inbound/po`, `/inbound/po/:id`, `/inbound/receive`, `/inbound/receive/:id`).
+_Avoid_: Single-page stepper navigations where all steps share the same URL. Navigation between modules should happen via a Sidebar menu, which dynamically renders links based on enabled workflow steps. Steppers are only used as contextual read-only indicators or in the main `/inbound` Dashboard.
 
-**Full-Screen Work View Layout**:
-* *Read-only Views*: Detail sheets like PO details are displayed in a sliding side panel (shadcn UI Sheet) to keep navigation clean.
-* *Data-entry Views*: Active operational steps (Receive/QC/Putaway details) transition to a **Full-Screen Work View** utilizing the full width of the screen. This optimizes AG Grid spacing for inline row-level data entry.
-* *Receive step division*: `ReceiveStep` is a Master Grid showing `InboundReceipt` entities (both `Receiving` and `Completed`). Clicking a `Receiving` receipt navigates to the full-screen `ReceiveWork` detail workspace for inline counting and barcode scanning.
+**Workflow Auto-Generation & Creation**:
+* A step can only manually trigger "Create" (e.g., creating a new PO, new Receipt, new Putaway Task) if it has no preceding enabled steps in the configuration. 
+* Data flows forward automatically: completing a Receipt auto-generates a `QcInspection` (if QC is enabled) or a `PutawayTask`. Completing a QC step auto-generates a `PutawayTask` for passed items.
+_Avoid_: "Direct Mode" terminology. Instead, use explicit checks for preceding enabled steps to conditionally show creation UI.
+
+**Layout Architecture (List -> Detail)**:
+* Each inbound step follows a strict Master-Detail pattern. The List view uses AG Grid to display entities.
+* Selecting an entity transitions to a dedicated Detail route (e.g., `/inbound/po/:id`) which utilizes the full screen for an AG Grid data entry interface.
+* Read-only metrics (like PO receiving progress) are shown directly on the PO Detail page.
+_Avoid_: Sliding side panels (Sheets) for detail views. All detail views should be full pages to maximize AG Grid real estate.
+
+**Data Persistence & Drafts**:
+* Heavy data-entry screens (Receive Detail, QC Detail) DO NOT utilize background auto-saving or draft mechanisms. 
+* Operators must complete the counting session in one go. An "Unsaved Changes" browser warning is applied to prevent accidental navigation or refresh.
+_Avoid_: Complex draft state management APIs or local storage syncing for counting sessions.
+
+**Putaway Map Integration**:
+* The Putaway Detail page utilizes AG Grid as its primary interface for locations. The visual warehouse map (Konva canvas) is secondary and accessed via a modal or drawer when the operator needs spatial assistance.
 
 **Pallet Code & Consolidation**:
-* Support scanning pre-printed pallet labels or auto-generating pallet codes on the UI. Gaining pallet codes is optional during Receive/QC (allowing loose count) and can be assigned during Putaway.
-* Scanning an existing physical Pallet Code in Putaway auto-fills and locks the Target Location to the pallet's current shelf location (consolidation), validating backend constraints (`IsMixSku`, `MaxQtyInPallet`).
-
-**No Draft Table (Immediate Putaway Confirmation)**:
-* Removed the Draft Table concept from Putaway. Confirming a row directly commits it to the database, updating inventory and generating the GRN instantly, avoiding data loss if the device disconnects mid-session.
+* Support auto-generating or assigning pallet codes optionally during Receive/QC.
+* Assigning to an existing physical Pallet Code in Putaway auto-fills and locks the Target Location to the pallet's current shelf location, validating backend constraints (`IsMixSku`, `MaxQtyInPallet`).
 
 **Partial & Over-Receiving**:
-* A PO supports multiple receiving shipments over time. The `ReceiveWork` workspace displays PO Qty, Previously Received, and Current Received.
-* Supports over-receiving checks against the `overReceiveTolerancePercentage` configuration.
-* Provides a "Force Complete" action for managers to manually close a PO when a supplier short-ships and will not deliver the remainder.
+* PO supports multiple receiving shipments over time. PO Detail displays PO Qty, Previously Received, and Remaining Qty.
+* Over-receiving is checked against `overReceiveTolerancePercentage`. Managers can use "Force Complete" to manually close a short-shipped PO.

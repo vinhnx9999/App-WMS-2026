@@ -247,6 +247,59 @@
     }
   },
   "inbound": {
+    "po": {
+      "create": {
+        "title": "Tạo đơn mua hàng",
+        "comingSoon": "Form tạo đơn mua hàng đang được xây dựng."
+      },
+      "columns": {
+        "remainingQty": "SL còn lại"
+      },
+      "actions": {
+        "create": "Tạo PO"
+      }
+    },
+    "receive": {
+      "actions": {
+        "create": "Tạo phiếu nhập"
+      },
+      "detail": {
+        "actions": {
+          "back": "Quay lại",
+          "saveDraft": "Lưu nháp",
+          "complete": "Hoàn tất"
+        },
+        "poCode": "Mã PO",
+        "warehouse": "Kho hàng",
+        "unsaved": {
+          "title": "Chưa lưu thay đổi",
+          "message": "Bạn có thay đổi chưa lưu. Bạn có chắc chắn muốn rời khỏi? Các thay đổi sẽ bị mất.",
+          "confirm": "Rời khỏi (không lưu)"
+        },
+        "toasts": {
+          "saveSuccess": "Lưu bản nháp thành công",
+          "saveFailed": "Lỗi khi lưu bản nháp",
+          "completeSuccess": "Hoàn tất phiếu nhập thành công",
+          "completeFailed": "Lỗi khi hoàn tất phiếu nhập"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "Bảng điều khiển Inbound",
+      "description": "Tổng quan về hoạt động Inbound và các công việc đang chờ.",
+      "purchaseOrders": "Đơn mua hàng",
+      "poDescription": "Quản lý đơn hàng đang về từ nhà cung cấp",
+      "poPending": "Đơn đang chờ nhập",
+      "receiving": "Nhập hàng",
+      "receivingDescription": "Xử lý hàng cập bến",
+      "receivingActive": "Phiếu nhập đang xử lý",
+      "qualityControl": "Kiểm soát chất lượng",
+      "qcDescription": "Kiểm tra hàng hóa đã nhận",
+      "qcPending": "Đang chờ kiểm tra",
+      "putaway": "Cất hàng",
+      "putawayDescription": "Chỉ định vị trí cho hàng tồn kho",
+      "putawayPending": "Nhiệm vụ đang chờ"
+    },
     "warehouseMap": "Bản đồ vị trí kho hàng",
     "selectFloor": "Chọn tầng",
     "floor": "Tầng {{floor}}",
@@ -352,12 +405,109 @@
         "statusLabel": "Trạng thái",
         "supplierLabel": "Nhà cung cấp:",
         "noItems": "Không có mặt hàng nào.",
-        "receiveButton": "Nhận Hàng Cho Đơn Này"
+        "receiveButton": "Nhận Hàng Cho Đơn Này",
+        "forceCompleteButton": "Hoàn thành bắt buộc",
+        "forceCompleteDialog": {
+          "title": "Xác nhận hoàn thành bắt buộc",
+          "description": "Hành động này sẽ đóng đơn hàng mua hàng hiện tại và cập nhật trạng thái thành Đã hoàn thành. Hành động này không thể hoàn tác. Bạn có chắc chắn muốn tiếp tục?",
+          "confirm": "Xác nhận",
+          "cancel": "Hủy",
+          "toastSuccess": "Đơn hàng đã được hoàn thành bắt buộc thành công."
+        }
+      }
+    },
+    "qc": {
+      "actions": {
+        "create": "Tạo phiếu kiểm tra",
+        "continue": "Kiểm tra tiếp"
+      },
+      "columns": {
+        "qcCode": "Mã phiếu kiểm tra"
+      },
+      "detail": {
+        "title": "Chi tiết kiểm hàng",
+        "actions": {
+          "back": "Quay lại"
+        },
+        "columns": {
+          "skuCode": "Mã SKU",
+          "skuName": "Tên SKU",
+          "totalQty": "Tổng SL",
+          "passQty": "SL Đạt",
+          "failQty": "SL Lỗi",
+          "notes": "Ghi chú"
+        },
+        "toasts": {
+          "saveSuccess": "Lưu bản nháp thành công",
+          "completeSuccess": "Hoàn thành QC thành công"
+        }
+      }
+    },
+    "putaway": {
+      "actions": {
+        "create": "Cất hàng trực tiếp",
+        "continue": "Tiếp tục cất hàng",
+        "viewMap": "Xem bản đồ"
+      },
+      "columns": {
+        "putawayCode": "Mã tác vụ cất hàng"
+      },
+      "detail": {
+        "title": "Chi tiết cất hàng"
+      },
+      "map": {
+        "title": "Bản đồ kho",
+        "description": "Chọn vị trí đích để cất hàng."
       }
     },
     "receive": {
       "description": "Chọn một đơn mua hàng ở bước trước để tiến hành nhập hàng vào kho.",
-      "nextAction": "Chuyển sang kiểm hàng"
+      "nextAction": "Chuyển sang kiểm hàng",
+      "title": "Danh sách phiếu nhận",
+      "searchPlaceholder": "Tìm kiếm theo mã phiếu nhận hoặc số PO...",
+      "columns": {
+        "receiptCode": "Mã phiếu nhận",
+        "orderNumber": "Số đơn PO",
+        "status": "Trạng thái",
+        "createdAt": "Ngày tạo",
+        "actions": "Hành động"
+      },
+      "actions": {
+        "continue": "Tiếp tục",
+        "view": "Xem"
+      },
+      "detail": {
+        "title": "Chi tiết nhận hàng",
+        "receiptCode": "Mã phiếu nhận",
+        "status": "Trạng thái",
+        "poNumber": "Số đơn PO",
+        "columns": {
+          "skuCode": "Mã SKU",
+          "skuName": "Tên SKU",
+          "expectedQty": "SL dự kiến",
+          "receivedQty": "SL thực nhận",
+          "lotNumber": "Số lô",
+          "expiryDate": "Hạn sử dụng",
+          "serialNumber": "Số Serial",
+          "notes": "Ghi chú"
+        },
+        "buttons": {
+          "saveDraft": "Lưu nháp",
+          "complete": "Xác nhận & Hoàn thành",
+          "back": "Quay lại"
+        },
+        "dialog": {
+          "title": "Xác nhận hoàn thành nhận hàng",
+          "description": "Bạn có chắc chắn muốn hoàn thành phiếu nhận này không? Một khi đã hoàn thành sẽ không thể chỉnh sửa.",
+          "confirm": "Xác nhận",
+          "cancel": "Hủy"
+        },
+        "toast": {
+          "saveSuccess": "Lưu bản nháp thành công!",
+          "completeSuccess": "Hoàn thành nhận hàng thành công!",
+          "error": "Đã xảy ra lỗi: {{message}}"
+        }
+      }
     }
   }
 }

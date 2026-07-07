@@ -52,6 +52,7 @@ export const useWarehouseStore = create<WarehouseState>((set) => ({
         selectedWarehouse: selected,
         isLoading: false,
       });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("Failed to fetch warehouses:", err);
       set({

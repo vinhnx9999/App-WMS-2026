@@ -1,5 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using WMS.Application.Common.Service;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
 using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
@@ -11,7 +13,6 @@ using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Orchestrator;
-using WMS.Application.Common.Service;
 
 namespace WMS.Application.Inbound.Handlers;
 
@@ -24,11 +25,12 @@ public class InboundWorkflowHandlers(
     IRepository<PutawayTask> putawayRepo,
     InboundWorkflowOrchestrator orchestrator,
     ICurrentUser currentUser,
-    ISequenceCodeGenerator codeSequenceGenerator)
-    : INotificationHandler<CreateInboundReceiptEvent>,
+    ISequenceCodeGenerator codeSequenceGenerator,
+    ILogger<InboundWorkflowHandlers> logger)
+    : INotificationHandler<InboundReceiptCompletedEvent>,
       INotificationHandler<QcInspectionCompletedEvent>
 {
-    public async Task Handle(CreateInboundReceiptEvent notification, CancellationToken ct)
+    public async Task Handle(InboundReceiptCompletedEvent notification, CancellationToken ct)
     {
         var receipt = notification.Receipt;
 
@@ -110,7 +112,7 @@ public class InboundWorkflowHandlers(
 
             foreach (var item in putawayItems)
             {
-                DateTime? expiryDateTime = item.ExpiryDate.HasValue 
+                DateTime? expiryDateTime = item.ExpiryDate.HasValue
                     ? new DateTime(item.ExpiryDate.Value.Year, item.ExpiryDate.Value.Month, item.ExpiryDate.Value.Day, 0, 0, 0, DateTimeKind.Utc)
                     : null;
                 putawayTask.AddItem(
@@ -146,29 +148,38 @@ public class InboundWorkflowHandlers(
         // Filter items that passed inspection and route to Putaway
         var putawayItems = new List<QcInspectionItem>();
 
-        foreach (var item in inspection.Items.Where(i => i.PassedQuantity > 0))
+        foreach (var item in inspection.Items)
         {
-            var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
-            Guid? categoryId = null;
-            if (sku != null && sku.ProductId.HasValue)
+            if (item.PassedQuantity > 0)
             {
-                var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
-                categoryId = product?.CategoryId;
+                var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
+                Guid? categoryId = null;
+                if (sku != null && sku.ProductId.HasValue)
+                {
+                    var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
+                    categoryId = product?.CategoryId;
+                }
+
+                Guid? supplierId = null;
+                if (inboundOrder != null)
+                {
+                    var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
+                    supplierId = orderItem?.SupplierId;
+                }
+
+                var config = orchestrator.ResolveConfig(inspection.WarehouseId, supplierId, categoryId, configs);
+                var nextStep = orchestrator.GetNextStep(config, InboundStepType.QC);
+
+                if (nextStep == InboundStepType.Putaway)
+                {
+                    putawayItems.Add(item);
+                }
             }
 
-            Guid? supplierId = null;
-            if (inboundOrder != null)
+            if (item.FailedQuantity > 0)
             {
-                var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
-                supplierId = orderItem?.SupplierId;
-            }
-
-            var config = orchestrator.ResolveConfig(inspection.WarehouseId, supplierId, categoryId, configs);
-            var nextStep = orchestrator.GetNextStep(config, InboundStepType.QC);
-
-            if (nextStep == InboundStepType.Putaway)
-            {
-                putawayItems.Add(item);
+                logger.LogWarning("Failed QC items recorded: {FailedQuantity} for SkuId: {SkuId}",
+                    item.FailedQuantity, item.SkuId);
             }
         }
 

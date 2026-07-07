@@ -5,11 +5,11 @@ using WMS.Domain.Interfaces;
 
 namespace WMS.Application.Inbound.Handlers;
 
-public class CreateInboundReceiptEventHandler(
+public class InboundReceiptCompletedEventHandler(
     IRepository<InboundOrderHistory> historyRepo,
-    ICurrentUser currentUser) : INotificationHandler<CreateInboundReceiptEvent>
+    ICurrentUser currentUser) : INotificationHandler<InboundReceiptCompletedEvent>
 {
-    public async Task Handle(CreateInboundReceiptEvent notification, CancellationToken ct)
+    public async Task Handle(InboundReceiptCompletedEvent notification, CancellationToken ct)
     {
         var receipt = notification.Receipt;
         if (receipt.InboundOrderId == null) return;

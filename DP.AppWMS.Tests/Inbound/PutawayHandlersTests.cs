@@ -171,8 +171,8 @@ public class PutawayHandlersTests
             .ReturnsAsync((InboundOrderHistory h, CancellationToken ct) => h);
 
         var receipt = new InboundReceipt(_tenantId, "REC-001", Guid.NewGuid(), Guid.NewGuid());
-        var handler = new CreateInboundReceiptEventHandler(historyRepoMock.Object, _currentUserMock.Object);
-        var notification = new CreateInboundReceiptEvent(receipt);
+        var handler = new InboundReceiptCompletedEventHandler(historyRepoMock.Object, _currentUserMock.Object);
+        var notification = new InboundReceiptCompletedEvent(receipt);
 
         await handler.Handle(notification, CancellationToken.None);
 

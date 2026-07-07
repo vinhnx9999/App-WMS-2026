@@ -247,6 +247,59 @@
     }
   },
   "inbound": {
+    "po": {
+      "create": {
+        "title": "Create Purchase Order",
+        "comingSoon": "PO Creation Form is under construction."
+      },
+      "columns": {
+        "remainingQty": "Remaining Qty"
+      },
+      "actions": {
+        "create": "Create PO"
+      }
+    },
+    "receive": {
+      "actions": {
+        "create": "Create Receipt"
+      },
+      "detail": {
+        "actions": {
+          "back": "Back",
+          "saveDraft": "Save Draft",
+          "complete": "Complete"
+        },
+        "poCode": "PO Code",
+        "warehouse": "Warehouse",
+        "unsaved": {
+          "title": "Unsaved Changes",
+          "message": "You have unsaved changes. Are you sure you want to leave? Your changes will be lost.",
+          "confirm": "Leave without saving"
+        },
+        "toasts": {
+          "saveSuccess": "Draft saved successfully",
+          "saveFailed": "Failed to save draft",
+          "completeSuccess": "Receipt completed successfully",
+          "completeFailed": "Failed to complete receipt"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "Inbound Dashboard",
+      "description": "Overview of current inbound operations and pending tasks.",
+      "purchaseOrders": "Purchase Orders",
+      "poDescription": "Manage incoming orders from suppliers",
+      "poPending": "POs pending receipt",
+      "receiving": "Receiving",
+      "receivingDescription": "Process dock deliveries",
+      "receivingActive": "Active receipts",
+      "qualityControl": "Quality Control",
+      "qcDescription": "Inspect received goods",
+      "qcPending": "Pending inspections",
+      "putaway": "Putaway",
+      "putawayDescription": "Assign inventory to locations",
+      "putawayPending": "Pending tasks"
+    },
     "warehouseMap": "Warehouse Location Map",
     "selectFloor": "Select Floor",
     "floor": "Floor {{floor}}",
@@ -352,12 +405,109 @@
         "statusLabel": "Status",
         "supplierLabel": "Supplier:",
         "noItems": "No items.",
-        "receiveButton": "Receive Goods For This Order"
+        "receiveButton": "Receive Goods For This Order",
+        "forceCompleteButton": "Force Complete",
+        "forceCompleteDialog": {
+          "title": "Confirm Force Complete",
+          "description": "This will force complete the Purchase Order and mark it as Completed. This action cannot be undone. Are you sure you want to continue?",
+          "confirm": "Confirm",
+          "cancel": "Cancel",
+          "toastSuccess": "Purchase order force completed successfully."
+        }
+      }
+    },
+    "qc": {
+      "actions": {
+        "create": "Create QC Task",
+        "continue": "Continue QC"
+      },
+      "columns": {
+        "qcCode": "QC Task Code"
+      },
+      "detail": {
+        "title": "QC Details",
+        "actions": {
+          "back": "Back"
+        },
+        "columns": {
+          "skuCode": "SKU Code",
+          "skuName": "SKU Name",
+          "totalQty": "Total Qty",
+          "passQty": "Pass Qty",
+          "failQty": "Fail Qty",
+          "notes": "Notes"
+        },
+        "toasts": {
+          "saveSuccess": "Draft saved successfully",
+          "completeSuccess": "QC completed successfully"
+        }
+      }
+    },
+    "putaway": {
+      "actions": {
+        "create": "Direct Putaway",
+        "continue": "Continue Putaway",
+        "viewMap": "View Map"
+      },
+      "columns": {
+        "putawayCode": "Putaway Task Code"
+      },
+      "detail": {
+        "title": "Putaway Details"
+      },
+      "map": {
+        "title": "Warehouse Map",
+        "description": "Select a target location for putaway."
       }
     },
     "receive": {
       "description": "Select a purchase order in the previous step to proceed with receiving.",
-      "nextAction": "Proceed to QC inspection"
+      "nextAction": "Proceed to QC inspection",
+      "title": "Receive Receipts List",
+      "searchPlaceholder": "Search by receipt code or PO number...",
+      "columns": {
+        "receiptCode": "Receipt Code",
+        "orderNumber": "PO Number",
+        "status": "Status",
+        "createdAt": "Created At",
+        "actions": "Actions"
+      },
+      "actions": {
+        "continue": "Continue",
+        "view": "View"
+      },
+      "detail": {
+        "title": "Receive Details",
+        "receiptCode": "Receipt Code",
+        "status": "Status",
+        "poNumber": "PO Number",
+        "columns": {
+          "skuCode": "SKU Code",
+          "skuName": "SKU Name",
+          "expectedQty": "Expected Qty",
+          "receivedQty": "Received Qty",
+          "lotNumber": "Lot Number",
+          "expiryDate": "Expiry Date",
+          "serialNumber": "Serial Number",
+          "notes": "Notes"
+        },
+        "buttons": {
+          "saveDraft": "Save Draft",
+          "complete": "Confirm & Complete",
+          "back": "Back"
+        },
+        "dialog": {
+          "title": "Confirm Receipt Completion",
+          "description": "Are you sure you want to complete this receipt? Once completed, it cannot be modified.",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        },
+        "toast": {
+          "saveSuccess": "Draft saved successfully!",
+          "completeSuccess": "Receipt completed successfully!",
+          "error": "An error occurred: {{message}}"
+        }
+      }
     }
   }
 }
