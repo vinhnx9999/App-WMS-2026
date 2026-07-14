@@ -27,7 +27,7 @@ public class WarehouseArea : BaseEntity
     public bool IsDefault { get; private set; }
     public bool IsAutomated { get; private set; }
 
-    private List<Block> _blocks = [];
+    private readonly List<Block> _blocks = [];
 
     /// <summary>
     /// Read-only access to Blocks. All mutations must go through the Warehouse aggregate root.

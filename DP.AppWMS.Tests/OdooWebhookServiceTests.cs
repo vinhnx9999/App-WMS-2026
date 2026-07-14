@@ -56,11 +56,7 @@ public class OdooWebhookServiceTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(
             [
-                WithId(new InboundOrder
-                {
-                    OrderNumber = "WH/IN/00042",
-                    Status = InboundStatus.Pending,
-                }, Guid.NewGuid())
+                WithId(InboundOrder.Create(Guid.Empty, "WH/IN/00042", null, null), Guid.NewGuid())
             ]);
 
         // Act

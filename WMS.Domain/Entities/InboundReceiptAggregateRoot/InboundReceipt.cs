@@ -10,20 +10,46 @@ public class InboundReceipt : BaseEntity
     public string ReceiptNumber { get; private set; }
     public Guid? InboundOrderId { get; private set; }
     public Guid WarehouseId { get; private set; }
-    public ReceiptStatus Status { get; private set; } = ReceiptStatus.Draft;
+    public ReceiptStatus Status { get; private set; } = ReceiptStatus.Receiving;
 
     private readonly List<InboundReceiptItem> _items = new();
     public IReadOnlyCollection<InboundReceiptItem> Items => _items.AsReadOnly();
 
-    public InboundReceipt(string receiptNumber, Guid? inboundOrderId, Guid warehouseId)
+    private InboundReceipt() { }
+
+    public InboundReceipt(Guid tenantId, string receiptNumber, Guid? inboundOrderId, Guid warehouseId)
     {
+        TenantId = tenantId;
         ReceiptNumber = receiptNumber;
         InboundOrderId = inboundOrderId;
         WarehouseId = warehouseId;
     }
 
-    public void AddItem(InboundReceiptItem item)
+    internal void AddItem(InboundReceiptItem item)
     {
+        _items.Add(item);
+    }
+
+    public void AddItem(
+        Guid skuId,
+        int expectedQuantity,
+        int receivedQuantity,
+        string? notes = null,
+        Guid? supplierId = null,
+        DateOnly? expiryDate = null,
+        string? serialNumber = null,
+        string? lotNumber = null)
+    {
+        var item = new InboundReceiptItem(
+            TenantId,
+            skuId,
+            expectedQuantity,
+            receivedQuantity,
+            notes,
+            supplierId,
+            expiryDate,
+            serialNumber,
+            lotNumber);
         _items.Add(item);
     }
 

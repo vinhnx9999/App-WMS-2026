@@ -53,8 +53,8 @@ public class WcsTask : BaseEntity, IAggregateRoot
         {
             Status = WcsTaskStatus.Done;
         }
-        else if (_subTasks.Any(t => t.Status == WcsTaskStatus.Failed)
-                 && !_subTasks.Any(t => t.Status is WcsTaskStatus.Pending or WcsTaskStatus.Processing))
+        else if (_subTasks.Any(t => t.Status == WcsTaskStatus.Failed) &&
+            _subTasks.All(t => t.Status is not (WcsTaskStatus.Pending or WcsTaskStatus.Processing)))
         {
             Status = WcsTaskStatus.Failed;
         }

@@ -1,7 +1,6 @@
-﻿namespace DP.AppWMS.ApiService.Endpoints
+﻿namespace DP.AppWMS.ApiService.Endpoints;
+
+public interface IEndpoint
 {
-    public interface IEndpoint
-    {
-        void MapEndpoint(IEndpointRouteBuilder app);
-    }
+    void MapEndpoint(IEndpointRouteBuilder app);
 }

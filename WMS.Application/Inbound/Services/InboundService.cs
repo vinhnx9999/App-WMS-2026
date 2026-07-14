@@ -3,20 +3,14 @@ using WMS.Application.Common.Models;
 using WMS.Application.Inbound.DTOs;
 using WMS.Application.SignalR;
 using WMS.Application.SignalR.DTOs;
+using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
-using WMS.Domain.Entities.Master;
-using WMS.Domain.Entities.Outbound;
 using WMS.Domain.Entities.InventoryAggregateRoot;
+using WMS.Domain.Entities.Outbound;
+using WMS.Domain.Entities.SkuAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
-using WMS.Domain.Entities.SkuAggregateRoot;
-
-using WMS.Domain.Entities.InboundReceiptAggregateRoot;
-using WMS.Domain.Entities.QcInspectionAggregateRoot;
-using WMS.Domain.Entities.PutawayTaskAggregateRoot;
-using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
-using WMS.Domain.Entities.ProductAggregateRoot;
 
 namespace WMS.Application.Inbound.Services;
 
@@ -28,28 +22,27 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
 
     public async Task<InboundOrderDto?> CreateAsync(CreateInboundRequest req, CancellationToken ct)
     {
-        var order = new InboundOrder
+        var order = InboundOrder.Create(
+            _user.TenantId,
+            await GenerateOrderNumber(),
+            req.ExpectedDate,
+            req.Notes);
+
+        foreach (var item in req.Items)
         {
-            OrderNumber = await GenerateOrderNumber(),
-            SupplierId = req.SupplierId,
-            ExpectedDate = req.ExpectedDate,
-            Notes = req.Notes,
-            Status = InboundStatus.Pending,
-            Items = [.. req.Items.Select(i => new InboundItem
-            {
-                SkuId = i.SkuId,
-                Quantity = i.Quantity,
-            })]
-        };
+            order.AddItem(item.SkuId, item.Quantity, item.SupplierId);
+        }
 
         // Calculate total value
         var skuRepo = _uow.Repository<Sku>();
+        decimal totalValue = 0;
         foreach (var item in order.Items)
         {
             var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
             if (sku != null)
-                order.TotalValue += (sku.ReferencePrice ?? 0) * item.Quantity;
+                totalValue += (sku.ReferencePrice ?? 0) * item.Quantity;
         }
+        order.SetTotalValue(totalValue);
 
         await _uow.Repository<InboundOrder>().AddAsync(order, ct);
         await _uow.SaveChangesAsync(ct);
@@ -70,13 +63,20 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
             await PushDashboardSummaryAsync(ct);
         }
 
-        return await GetInboundOrderDtoAsync(order.Id, ct);
+        return new InboundOrderDto(
+            order.Id,
+            order.OrderNumber,
+            order.ExpectedDate,
+            order.Status,
+            order.TotalValue,
+            order.Items.Count
+        );
     }
 
     private async Task PushDashboardSummaryAsync(CancellationToken ct)
     {
         var totalItems = await _uow.Repository<InventoryItem>().CountAsync();
-        
+
         var lowStock = await (from item in _uow.Repository<InventoryItem>().Query()
                               join sku in _uow.Repository<Sku>().Query() on item.SkuId equals sku.Id
                               where item.Quantity <= sku.MinQuantity && item.Quantity > 0 && !item.IsDeleted
@@ -112,8 +112,9 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
     {
         await using var tx = await _uow.BeginTransactionAsync(ct);
 
-        var repo = _uow.Repository<InboundOrder>();
-        var order = await repo.GetByIdAsync(orderId, ct)
+        var order = await _uow.Repository<InboundOrder>().Query()
+            .Include(x => x.Items)
+            .FirstOrDefaultAsync(x => x.Id == orderId && !x.IsDeleted, ct)
             ?? throw new AppException(404, "NOT_FOUND",
                 "Đơn nhập không tồn tại");
 
@@ -124,12 +125,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
         // Update received quantities
         foreach (var received in req.Items)
         {
-            var orderItem = order.Items
-                .FirstOrDefault(x => x.SkuId == received.SkuId);
-            if (orderItem is null) continue;
-
-            orderItem.ReceivedQuantity = received.ReceivedQuantity;
-            orderItem.Note = received.Note;
+            order.ReceiveItem(received.SkuId, received.ReceivedQuantity, received.Note);
 
             // Increase inventory
             await UpdateInventoryStock(
@@ -137,8 +133,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
                 received.ReceivedQuantity, ct);
         }
 
-        order.Status = InboundStatus.Completed;
-        order.ReceivedDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        order.CompleteOrder();
 
         await _uow.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);
@@ -154,7 +149,7 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
                 .FindAsync(x => x.SkuId == skuId && !x.IsDeleted, ct);
             item = items.FirstOrDefault();
         }
-        
+
         if (item != null)
         {
             item.AddStock(qty);
@@ -186,66 +181,20 @@ public class InboundService(IUnitOfWork uow, ICurrentUser user, IDashboardNotifi
         return $"PO-{DateTime.UtcNow:yyyy}-{(count + 1):D4}";
     }
 
-    private async Task<InboundOrderDto> GetInboundOrderDtoAsync(Guid orderId, CancellationToken ct)
-    {
-        var order = await _uow.Repository<InboundOrder>().GetByIdAsync(orderId, ct)
-            ?? throw new AppException(404, "NOT_FOUND", "Đơn nhập không tồn tại");
-
-        var supplier = await _uow.Repository<Supplier>().GetByIdAsync(order.SupplierId, ct);
-        var supplierName = supplier?.Name ?? "";
-
-        var items = await (from item in _uow.Repository<InboundItem>().Query()
-                            where item.InboundOrderId == orderId
-                            join sku in _uow.Repository<Sku>().Query() on item.SkuId equals sku.Id
-                            select new InboundItemDto(
-                                sku.SkuCode ?? "",
-                                sku.Name ?? "",
-                                item.Quantity,
-                                item.ReceivedQuantity
-                            ))
-                           .ToListAsync(ct);
-
-        return new InboundOrderDto(
-            order.Id,
-            order.OrderNumber,
-            supplierName,
-            order.ExpectedDate,
-            order.Status,
-            order.TotalValue,
-            items.Count,
-            items
-        );
-    }
-
-    public async Task<List<InboundOrderDto>> GetListAsync(CancellationToken ct)
-    {
-        var orders = await _uow.Repository<InboundOrder>().Query()
-            .ToListAsync(ct);
-
-        var list = new List<InboundOrderDto>();
-        foreach (var order in orders)
-        {
-            var dto = await GetInboundOrderDtoAsync(order.Id, ct);
-            list.Add(dto);
-        }
-        return list;
-    }
-
     public async Task CancelAsync(Guid id, CancellationToken ct)
     {
         var repo = _uow.Repository<InboundOrder>();
         var order = await repo.GetByIdAsync(id, ct)
             ?? throw new AppException(404, "NOT_FOUND", "Đơn nhập không tồn tại");
 
-        if (order.Status == InboundStatus.Completed)
-            throw new AppException(400, "ALREADY_COMPLETED", "Không thể hủy đơn nhập đã hoàn thành");
-
-        order.Status = InboundStatus.Cancelled;
+        try
+        {
+            order.Cancel();
+        }
+        catch (DomainException ex)
+        {
+            throw new AppException(400, ex.Code, ex.Message);
+        }
         await _uow.SaveChangesAsync(ct);
-    }
-
-    public async Task<InboundOrderDto?> GetByIdAsync(Guid id, CancellationToken ct)
-    {
-        return await GetInboundOrderDtoAsync(id, ct);
     }
 }

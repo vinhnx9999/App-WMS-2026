@@ -94,13 +94,7 @@ public class OdooInboundSyncService(
             }
 
             // Create WMS order
-            var order = new InboundOrder
-            {
-                OrderNumber = pickingName,
-                SupplierId = supplier.Id,
-                ExpectedDate = scheduledDate,
-                Status = InboundStatus.Pending,
-            };
+            var order = InboundOrder.Create(_currentUser.TenantId, pickingName, scheduledDate, "Synced from Odoo");
 
             await orderRepo.AddAsync(order, ct);
             synced++;

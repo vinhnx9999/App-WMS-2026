@@ -1,10 +1,9 @@
-﻿namespace WMS.Domain.Enums;
+namespace WMS.Domain.Enums;
 
 public enum InboundStatus
 {
-    Pending,
-    Approved,
-    Receiving,
-    Completed,
-    Cancelled
+    Approved = 0,
+    Receiving = 1,
+    Completed = 2,
+    Cancelled = 3
 }

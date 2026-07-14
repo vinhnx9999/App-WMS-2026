@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using WMS.Application.Inbound.DTOs;
@@ -7,161 +8,153 @@ using WMS.Domain.Common;
 using WMS.Domain.Entities;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InventoryAggregateRoot;
+using WMS.Domain.Entities.WarehouseAggregateRoot;
 using WMS.Domain.Enums;
 using WMS.Domain.Interfaces;
+using WMS.Infrastructure.Persistence;
 using ITransaction = WMS.Domain.Interfaces.ITransaction;
 
 namespace DP.AppWMS.Tests;
 
 public class InboundServiceTests
 {
-    private readonly Mock<IUnitOfWork> _uowMock;
     private readonly Mock<ITransaction> _txMock;
     private readonly Mock<ICurrentUser> _userMock;
 
     public InboundServiceTests()
     {
-        _uowMock = new Mock<IUnitOfWork>();
         _txMock = new Mock<ITransaction>();
         _userMock = new Mock<ICurrentUser>();
+    }
 
-        // Setup: BeginTransaction returns mock transaction
-        _uowMock
-            .Setup(x => x.BeginTransactionAsync(
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(_txMock.Object);
+    private async Task<(SqliteConnection Connection, WmsDbContext Db, UnitOfWork Uow)> SetupInMemoryDbAsync()
+    {
+        var connection = new SqliteConnection("DataSource=:memory:");
+        await connection.OpenAsync();
+        var options = new DbContextOptionsBuilder<WmsDbContext>()
+            .UseSqlite(connection)
+            .Options;
+        var db = new WmsDbContext(options, _userMock.Object, Mock.Of<MediatR.IMediator>());
+        await db.Database.EnsureCreatedAsync();
+        var uow = new UnitOfWork(db, Microsoft.Extensions.Logging.Abstractions.NullLogger<UnitOfWork>.Instance);
+        return (connection, db, uow);
     }
 
     [Fact]
     public async Task ReceiveAsync_ShouldCommitTransaction()
     {
         // Arrange
+        var (connection, db, realUow) = await SetupInMemoryDbAsync();
+
         var orderId = Guid.NewGuid();
-        var itemId = Guid.NewGuid();
+        var itemId = Guid.NewGuid(); // SkuId
 
-        var orderRepo = new Mock<IRepository<InboundOrder>>();
-        var order = WithId(new InboundOrder
-        {
-            OrderNumber = "PO-TEST-001",
-            Status = InboundStatus.Pending,
-            Items =
-            [
-                new()
-                {
-                    SkuId = itemId,
-                    Quantity = 100,
-                    ReceivedQuantity = 0,
-                }
-            ]
-        }, orderId);
+        // Seed order
+        var order = InboundOrder.Create(Guid.Empty, "PO-TEST-001", null, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(order, orderId);
+        order.AddItem(itemId, 100, null);
+        db.InboundOrders.Add(order);
 
-        orderRepo
-            .Setup(x => x.Query())
-            .Returns(new List<InboundOrder> { order }
-                .AsQueryable());
+        // Seed location
+        var location = LocationEntity.Create(Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-001");
+        db.Locations.Add(location);
 
-        orderRepo
-            .Setup(x => x.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(order);
+        // Seed inventory
+        var inventory = InventoryItem.Create(Guid.Empty, itemId, location.Id, null, null, null, 50, 0, DateTime.UtcNow, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(inventory, itemId);
+        db.InventoryItems.Add(inventory);
 
-        var invRepo = new Mock<IRepository<InventoryItem>>();
-        invRepo
-            .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(WithId(InventoryItem.Create(
-                Guid.Empty, Guid.Empty, Guid.Empty, null, null, null, 50, 0, DateTime.UtcNow, null
-            ), itemId));
+        await db.SaveChangesAsync();
 
-        var auditRepo = new Mock<IRepository<AuditLog>>();
+        var uowMock = new Mock<IUnitOfWork>();
+        uowMock.Setup(x => x.Repository<InboundOrder>()).Returns(realUow.Repository<InboundOrder>());
+        uowMock.Setup(x => x.Repository<InventoryItem>()).Returns(realUow.Repository<InventoryItem>());
+        uowMock.Setup(x => x.Repository<LocationEntity>()).Returns(realUow.Repository<LocationEntity>());
+        uowMock.Setup(x => x.Repository<AuditLog>()).Returns(realUow.Repository<AuditLog>());
+        uowMock.Setup(x => x.Repository<Zone>()).Returns(realUow.Repository<Zone>());
 
-        _uowMock.Setup(x => x.Repository<InboundOrder>())
-            .Returns(orderRepo.Object);
-        _uowMock.Setup(x => x.Repository<InventoryItem>())
-            .Returns(invRepo.Object);
-        _uowMock.Setup(x => x.Repository<AuditLog>())
-            .Returns(auditRepo.Object);
-        _uowMock.Setup(x => x.Repository<Zone>())
-            .Returns(new Mock<IRepository<Zone>>().Object);
+        uowMock
+            .Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(_txMock.Object);
+
+        uowMock
+            .Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Returns(() => realUow.SaveChangesAsync());
 
         // Act
-        var svc = new InboundService(_uowMock.Object, _userMock.Object, null);
+        var svc = new InboundService(uowMock.Object, _userMock.Object, null);
         await svc.ReceiveAsync(orderId, new(
             [
                 new(itemId, 95, "5 units damaged")
             ]), CancellationToken.None);
 
         // Assert — verify transaction lifecycle
-        _uowMock.Verify(
-            x => x.BeginTransactionAsync(
-                It.IsAny<CancellationToken>()),
+        uowMock.Verify(
+            x => x.BeginTransactionAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
-        _uowMock.Verify(
-            x => x.SaveChangesAsync(
-                It.IsAny<CancellationToken>()),
+        uowMock.Verify(
+            x => x.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
         _txMock.Verify(
-            x => x.CommitAsync(
-                It.IsAny<CancellationToken>()),
+            x => x.CommitAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
         // Verify inventory updated
-        var inv = await invRepo.Object.GetByIdAsync(itemId);
+        var inv = await realUow.Repository<InventoryItem>().GetByIdAsync(itemId);
         inv!.Quantity.Should().Be(145); // 50 + 95
 
         // Verify order completed
-        order.Status.Should().Be(InboundStatus.Completed);
+        var updatedOrder = await realUow.Repository<InboundOrder>().GetByIdAsync(orderId);
+        updatedOrder!.Status.Should().Be(InboundStatus.Completed);
     }
 
     [Fact]
     public async Task ReceiveAsync_WhenException_ShouldNotCommit()
     {
         // Arrange — setup to throw on SaveChanges
-        _uowMock
-            .Setup(x => x.SaveChangesAsync(
-                It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new DbUpdateException("DB error"));
+        var (connection, db, realUow) = await SetupInMemoryDbAsync();
 
         var orderId = Guid.NewGuid();
         var itemId = Guid.NewGuid();
 
-        var orderRepo = new Mock<IRepository<InboundOrder>>();
-        var order = WithId(new InboundOrder
-        {
-            OrderNumber = "PO-TEST-001",
-            Status = InboundStatus.Pending,
-            Items =
-            [
-                new()
-                {
-                    SkuId = itemId,
-                    Quantity = 100,
-                    ReceivedQuantity = 0,
-                }
-            ]
-        }, orderId);
+        // Seed order
+        var order = InboundOrder.Create(Guid.Empty, "PO-TEST-001", null, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(order, orderId);
+        order.AddItem(itemId, 100, null);
+        db.InboundOrders.Add(order);
 
-        orderRepo
-            .Setup(x => x.GetByIdAsync(orderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(order);
+        // Seed location
+        var location = LocationEntity.Create(Guid.Empty, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), null, "LOC-001");
+        db.Locations.Add(location);
 
-        var invRepo = new Mock<IRepository<InventoryItem>>();
-        invRepo
-            .Setup(x => x.GetByIdAsync(itemId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(WithId(InventoryItem.Create(
-                Guid.Empty, Guid.Empty, Guid.Empty, null, null, null, 50, 0, DateTime.UtcNow, null
-            ), itemId));
+        // Seed inventory
+        var inventory = InventoryItem.Create(Guid.Empty, itemId, location.Id, null, null, null, 50, 0, DateTime.UtcNow, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(inventory, itemId);
+        db.InventoryItems.Add(inventory);
 
-        _uowMock.Setup(x => x.Repository<InboundOrder>())
-            .Returns(orderRepo.Object);
-        _uowMock.Setup(x => x.Repository<InventoryItem>())
-            .Returns(invRepo.Object);
+        await db.SaveChangesAsync();
 
-        var svc = new InboundService(_uowMock.Object, _userMock.Object, null);
+        var uowMock = new Mock<IUnitOfWork>();
+        uowMock.Setup(x => x.Repository<InboundOrder>()).Returns(realUow.Repository<InboundOrder>());
+        uowMock.Setup(x => x.Repository<InventoryItem>()).Returns(realUow.Repository<InventoryItem>());
+        uowMock.Setup(x => x.Repository<LocationEntity>()).Returns(realUow.Repository<LocationEntity>());
+
+        uowMock
+            .Setup(x => x.BeginTransactionAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(_txMock.Object);
+
+        uowMock
+            .Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new DbUpdateException("DB error"));
+
+        var svc = new InboundService(uowMock.Object, _userMock.Object, null);
         var request = new ReceiveInboundRequest(
             [
                 new(itemId, 10, "Test")
             ]);
+
         // Act & Assert
         var act = () => svc.ReceiveAsync(orderId, request, CancellationToken.None);
         await act.Should().ThrowAsync<DbUpdateException>();
@@ -170,15 +163,5 @@ public class InboundServiceTests
         _txMock.Verify(
             x => x.CommitAsync(It.IsAny<CancellationToken>()),
             Times.Never);
-    }
-
-    private static TEntity WithId<TEntity>(TEntity entity, Guid id)
-        where TEntity : BaseEntity
-    {
-        typeof(BaseEntity)
-            .GetProperty(nameof(BaseEntity.Id))!
-            .SetValue(entity, id);
-
-        return entity;
     }
 }

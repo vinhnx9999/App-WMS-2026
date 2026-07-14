@@ -8,3785 +8,3809 @@ using WMS.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace WMS.Infrastructure.Migrations;
-
-[DbContext(typeof(WmsDbContext))]
-partial class WmsDbContextModelSnapshot : ModelSnapshot
+namespace WMS.Infrastructure.Migrations
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    [DbContext(typeof(WmsDbContext))]
+    partial class WmsDbContextModelSnapshot : ModelSnapshot
     {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
 #pragma warning disable 612, 618
-        modelBuilder
-            .HasAnnotation("ProductVersion", "10.0.8")
-            .HasAnnotation("Relational:MaxIdentifierLength", 63);
+            modelBuilder
+                .HasAnnotation("ProductVersion", "10.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-            {
-                b.Property<string>("Id")
-                    .HasColumnType("text");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
-                b.Property<string>("ConcurrencyStamp")
-                    .IsConcurrencyToken()
-                    .HasColumnType("text");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
-                b.Property<string>("Name")
-                    .HasMaxLength(256)
-                    .HasColumnType("character varying(256)");
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                b.Property<string>("NormalizedName")
-                    .HasMaxLength(256)
-                    .HasColumnType("character varying(256)");
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("NormalizedName")
-                    .IsUnique()
-                    .HasDatabaseName("RoleNameIndex");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
 
-                b.ToTable("AspNetRoles", (string)null);
-            });
+                    b.ToTable("AspNetRoles", (string)null);
+                });
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                b.Property<string>("ClaimType")
-                    .HasColumnType("text");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                b.Property<string>("ClaimValue")
-                    .HasColumnType("text");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
 
-                b.Property<string>("RoleId")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("RoleId");
+                    b.HasIndex("RoleId");
 
-                b.ToTable("AspNetRoleClaims", (string)null);
-            });
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-            {
-                b.Property<string>("Id")
-                    .HasColumnType("text");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
-                b.Property<int>("AccessFailedCount")
-                    .HasColumnType("integer");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
 
-                b.Property<string>("ConcurrencyStamp")
-                    .IsConcurrencyToken()
-                    .HasColumnType("text");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
-                b.Property<string>("Email")
-                    .HasMaxLength(256)
-                    .HasColumnType("character varying(256)");
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                b.Property<bool>("EmailConfirmed")
-                    .HasColumnType("boolean");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
 
-                b.Property<bool>("LockoutEnabled")
-                    .HasColumnType("boolean");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
 
-                b.Property<DateTimeOffset?>("LockoutEnd")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("NormalizedEmail")
-                    .HasMaxLength(256)
-                    .HasColumnType("character varying(256)");
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                b.Property<string>("NormalizedUserName")
-                    .HasMaxLength(256)
-                    .HasColumnType("character varying(256)");
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                b.Property<string>("PasswordHash")
-                    .HasColumnType("text");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
 
-                b.Property<string>("PhoneNumber")
-                    .HasColumnType("text");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
 
-                b.Property<bool>("PhoneNumberConfirmed")
-                    .HasColumnType("boolean");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
 
-                b.Property<string>("SecurityStamp")
-                    .HasColumnType("text");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
 
-                b.Property<bool>("TwoFactorEnabled")
-                    .HasColumnType("boolean");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
 
-                b.Property<string>("UserName")
-                    .HasMaxLength(256)
-                    .HasColumnType("character varying(256)");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("NormalizedEmail")
-                    .HasDatabaseName("EmailIndex");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
 
-                b.HasIndex("NormalizedUserName")
-                    .IsUnique()
-                    .HasDatabaseName("UserNameIndex");
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
 
-                b.ToTable("AspNetUsers", (string)null);
-            });
+                    b.ToTable("AspNetUsers", (string)null);
+                });
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                b.Property<string>("ClaimType")
-                    .HasColumnType("text");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                b.Property<string>("ClaimValue")
-                    .HasColumnType("text");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
 
-                b.Property<string>("UserId")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("UserId");
+                    b.HasIndex("UserId");
 
-                b.ToTable("AspNetUserClaims", (string)null);
-            });
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-            {
-                b.Property<string>("LoginProvider")
-                    .HasColumnType("text");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                b.Property<string>("ProviderKey")
-                    .HasColumnType("text");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
 
-                b.Property<string>("ProviderDisplayName")
-                    .HasColumnType("text");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
 
-                b.Property<string>("UserId")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasKey("LoginProvider", "ProviderKey");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
-                b.HasIndex("UserId");
+                    b.HasIndex("UserId");
 
-                b.ToTable("AspNetUserLogins", (string)null);
-            });
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-            {
-                b.Property<string>("UserId")
-                    .HasColumnType("text");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
-                b.Property<string>("RoleId")
-                    .HasColumnType("text");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
 
-                b.HasKey("UserId", "RoleId");
+                    b.HasKey("UserId", "RoleId");
 
-                b.HasIndex("RoleId");
+                    b.HasIndex("RoleId");
 
-                b.ToTable("AspNetUserRoles", (string)null);
-            });
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-            {
-                b.Property<string>("UserId")
-                    .HasColumnType("text");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
-                b.Property<string>("LoginProvider")
-                    .HasColumnType("text");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                b.Property<string>("Name")
-                    .HasColumnType("text");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                b.Property<string>("Value")
-                    .HasColumnType("text");
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
-                b.HasKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("UserId", "LoginProvider", "Name");
 
-                b.ToTable("AspNetUserTokens", (string)null);
-            });
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.AuditLog", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Action")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("EntityId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("EntityId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("IpAddress")
-                    .HasColumnType("text");
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<string>("KeyValues")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("KeyValues")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("NewValues")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("NewValues")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("OldValues")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("OldValues")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("TableName")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("Timestamp")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.HasIndex("UserId");
+                    b.HasIndex("UserId");
 
-                b.ToTable("audit_logs", (string)null);
-            });
+                    b.ToTable("audit_logs", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Category", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Description")
-                    .HasMaxLength(500)
-                    .HasColumnType("character varying(500)");
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("character varying(200)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
-                b.Property<string>("Slug")
-                    .HasMaxLength(250)
-                    .HasColumnType("character varying(250)");
+                    b.Property<string>("Slug")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.HasIndex("TenantId", "Slug")
-                    .IsUnique();
+                    b.HasIndex("TenantId", "Slug")
+                        .IsUnique();
 
-                b.ToTable("categories", (string)null);
-            });
+                    b.ToTable("categories", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.CodeSequence", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.CodeSequence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("CodeType")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("CodeType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("CurrentNumber")
-                    .HasColumnType("integer");
+                    b.Property<int>("CurrentNumber")
+                        .HasColumnType("integer");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<int>("PaddingLength")
-                    .HasColumnType("integer");
+                    b.Property<int>("PaddingLength")
+                        .HasColumnType("integer");
 
-                b.Property<string>("Prefix")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<byte[]>("RowVersion")
-                    .IsConcurrencyToken()
-                    .IsRequired()
-                    .HasColumnType("bytea");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("Prefix");
+                    b.HasIndex("Prefix");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.HasIndex("TenantId", "CodeType")
-                    .IsUnique();
+                    b.HasIndex("TenantId", "CodeType")
+                        .IsUnique();
 
-                b.ToTable("code_sequences", (string)null);
-            });
+                    b.ToTable("code_sequences", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.ErpSync.ErpSyncLog", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.ErpSync.ErpSyncLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Direction")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Direction")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("EntityType")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("ErpDocNumber")
-                    .HasColumnType("text");
+                    b.Property<string>("ErpDocNumber")
+                        .HasColumnType("text");
 
-                b.Property<string>("ErrorMessage")
-                    .HasColumnType("text");
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("NextRetryAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("NextRetryAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Provider")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Provider")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("RequestPayload")
-                    .HasColumnType("text");
+                    b.Property<string>("RequestPayload")
+                        .HasColumnType("text");
 
-                b.Property<string>("ResponsePayload")
-                    .HasColumnType("text");
+                    b.Property<string>("ResponsePayload")
+                        .HasColumnType("text");
 
-                b.Property<int>("RetryCount")
-                    .HasColumnType("integer");
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("WmsEntityId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("WmsEntityId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.ToTable("erp_sync_logs", (string)null);
-            });
+                    b.ToTable("erp_sync_logs", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.ErpSync.OutboxMessage", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.ErpSync.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("ErrorMessage")
-                    .HasColumnType("text");
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<int>("MaxRetries")
-                    .HasColumnType("integer");
+                    b.Property<int>("MaxRetries")
+                        .HasColumnType("integer");
 
-                b.Property<string>("MessageType")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime?>("NextRetryAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("NextRetryAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Payload")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime?>("ProcessedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("RetryCount")
-                    .HasColumnType("integer");
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.ToTable("outbox_messages", (string)null);
-            });
+                    b.ToTable("outbox_messages", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.ErpSync.WebhookEvent", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.ErpSync.WebhookEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("ErrorMessage")
-                    .HasColumnType("text");
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
 
-                b.Property<string>("EventType")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("IdempotencyKey")
-                    .HasColumnType("text");
+                    b.Property<string>("IdempotencyKey")
+                        .HasColumnType("text");
 
-                b.Property<string>("IpAddress")
-                    .HasColumnType("text");
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<int>("MaxRetries")
-                    .HasColumnType("integer");
+                    b.Property<int>("MaxRetries")
+                        .HasColumnType("integer");
 
-                b.Property<DateTime?>("NextRetryAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("NextRetryAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Payload")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime?>("ProcessedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("RetryCount")
-                    .HasColumnType("integer");
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
-                b.Property<string>("Source")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.ToTable("webhook_events", (string)null);
-            });
+                    b.ToTable("webhook_events", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("GrnNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("GrnNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<Guid?>("InboundOrderId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("InboundReceiptId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid>("PutawayTaskId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("PutawayTaskId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("GrnNumber")
-                    .IsUnique();
+                    b.HasIndex("GrnNumber")
+                        .IsUnique();
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.ToTable("goods_receipt_notes", (string)null);
-            });
+                    b.ToTable("goods_receipt_notes", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNoteItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNoteItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("GoodsReceiptNoteId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("GoodsReceiptNoteId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("InventoryItemId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("InventoryItemId")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid>("LocationId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid");
 
-                b.Property<int>("Quantity")
-                    .HasColumnType("integer");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("DeletedAt");
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("GoodsReceiptNoteId");
+                    b.HasIndex("GoodsReceiptNoteId");
 
-                b.HasIndex("IsDeleted");
+                    b.HasIndex("IsDeleted");
 
-                b.HasIndex("SkuId");
+                    b.HasIndex("SkuId");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("TenantId");
 
-                b.ToTable("goods_receipt_note_items", (string)null);
-            });
+                    b.ToTable("goods_receipt_note_items", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("InboundOrderId")
-                    .HasColumnType("uuid");
+                    b.Property<DateOnly?>("ExpiryDate")
+                        .HasColumnType("date");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<Guid>("InboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Note")
-                    .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<int>("Quantity")
-                    .HasColumnType("integer");
+                    b.Property<string>("LotNumber")
+                        .HasColumnType("text");
 
-                b.Property<int>("ReceivedQuantity")
-                    .HasColumnType("integer");
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<int>("ReceivedQuantity")
+                        .HasColumnType("integer");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("text");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("InboundOrderId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("SkuId");
+                    b.HasKey("Id");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("DeletedAt");
 
-                b.ToTable("inbound_items", (string)null);
-            });
+                    b.HasIndex("InboundOrderId");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("SkuId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("inbound_items", (string)null);
+                });
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateOnly?>("ExpectedDate")
-                    .HasColumnType("date");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Notes")
-                    .HasColumnType("text");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("OrderNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateOnly?>("ReceivedDate")
-                    .HasColumnType("date");
+                    b.Property<DateOnly?>("ExpectedDate")
+                        .HasColumnType("date");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid>("SupplierId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<decimal>("TotalValue")
-                    .HasColumnType("numeric");
+                    b.Property<DateOnly?>("ReceivedDate")
+                        .HasColumnType("date");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("numeric");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("OrderNumber")
-                    .IsUnique();
+                    b.HasKey("Id");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("DeletedAt");
 
-                b.ToTable("inbound_orders", (string)null);
-            });
+                    b.HasIndex("IsDeleted");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundOrderHistoryAggregateRoot.InboundOrderHistory", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
 
-                b.Property<string>("Action")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("inbound_orders", (string)null);
+                });
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderHistoryAggregateRoot.InboundOrderHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Details")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("GoodsReceiptNoteId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("InboundOrderId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("InboundReceiptId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<Guid?>("GoodsReceiptNoteId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("PerformedBy")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<Guid>("InboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("PutawayTaskId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("QcInspectionId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<string>("Step")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("PerformedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("PutawayTaskId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("Timestamp")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<Guid?>("QcInspectionId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Step")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("InboundOrderId");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("IsDeleted");
+                    b.HasKey("Id");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("DeletedAt");
 
-                b.ToTable("inbound_order_histories", (string)null);
-            });
+                    b.HasIndex("InboundOrderId");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("inbound_order_histories", (string)null);
+                });
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("InboundOrderId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("ReceiptNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("ReceiptNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("ReceiptNumber")
-                    .IsUnique();
+                    b.HasKey("Id");
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("DeletedAt");
 
-                b.ToTable("inbound_receipts", (string)null);
-            });
+                    b.HasIndex("IsDeleted");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceiptItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("ReceiptNumber")
+                        .IsUnique();
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("inbound_receipts", (string)null);
+                });
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceiptItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("ExpectedQuantity")
-                    .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("InboundReceiptId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Notes")
-                    .HasColumnType("text");
+                    b.Property<int>("ExpectedQuantity")
+                        .HasColumnType("integer");
 
-                b.Property<int>("ReceivedQuantity")
-                    .HasColumnType("integer");
+                    b.Property<DateOnly?>("ExpiryDate")
+                        .HasColumnType("date");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("LotNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.Property<int>("ReceivedQuantity")
+                        .HasColumnType("integer");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("SerialNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("InboundReceiptId");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("SkuId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("inbound_receipt_items", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<bool>("AllowOverReceive")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(true);
+                    b.HasIndex("DeletedAt");
 
-                b.Property<Guid?>("CategoryId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("InboundReceiptId");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("SkuId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("inbound_receipt_items", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<decimal?>("OverReceiveTolerancePercentage")
-                    .HasColumnType("numeric");
+                    b.Property<bool>("AllowOverReceive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
-                b.Property<Guid?>("SupplierId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<decimal?>("OverReceiveTolerancePercentage")
+                        .HasColumnType("numeric");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("inbound_workflow_configs", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowStep", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<Guid?>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasKey("Id");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DisplayName")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("character varying(200)");
+                    b.HasIndex("TenantId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("inbound_workflow_configs", (string)null);
+                });
 
-                b.Property<int>("Sequence")
-                    .HasColumnType("integer");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowStep", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<int>("StepType")
-                    .HasColumnType("integer");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("WorkflowConfigId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<int>("Sequence")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<int>("StepType")
+                        .HasColumnType("integer");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("WorkflowConfigId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("inbound_workflow_steps", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InventoryAggregateRoot.InventoryItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WorkflowConfigId")
+                        .HasColumnType("uuid");
 
-                b.Property<int>("AllocatedQuantity")
-                    .HasColumnType("integer");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("WorkflowConfigId");
 
-                b.Property<DateTime?>("ExpiryDate")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("inbound_workflow_steps", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.InventoryAggregateRoot.InventoryItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("LocationId")
-                    .HasColumnType("uuid");
+                    b.Property<int>("AllocatedQuantity")
+                        .HasColumnType("integer");
 
-                b.Property<Guid?>("PalletId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime>("PutawayDate")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("Quantity")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<byte[]>("RowVersion")
-                    .IsConcurrencyToken()
-                    .IsRequired()
-                    .HasColumnType("bytea");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("SerialNumber")
-                    .HasColumnType("text");
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("SupplierId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("PalletId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("PutawayDate")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<decimal>("UnitPrice")
-                    .HasColumnType("numeric");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("LocationId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("Status");
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("TenantId", "SkuId", "LocationId", "SupplierId", "SerialNumber", "PalletId", "ExpiryDate")
-                    .IsUnique()
-                    .HasFilter("\"IsDeleted\" = false");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex("TenantId", "SkuId", "LocationId", "SupplierId", "SerialNumber", "PalletId", "ExpiryDate"), false);
+                    b.HasKey("Id");
 
-                b.ToTable("inventory_items", (string)null);
-            });
+                    b.HasIndex("DeletedAt");
 
-        modelBuilder.Entity("WMS.Domain.Entities.LocationEntity", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<Guid>("AreaId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("LocationId");
 
-                b.Property<Guid>("BlockId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("Status");
 
-                b.Property<int?>("CoorX")
-                    .HasColumnType("integer");
+                    b.HasIndex("TenantId");
 
-                b.Property<int?>("CoorY")
-                    .HasColumnType("integer");
+                    b.HasIndex("TenantId", "SkuId", "LocationId", "SupplierId", "SerialNumber", "PalletId", "ExpiryDate")
+                        .IsUnique()
+                        .HasFilter("\"IsDeleted\" = false");
 
-                b.Property<int?>("CoorZ")
-                    .HasColumnType("integer");
+                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex("TenantId", "SkuId", "LocationId", "SupplierId", "SerialNumber", "PalletId", "ExpiryDate"), false);
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("inventory_items", (string)null);
+                });
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+            modelBuilder.Entity("WMS.Domain.Entities.LocationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid>("BlockId")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsBlocked")
-                    .HasColumnType("boolean");
+                    b.Property<int?>("CoorX")
+                        .HasColumnType("integer");
 
-                b.Property<bool>("IsBuffer")
-                    .HasColumnType("boolean");
+                    b.Property<int?>("CoorY")
+                        .HasColumnType("integer");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<int?>("CoorZ")
+                        .HasColumnType("integer");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("Type")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("boolean");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsBuffer")
+                        .HasColumnType("boolean");
 
-                b.Property<Guid?>("ZoneId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("BlockId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("WarehouseId");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("ZoneId");
+                    b.Property<Guid?>("ZoneId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("locations", (string)null);
-            });
+                    b.HasKey("Id");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Master.Customer", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("BlockId");
 
-                b.Property<string>("Address")
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("WarehouseId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("ZoneId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("locations", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.Master.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.Property<string>("Address")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.Property<string>("Phone")
-                    .HasMaxLength(20)
-                    .HasColumnType("character varying(20)");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Type")
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId", "Code")
-                    .IsUnique();
+                    b.Property<string>("Type")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.ToTable("customers", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Master.Supplier", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Address")
-                    .HasMaxLength(500)
-                    .HasColumnType("character varying(500)");
+                    b.HasKey("Id");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("Contact")
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique();
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("customers", (string)null);
+                });
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+            modelBuilder.Entity("WMS.Domain.Entities.Master.Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Email")
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.Property<string>("Address")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.Property<string>("Contact")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.Property<string>("Phone")
-                    .HasMaxLength(20)
-                    .HasColumnType("character varying(20)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<string>("Email")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                b.HasIndex("TenantId", "Code")
-                    .IsUnique();
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("suppliers", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<Guid>("InventoryItemId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("TenantId", "Code")
+                        .IsUnique();
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("suppliers", (string)null);
+                });
 
-                b.Property<string>("Note")
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("OutboundOrderId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("PickedQuantity")
-                    .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("Quantity")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<Guid>("InventoryItemId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid>("OutboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("InventoryItemId");
+                    b.Property<int>("PickedQuantity")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                b.HasIndex("OutboundOrderId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("outbound_items", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundOrder", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("InventoryItemId");
 
-                b.Property<Guid>("CustomerId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("OutboundOrderId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("Destination")
-                    .HasColumnType("text");
+                    b.ToTable("outbound_items", (string)null);
+                });
 
-                b.Property<DateOnly?>("ExpectedDelivery")
-                    .HasColumnType("date");
+            modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Notes")
-                    .HasColumnType("text");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("ShipmentNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<decimal>("TotalValue")
-                    .HasColumnType("numeric");
+                    b.Property<string>("Destination")
+                        .HasColumnType("text");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("ExpectedDelivery")
+                        .HasColumnType("date");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("ShipmentNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.HasIndex("ShipmentNumber")
-                    .IsUnique();
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("numeric");
 
-                b.ToTable("outbound_orders", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.PalletAggregateRoot.Pallet", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("ShipmentNumber")
+                        .IsUnique();
 
-                b.Property<decimal?>("Height")
-                    .HasColumnType("numeric");
+                    b.HasIndex("TenantId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("outbound_orders", (string)null);
+                });
 
-                b.Property<bool>("IsMixSku")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(true);
+            modelBuilder.Entity("WMS.Domain.Entities.PalletAggregateRoot.Pallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<decimal?>("Length")
-                    .HasColumnType("numeric");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Material")
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<decimal?>("MaxLoadCapacity")
-                    .HasColumnType("numeric");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("PalletCode")
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.Property<decimal?>("Height")
+                        .HasColumnType("numeric");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsMixSku")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<decimal?>("Length")
+                        .HasColumnType("numeric");
 
-                b.Property<decimal?>("Weight")
-                    .HasColumnType("numeric");
+                    b.Property<string>("Material")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.Property<decimal?>("Width")
-                    .HasColumnType("numeric");
+                    b.Property<decimal?>("MaxLoadCapacity")
+                        .HasColumnType("numeric");
 
-                b.HasKey("Id");
+                    b.Property<string>("PalletCode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("TenantId", "PalletCode")
-                    .IsUnique();
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.ToTable("pallets", (string)null);
-            });
+                    b.Property<decimal?>("Weight")
+                        .HasColumnType("numeric");
 
-        modelBuilder.Entity("WMS.Domain.Entities.ProductAggregateRoot.Product", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<decimal?>("Width")
+                        .HasColumnType("numeric");
 
-                b.Property<Guid?>("CategoryId")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId", "PalletCode")
+                        .IsUnique();
 
-                b.Property<string>("Description")
-                    .HasColumnType("text");
+                    b.ToTable("pallets", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.ProductAggregateRoot.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("ProductCode")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("ProductName")
-                    .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("ProductCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("ProductName")
+                        .HasColumnType("text");
 
-                b.HasIndex("TenantId", "ProductCode")
-                    .IsUnique();
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("products", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<Guid?>("InboundOrderId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("TenantId", "ProductCode")
+                        .IsUnique();
 
-                b.Property<Guid?>("InboundReceiptId")
-                    .HasColumnType("uuid");
+                    b.ToTable("products", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("PutawayTaskNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("QcInspectionId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<string>("PutawayTaskNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid?>("QcInspectionId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.HasIndex("PutawayTaskNumber")
-                    .IsUnique();
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("putaway_tasks", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTaskItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("ActualLocationId")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("PutawayTaskNumber")
+                        .IsUnique();
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime?>("ExpiryDate")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("putaway_tasks", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTaskItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("LotNumber")
-                    .HasColumnType("text");
+                    b.Property<Guid?>("ActualLocationId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("PalletId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("PutawayQuantity")
-                    .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("PutawayTaskId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("SerialNumber")
-                    .HasColumnType("text");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("SupplierId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid?>("TargetLocationId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("LotNumber")
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("PalletId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<int>("PutawayQuantity")
+                        .HasColumnType("integer");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid?>("PutawayTaskId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("PutawayTaskId");
+                    b.Property<Guid?>("TargetLocationId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("SkuId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("putaway_task_items", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("PutawayTaskId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("SkuId");
 
-                b.Property<Guid?>("InboundOrderId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("TenantId");
 
-                b.Property<Guid?>("InboundReceiptId")
-                    .HasColumnType("uuid");
+                    b.ToTable("putaway_task_items", (string)null);
+                });
 
-                b.Property<string>("InspectionNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<Guid?>("InboundOrderId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("InboundReceiptId")
+                        .HasColumnType("uuid");
 
-                b.HasKey("Id");
+                    b.Property<string>("InspectionNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("InspectionNumber")
-                    .IsUnique();
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("qc_inspections", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspectionItem", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("InspectionNumber")
+                        .IsUnique();
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<int>("FailedQuantity")
-                    .HasColumnType("integer");
+                    b.HasIndex("TenantId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("qc_inspections", (string)null);
+                });
 
-                b.Property<string>("Notes")
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspectionItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<int>("PassedQuantity")
-                    .HasColumnType("integer");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("QcInspectionId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("ReceivedQuantity")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<int>("FailedQuantity")
+                        .HasColumnType("integer");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.Property<int>("PassedQuantity")
+                        .HasColumnType("integer");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid?>("QcInspectionId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<int>("ReceivedQuantity")
+                        .HasColumnType("integer");
 
-                b.HasIndex("QcInspectionId");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("SkuId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("qc_inspection_items", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.RuleAggregateRoot.WarehouseRuleSetting", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<Guid?>("AreaId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<Guid?>("BlockId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("QcInspectionId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("SkuId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("qc_inspection_items", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.RuleAggregateRoot.WarehouseRuleSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("LocationId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("AreaId")
+                        .HasColumnType("uuid");
 
-                b.Property<int>("RuleType")
-                    .HasColumnType("integer");
+                    b.Property<Guid?>("BlockId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("SupplierId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("LocationId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid?>("ZoneId")
-                    .HasColumnType("uuid");
+                    b.Property<int>("RuleType")
+                        .HasColumnType("integer");
 
-                b.HasKey("Id");
+                    b.Property<Guid?>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("WarehouseId", "LocationId", "ZoneId", "BlockId", "AreaId", "SkuId", "SupplierId")
-                    .IsUnique();
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex("WarehouseId", "LocationId", "ZoneId", "BlockId", "AreaId", "SkuId", "SupplierId"), false);
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("warehouse_rule_settings", (string)null);
-            });
+                    b.Property<Guid?>("ZoneId")
+                        .HasColumnType("uuid");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.RefreshToken", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("CreatedByIp")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("WarehouseId", "LocationId", "ZoneId", "BlockId", "AreaId", "SkuId", "SupplierId")
+                        .IsUnique();
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex("WarehouseId", "LocationId", "ZoneId", "BlockId", "AreaId", "SkuId", "SupplierId"), false);
 
-                b.Property<DateTime>("ExpiresAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.ToTable("warehouse_rule_settings", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.Security.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsRevoked")
-                    .HasColumnType("boolean");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Jti")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("ReplacedByToken")
-                    .HasColumnType("text");
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime?>("RevokedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("RevokedByIp")
-                    .HasColumnType("text");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Token")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("Jti")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("UserAgent")
-                    .HasColumnType("text");
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasKey("Id");
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("ExpiresAt");
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("Jti");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text");
 
-                b.HasIndex("Token")
-                    .IsUnique();
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("UserId");
+                    b.HasKey("Id");
 
-                b.ToTable("refresh_tokens", (string)null);
-            });
+                    b.HasIndex("DeletedAt");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.Role", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("ExpiresAt");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("Jti");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("Token")
+                        .IsUnique();
 
-                b.Property<string>("Description")
-                    .HasColumnType("text");
+                    b.HasIndex("UserId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("refresh_tokens", (string)null);
+                });
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.Security.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Permissions")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("Permissions")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.ToTable("roles", (string)null);
-            });
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.Tenant", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Address")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("CompanyName")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("roles", (string)null);
+                });
 
-                b.Property<string>("DisplayName")
-                    .IsRequired()
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.Security.Tenant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("TaxNumber")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("TenantInfo")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("TaxNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("tenants", (string)null);
-            });
+                    b.Property<string>("TenantInfo")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.User", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("AuthProvider")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("AvatarUrl")
-                    .HasColumnType("text");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("tenants", (string)null);
+                });
 
-                b.Property<string>("Email")
-                    .IsRequired()
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.Security.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("FacebookId")
-                    .HasColumnType("text");
+                    b.Property<string>("AuthProvider")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("FullName")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("text");
 
-                b.Property<string>("GoogleId")
-                    .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<bool>("IsActive")
-                    .HasColumnType("boolean");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("LastLoginAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("LinkedInId")
-                    .HasColumnType("text");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("MicrosoftId")
-                    .HasColumnType("text");
+                    b.Property<string>("FacebookId")
+                        .HasColumnType("text");
 
-                b.Property<string>("MicrosoftTenantId")
-                    .HasColumnType("text");
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<string>("PasswordHash")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("GoogleId")
+                        .HasColumnType("text");
 
-                b.Property<Guid>("RoleId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("LinkedInId")
+                        .HasColumnType("text");
 
-                b.Property<string>("XId")
-                    .HasColumnType("text");
+                    b.Property<string>("MicrosoftId")
+                        .HasColumnType("text");
 
-                b.Property<string>("XUsername")
-                    .HasColumnType("text");
+                    b.Property<string>("MicrosoftTenantId")
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("AuthProvider");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("Email")
-                    .IsUnique();
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("FacebookId")
-                    .IsUnique();
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("GoogleId")
-                    .IsUnique();
+                    b.Property<string>("XId")
+                        .HasColumnType("text");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("XUsername")
+                        .HasColumnType("text");
 
-                b.HasIndex("LinkedInId")
-                    .IsUnique();
+                    b.HasKey("Id");
 
-                b.HasIndex("MicrosoftId")
-                    .IsUnique();
+                    b.HasIndex("AuthProvider");
 
-                b.HasIndex("MicrosoftTenantId")
-                    .IsUnique();
+                    b.HasIndex("DeletedAt");
 
-                b.HasIndex("RoleId");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
-                b.HasIndex("TenantId");
+                    b.HasIndex("FacebookId")
+                        .IsUnique();
 
-                b.HasIndex("XId")
-                    .IsUnique();
+                    b.HasIndex("GoogleId")
+                        .IsUnique();
 
-                b.HasIndex("Email", "AuthProvider")
-                    .IsUnique();
+                    b.HasIndex("IsDeleted");
 
-                b.ToTable("users", (string)null);
-            });
+                    b.HasIndex("LinkedInId")
+                        .IsUnique();
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.Sku", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasIndex("MicrosoftId")
+                        .IsUnique();
 
-                b.Property<string>("Barcode")
-                    .HasColumnType("text");
+                    b.HasIndex("MicrosoftTenantId")
+                        .IsUnique();
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("RoleId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("XId")
+                        .IsUnique();
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("Email", "AuthProvider")
+                        .IsUnique();
 
-                b.Property<string>("Description")
-                    .HasColumnType("text");
+                    b.ToTable("users", (string)null);
+                });
 
-                b.Property<string>("GoodsNature")
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.Sku", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<string>("Barcode")
+                        .HasColumnType("text");
 
-                b.Property<int>("MaxQtyInPallet")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasDefaultValue(100);
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("MinQuantity")
-                    .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Name")
-                    .HasColumnType("text");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid?>("ProductId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<decimal?>("ReferencePrice")
-                    .HasColumnType("numeric");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                b.Property<string>("SkuCode")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("GoodsNature")
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<int>("MaxQtyInPallet")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(100);
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<int>("MinQuantity")
+                        .HasColumnType("integer");
 
-                b.HasKey("Id");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<decimal?>("ReferencePrice")
+                        .HasColumnType("numeric");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("SkuCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("TenantId", "ProductId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId", "SkuCode")
-                    .IsUnique()
-                    .HasFilter("\"IsDeleted\" = false");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("skus", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuAttributeValue", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<Guid>("AttributeId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId", "ProductId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId", "SkuCode")
+                        .IsUnique()
+                        .HasFilter("\"IsDeleted\" = false");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("skus", (string)null);
+                });
 
-                b.Property<Guid?>("SkuAttributeId")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuAttributeValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("AttributeId")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Value")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<Guid?>("SkuAttributeId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("SkuAttributeId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("SkuId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.ToTable("sku_specifications", (string)null);
-            });
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportRow", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<Guid?>("CreatedSkuId")
-                    .HasColumnType("uuid");
+                    b.HasIndex("SkuAttributeId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("SkuId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("Description")
-                    .HasMaxLength(1000)
-                    .HasColumnType("character varying(1000)");
+                    b.ToTable("sku_specifications", (string)null);
+                });
 
-                b.Property<string>("ErrorCode")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("ErrorMessage")
-                    .HasMaxLength(1000)
-                    .HasColumnType("character varying(1000)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("GoodsNature")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("ImportSessionId")
-                    .HasColumnType("uuid");
+                    b.Property<Guid?>("CreatedSkuId")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<bool>("IsValid")
-                    .HasColumnType("boolean");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Name")
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
-                b.Property<string>("ProductCode")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("ErrorCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid?>("ProductId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
-                b.Property<decimal?>("ReferencePrice")
-                    .HasColumnType("numeric");
+                    b.Property<string>("GoodsNature")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("RowNumber")
-                    .HasColumnType("integer");
+                    b.Property<Guid>("ImportSessionId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("SkuCode")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Name")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<decimal?>("ReferencePrice")
+                        .HasColumnType("numeric");
 
-                b.HasIndex("ImportSessionId");
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("SkuCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("sku_import_rows", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportSession", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("CancelledAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<DateTime?>("ConfirmedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("ImportSessionId");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("sku_import_rows", (string)null);
+                });
 
-                b.Property<DateTime?>("FailedAt")
-                    .HasColumnType("timestamp with time zone");
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("FailureReason")
-                    .HasMaxLength(1000)
-                    .HasColumnType("character varying(1000)");
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("InvalidRows")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("ConfirmedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("SourceFileName")
-                    .HasMaxLength(255)
-                    .HasColumnType("character varying(255)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("TotalRows")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("FailedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<int>("InvalidRows")
+                        .HasColumnType("integer");
 
-                b.Property<int>("ValidRows")
-                    .HasColumnType("integer");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<string>("SourceFileName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<int>("TotalRows")
+                        .HasColumnType("integer");
 
-                b.ToTable("sku_import_sessions", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuUnitOfMeasure", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<int>("ValidRows")
+                        .HasColumnType("integer");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasKey("Id");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.HasIndex("TenantId");
 
-                b.Property<Guid>("SkuId")
-                    .HasColumnType("uuid");
+                    b.ToTable("sku_import_sessions", (string)null);
+                });
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuUnitOfMeasure", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("UnitOfMeasureId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasKey("Id");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("SkuId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("SkuId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("UnitOfMeasureId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("sku_unit_of_measures", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAttribute", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("SkuId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("sku_unit_of_measures", (string)null);
+                });
 
-                b.Property<string>("Name")
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAttribute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                b.ToTable("specifications", (string)null);
-            });
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-        modelBuilder.Entity("WMS.Domain.Entities.UnitOfMeasure", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("Description")
-                    .HasColumnType("text");
+                    b.ToTable("specifications", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.UnitOfMeasure", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Name")
-                    .HasColumnType("text");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasKey("Id");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                b.ToTable("unit_of_measures", (string)null);
-            });
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Block", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("AreaId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("unit_of_measures", (string)null);
+                });
 
-                b.Property<bool>("IsDefault")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Block", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("character varying(200)");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("WcsBlockId")
-                    .HasColumnType("text");
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("AreaId", "IsDefault")
-                    .IsUnique()
-                    .HasFilter("\"IsDefault\" = true");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.ToTable("blocks", (string)null);
-            });
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Warehouse", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("WcsBlockId")
+                        .HasColumnType("text");
 
-                b.Property<string>("Address")
-                    .HasMaxLength(500)
-                    .HasColumnType("character varying(500)");
+                    b.HasKey("Id");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("AreaId", "IsDefault")
+                        .IsUnique()
+                        .HasFilter("\"IsDefault\" = true");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.ToTable("blocks", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Warehouse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("character varying(200)");
+                    b.Property<string>("Address")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasKey("Id");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("Code")
-                    .IsUnique();
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.ToTable("warehouses", (string)null);
-            });
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<bool>("IsAutomated")
-                    .HasColumnType("boolean");
+                    b.ToTable("warehouses", (string)null);
+                });
 
-                b.Property<bool>("IsDefault")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("character varying(200)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsAutomated")
+                        .HasColumnType("boolean");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("WarehouseId", "IsDefault")
-                    .IsUnique()
-                    .HasFilter("\"IsDefault\" = true");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("warehouse_areas", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsSubTask", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("ErrorMessage")
-                    .HasMaxLength(500)
-                    .HasColumnType("character varying(500)");
+                    b.HasIndex("WarehouseId", "IsDefault")
+                        .IsUnique()
+                        .HasFilter("\"IsDefault\" = true");
 
-                b.Property<string>("FromLocationCode")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("character varying(20)");
+                    b.ToTable("warehouse_areas", (string)null);
+                });
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+            modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsSubTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("PalletCode")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<int>("Priority")
-                    .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("ToLocationCode")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("character varying(20)");
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("FromLocationCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<Guid>("WcsTaskId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("PalletCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.HasKey("Id");
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<string>("ToLocationCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                b.HasIndex("WcsTaskId", "PalletCode")
-                    .IsUnique();
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("wcs_sub_tasks", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsSubTaskHistory", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WcsTaskId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<int>("FromStatus")
-                    .HasColumnType("integer");
+                    b.HasIndex("WcsTaskId", "PalletCode")
+                        .IsUnique();
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("wcs_sub_tasks", (string)null);
+                });
 
-                b.Property<string>("Notes")
-                    .HasMaxLength(500)
-                    .HasColumnType("character varying(500)");
+            modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsSubTaskHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<string>("Robot")
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("ToStatus")
-                    .HasColumnType("integer");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<int>("FromStatus")
+                        .HasColumnType("integer");
 
-                b.Property<Guid>("WcsSubTaskId")
-                    .HasColumnType("uuid");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasKey("Id");
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Robot")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<int>("ToStatus")
+                        .HasColumnType("integer");
 
-                b.HasIndex("WcsSubTaskId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.ToTable("wcs_sub_task_histories", (string)null);
-            });
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsTask", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.Property<Guid>("WcsSubTaskId")
+                        .HasColumnType("uuid");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("TenantId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.HasIndex("WcsSubTaskId");
 
-                b.Property<int>("Status")
-                    .HasColumnType("integer");
+                    b.ToTable("wcs_sub_task_histories", (string)null);
+                });
 
-                b.Property<string>("TaskType")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+            modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<Guid>("WarehouseId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("WcsBlockId")
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.Property<string>("WcsTaskNumber")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("character varying(50)");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                b.Property<Guid>("WmsPutawayTaskId")
-                    .HasColumnType("uuid");
+                    b.Property<string>("TaskType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.HasKey("Id");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("DeletedAt");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("TenantId");
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("WcsTaskNumber")
-                    .IsUnique();
+                    b.Property<string>("WcsBlockId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.HasIndex("WmsPutawayTaskId");
+                    b.Property<string>("WcsTaskNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                b.ToTable("wcs_tasks", (string)null);
-            });
+                    b.Property<Guid>("WmsPutawayTaskId")
+                        .HasColumnType("uuid");
 
-        modelBuilder.Entity("WMS.Domain.Entities.Zone", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasColumnType("uuid");
+                    b.HasKey("Id");
 
-                b.Property<DateTime>("CreatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("DeletedAt");
 
-                b.Property<string>("CreatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("IsDeleted");
 
-                b.Property<DateTime?>("DeletedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.HasIndex("TenantId");
 
-                b.Property<string>("DeletedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.HasIndex("WcsTaskNumber")
+                        .IsUnique();
 
-                b.Property<string>("Description")
-                    .HasColumnType("text");
+                    b.HasIndex("WmsPutawayTaskId");
 
-                b.Property<bool>("IsDeleted")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("boolean")
-                    .HasDefaultValue(false);
+                    b.ToTable("wcs_tasks", (string)null);
+                });
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("text");
+            modelBuilder.Entity("WMS.Domain.Entities.Zone", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                b.Property<Guid>("TenantId")
-                    .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("timestamp with time zone");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<string>("UpdatedBy")
-                    .HasMaxLength(100)
-                    .HasColumnType("character varying(100)");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.Property<string>("ZoneCode")
-                    .IsRequired()
-                    .HasColumnType("text");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.Property<int>("ZoneType")
-                    .HasColumnType("integer");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                b.HasKey("Id");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
-                b.HasIndex("DeletedAt");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                b.HasIndex("IsDeleted");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                b.HasIndex("TenantId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                b.HasIndex("ZoneCode")
-                    .IsUnique();
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                b.ToTable("zones", (string)null);
-            });
+                    b.Property<string>("ZoneCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                    .WithMany()
-                    .HasForeignKey("RoleId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.Property<int>("ZoneType")
+                        .HasColumnType("integer");
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.HasKey("Id");
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.HasIndex("DeletedAt");
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                    .WithMany()
-                    .HasForeignKey("RoleId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.HasIndex("IsDeleted");
 
-                b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.HasIndex("TenantId");
 
-        modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.HasIndex("ZoneCode")
+                        .IsUnique();
 
-        modelBuilder.Entity("WMS.Domain.Entities.AuditLog", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.Security.User", null)
-                    .WithMany("AuditLogs")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.ToTable("zones", (string)null);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNoteItem", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", null)
-                    .WithMany("Items")
-                    .HasForeignKey("GoodsReceiptNoteId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundItem", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", "InboundOrder")
-                    .WithMany("Items")
-                    .HasForeignKey("InboundOrderId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                b.Navigation("InboundOrder");
-            });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceiptItem", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", null)
-                    .WithMany("Items")
-                    .HasForeignKey("InboundReceiptId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowStep", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", null)
-                    .WithMany("Steps")
-                    .HasForeignKey("WorkflowConfigId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.LocationEntity", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.Zone", null)
-                    .WithMany()
-                    .HasForeignKey("ZoneId")
-                    .OnDelete(DeleteBehavior.SetNull);
-            });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundItem", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.Outbound.OutboundOrder", "OutboundOrder")
-                    .WithMany("Items")
-                    .HasForeignKey("OutboundOrderId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("WMS.Domain.Entities.AuditLog", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.Security.User", null)
+                        .WithMany("AuditLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                b.Navigation("OutboundOrder");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNoteItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", null)
+                        .WithMany("Items")
+                        .HasForeignKey("GoodsReceiptNoteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTaskItem", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", null)
-                    .WithMany("Items")
-                    .HasForeignKey("PutawayTaskId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", "InboundOrder")
+                        .WithMany("Items")
+                        .HasForeignKey("InboundOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspectionItem", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", null)
-                    .WithMany("Items")
-                    .HasForeignKey("QcInspectionId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+                    b.Navigation("InboundOrder");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.RefreshToken", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.Security.User", "User")
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceiptItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", null)
+                        .WithMany("Items")
+                        .HasForeignKey("InboundReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                b.Navigation("User");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowStep", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", null)
+                        .WithMany("Steps")
+                        .HasForeignKey("WorkflowConfigId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.User", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.Security.Role", "Role")
-                    .WithMany("Users")
-                    .HasForeignKey("RoleId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("WMS.Domain.Entities.LocationEntity", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.Zone", null)
+                        .WithMany()
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.SetNull);
+                });
 
-                b.HasOne("WMS.Domain.Entities.Security.Tenant", "Tenant")
-                    .WithMany()
-                    .HasForeignKey("TenantId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.Outbound.OutboundOrder", "OutboundOrder")
+                        .WithMany("Items")
+                        .HasForeignKey("OutboundOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.Navigation("Role");
+                    b.Navigation("OutboundOrder");
+                });
 
-                b.Navigation("Tenant");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTaskItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", null)
+                        .WithMany("Items")
+                        .HasForeignKey("PutawayTaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuAttributeValue", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.SkuAttribute", null)
-                    .WithMany("Values")
-                    .HasForeignKey("SkuAttributeId");
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspectionItem", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", null)
+                        .WithMany("Items")
+                        .HasForeignKey("QcInspectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                b.HasOne("WMS.Domain.Entities.SkuAggregateRoot.Sku", null)
-                    .WithMany("Attributes")
-                    .HasForeignKey("SkuId")
-                    .OnDelete(DeleteBehavior.NoAction)
-                    .IsRequired();
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.Security.RefreshToken", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.Security.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportRow", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.SkuAggregateRoot.SkuImportSession", null)
-                    .WithMany("Rows")
-                    .HasForeignKey("ImportSessionId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.Navigation("User");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuUnitOfMeasure", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.SkuAggregateRoot.Sku", null)
-                    .WithMany("AllowedUnits")
-                    .HasForeignKey("SkuId")
-                    .OnDelete(DeleteBehavior.NoAction)
-                    .IsRequired();
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.Security.User", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.Security.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Block", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", null)
-                    .WithMany("Blocks")
-                    .HasForeignKey("AreaId")
-                    .OnDelete(DeleteBehavior.NoAction)
-                    .IsRequired();
-            });
+                    b.HasOne("WMS.Domain.Entities.Security.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.WarehouseAggregateRoot.Warehouse", null)
-                    .WithMany("Areas")
-                    .HasForeignKey("WarehouseId")
-                    .OnDelete(DeleteBehavior.NoAction)
-                    .IsRequired();
-            });
+                    b.Navigation("Role");
 
-        modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsSubTask", b =>
-            {
-                b.HasOne("WMS.Domain.Entities.WcsIntegration.WcsTask", null)
-                    .WithMany("SubTasks")
-                    .HasForeignKey("WcsTaskId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                    b.Navigation("Tenant");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", b =>
-            {
-                b.Navigation("Items");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuAttributeValue", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.SkuAttribute", null)
+                        .WithMany("Values")
+                        .HasForeignKey("SkuAttributeId");
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", b =>
-            {
-                b.Navigation("Items");
-            });
+                    b.HasOne("WMS.Domain.Entities.SkuAggregateRoot.Sku", null)
+                        .WithMany("Attributes")
+                        .HasForeignKey("SkuId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", b =>
-            {
-                b.Navigation("Items");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportRow", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.SkuAggregateRoot.SkuImportSession", null)
+                        .WithMany("Rows")
+                        .HasForeignKey("ImportSessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", b =>
-            {
-                b.Navigation("Steps");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuUnitOfMeasure", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.SkuAggregateRoot.Sku", null)
+                        .WithMany("AllowedUnits")
+                        .HasForeignKey("SkuId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundOrder", b =>
-            {
-                b.Navigation("Items");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Block", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", null)
+                        .WithMany("Blocks")
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", b =>
-            {
-                b.Navigation("Items");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.WarehouseAggregateRoot.Warehouse", null)
+                        .WithMany("Areas")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", b =>
-            {
-                b.Navigation("Items");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsSubTask", b =>
+                {
+                    b.HasOne("WMS.Domain.Entities.WcsIntegration.WcsTask", null)
+                        .WithMany("SubTasks")
+                        .HasForeignKey("WcsTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.Role", b =>
-            {
-                b.Navigation("Users");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.GoodsReceiptNoteAggregateRoot.GoodsReceiptNote", b =>
+                {
+                    b.Navigation("Items");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.Security.User", b =>
-            {
-                b.Navigation("AuditLogs");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.InboundOrderAggregateRoot.InboundOrder", b =>
+                {
+                    b.Navigation("Items");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.Sku", b =>
-            {
-                b.Navigation("AllowedUnits");
+            modelBuilder.Entity("WMS.Domain.Entities.InboundReceiptAggregateRoot.InboundReceipt", b =>
+                {
+                    b.Navigation("Items");
+                });
 
-                b.Navigation("Attributes");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot.InboundWorkflowConfig", b =>
+                {
+                    b.Navigation("Steps");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportSession", b =>
-            {
-                b.Navigation("Rows");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.Outbound.OutboundOrder", b =>
+                {
+                    b.Navigation("Items");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.SkuAttribute", b =>
-            {
-                b.Navigation("Values");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.PutawayTaskAggregateRoot.PutawayTask", b =>
+                {
+                    b.Navigation("Items");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Warehouse", b =>
-            {
-                b.Navigation("Areas");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.QcInspectionAggregateRoot.QcInspection", b =>
+                {
+                    b.Navigation("Items");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", b =>
-            {
-                b.Navigation("Blocks");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.Security.Role", b =>
+                {
+                    b.Navigation("Users");
+                });
 
-        modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsTask", b =>
-            {
-                b.Navigation("SubTasks");
-            });
+            modelBuilder.Entity("WMS.Domain.Entities.Security.User", b =>
+                {
+                    b.Navigation("AuditLogs");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.Sku", b =>
+                {
+                    b.Navigation("AllowedUnits");
+
+                    b.Navigation("Attributes");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAggregateRoot.SkuImportSession", b =>
+                {
+                    b.Navigation("Rows");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.SkuAttribute", b =>
+                {
+                    b.Navigation("Values");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.Warehouse", b =>
+                {
+                    b.Navigation("Areas");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.WarehouseAggregateRoot.WarehouseArea", b =>
+                {
+                    b.Navigation("Blocks");
+                });
+
+            modelBuilder.Entity("WMS.Domain.Entities.WcsIntegration.WcsTask", b =>
+                {
+                    b.Navigation("SubTasks");
+                });
 #pragma warning restore 612, 618
+        }
     }
 }

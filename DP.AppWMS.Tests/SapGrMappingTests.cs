@@ -14,19 +14,10 @@ public class SapGrMappingTests
         string orderNumber = $"PO-{DateTime.Now.Year}-0001";
 
         // Arrange
-        var order = new InboundOrder
-        {
-            OrderNumber = orderNumber,
-            Items =
-            [
-                new()
-                {
-                    SkuId = Guid.NewGuid(),
-                    Quantity = 100,
-                    ReceivedQuantity = 98,
-                }
-            ]
-        };
+        var order = InboundOrder.Create(Guid.Empty, orderNumber, null, null);
+        var skuId = Guid.NewGuid();
+        order.AddItem(skuId, 100, null);
+        order.ReceiveItem(skuId, 98, null);
 
         // Act
         var request = new SapGrRequest

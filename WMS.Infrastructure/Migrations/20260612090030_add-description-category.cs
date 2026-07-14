@@ -5,7 +5,7 @@
 namespace WMS.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class adddescriptioncategory : Migration
+public partial class AddDescriptionCategory : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

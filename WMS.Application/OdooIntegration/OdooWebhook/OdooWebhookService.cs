@@ -147,8 +147,7 @@ public class OdooWebhookService(
                 // Nếu WMS order chưa complete, đánh dấu Odoo đã confirm
                 if (order.Status != InboundStatus.Completed)
                 {
-                    order.Status = InboundStatus.Completed;
-                    order.ReceivedDate = DateOnly.FromDateTime(DateTime.UtcNow);
+                    order.CompleteOrder();
                     // await _uow.SaveChangesAsync(ct);
                 }
             }

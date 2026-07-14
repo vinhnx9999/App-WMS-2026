@@ -21,6 +21,7 @@ public sealed class CreateReceiptCommandHandler(IUnitOfWork uow,
         var req = request.Request;
         var receiptNumber = await _codeSequenceGenerator.NextAsync(request.TenantId, CodeSequenceTypes.InboundReceipt, ct);
         var receipt = new InboundReceipt(
+            request.TenantId,
             receiptNumber,
             req.InboundOrderId,
             req.WarehouseId);
@@ -28,11 +29,15 @@ public sealed class CreateReceiptCommandHandler(IUnitOfWork uow,
 
         foreach (var item in req.Items)
         {
-            receipt.AddItem(new InboundReceiptItem(
+            receipt.AddItem(
                 item.SkuId,
                 item.ExpectedQuantity,
                 item.ReceivedQuantity,
-                item.Notes));
+                item.Notes,
+                item.SupplierId,
+                item.ExpiryDate,
+                item.SerialNumber,
+                item.LotNumber);
         }
 
         await _uow.Repository<InboundReceipt>().AddAsync(receipt, ct);

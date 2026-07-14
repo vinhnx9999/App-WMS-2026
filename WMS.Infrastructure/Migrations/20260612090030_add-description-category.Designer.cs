@@ -13,7 +13,7 @@ namespace WMS.Infrastructure.Migrations
 {
     [DbContext(typeof(WmsDbContext))]
     [Migration("20260612090030_add-description-category")]
-    partial class adddescriptioncategory
+    partial class AddDescriptionCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

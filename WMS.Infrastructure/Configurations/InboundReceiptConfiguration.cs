@@ -27,5 +27,8 @@ public class InboundReceiptItemConfiguration : BaseEntityConfiguration<InboundRe
     {
         builder.ToTable("inbound_receipt_items");
         builder.HasIndex(x => x.SkuId);
+
+        builder.Property(x => x.LotNumber).HasMaxLength(100);
+        builder.Property(x => x.SerialNumber).HasMaxLength(100);
     }
 }

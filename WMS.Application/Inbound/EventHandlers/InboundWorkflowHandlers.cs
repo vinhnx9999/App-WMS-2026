@@ -1,4 +1,7 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using WMS.Application.Common.Service;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Entities.InboundReceiptAggregateRoot;
 using WMS.Domain.Entities.InboundWorkflowConfigAggregateRoot;
@@ -10,7 +13,6 @@ using WMS.Domain.Enums;
 using WMS.Domain.Events;
 using WMS.Domain.Interfaces;
 using WMS.Domain.Orchestrator;
-using WMS.Application.Common.Service;
 
 namespace WMS.Application.Inbound.Handlers;
 
@@ -23,7 +25,8 @@ public class InboundWorkflowHandlers(
     IRepository<PutawayTask> putawayRepo,
     InboundWorkflowOrchestrator orchestrator,
     ICurrentUser currentUser,
-    ISequenceCodeGenerator codeSequenceGenerator)
+    ISequenceCodeGenerator codeSequenceGenerator,
+    ILogger<InboundWorkflowHandlers> logger)
     : INotificationHandler<InboundReceiptCompletedEvent>,
       INotificationHandler<QcInspectionCompletedEvent>
 {
@@ -31,12 +34,12 @@ public class InboundWorkflowHandlers(
     {
         var receipt = notification.Receipt;
 
-        // Retrieve supplierId from parent inbound order if present
-        Guid? supplierId = null;
+        InboundOrder? inboundOrder = null;
         if (receipt.InboundOrderId.HasValue)
         {
-            var inboundOrder = await inboundOrderRepo.GetByIdAsync(receipt.InboundOrderId.Value, ct);
-            supplierId = inboundOrder?.SupplierId;
+            inboundOrder = await inboundOrderRepo.Query()
+                .Include(x => x.Items)
+                .FirstOrDefaultAsync(x => x.Id == receipt.InboundOrderId.Value && !x.IsDeleted, ct);
         }
 
         var configs = await configRepo.GetAllAsync(ct);
@@ -53,6 +56,13 @@ public class InboundWorkflowHandlers(
             {
                 var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
                 categoryId = product?.CategoryId;
+            }
+
+            Guid? supplierId = null;
+            if (inboundOrder != null)
+            {
+                var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
+                supplierId = orderItem?.SupplierId;
             }
 
             var config = orchestrator.ResolveConfig(receipt.WarehouseId, supplierId, categoryId, configs);
@@ -102,7 +112,19 @@ public class InboundWorkflowHandlers(
 
             foreach (var item in putawayItems)
             {
-                putawayTask.AddItem(item.SkuId, item.ReceivedQuantity, Guid.Empty);
+                DateTime? expiryDateTime = item.ExpiryDate.HasValue
+                    ? new DateTime(item.ExpiryDate.Value.Year, item.ExpiryDate.Value.Month, item.ExpiryDate.Value.Day, 0, 0, 0, DateTimeKind.Utc)
+                    : null;
+                putawayTask.AddItem(
+                    skuId: item.SkuId,
+                    putawayQuantity: item.ReceivedQuantity,
+                    targetLocationId: Guid.Empty,
+                    actualLocationId: null,
+                    palletId: null,
+                    supplierId: item.SupplierId,
+                    expiryDate: expiryDateTime,
+                    serialNumber: item.SerialNumber,
+                    lotNumber: item.LotNumber);
             }
 
             await putawayRepo.AddAsync(putawayTask, ct);
@@ -113,12 +135,12 @@ public class InboundWorkflowHandlers(
     {
         var inspection = notification.Inspection;
 
-        // Retrieve supplierId from parent inbound order if present
-        Guid? supplierId = null;
+        InboundOrder? inboundOrder = null;
         if (inspection.InboundOrderId.HasValue)
         {
-            var inboundOrder = await inboundOrderRepo.GetByIdAsync(inspection.InboundOrderId.Value, ct);
-            supplierId = inboundOrder?.SupplierId;
+            inboundOrder = await inboundOrderRepo.Query()
+                .Include(x => x.Items)
+                .FirstOrDefaultAsync(x => x.Id == inspection.InboundOrderId.Value && !x.IsDeleted, ct);
         }
 
         var configs = await configRepo.GetAllAsync(ct);
@@ -126,22 +148,38 @@ public class InboundWorkflowHandlers(
         // Filter items that passed inspection and route to Putaway
         var putawayItems = new List<QcInspectionItem>();
 
-        foreach (var item in inspection.Items.Where(i => i.PassedQuantity > 0))
+        foreach (var item in inspection.Items)
         {
-            var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
-            Guid? categoryId = null;
-            if (sku != null && sku.ProductId.HasValue)
+            if (item.PassedQuantity > 0)
             {
-                var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
-                categoryId = product?.CategoryId;
+                var sku = await skuRepo.GetByIdAsync(item.SkuId, ct);
+                Guid? categoryId = null;
+                if (sku != null && sku.ProductId.HasValue)
+                {
+                    var product = await productRepo.GetByIdAsync(sku.ProductId.Value, ct);
+                    categoryId = product?.CategoryId;
+                }
+
+                Guid? supplierId = null;
+                if (inboundOrder != null)
+                {
+                    var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
+                    supplierId = orderItem?.SupplierId;
+                }
+
+                var config = orchestrator.ResolveConfig(inspection.WarehouseId, supplierId, categoryId, configs);
+                var nextStep = orchestrator.GetNextStep(config, InboundStepType.QC);
+
+                if (nextStep == InboundStepType.Putaway)
+                {
+                    putawayItems.Add(item);
+                }
             }
 
-            var config = orchestrator.ResolveConfig(inspection.WarehouseId, supplierId, categoryId, configs);
-            var nextStep = orchestrator.GetNextStep(config, InboundStepType.QC);
-
-            if (nextStep == InboundStepType.Putaway)
+            if (item.FailedQuantity > 0)
             {
-                putawayItems.Add(item);
+                logger.LogWarning("Failed QC items recorded: {FailedQuantity} for SkuId: {SkuId}",
+                    item.FailedQuantity, item.SkuId);
             }
         }
 

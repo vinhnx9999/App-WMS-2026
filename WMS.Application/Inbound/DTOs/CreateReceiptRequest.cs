@@ -9,4 +9,8 @@ public record CreateReceiptItemRequest(
     Guid SkuId,
     int ExpectedQuantity,
     int ReceivedQuantity,
-    string? Notes);
+    string? Notes,
+    Guid? SupplierId = null,
+    DateOnly? ExpiryDate = null,
+    string? SerialNumber = null,
+    string? LotNumber = null);

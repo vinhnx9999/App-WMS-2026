@@ -126,6 +126,14 @@ _Avoid_: Expiration date, best before date
 
 ## Inbound Workflow
 
+**InboundOrder**:
+An aggregate root representing an order placed for goods to be received into the warehouse (commonly referred to as a PO). It encapsulates items, totals, dates, and status transitions. Its status lifecycle is simplified to: `Approved` (initial default state for both ERP-synced and manually created POs), `Receiving` (active receiving in progress), `Completed` (fully received or manually closed), and `Cancelled`. To enforce domain integrity, its properties cannot be modified directly from outside, and its constructor is private, exposing creation through static factory methods. Supplier association is handled at the item level rather than at the order level.
+_Avoid_: Purchase Order, PO, Inbound Shipment, Pending status (obsolete)
+
+**InboundItem**:
+A child entity owned and managed exclusively by the `InboundOrder` aggregate root. It represents a specific SKU quantity to be received, along with its optional `SupplierId`, allowing an order to consist of items from different suppliers. It cannot be instantiated or modified directly from outside the aggregate boundary.
+_Avoid_: Order item, receipt line
+
 **InboundWorkflowConfig**:
 An aggregate root configuring the sequence of inbound steps for a given warehouse, supplier, or category combination, resolved using a priority fallback hierarchy.
 _Avoid_: Inbound routing config, step mapping
@@ -135,15 +143,15 @@ A child entity representing a specific stage in the inbound workflow sequence. V
 _Avoid_: Inbound phase, workflow stage
 
 **InboundReceipt**:
-An aggregate root recording the physical receipt of goods at the loading dock, supporting partial shipments and enforcing over-receiving policies based on the resolved workflow config.
-_Avoid_: Gate receipt, receiving report
+An aggregate root recording the physical receipt of goods at the loading dock, supporting partial shipments and enforcing over-receiving policies based on the resolved workflow config. Its status lifecycle consists only of `Receiving` (active counting session) and `Completed` (finalized and sent for downstream steps).
+_Avoid_: Gate receipt, receiving report, Draft status (obsolete)
 
 **QcInspection**:
 An aggregate root representing a quality inspection session, tracking `PassedQuantity` and `FailedQuantity` for SKU lines.
 _Avoid_: QC check, inspection form
 
 **PutawayTask**:
-An aggregate root representing the assignment to move received or inspected items to storage locations, integrated with automated systems (WCS) by generating WcsTask and WcsSubTasks when targeting automated shelving blocks.
+An aggregate root representing the assignment to move received or inspected items to storage locations.
 _Avoid_: Stock movement task, placement order
 
 **GoodsReceiptNote (GRN)**:
@@ -154,17 +162,61 @@ _Avoid_: Receiving voucher, completed receipt record
 A timeline audit log tracking individual workflow milestones, including the user, timestamp, state transitions, and item quantities.
 _Avoid_: Order logs, workflow audit trail
 
-## WCS Integration
+## WCS Integration (Obsolete)
 
-**WcsTask**:
-A master-level integration document representing a group of pallet movement commands sent to the Warehouse Control System (WCS). It holds the WcsBlockId and a rollup status.
-_Avoid_: WCS group, robot task header
+The WCS robot confirmation wait state (`SentToWcs`) and deferred inventory updates have been abandoned. The system now updates inventory immediately upon putaway task confirmation. The entities `WcsTask`, `WcsSubTask`, and `WcsSubTaskHistory` are no longer utilized.
 
-**WcsSubTask**:
-A child-level movement command representing the physical transport of a single Pallet from a source location (FromLocationCode, defaults to "0.0.0") to a destination location (ToLocationCode, coordinates "z.x.y").
-_Avoid_: WCS command, robot task detail
+## Inbound UI & Workflow Decisions
 
-**WcsSubTaskHistory**:
-An audit log tracking the life cycle of a WcsSubTask (from creation to robot assignment and completion/failure), recording the timestamp and the specific robot code (e.g. "CRANE-01") executing it.
-_Avoid_: WCS history, robot log
+**Independent Pages & Routing**:
+The inbound module is strictly separated into independent pages via nested routes (e.g., `/inbound/po`, `/inbound/po/:id`, `/inbound/receive`, `/inbound/receive/:id`).
+_Avoid_: Single-page stepper navigations where all steps share the same URL. Navigation between modules should happen via a Sidebar menu, which dynamically renders links based on enabled workflow steps. Steppers are only used as contextual read-only indicators or in the main `/inbound` Dashboard.
 
+**Workflow Auto-Generation & Creation**:
+* A step can only manually trigger "Create" (e.g., creating a new PO, new Receipt, new Putaway Task) if it has no preceding enabled steps in the configuration. 
+* Data flows forward automatically: completing a Receipt auto-generates a `QcInspection` (if QC is enabled) or a `PutawayTask`. Completing a QC step auto-generates a `PutawayTask` for passed items.
+_Avoid_: "Direct Mode" terminology. Instead, use explicit checks for preceding enabled steps to conditionally show creation UI.
+
+**Layout Architecture (List -> Detail)**:
+* Each inbound step follows a strict Master-Detail pattern. The List view uses AG Grid to display entities.
+* Selecting an entity transitions to a dedicated Detail route (e.g., `/inbound/po/:id`) which utilizes the full screen for an AG Grid data entry interface.
+* Read-only metrics (like PO receiving progress) are shown directly on the PO Detail page.
+_Avoid_: Sliding side panels (Sheets) for detail views. All detail views should be full pages to maximize AG Grid real estate.
+
+**Data Persistence & Drafts**:
+* Heavy data-entry screens (Receive Detail, QC Detail) DO NOT utilize background auto-saving or draft mechanisms. 
+* Operators must complete the counting session in one go. An "Unsaved Changes" browser warning is applied to prevent accidental navigation or refresh.
+_Avoid_: Complex draft state management APIs or local storage syncing for counting sessions.
+
+**Putaway Map Integration**:
+* The Putaway Detail page utilizes AG Grid as its primary interface for locations. The visual warehouse map (Konva canvas) is secondary and accessed via a modal or drawer when the operator needs spatial assistance.
+
+**Pallet Code & Consolidation**:
+* Support auto-generating or assigning pallet codes optionally during Receive/QC.
+* Assigning to an existing physical Pallet Code in Putaway auto-fills and locks the Target Location to the pallet's current shelf location, validating backend constraints (`IsMixSku`, `MaxQtyInPallet`).
+
+**Partial & Over-Receiving**:
+* PO supports multiple receiving shipments over time. PO Detail displays PO Qty, Previously Received, and Remaining Qty.
+* Over-receiving is checked against `overReceiveTolerancePercentage`. Managers can use "Force Complete" to manually close a short-shipped PO.
+
+## Create InboundOrder (PO) UI Decisions
+
+**InboundOrder Create Form Fields**:
+The Create PO form contains: `expectedDate` (optional), `notes` (optional), and a list of `InboundItem` rows. Each item row contains `skuId` (required), `quantity` (required, integer > 0), and `supplierId` (optional, per-item). Fields such as `expiryDate`, `lotNumber`, and `serialNumber` are NOT collected at PO creation time — they belong to the Receive step when physical goods arrive.
+_Avoid_: Collecting lot/expiry/serial at PO creation stage.
+
+**InboundItem Supplier Scope**:
+Each `InboundItem` within an `InboundOrder` holds its own `supplierId`, allowing a single PO to reference items from multiple different suppliers. Supplier is NOT a header-level attribute on the InboundOrder itself.
+_Avoid_: Single supplier per PO, header-level supplierId on InboundOrder.
+
+**InboundItem Duplicate Rule**:
+Within a single `InboundOrder`, duplicate line items are only blocked when both `skuId` AND `supplierId` match. An item with the same SKU but a different Supplier is considered a distinct line and is always permitted.
+_Avoid_: Blocking duplicates by `skuId` alone.
+
+**Create PO Post-Submit Navigation**:
+After successfully creating an `InboundOrder`, the UI navigates directly to the PO Detail page (`/inbound/po/:id`) using the `id` returned in `CreatePoResponse`. This lets operators immediately verify content and trigger receiving.
+_Avoid_: Staying on the create form or navigating to the list after successful creation.
+
+**Create PO Dirty-State Guard**:
+The Create PO form uses `react-hook-form`'s `formState.isDirty` to guard accidental navigation. The Back button shows a confirmation `AlertDialog` only when the form has been modified. If the form is untouched (clean state), navigation proceeds immediately.
+_Avoid_: Always-on confirmation dialogs or custom dirty-state tracking.

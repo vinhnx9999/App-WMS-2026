@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System.Linq.Expressions;
 using WMS.Application.Common.Service;
 using WMS.Application.Inbound.Commands.CompletePutaway;
 using WMS.Application.Inbound.Commands.CreateDirectPutaway;
@@ -54,41 +53,33 @@ public class PutawayHandlersTests
     public async Task UpdateInventoryHandler_WhenNoMatchingInventoryExists_ShouldCreateNewInventoryItemAsync()
     {
         // Arrange
+        var (connection, db, uow) = await SetupInMemoryDbAsync();
+
         var skuId = Guid.NewGuid();
         var locationId = Guid.NewGuid();
         var supplierId = Guid.NewGuid();
         var inboundOrderId = Guid.NewGuid();
 
-        var inboundOrder = new InboundOrder
-        {
-            SupplierId = supplierId
-        };
-        _inboundOrderRepoMock
-            .Setup(x => x.GetByIdAsync(inboundOrderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(inboundOrder);
+        var inboundOrder = InboundOrder.Create(_tenantId, "PO-001", null, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(inboundOrder, inboundOrderId);
+        inboundOrder.AddItem(skuId, 10, supplierId);
+
+        db.InboundOrders.Add(inboundOrder);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var task = PutawayTask.Create(_tenantId, "PT-001", inboundOrderId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
         task.AddItem(skuId, 10, locationId);
         task.Items.First().CompletePutaway(locationId);
 
-        // FindAsync returns empty list (meaning no match)
-        _inventoryRepoMock
-            .Setup(x => x.FindAsync(It.IsAny<Expression<Func<InventoryItem, bool>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<InventoryItem>());
-
-        InventoryItem? createdItem = null;
-        _inventoryRepoMock
-            .Setup(x => x.AddAsync(It.IsAny<InventoryItem>(), It.IsAny<CancellationToken>()))
-            .Callback<InventoryItem, CancellationToken>((item, ct) => createdItem = item)
-            .ReturnsAsync((InventoryItem item, CancellationToken ct) => item);
-
-        var handler = new UpdateInventoryHandler(_inventoryRepoMock.Object, _inboundOrderRepoMock.Object, _currentUserMock.Object);
+        var handler = new UpdateInventoryHandler(uow.Repository<InventoryItem>(), uow.Repository<InboundOrder>(), _currentUserMock.Object);
         var notification = new PutawayTaskCompletedEvent(task);
 
         // Act
         await handler.Handle(notification, CancellationToken.None);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         // Assert
+        var createdItem = await db.InventoryItems.FirstOrDefaultAsync(x => x.SkuId == skuId && x.LocationId == locationId, TestContext.Current.CancellationToken);
         createdItem.Should().NotBeNull();
         createdItem!.SkuId.Should().Be(skuId);
         createdItem.LocationId.Should().Be(locationId);
@@ -100,40 +91,38 @@ public class PutawayHandlersTests
     public async Task UpdateInventoryHandler_WhenMatchingInventoryExists_ShouldAddStockToExistingItemAsync()
     {
         // Arrange
+        var (connection, db, uow) = await SetupInMemoryDbAsync();
+
         var skuId = Guid.NewGuid();
         var locationId = Guid.NewGuid();
         var supplierId = Guid.NewGuid();
         var inboundOrderId = Guid.NewGuid();
 
-        var inboundOrder = new InboundOrder
-        {
-            SupplierId = supplierId
-        };
-        _inboundOrderRepoMock
-            .Setup(x => x.GetByIdAsync(inboundOrderId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(inboundOrder);
+        var inboundOrder = InboundOrder.Create(_tenantId, "PO-001", null, null);
+        typeof(BaseEntity).GetProperty(nameof(BaseEntity.Id))!.SetValue(inboundOrder, inboundOrderId);
+        inboundOrder.AddItem(skuId, 10, supplierId);
+
+        db.InboundOrders.Add(inboundOrder);
+
+        var existingItem = InventoryItem.Create(_tenantId, skuId, locationId, supplierId, null, null, 25, 0m, DateTime.UtcNow, null);
+        db.InventoryItems.Add(existingItem);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var task = PutawayTask.Create(_tenantId, "PT-001", inboundOrderId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
         task.AddItem(skuId, 10, locationId);
         task.Items.First().CompletePutaway(locationId);
 
-        var existingItem = InventoryItem.Create(_tenantId, skuId, locationId, supplierId, null, null, 25, 0m, DateTime.UtcNow, null);
-
-        // FindAsync returns the existing item
-        _inventoryRepoMock
-            .Setup(x => x.FindAsync(It.IsAny<Expression<Func<InventoryItem, bool>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<InventoryItem> { existingItem });
-
-        var handler = new UpdateInventoryHandler(_inventoryRepoMock.Object, _inboundOrderRepoMock.Object, _currentUserMock.Object);
+        var handler = new UpdateInventoryHandler(uow.Repository<InventoryItem>(), uow.Repository<InboundOrder>(), _currentUserMock.Object);
         var notification = new PutawayTaskCompletedEvent(task);
 
         // Act
         await handler.Handle(notification, CancellationToken.None);
+        await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         // Assert
-        existingItem.Quantity.Should().Be(35); // 25 + 10
-        _inventoryRepoMock.Verify(x => x.AddAsync(It.IsAny<InventoryItem>(), It.IsAny<CancellationToken>()), Times.Never);
-        _inventoryRepoMock.Verify(x => x.UpdateAsync(existingItem), Times.Once);
+        var updatedItem = await db.InventoryItems.FirstOrDefaultAsync(x => x.Id == existingItem.Id, TestContext.Current.CancellationToken);
+        updatedItem.Should().NotBeNull();
+        updatedItem!.Quantity.Should().Be(35); // 25 + 10
     }
 
     [Fact]
@@ -181,7 +170,7 @@ public class PutawayHandlersTests
             .Callback<InboundOrderHistory, CancellationToken>((h, ct) => loggedHistory = h)
             .ReturnsAsync((InboundOrderHistory h, CancellationToken ct) => h);
 
-        var receipt = new InboundReceipt("REC-001", Guid.NewGuid(), Guid.NewGuid());
+        var receipt = new InboundReceipt(_tenantId, "REC-001", Guid.NewGuid(), Guid.NewGuid());
         var handler = new InboundReceiptCompletedEventHandler(historyRepoMock.Object, _currentUserMock.Object);
         var notification = new InboundReceiptCompletedEvent(receipt);
 
@@ -787,7 +776,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenValidRequest_ShouldCreateTaskInPendingStatusWithFieldsCorrectly()
+    public async Task CreateDirectPutawayCommandHandler_WhenValidRequest_ShouldCreateTaskInPendingStatusWithFieldsCorrectlyAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
@@ -848,7 +837,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public void CreateDirectPutawayRequestValidator_WhenSerialNumberIsProvidedAndQtyIsNotOne_ShouldHaveValidationError()
+    public void CreateDirectPutawayRequestValidator_WhenSerialNumberIsProvidedAndQtyIsNotOne_ShouldHaveValidationErrorAsync()
     {
         // Arrange
         var validator = new CreateDirectPutawayRequestValidator();
@@ -928,7 +917,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenPalletHasDifferentSKUAndIsMixSkuIsFalse_ShouldThrowAppException()
+    public async Task CreateDirectPutawayCommandHandler_WhenPalletHasDifferentSKUAndIsMixSkuIsFalse_ShouldThrowAppExceptionAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
@@ -986,7 +975,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenAddingExceedsMaxQtyInPallet_ShouldThrowDomainException()
+    public async Task CreateDirectPutawayCommandHandler_WhenAddingExceedsMaxQtyInPallet_ShouldThrowDomainExceptionAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();
@@ -1048,7 +1037,7 @@ public class PutawayHandlersTests
     }
 
     [Fact]
-    public async Task CreateDirectPutawayCommandHandler_WhenPalletCodeIsEmpty_ShouldGeneratePalletCodeUsingCodeSequence()
+    public async Task CreateDirectPutawayCommandHandler_WhenPalletCodeIsEmpty_ShouldGeneratePalletCodeUsingCodeSequenceAsync()
     {
         // Arrange
         var (connection, db, uow) = await SetupInMemoryDbAsync();

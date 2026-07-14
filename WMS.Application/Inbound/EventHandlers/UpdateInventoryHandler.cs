@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WMS.Domain.Entities.InventoryAggregateRoot;
 using WMS.Domain.Entities.InboundOrderAggregateRoot;
 using WMS.Domain.Interfaces;
@@ -13,14 +14,12 @@ public class UpdateInventoryHandler(
 {
     public async Task Handle(PutawayTaskCompletedEvent notification, CancellationToken ct)
     {
-        Guid? supplierId = null;
+        InboundOrder? inboundOrder = null;
         if (notification.Task.InboundOrderId.HasValue)
         {
-            var inboundOrder = await inboundOrderRepo.GetByIdAsync(notification.Task.InboundOrderId.Value, ct);
-            if (inboundOrder != null)
-            {
-                supplierId = inboundOrder.SupplierId;
-            }
+            inboundOrder = await inboundOrderRepo.Query()
+                .Include(x => x.Items)
+                .FirstOrDefaultAsync(x => x.Id == notification.Task.InboundOrderId.Value && !x.IsDeleted, ct);
         }
 
         foreach (var item in notification.Task.Items)
@@ -28,6 +27,13 @@ public class UpdateInventoryHandler(
             if (item.ActualLocationId == null)
             {
                 continue;
+            }
+
+            Guid? supplierId = null;
+            if (inboundOrder != null)
+            {
+                var orderItem = inboundOrder.Items.FirstOrDefault(x => x.SkuId == item.SkuId);
+                supplierId = orderItem?.SupplierId;
             }
 
             var matchingItems = await inventoryRepo.FindAsync(x =>

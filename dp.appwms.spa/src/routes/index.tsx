@@ -9,7 +9,17 @@ import SupplierListPage from "@/features/master-data/suppliers/SupplierListPage"
 import SkusListPage from "@/features/master-data/skus/SkusListPage";
 import ProductListPage from "@/features/master-data/product/ProductListPage";
 import CustomerListPage from "../features/master-data/customers/CustomerListPage";
-import InboundPage from "@/features/inbound/InboundPage";
+import InboundLayout from "@/features/inbound/InboundLayout";
+import InboundDashboardPage from "@/features/inbound/pages/DashboardPage";
+import PurchaseOrderListPage from "@/features/inbound/pages/PurchaseOrderListPage";
+import PurchaseOrderDetailPage from "@/features/inbound/pages/PurchaseOrderDetailPage";
+import PurchaseOrderCreatePage from "@/features/inbound/pages/PurchaseOrderCreatePage";
+import ReceiveListPage from "@/features/inbound/pages/ReceiveListPage";
+import ReceiveDetailPage from "@/features/inbound/pages/ReceiveDetailPage";
+import QcListPage from "@/features/inbound/pages/QcListPage";
+import QcDetailPage from "@/features/inbound/pages/QcDetailPage";
+import PutawayListPage from "@/features/inbound/pages/PutawayListPage";
+import PutawayDetailPage from "@/features/inbound/pages/PutawayDetailPage";
 
 export const router = createBrowserRouter([
     {
@@ -56,7 +66,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: "inbound",
-                element: <InboundPage />,
+                element: <InboundLayout />,
+                children: [
+                    { index: true, element: <InboundDashboardPage /> },
+                    { path: "po", element: <PurchaseOrderListPage /> },
+                    { path: "po/create", element: <PurchaseOrderCreatePage /> },
+                    { path: "po/:id", element: <PurchaseOrderDetailPage /> },
+                    { path: "receive", element: <ReceiveListPage /> },
+                    { path: "receive/:id", element: <ReceiveDetailPage /> },
+                    { path: "qc", element: <QcListPage /> },
+                    { path: "qc/:id", element: <QcDetailPage /> },
+                    { path: "putaway", element: <PutawayListPage /> },
+                    { path: "putaway/:id", element: <PutawayDetailPage /> },
+                ]
             },
             {
                 path: "rules",
