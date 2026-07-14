@@ -97,6 +97,7 @@ export interface CreatePOItemRequest {
 }
 
 export interface CreatePORequest {
+  orderNumber?: string | null;
   expectedDate?: string | null;
   notes?: string | null;
   items: CreatePOItemRequest[];

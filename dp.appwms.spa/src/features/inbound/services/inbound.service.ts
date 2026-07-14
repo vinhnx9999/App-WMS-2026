@@ -7,6 +7,8 @@ import {
   type CreateReceiptRequest,
   type InboundReceiptDto,
   type GetInboundReceiptByIdResponse,
+  type CreatePORequest,
+  type CreatePoResponse,
 } from "../models/inbound.model";
 import { type SearchQueryParams } from "@/models/search.model";
 
@@ -42,6 +44,21 @@ export const inboundService = {
       return response.data;
     } catch (error) {
       console.error(`Error fetching inbound order details for id ${id}:`, error);
+      throw error;
+    }
+  },
+
+  createPurchaseOrder: async (
+    request: CreatePORequest
+  ): Promise<ApiResponse<CreatePoResponse>> => {
+    try {
+      const response = await apiClient.post<ApiResponse<CreatePoResponse>>(
+        ENDPOINTS.INBOUND.CREATE,
+        request
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error creating purchase order:", error);
       throw error;
     }
   },

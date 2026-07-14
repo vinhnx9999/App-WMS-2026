@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
     "@fontsource-variable/inter": "^5.2.8",
+    "@hookform/resolvers": "^5.4.0",
     "@microsoft/signalr": "^10.0.0",
     "@tailwindcss/vite": "^4.3.1",
     "@types/lodash": "^4.17.24",
@@ -19,6 +20,7 @@
     "axios": "^1.18.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "i18next": "^26.3.1",
     "konva": "^10.3.0",
     "lodash": "^4.18.1",
@@ -27,6 +29,7 @@
     "radix-ui": "^1.6.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-hook-form": "^7.81.0",
     "react-i18next": "^17.0.8",
     "react-konva": "^19.2.5",
     "react-router-dom": "^7.17.0",

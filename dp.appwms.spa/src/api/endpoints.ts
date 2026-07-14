@@ -28,6 +28,7 @@ export const ENDPOINTS = {
     },
     INBOUND: {
         SEARCH: Base_URL + "/inbound/search",
+        CREATE: Base_URL + "/inbound",
         DIRECT_PUTAWAY: Base_URL + "/inbound/putaway/direct",
         GET_BY_ID: (id: string) => `${Base_URL}/inbound/${id}`,
         FORCE_COMPLETE: (id: string) => `${Base_URL}/inbound/${id}/force-complete`,

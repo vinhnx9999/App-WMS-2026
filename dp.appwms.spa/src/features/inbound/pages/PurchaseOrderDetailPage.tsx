@@ -27,8 +27,8 @@ export default function PurchaseOrderDetailPage() {
   // Hook to handle receipt creation  
   const { initFromOrder, saveDraft, saving } = useReceiveWork();
 
- const fetchDetail = async (orderId: string) => {
-  
+ const fetchDetail = async (orderId: string) => { 
+  await Promise.resolve();
   setLoading(prev => prev ? prev : true); 
   setError(null);
   try {

@@ -146,7 +146,10 @@ export default function ReceiveListPage() {
 
           const gridFilters: SearchObject[] = Object.keys(params.filterModel || {}).map((key) => {
             const gridFilter = params.filterModel[key];
+         
+            // eslint-disable-next-line react-hooks/refs
             const column = gridRef.current?.api?.getColumn(key);
+            
             const colDef = column?.getColDef();
             const label = colDef?.headerName ? String(colDef.headerName) : key;
             const type = gridFilter.filterType || "text";

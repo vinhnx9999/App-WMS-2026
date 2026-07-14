@@ -25,7 +25,7 @@ public class CreateInboundWorkflowConfigCommandHandler(IUnitOfWork uow)
             throw new NotFoundException("Warehouse", request.WarehouseId);
         }
 
-        // 2. Validate Supplier exists if provided
+        // 2. Validate Supplier exists if provided  
         if (request.SupplierId.HasValue)
         {
             var supplierExists = await _uow.Repository<SupplierEntity>().Query()

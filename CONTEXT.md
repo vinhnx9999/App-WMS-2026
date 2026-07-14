@@ -198,3 +198,25 @@ _Avoid_: Complex draft state management APIs or local storage syncing for counti
 **Partial & Over-Receiving**:
 * PO supports multiple receiving shipments over time. PO Detail displays PO Qty, Previously Received, and Remaining Qty.
 * Over-receiving is checked against `overReceiveTolerancePercentage`. Managers can use "Force Complete" to manually close a short-shipped PO.
+
+## Create InboundOrder (PO) UI Decisions
+
+**InboundOrder Create Form Fields**:
+The Create PO form contains: `expectedDate` (optional), `notes` (optional), and a list of `InboundItem` rows. Each item row contains `skuId` (required), `quantity` (required, integer > 0), and `supplierId` (optional, per-item). Fields such as `expiryDate`, `lotNumber`, and `serialNumber` are NOT collected at PO creation time — they belong to the Receive step when physical goods arrive.
+_Avoid_: Collecting lot/expiry/serial at PO creation stage.
+
+**InboundItem Supplier Scope**:
+Each `InboundItem` within an `InboundOrder` holds its own `supplierId`, allowing a single PO to reference items from multiple different suppliers. Supplier is NOT a header-level attribute on the InboundOrder itself.
+_Avoid_: Single supplier per PO, header-level supplierId on InboundOrder.
+
+**InboundItem Duplicate Rule**:
+Within a single `InboundOrder`, duplicate line items are only blocked when both `skuId` AND `supplierId` match. An item with the same SKU but a different Supplier is considered a distinct line and is always permitted.
+_Avoid_: Blocking duplicates by `skuId` alone.
+
+**Create PO Post-Submit Navigation**:
+After successfully creating an `InboundOrder`, the UI navigates directly to the PO Detail page (`/inbound/po/:id`) using the `id` returned in `CreatePoResponse`. This lets operators immediately verify content and trigger receiving.
+_Avoid_: Staying on the create form or navigating to the list after successful creation.
+
+**Create PO Dirty-State Guard**:
+The Create PO form uses `react-hook-form`'s `formState.isDirty` to guard accidental navigation. The Back button shows a confirmation `AlertDialog` only when the form has been modified. If the form is untouched (clean state), navigation proceeds immediately.
+_Avoid_: Always-on confirmation dialogs or custom dirty-state tracking.
